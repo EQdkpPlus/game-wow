@@ -52,7 +52,6 @@ if(!class_exists('wow')) {
 				'admin' 	=> true,
 				'decorate'	=> false,
 				'parent'	=> false,
-				'recruitment' => true,
 			),
 			array(
 				'name'		=> 'race',
