@@ -25,7 +25,6 @@ if(!class_exists('wow')) {
 
 		protected $this_game	= 'wow';
 		protected $types		= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'professions', 'chartooltip');	// which information are stored?
-		public $icons			= array('classes', 'classes_big', 'races', 'roles', 'ranks', 'events', 'talents', '3dmodel');	// which icons do we have?
 		protected $classes		= array();
 		protected $roles		= array();
 		protected $races		= array();															// for each type there must be the according var
@@ -173,30 +172,7 @@ if(!class_exists('wow')) {
 			
 			parent::__construct();
 			$this->pdh->register_read_module($this->this_game, $this->path . 'pdh/read/'.$this->this_game);
-		}
-		
-		public function chartooltip($intCharID){
-			$template = $this->root_path.'games/'.$this->this_game.'/chartooltip/chartooltip.tpl';
-			$content = file_get_contents($template);
-			$charicon = $this->pdh->get('wow', 'charicon', array($intCharID));
-			if ($charicon == '') {
-				$charicon = $this->server_path.'images/global/avatar-default.svg';
-			}
-			$charhtml = '<b>'.$this->pdh->get('member', 'html_name', array($intCharID)).'</b><br />';
-			$guild = $this->pdh->get('member', 'profile_field', array($intCharID, 'guild'));
-			if (strlen($guild)) $charhtml .= '<br />&laquo;'.$guild.'&raquo;';
-			
-			$charhtml .= '<br />'.$this->pdh->get('member', 'html_racename', array($intCharID));
-			$charhtml .= ' '.$this->pdh->get('member', 'html_classname', array($intCharID));
-			$charhtml .= '<br />'.$this->user->lang('level').' '.$this->pdh->get('member', 'level', array($intCharID));
-			
-			
-			$content = str_replace('{CHAR_ICON}', $charicon, $content);
-			$content = str_replace('{CHAR_HTML}', $charhtml, $content);
-			
-			return $content;
-		}
-		
+		}		
 		
 		/**
 		 * Returns Information to change the game
@@ -309,6 +285,15 @@ if(!class_exists('wow')) {
 				);
 			}
 		}
+		
+		public function decorate_classes($class_id, $profile=array(), $size=16, $pathonly=false) {
+			$big = ($size > 40) ? '_b' : '';
+			if(is_file($this->root_path.'games/'.$this->this_game.'/icons/classes/'.$class_id.$big.'.png')){
+				$icon_path = $this->server_path.'games/'.$this->this_game.'/icons/classes/'.$class_id.$big.'.png';
+				return ($pathonly) ? $icon_path : '<img src="'.$icon_path.'" width="'.$size.'" height="'.$size.'" alt="class '.$class_id.'" class="'.$this->this_game.'_classicon classicon'.'" title="'.$this->game->get_name('classes', $class_id).'" />';
+			}
+			return false;
+		}
 
 		/*
 		 * add professions to array
@@ -419,42 +404,192 @@ if(!class_exists('wow')) {
 			);
 			return $xml_fields;
 		}
+		
+		public function cronjobOptions(){
+			$arrOptions = array(
+				'sync_ranks'	=> array(
+						'lang'	=> 'Sync Ranks',
+						'name'	=> 'sync_ranks',
+						'type'	=> 'radio',
+				),
+			);
+			return $arrOptions;
+		}
+		
+		public function cronjob($arrParams = array()){
+			$blnSyncRanks = ((int)$arrParams['sync_ranks'] == 1) ? true : false;
+			
+			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
+			
+			//Guildimport
+			$guilddata	= $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('uc_servername'), true);
+			if(!isset($guilddata['status'])){
+				foreach($guilddata['members'] as $guildchars){
+					$jsondata = array(
+							'thumbnail'	=> $guildchars['character']['thumbnail'],
+							'name'		=> $guildchars['character']['name'],
+							'class'		=> $guildchars['character']['class'],
+							'race'		=> $guildchars['character']['race'],
+							'level'		=> $guildchars['character']['level'],
+							'gender'	=> $guildchars['character']['gender'],
+							'rank'		=> $guildchars['rank'],
+					);
+					
+					//Build Rank ID
+					$intRankID = $this->pdh->get('rank', 'default', array());
+					if ($blnSyncRanks){
+						$arrRanks = $this->pdh->get('rank', 'id_list');
+						$inRankID = (int)$jsondata['rank'];
+						if (isset($arrRanks[$inRankID])) $intRankID = $arrRanks[$inRankID];
+					}
+					
+					//char available
+					if(in_array($jsondata['name'], $this->pdh->get('member', 'names', array()))){
+							
+						//Sync Rank
+						if ($blnSyncRanks){
+							$member_id = $this->pdh->get('member', 'id', array($jsondata['name']));
+							if ($member_id) {
+								$dataarry = array(
+									'rankid'	=> $intRankID,
+								);
+								$myStatus = $this->pdh->put('member', 'addorupdate_member', array($member_id, $dataarry));
+							}
+						}
+							
+					} else {
+					
+						//Create new char
+						$dataarry = array(
+								'name'		=> $jsondata['name'],
+								'lvl'		=> $jsondata['level'],
+								'classid'	=> $this->game->obj['armory']->ConvertID(intval($jsondata['class']), 'int', 'classes'),
+								'raceid'	=> $this->game->obj['armory']->ConvertID(intval($jsondata['class']), 'int', 'races'),
+								'rankid'	=> $intRankID,
+						);
+						$myStatus = $this->pdh->put('member', 'addorupdate_member', array(0, $dataarry));
+					
+						// reset the cache
+						$this->pdh->process_hook_queue();
+					}
+				}
+			}
+			
+			//Guildupdate
 
-		public function changeprofilefields(){
-			$member_data	= $this->pdh->get('member', 'array', array($this->in->get('editid')));
-			$talents_array = $this->jquery->dd_ajax_request('member_class_id', array('profilefields[skill1]', 'profilefields[skill2]'), $this->game->get('classes', array('id_0')), array('--------'), $member_data['class_id'], 'addcharacter.php?ajax=talents', '', array($member_data['skill1'], $member_data['skill2']));
-			return array(
-				'member_class_id'	=> array(
-					'category'		=> 'character',
-					'lang'			=> 'class',
-					'name'			=> 'class_id',
-					'text'			=> $talents_array[0],
-					'directfield'	=> true,
-					'visible'		=> true
+			$members	= $this->pdh->get('member', 'names', array());
+			if(is_array($members)){
+				asort($members);
+				foreach($members as $membername){
+					if($membername != ''){
+						$charid = $this->pdh->get('member', 'id', array($membername));
+						if($charid){
+							$chardata	= $this->game->obj['armory']->character($membername, $this->config->get('uc_servername'), true);
+							
+							if(!isset($chardata['status'])){
+								$errormsg	= '';
+								$charname	= $chardata['name'];
+							
+								// insert into database
+								$info = $this->pdh->put('member', 'addorupdate_member', array($charid, array(
+										'name'				=> $membername,
+										'lvl'				=> $chardata['level'],
+										'gender'			=> $this->game->obj['armory']->ConvertID($chardata['gender'], 'int', 'gender'),
+										'raceid'			=> $this->game->obj['armory']->ConvertID($chardata['race'], 'int', 'races'),
+										'classid'			=> $this->game->obj['armory']->ConvertID($chardata['class'], 'int', 'classes'),
+										'guild'				=> $chardata['guild']['name'],
+										'last_update'		=> ($chardata['lastModified']/1000),
+										'prof1_name'		=> $this->game->get_id('professions', $chardata['professions']['primary'][0]['name']),
+										'prof1_value'		=> $chardata['professions']['primary'][0]['rank'],
+										'prof2_name'		=> $this->game->get_id('professions', $chardata['professions']['primary'][1]['name']),
+										'prof2_value'		=> $chardata['professions']['primary'][1]['rank'],
+										'skill_1'			=> $this->game->obj['armory']->ConvertTalent($chardata['talents'][0]['spec']['icon']),
+										'skill_2'			=> $this->game->obj['armory']->ConvertTalent($chardata['talents'][1]['spec']['icon']),
+										'health_bar'		=> $chardata['stats']['health'],
+										'second_bar'		=> $chardata['stats']['power'],
+										'second_name'		=> $chardata['stats']['powerType'],
+								), 0));
+							}
+						}
+					}
+				}
+			}
+			
+			
+			
+			
+			$this->pdh->process_hook_queue();
+		}
+		
+		public function admin_settings() {
+			$settingsdata_admin = array(
+				'uc_server_loc'	=> array(
+					'lang'		=> 'uc_server_loc',
+					'type' 		=> 'dropdown',
+					'options'	=> array('eu' => 'EU', 'us' => 'US', 'tw' => 'TW', 'kr' => 'KR', 'cn' => 'CN'),
 				),
-				'skill1'	=> array(
-					'category'		=> 'character',
-					'lang'			=> 'uc_skill1',
-					'text'			=> $talents_array[1],
-					'directfield'	=> true,
-					'visible'		=> true
+				'uc_data_lang'	=> array(
+					'lang'		=> 'uc_data_lang',
+					'type' 		=> 'dropdown',
+					'options'	=> array(
+						'en_US' => 'English',
+						'es_MX' => 'Mexican',
+						'pt_BR' => 'Brasil',
+						'en_GB' => 'English (GB)',
+						'es_ES' => 'Spanish',
+						'fr_FR' => 'French',
+						'ru_RU' => 'Russian',
+						'de_DE'	=> 'German',
+						'pt_PT'	=> 'Portuguese',
+						'ko_KR'	=> 'Korean',
+						'zh_TW'	=> 'Taiwanese',
+						'zh_CN'	=> 'Chinese'
+					),
 				),
-				'skill2'	=> array(
-					'category'		=> 'character',
-					'lang'			=> 'uc_skill2',
-					'text'			=> $talents_array[2],
-					'directfield'	=> true,
-					'visible'		=> true
+				// TODO: check if apostrophe is saved correctly
+				'uc_servername'	=> array(
+					'lang'			=> 'uc_servername',
+					'type'			=> 'text',
+					'size'			=> '21',
+					'autocomplete'	=> $this->game->get('realmlist'),
 				)
 			);
+			return $settingsdata_admin;
+		}
+		
+		######################################################################
+		##																	##
+		##							EXTRA FUNCTIONS							##
+		##																	##
+		######################################################################
+		
+		/**
+		 *	was tut dieses?
+		 *
+		 */		
+		public function chartooltip($intCharID){
+			$template = $this->root_path.'games/'.$this->this_game.'/chartooltip/chartooltip.tpl';
+			$content = file_get_contents($template);
+			$charicon = $this->pdh->get('wow', 'charicon', array($intCharID));
+			if ($charicon == '') {
+				$charicon = $this->server_path.'images/global/avatar-default.svg';
+			}
+			$charhtml = '<b>'.$this->pdh->get('member', 'html_name', array($intCharID)).'</b><br />';
+			$guild = $this->pdh->get('member', 'profile_field', array($intCharID, 'guild'));
+			if (strlen($guild)) $charhtml .= '<br />&laquo;'.$guild.'&raquo;';
+			
+			$charhtml .= '<br />'.$this->pdh->get('member', 'html_racename', array($intCharID));
+			$charhtml .= ' '.$this->pdh->get('member', 'html_classname', array($intCharID));
+			$charhtml .= '<br />'.$this->user->lang('level').' '.$this->pdh->get('member', 'level', array($intCharID));
+			
+			
+			$content = str_replace('{CHAR_ICON}', $charicon, $content);
+			$content = str_replace('{CHAR_HTML}', $charhtml, $content);
+			
+			return $content;
 		}
 
-		public function gameprofile_talents($id){
-			$talents = $this->game->glang('talents');
-			return $this->jquery->dd_create_ajax($talents[$id]);
-		}
-
-		/*
+		/**
 		 * Per game data for the calendar Tooltip
 		 */
 		public function calendar_membertooltip($memberid){
@@ -467,7 +602,7 @@ if(!class_exists('wow')) {
 			);
 		}
 
-		/*
+		/**
 		 * Parse the guild news of armory
 		 */
 		public function parseGuildnews($arrNews, $intCount = 50, $arrTypes = false){
@@ -1029,158 +1164,6 @@ if(!class_exists('wow')) {
 				}
 			}
 			return $a_raidprogress;
-		}
-		
-		public function cronjobOptions(){
-			$arrOptions = array(
-				'sync_ranks'	=> array(
-						'lang'	=> 'Sync Ranks',
-						'name'	=> 'sync_ranks',
-						'type'	=> 'radio',
-				),
-			);
-			return $arrOptions;
-		}
-		
-		public function cronjob($arrParams = array()){
-			$blnSyncRanks = ((int)$arrParams['sync_ranks'] == 1) ? true : false;
-			
-			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
-			
-			//Guildimport
-			$guilddata	= $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('uc_servername'), true);
-			if(!isset($guilddata['status'])){
-				foreach($guilddata['members'] as $guildchars){
-					$jsondata = array(
-							'thumbnail'	=> $guildchars['character']['thumbnail'],
-							'name'		=> $guildchars['character']['name'],
-							'class'		=> $guildchars['character']['class'],
-							'race'		=> $guildchars['character']['race'],
-							'level'		=> $guildchars['character']['level'],
-							'gender'	=> $guildchars['character']['gender'],
-							'rank'		=> $guildchars['rank'],
-					);
-					
-					//Build Rank ID
-					$intRankID = $this->pdh->get('rank', 'default', array());
-					if ($blnSyncRanks){
-						$arrRanks = $this->pdh->get('rank', 'id_list');
-						$inRankID = (int)$jsondata['rank'];
-						if (isset($arrRanks[$inRankID])) $intRankID = $arrRanks[$inRankID];
-					}
-					
-					//char available
-					if(in_array($jsondata['name'], $this->pdh->get('member', 'names', array()))){
-							
-						//Sync Rank
-						if ($blnSyncRanks){
-							$member_id = $this->pdh->get('member', 'id', array($jsondata['name']));
-							if ($member_id) {
-								$dataarry = array(
-									'rankid'	=> $intRankID,
-								);
-								$myStatus = $this->pdh->put('member', 'addorupdate_member', array($member_id, $dataarry));
-							}
-						}
-							
-					} else {
-					
-						//Create new char
-						$dataarry = array(
-								'name'		=> $jsondata['name'],
-								'lvl'		=> $jsondata['level'],
-								'classid'	=> $this->game->obj['armory']->ConvertID(intval($jsondata['class']), 'int', 'classes'),
-								'raceid'	=> $this->game->obj['armory']->ConvertID(intval($jsondata['class']), 'int', 'races'),
-								'rankid'	=> $intRankID,
-						);
-						$myStatus = $this->pdh->put('member', 'addorupdate_member', array(0, $dataarry));
-					
-						// reset the cache
-						$this->pdh->process_hook_queue();
-					}
-				}
-			}
-			
-			//Guildupdate
-
-			$members	= $this->pdh->get('member', 'names', array());
-			if(is_array($members)){
-				asort($members);
-				foreach($members as $membername){
-					if($membername != ''){
-						$charid = $this->pdh->get('member', 'id', array($membername));
-						if($charid){
-							$chardata	= $this->game->obj['armory']->character($membername, $this->config->get('uc_servername'), true);
-							
-							if(!isset($chardata['status'])){
-								$errormsg	= '';
-								$charname	= $chardata['name'];
-							
-								// insert into database
-								$info = $this->pdh->put('member', 'addorupdate_member', array($charid, array(
-										'name'				=> $membername,
-										'lvl'				=> $chardata['level'],
-										'gender'			=> $this->game->obj['armory']->ConvertID($chardata['gender'], 'int', 'gender'),
-										'raceid'			=> $this->game->obj['armory']->ConvertID($chardata['race'], 'int', 'races'),
-										'classid'			=> $this->game->obj['armory']->ConvertID($chardata['class'], 'int', 'classes'),
-										'guild'				=> $chardata['guild']['name'],
-										'last_update'		=> ($chardata['lastModified']/1000),
-										'prof1_name'		=> $this->game->get_id('professions', $chardata['professions']['primary'][0]['name']),
-										'prof1_value'		=> $chardata['professions']['primary'][0]['rank'],
-										'prof2_name'		=> $this->game->get_id('professions', $chardata['professions']['primary'][1]['name']),
-										'prof2_value'		=> $chardata['professions']['primary'][1]['rank'],
-										'skill_1'			=> $this->game->obj['armory']->ConvertTalent($chardata['talents'][0]['spec']['icon']),
-										'skill_2'			=> $this->game->obj['armory']->ConvertTalent($chardata['talents'][1]['spec']['icon']),
-										'health_bar'		=> $chardata['stats']['health'],
-										'second_bar'		=> $chardata['stats']['power'],
-										'second_name'		=> $chardata['stats']['powerType'],
-								), 0));
-							}
-						}
-					}
-				}
-			}
-			
-			
-			
-			
-			$this->pdh->process_hook_queue();
-		}
-		
-		public function admin_settings() {
-			$settingsdata_admin = array(
-				'uc_server_loc'	=> array(
-					'lang'		=> 'uc_server_loc',
-					'type' 		=> 'dropdown',
-					'options'	=> array('eu' => 'EU', 'us' => 'US', 'tw' => 'TW', 'kr' => 'KR', 'cn' => 'CN'),
-				),
-				'uc_data_lang'	=> array(
-					'lang'		=> 'uc_data_lang',
-					'type' 		=> 'dropdown',
-					'options'	=> array(
-						'en_US' => 'English',
-						'es_MX' => 'Mexican',
-						'pt_BR' => 'Brasil',
-						'en_GB' => 'English (GB)',
-						'es_ES' => 'Spanish',
-						'fr_FR' => 'French',
-						'ru_RU' => 'Russian',
-						'de_DE'	=> 'German',
-						'pt_PT'	=> 'Portuguese',
-						'ko_KR'	=> 'Korean',
-						'zh_TW'	=> 'Taiwanese',
-						'zh_CN'	=> 'Chinese'
-					),
-				),
-				// TODO: check if apostrophe is saved correctly
-				'uc_servername'	=> array(
-					'lang'			=> 'uc_servername',
-					'type'			=> 'text',
-					'size'			=> '21',
-					'autocomplete'	=> $this->game->get('realmlist'),
-				)
-			);
-			return $settingsdata_admin;
 		}
 	}#class
 }

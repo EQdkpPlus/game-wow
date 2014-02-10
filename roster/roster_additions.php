@@ -199,7 +199,7 @@ if ($this->config->get('roster_classorrole') == 'role'){
 		
 		$this->tpl->assign_block_vars('class_row', array(
 			'CLASS_NAME'	=> $value,
-			'CLASS_ICONS'	=> $this->game->decorate('roles', array($key)),
+			'CLASS_ICONS'	=> $this->game->decorate('roles', $key),
 			'MEMBER_LIST'	=> $hptt->get_html_table($this->in->get('sort')),
 		));
 	}
