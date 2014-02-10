@@ -101,6 +101,7 @@ if(!class_exists('wow')) {
 				'recruitment' => true,
 				'parent'	=> array(
 					'class' => array(
+						0 	=> 'all',			// Unknown
 						1 	=> array(0,1,2),	// Death Knight
 						2 	=> array(3,4,5,6),	// Druid
 						3 	=> array(7,8,9),	// Hunter
@@ -122,6 +123,7 @@ if(!class_exists('wow')) {
 				'decorate'	=> false,
 				'parent'	=> array(
 					'class' => array(
+						0 	=> 'all',			// Unknown
 						1 	=> array(0,1,2),	// Death Knight
 						2 	=> array(3,4,5,6),	// Druid
 						3 	=> array(7,8,9),	// Hunter
