@@ -52,15 +52,14 @@ if(!class_exists('wow')) {
 				'type'		=> 'factions',
 				'admin' 	=> true,
 				'decorate'	=> false,
-				'roster'	=> false,
 				'parent'	=> false,
+				'recruitment' => true,
 			),
 			array(
 				'name'		=> 'race',
 				'type'		=> 'races',
 				'admin'		=> false,
 				'decorate'	=> true,
-				#'roster'	=> true,
 				'parent'	=> array(
 					'faction' => array(
 						'alliance'	=> array(0,1,2,3,4,9,11,13),
@@ -76,6 +75,7 @@ if(!class_exists('wow')) {
 				'primary'	=> true,
 				'colorize'	=> true,
 				'roster'	=> true,
+				'recruitment' => true,
 				'parent'	=> array(
 					'race' => array(
 						0 	=> 'all',							// Unknown
@@ -100,7 +100,7 @@ if(!class_exists('wow')) {
 				'type'		=> 'talents',
 				'admin'		=> false,
 				'decorate'	=> true,
-				#'roster'	=> true,
+				'recruitment' => true,
 				'parent'	=> array(
 					'class' => array(
 						1 	=> array(0,1,2),	// Death Knight
