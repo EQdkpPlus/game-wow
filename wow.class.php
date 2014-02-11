@@ -97,7 +97,7 @@ if(!class_exists('wow')) {
 				'name'		=> 'talent1',
 				'type'		=> 'talents',
 				'admin'		=> false,
-				'decorate'	=> true,
+				'decorate'	=> false,
 				'recruitment' => true,
 				'parent'	=> array(
 					'class' => array(
