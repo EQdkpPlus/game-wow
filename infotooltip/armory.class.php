@@ -112,14 +112,23 @@ if(!class_exists('armory')) {
 		protected function searchItemID($itemname, $lang, $searchagain=0){
 			$this->pdl->log('infotooltip', 'armory->searchItemID called: itemname: '.$itemname.', lang: '.$lang.', searchagain: '.$searchagain);
 			$searchagain++;
+			//$itemname ='Obsidiangroßhelm';$lang='de';
 			//encode itemname for usage in url
 			$encoded_name = str_replace(' ', '%20', str_replace('+', '%20', urlencode($itemname)));
-			$url = 'http://'.$this->url_prefix.'.wowarmory.com/search.xml?searchType=items&amp;searchQuery='.$encoded_name;
+			$url = 'http://'.$this->url_prefix.'.battle.net/wow/'.$lang.'/search?f=wowitem&q='.$encoded_name;
 			$this->pdl->log('infotooltip', 'Search for ItemID at '.$url);
-			$xml_data = $this->puf->fetch($url);
-			$xml = simplexml_load_string($xml_data);
-			if((!is_object($xml) OR (int) $xml->armorySearch->tabs['count'] < 1)) {
-				$this->pdl->log('infotooltip', 'No Items found.');
+			$data = $this->puf->fetch($url);
+			
+			
+			if(preg_match_all('#<a href=\"\/wow\/([a-z]{2})\/item\/(.*?)\" class=\"(.*?)\">#', $data, $matches)){
+				if((int)$matches[2] > 0){
+					$item_id = $matches[2][0];
+					$this->pdl->log('infotooltip', 'Item-ID found for '.$lang);
+				}
+			}
+
+			if((int)$item_id < 1){
+				$this->pdl->log('infotooltip', 'Item NOT found for '.$lang);
 				if(count($this->config['lang_prio']) >= $searchagain) {
 					$this->pdl->log('infotooltip', 'Search again in other language.');
 					$this->searched_langs[] = $lang;
@@ -130,82 +139,13 @@ if(!class_exists('armory')) {
 					}
 				}
 			}
-			$this->searched_langs = array();
 
-			$xml = $xml->armorySearch->searchResults->items;
-			if(!is_object($xml)) {
-				$this->pdl->log('infotooltip', 'Invalid XML');
-				return array(0, 'items');
-			}
+			#var_dump($matches);
+			#var_dump($item_id);
 
-			$searchResults = array();
-			foreach($xml->children() as $item) {
-				$searchResults[(int) $item['id']]['name'] = (string) $item['name'];
-				foreach($item->children() as $filter) {
-					if($filter['name'] == 'itemLevel') {
-						$searchResults[(int) $item['id']]['ilvl'] = (string) $filter['value'];
-					} elseif($filter['name'] == 'relevance') {
-						$searchResults[(int) $item['id']]['relevance'] = (string) $filter['value'];
-					}
-				}
-			}
-			if(!function_exists('sort_by_relevance_ilvl')) {
-				function sort_by_relevance_ilvl($a, $b) {
-					if($a['relevance'] == $b['relevance']) {
-						if($a['ilvl'] == $b['ilvl']) {
-							return 0;
-						}
-						return ($a['ilvl'] > $b['ilvl']) ? -1 : 1;
-					}
-					return ($a['relevance'] > $b['relevance']) ? -1 : 1;
-				}
-			}
-			uasort($searchResults, "sort_by_relevance_ilvl");
-			reset($searchResults);
-			$item_id = key($searchResults);
 			$debug_out = ($item_id > 0) ? 'Item-ID found: '.$item_id : 'No Item-ID found';
 			$this->pdl->log('infotooltip', $debug_out);
 			return array($item_id, 'items');
-		}
-
-		protected function getItemData($item_id, $lang, $itemname='', $type='items', $data=array()){
-			$this->pdl->log('infotooltip', 'armory->getItemData called: item_id: '.$item_id.', lang: '.$lang.', itemname: '.$itemname.', data: '.implode(', ', $data));
-			if($item_id <= 0) {
-				$this->pdl->log('infotooltip', 'No Item-ID given. Set baditem to true.');
-				$item['baditem'] = true;
-				return $item;
-			}
-			$item_data = $this->bnet->item($item_id);
-			$char_data = array();
-			if(!empty($data)) {
-				$char_data = $this->bnet->character($data[1], $data[0]);
-			}
-			//check for error
-			if(isset($item_data['status']) && $item_data['status'] == 'error') {
-				$this->pdl->log('infotooltip', 'Battle.net responded with an error. Reason: '.$item_data['reason']);
-				$item['baditem'] = true;
-				$item['name'] = $itemname;
-				$item['id'] = $item_id;
-				return $item;
-			}
-			$item['name'] = $item_data['name'];
-			$item['id'] = $item_data['id'];
-			$item['lang'] = $lang;
-			$item['icon'] = $item_data['icon'];
-			$item['color'] = 'q'.$item_data['quality'];
-			//check if its a pattern
-			if($item_data['itemClass'] == 9) {
-				$item['html'] = $this->build_pattern($item_data, $lang, $item);
-			} else {
-				$item['html'] = $this->build_tooltip($item_data, $lang, $item, $char_data, $data[2]);
-			}
-			if(strlen($item['html']) < 10 || !$item['html']) {
-				$this->pdl->log('infotooltip', 'No Tooltip could be created. Set baditem to true.');
-				$item['baditem'] = true;
-				return $item;
-			}
-			$this->pdl->log('infotooltip', 'Item succesfully fetched.');
-			return $item;
 		}
 		
 		private function build_pattern($data, $lang, $item) {
