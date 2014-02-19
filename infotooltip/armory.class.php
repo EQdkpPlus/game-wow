@@ -148,6 +148,46 @@ if(!class_exists('armory')) {
 			return array($item_id, 'items');
 		}
 		
+		protected function getItemData($item_id, $lang, $itemname='', $type='items', $data=array()){
+			$this->pdl->log('infotooltip', 'armory->getItemData called: item_id: '.$item_id.', lang: '.$lang.', itemname: '.$itemname.', data: '.implode(', ', $data));
+			if($item_id <= 0) {
+				$this->pdl->log('infotooltip', 'No Item-ID given. Set baditem to true.');
+				$item['baditem'] = true;
+				return $item;
+			}
+			$item_data = $this->bnet->item($item_id);
+			$char_data = array();
+			if(!empty($data)) {
+				$char_data = $this->bnet->character($data[1], $data[0]);
+			}
+			//check for error
+			if(isset($item_data['status']) && $item_data['status'] == 'error') {
+				$this->pdl->log('infotooltip', 'Battle.net responded with an error. Reason: '.$item_data['reason']);
+				$item['baditem'] = true;
+				$item['name'] = $itemname;
+				$item['id'] = $item_id;
+				return $item;
+			}
+			$item['name'] = $item_data['name'];
+			$item['id'] = $item_data['id'];
+			$item['lang'] = $lang;
+			$item['icon'] = $item_data['icon'];
+			$item['color'] = 'q'.$item_data['quality'];
+			//check if its a pattern
+			if($item_data['itemClass'] == 9) {
+				$item['html'] = $this->build_pattern($item_data, $lang, $item);
+			} else {
+				$item['html'] = $this->build_tooltip($item_data, $lang, $item, $char_data, $data[2]);
+			}
+			if(strlen($item['html']) < 10 || !$item['html']) {
+				$this->pdl->log('infotooltip', 'No Tooltip could be created. Set baditem to true.');
+				$item['baditem'] = true;
+				return $item;
+			}
+			$this->pdl->log('infotooltip', 'Item succesfully fetched.');
+			return $item;
+		}
+
 		private function build_pattern($data, $lang, $item) {
 			$html = '';
 			$this->load_armory_lang($lang);
