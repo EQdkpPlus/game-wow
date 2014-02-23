@@ -91,10 +91,10 @@ $german_array = array(
 		33 	=> 'Windläufer',
 	),
 	'roles' => array(
-		1 => array(2, 5, 6, 8, 11),
-		2 => array(1, 2, 5, 10, 11),
-		3 => array(2, 3, 4, 6, 8, 9),
-		4 => array(1, 2, 5, 7, 8, 10, 11)
+		1	=> 'Heiler',
+		2	=> 'Tank',
+		3	=> 'DD Fernkampf',
+		4	=> 'DD Nahkampf',
 	),
 	'professions' => array(
 		'trade_alchemy'					=> 'Alchemie',
@@ -118,10 +118,6 @@ $german_array = array(
 		'tier_token'	=> 'Token: ',
 		'talents_tt_1'	=> 'Primäres Talent',
 		'talents_tt_2'	=> 'Sekundäres Talent',
-		'role1'							=> 'Heiler',
-		'role2'							=> 'Tank',
-		'role3'							=> 'DD Fernkampf',
-		'role4'							=> 'DD Nahkampf',
 		
 		// Profile information
 		'uc_prof_professions'			=> 'Berufe',

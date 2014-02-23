@@ -91,10 +91,10 @@ $english_array = array(
 		33 	=> 'Windwalker',
 	),
 	'roles' => array(
-		1 => array(2, 5, 6, 8, 11),
-		2 => array(1, 2, 5, 10, 11),
-		3 => array(2, 3, 4, 6, 8, 9),
-		4 => array(1, 2, 5, 7, 8, 10, 11)
+		1	=> 'Healer',
+		2	=> 'Tank',
+		3	=> 'Range-DD',
+		4	=> 'Melee',
 	),
 	'professions' => array(
 		'trade_alchemy'					=> 'Alchemy',
@@ -118,10 +118,6 @@ $english_array = array(
 		'tier_token'	=> 'Token: ',
 		'talents_tt_1'	=> 'Primary Talent',
 		'talents_tt_2'	=> 'Secondary Talent',
-		'role1' => 'Healer',
-		'role2' => 'Tank',
-		'role3' => 'Range-DD',
-		'role4' => 'Melee',
 		
 		// Profile information
 		'uc_prof_professions'			=> 'Professions',

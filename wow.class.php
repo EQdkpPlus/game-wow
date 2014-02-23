@@ -23,6 +23,7 @@ if ( !defined('EQDKP_INC') ){
 if(!class_exists('wow')) {
 	class wow extends game_generic {
 
+		public $version			= '5.4.5';
 		protected $this_game	= 'wow';
 		protected $types		= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes		= array();
@@ -139,12 +140,13 @@ if(!class_exists('wow')) {
 				),
 			),
 		);
-
-		protected $glang		= array();
-		protected $lang_file	= array();
-		protected $path			= '';
-		public $lang			= false;
-		public $version			= '5.4.5';
+		
+		public $default_roles = array(
+			1 => array(2, 5, 6, 8, 11),
+			2 => array(1, 2, 5, 10, 11),
+			3 => array(2, 3, 4, 6, 8, 9),
+			4 => array(1, 2, 5, 7, 8, 10, 11)
+		);
 		
 		protected $class_colors = array(
 				1	=> '#C41F3B',
@@ -159,6 +161,11 @@ if(!class_exists('wow')) {
 				10	=> '#C69B6D',
 				11	=> '#00C77B',
 		);
+		
+		protected $glang		= array();
+		protected $lang_file	= array();
+		protected $path			= '';
+		public $lang			= false;
 
 		public function __construct() {
 			$this->importers = array(
