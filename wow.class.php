@@ -149,17 +149,17 @@ if(!class_exists('wow')) {
 		);
 		
 		protected $class_colors = array(
-				1	=> '#C41F3B',
-				2	=> '#FF7C0A',
-				3	=> '#AAD372',
-				4	=> '#68CCEF',
-				5	=> '#F48CBA',
-				6	=> '#FFFFFF',
-				7	=> '#FFF468',
-				8	=> '#1a3caa',
-				9	=> '#9382C9',
-				10	=> '#C69B6D',
-				11	=> '#00C77B',
+			1	=> '#C41F3B',
+			2	=> '#FF7C0A',
+			3	=> '#AAD372',
+			4	=> '#68CCEF',
+			5	=> '#F48CBA',
+			6	=> '#FFFFFF',
+			7	=> '#FFF468',
+			8	=> '#1a3caa',
+			9	=> '#9382C9',
+			10	=> '#C69B6D',
+			11	=> '#00C77B',
 		);
 		
 		protected $glang		= array();
