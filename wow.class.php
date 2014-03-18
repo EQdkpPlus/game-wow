@@ -142,10 +142,10 @@ if(!class_exists('wow')) {
 		);
 		
 		public $default_roles = array(
-			1 => array(2, 5, 6, 8, 11),
-			2 => array(1, 2, 5, 10, 11),
-			3 => array(2, 3, 4, 6, 8, 9),
-			4 => array(1, 2, 5, 7, 8, 10, 11)
+			1	=> array(2, 5, 6, 8, 11),
+			2	=> array(1, 2, 5, 10, 11),
+			3	=> array(2, 3, 4, 6, 8, 9),
+			4	=> array(1, 2, 5, 7, 8, 10, 11)
 		);
 		
 		protected $class_colors = array(
@@ -180,7 +180,7 @@ if(!class_exists('wow')) {
 			
 			parent::__construct();
 			$this->pdh->register_read_module($this->this_game, $this->path . 'pdh/read/'.$this->this_game);
-		}		
+		}
 		
 		/**
 		 * Returns Information to change the game
