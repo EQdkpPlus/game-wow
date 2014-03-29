@@ -65,6 +65,7 @@
 	$this->tpl->css_file($this->path.'games/wow/roster/challenge.css');
 
 # Amory Stuff
+$guilddata = false;
 if($this->config->get('uc_servername') && $this->config->get('uc_server_loc')){
 	$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 	$guilddata = $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('uc_servername'));
@@ -159,8 +160,6 @@ if($this->config->get('uc_servername') && $this->config->get('uc_server_loc')){
 		$this->tpl->assign_vars(array(
 			'S_ARMORY_INFO' => true,
 		));
-	} else {
-		$guilddata = false;
 	}
 }
 
