@@ -563,8 +563,8 @@
 					foreach($v_bossprogress['bosses'] as $bosses){
 						$tt_bossprogress .= "<div class='tr'>
 												<div class='td'>".$bosses['name']."</div>
-												<div class='td'>".$bosses['normalKills']."</div>
-												<div class='td'>".$bosses['heroicKills']."</div>
+												<div class='td'>".(isset($bosses['normalKills']) ? $bosses['normalKills'] : 0)."</div>
+												<div class='td'>".(isset($bosses['heroicKills']) ? $bosses['heroicKills'] : 0)."</div>
 											</div>";
 					}
 					$tt_bossprogress .= '</div>';
