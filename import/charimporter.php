@@ -37,7 +37,7 @@ class charImporter extends page_generic {
 
 	public function perform_resetcache(){
 		// delete the cache folder
-		$this->game->obj['armory']-> DeleteCache();
+		$this->game->obj['armory']->DeleteCache();
 
 		// Output the success message
 		$hmtlout = '<div id="guildimport_dataset">
@@ -156,7 +156,7 @@ class charImporter extends page_generic {
 		// due to connected/virtual realms, check for a servername of the char
 		$char_server	= $this->pdh->get('member', 'profile_field', array($this->in->get('charid', 0), 'servername'));
 		$servername		= ($char_server != '') ? $char_server : $this->config->get('uc_servername');
-		$chardata		= $this->game->obj['armory']->character($this->in->get('charname', ''), $servername, true);
+		$chardata		= $this->game->obj['armory']->character(unsanitize($this->in->get('charname', '')), unsanitize($servername), true);
 
 		if(!isset($chardata['status'])){
 			$errormsg	= '';
@@ -266,7 +266,7 @@ class charImporter extends page_generic {
 		if($is_mine){
 			// Load the Armory Data
 			$this->game->obj['armory']->setSettings(array('loc'=>$isServerLoc));
-			$chardata	= $this->game->obj['armory']->character($isMemberName, $isServerName, true);
+			$chardata	= $this->game->obj['armory']->character(unsanitize($isMemberName), unsanitize($isServerName), true);
 			//new hhidden('server_loc', array('value' => $this->config->get('uc_server_loc')))
 			// Basics
 			$hmtlout	.= new hhidden('member_id', array('value' => $isindatabase));

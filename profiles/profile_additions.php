@@ -340,10 +340,11 @@
 	");
 
 	// Armory based information
-	$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
-	$member_servername	= $this->pdh->get('member', 'profile_field', array($this->url_id, 'servername'));
-	$servername			= ($member_servername != '') ? $member_servername : $this->config->get('uc_servername');
-	$chardata			= $this->game->obj['armory']->character($member['name'], $servername);
+	$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang')));
+	$member_servername	= unsanitize($this->pdh->get('member', 'profile_field', array($this->url_id, 'servername')));
+	$servername			= ($member_servername != '') ? $member_servername : unsanitize($this->config->get('uc_servername'));
+	
+	$chardata			= $this->game->obj['armory']->character(unsanitize($member['name']), $servername);
 	if($this->config->get('uc_servername') != '' && !isset($chardata['status'])){
 
 		// profilers
@@ -351,7 +352,7 @@
 			1	=> array(
 				'icon'	=> $this->server_path.'games/wow/profiles/profilers/askmrrobot.png',
 				'name'	=> 'AskMrRobot.com',
-				'url'	=> $this->game->obj['armory']->bnlink($member['name'], $this->config->get('uc_servername'), 'askmrrobot')
+				'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($this->config->get('uc_servername')), 'askmrrobot')
 			)
 		);
 
@@ -371,10 +372,10 @@
 			});
 			$('#char_infos').change();
 		", 'docready');
-		$items = $this->game->callFunc('getItemArray', array($chardata['items'], $member['name']));
+		$items = $this->game->callFunc('getItemArray', array($chardata['items'], unsanitize($member['name'])));
 
 		// talents & professions
-		$this->tpl->assign_array('bnetlinks',	$this->game->obj['armory']->a_bnlinks($member['name'],$this->config->get('uc_servername'), $chardata['guild']['name']));
+		$this->tpl->assign_array('bnetlinks',	$this->game->obj['armory']->a_bnlinks(unsanitize($member['name']),unsanitize($this->config->get('uc_servername')), $chardata['guild']['name']));
 		$this->tpl->assign_array('items',		$items);
 
 		// talents
@@ -501,7 +502,7 @@
 				switch ($v_charfeed['type']){
 						case 'achievement':
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$v_charfeed['achievementID'], $arrCharacterAchievements);
-							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], $this->config->get('uc_servername'), 'achievements', $this->config->get('guildtag')).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
+							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($this->config->get('uc_servername')), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
 							$class='';
 							if ($v_charfeed['accountWide']) $class = 'accountwide';
 						
@@ -513,13 +514,13 @@
 						break;
 						case 'criteria':
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$v_charfeed['achievementID'], $arrCharacterAchievements);
-							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], $this->config->get('uc_servername'), 'achievements', $this->config->get('guildtag')).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
+							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($this->config->get('uc_servername')), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
 							
 							$cnf_output = sprintf($this->game->glang('charnf_criteria'), '<b>'.$v_charfeed['criteria'].'</b>', '<a href="'.$bnetLink.'">'.$v_charfeed['title'].'</a>');
 						break;
 						case 'item':
 							$itemData = $this->game->obj['armory']->item($v_charfeed['itemid']);
-							$item = infotooltip($itemData['name'], $v_charfeed['itemid'], false, false, false, true, $chardata['name'], $this->config->get('uc_servername'));
+							$item = infotooltip($itemData['name'], $v_charfeed['itemid'], false, false, false, true, $chardata['name'], unsanitize($this->config->get('uc_servername')));
 							$cnf_output = sprintf($this->game->glang('charnf_item'), $item);
 							$v_charfeed['icon'] = 'http://eu.media.blizzard.com/wow/icons/18/'.$itemData['icon'].'.jpg';
 						break;

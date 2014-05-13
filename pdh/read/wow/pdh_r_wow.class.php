@@ -65,13 +65,13 @@ if (!class_exists('pdh_r_wow')) {
 		*/
 		public function init(){
 			$this->data = array();
-			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
-			$this->guilddata = $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('uc_servername'));
+			$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang')));
+			$this->guilddata = $this->game->obj['armory']->guild(unsanitize($this->config->get('guildtag')), unsanitize($this->config->get('uc_servername')));
 			$guildMembers = array();
 
 			if (is_array($this->guilddata['members'])){
 				foreach($this->guilddata['members'] as $member){
-					 $this->data[$member['character']['name']] = $member;
+					 $this->data[sanitize($member['character']['name'])] = $member;
 				}
 			}
 			return true;
@@ -83,7 +83,7 @@ if (!class_exists('pdh_r_wow')) {
 				return $this->data[$membername]['character']['achievementPoints'];
 			}
 			
-			$charinfo = $this->game->obj['armory']->character($membername, $this->config->get('uc_servername'));
+			$charinfo = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($this->config->get('uc_servername')));
 			if (isset($charinfo['achievementPoints'])){
 				return $charinfo['achievementPoints'];
 			}
@@ -101,7 +101,7 @@ if (!class_exists('pdh_r_wow')) {
 				return $this->game->obj['armory']->characterIcon($this->data[$membername]['character']);
 			}
 
-			$charinfo = $this->game->obj['armory']->character($membername, $this->config->get('uc_servername'));
+			$charinfo = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($this->config->get('uc_servername')));
 			if (isset($charinfo['thumbnail'])){
 				return $this->game->obj['armory']->characterIcon($charinfo);
 			}
@@ -118,7 +118,7 @@ if (!class_exists('pdh_r_wow')) {
 
 		public function get_averageItemLevelEquipped($member_id){
 			$membername = $this->pdh->get('member', 'name', array($member_id));
-			$charinfo = $this->game->obj['armory']->character($membername, $this->config->get('uc_servername'));
+			$charinfo = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($this->config->get('uc_servername')));
 			if (isset($charinfo['items']['averageItemLevelEquipped'])){
 				return $charinfo['items']['averageItemLevelEquipped'];
 			}
@@ -133,7 +133,7 @@ if (!class_exists('pdh_r_wow')) {
 				1	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/askmrrobot.png',
 					'name'	=> 'AskMrRobot.com',
-					'url'	=> $this->game->obj['armory']->bnlink($membername, $this->config->get('uc_servername'), 'askmrrobot')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($membername), unsanitize($this->config->get('uc_servername')), 'askmrrobot')
 				)
 			);
 			

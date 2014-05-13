@@ -67,7 +67,7 @@
 # Amory Stuff
 $guilddata = false;
 if($this->config->get('uc_servername') && $this->config->get('uc_server_loc')){
-	$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
+	$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang')));
 	$guilddata = $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('uc_servername'));
 	$this->tpl->assign_array('guilddata', $guilddata);
 	if ($guilddata && !isset($chardata['status'])){
