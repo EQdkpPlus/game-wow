@@ -182,78 +182,78 @@ if(!class_exists('wow')) {
 			$this->pdh->register_read_module($this->this_game, $this->path . 'pdh/read/'.$this->this_game);
 		}
 		
+		
 		/**
-		 * Returns Information to change the game
-		 *
-		 * @param bool $install
-		 * @return array
+		 * Installs a Game
+		 * 
+		 * @param string $install
 		 */
-		public function get_OnChangeInfos($install=false){
+		public function install($blnEQdkpInstall=false){
 
-			//config-values
-			$info['config'] = array();
+			//Reset Things
+			$this->game->resetEvents();
+			$this->game->resetItempools();
+			$this->game->resetMultiDKPPools();
+			$this->game->resetRanks();
+			
+			
+			$arrEventIDs = array();
+			//Mop Events
+			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_10'), 0, "mv.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_25'), 0, "mv.png");		
+			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_heartoffear_10'), 0, "hf.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_heartoffear_25'), 0, "hf.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_endlessspring_10'), 0, "tes.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_endlessspring_25'), 0, "tes.png");			
+			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_throneofthunder_10'), 0, "tot.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_throneofthunder_25'), 0, "tot.png");		
+			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_siegeoforgrimmar'), 0, "soo.png");
 
-			//lets do some tweak on the templates dependent on the game
-			$info['aq'] = array();
-
-			//Do this SQL Query NOT if the Eqdkp is installed -> only @ the first install
-			if($install){
-
-				// mop events
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (1, "'.$this->glang('mop_mogushan_10').'", 0.00, "default", NULL, "mv.png"); ');
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (2, "'.$this->glang('mop_mogushan_25').'", 0.00, "default", NULL, "mv.png"); ');
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (3, "'.$this->glang('mop_heartoffear_10').'", 0.00, "default", NULL, "hf.png"); ');
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (4, "'.$this->glang('mop_heartoffear_25').'", 0.00, "default", NULL, "hf.png"); ');
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (5, "'.$this->glang('mop_endlessspring_10').'", 0.00, "default", NULL, "tes.png"); ');
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (6, "'.$this->glang('mop_endlessspring_25').'", 0.00, "default", NULL, "tes.png"); ');
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (7, "'.$this->glang('mop_throneofthunder_10').'", 0.00, "default", NULL, "tot.png"); ');
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (8, "'.$this->glang('mop_throneofthunder_25').'", 0.00, "default", NULL, "tot.png"); ');
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (13, "'.$this->glang('mop_siegeoforgrimmar').'", 0.00, "default", NULL, "soo.png"); ');
-
-				//Default Events
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES(9, "'.$this->glang('wotlk').'", 0.00, "default", NULL, "wotlk.png"); ');
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES(10, "'.$this->glang('cataclysm').'", 0.00, "default", NULL, "cata.png"); ');
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES(11, "'.$this->glang('burning_crusade').'", 0.00, "default", NULL, "bc.png"); ');
-				array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES(12, "'.$this->glang('classic').'", 0.00, "default", NULL, "classic.png"); ');
-
-				//Connect them to the Default-Multidkp-Pool
-				array_push($info['aq'], 'INSERT INTO __multidkp (multidkp_id, multidkp_name, multidkp_desc) VALUES (2, "classic", "Classic-Pool");');
-				array_push($info['aq'], 'INSERT INTO __multidkp2event (multidkp2event_multi_id, multidkp2event_event_id) VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (2, 9), (2, 10), (2, 11), (2, 12), (2, 13);');
-				array_push($info['aq'], 'INSERT INTO __itempool (itempool_id, itempool_name, itempool_desc) VALUES (2, "classic", "Classic itempool");');
-				array_push($info['aq'], 'INSERT INTO __multidkp2itempool (multidkp2itempool_itempool_id, multidkp2itempool_multi_id) VALUES (2, 2);');
-
-				//default links
-				array_push($info['aq'], "INSERT INTO __links (`link_url`, `link_name`, `link_window`, `link_menu`, `link_visibility`) VALUES ('http://eu.battle.net/wow/', 'WoW Battle.net', 1, 0, '[&#34;0&#34;]');");
+			//Classic
+			$arrClassicEventIDs = array();
+			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('wotlk'), 0, "wotlk.png");			
+			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('cataclysm'), 0, "cata.png");		
+			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('burning_crusade'), 0, "bc.png");		
+			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('classic'), 0, "classic.png");
 				
-				//default ranks
-				array_push($info['aq'],"DELETE FROM `__member_ranks`;");
-
-				array_push($info['aq'],"INSERT INTO `__member_ranks` (`rank_id`, `rank_name`, `rank_hide`, `rank_prefix`, `rank_suffix`, `rank_sortid`, `rank_default`, `rank_icon`) VALUES
-					(0, 'Guildmaster', 0, '', '', 0, 0, ''),
-					(1, 'Officer', 0, '', '', 1, 0, ''),
-					(2, 'Veteran', 0, '', '', 2, 0, ''),
-					(3, 'Member', 0, '', '', 3, 0, ''),
-					(4, 'Initiate', 0, '', '', 4, 1, ''),
-					(5, 'Dummy Rank #1', 0, '', '', 6, 0, ''),
-					(6, 'Dummy Rank #2', 0, '', '', 7, 0, ''),
-					(7, 'Dummy Rank #3', 0, '', '', 8, 0, ''),
-					(8, 'Dummy Rank #4', 0, '', '', 9, 0, ''),
-					(9, 'Dummy Rank #5', 0, '', '', 10, 0, '');");
-				
-				$this->pdh->add_object_tablepreset($this->config->get('eqdkp_layout'), 'roster', 'hptt_roster',
+			$intItempoolDefault = $this->game->addItempool("Default", "Default Itempool");
+			$intItempoolClassic = $this->game->addItempool("Classic", "Classic Itempool");
+			
+			$this->game->addMultiDKPPool("Default", "Default MultiDKPPool", $arrEventIDs, array($intItempoolDefault));
+			$this->game->addMultiDKPPool("Classic", "Classic MultiDKPPool", $arrClassicEventIDs, array($intItempoolClassic));
+			
+			//Links
+			$this->game->addLink('WoW Battle.net', 'http://eu.battle.net/wow/');
+			
+			//Columns for Roster
+			$this->pdh->add_object_tablepreset($this->config->get('eqdkp_layout'), 'roster', 'hptt_roster',
 					array('name' => 'wow_charicon', 'sort' => false, 'th_add' => 'width="52"', 'td_add' => '')
-				);
-				
-				$this->pdh->add_object_tablepreset($this->config->get('eqdkp_layout'), 'roster', 'hptt_roster',
+			);
+			
+			$this->pdh->add_object_tablepreset($this->config->get('eqdkp_layout'), 'roster', 'hptt_roster',
 					array('name' => 'profile_guild', 'sort' => true, 'th_add' => 'width="160"', 'td_add' => '')
-				);
-				
-				$this->pdh->add_object_tablepreset($this->config->get('eqdkp_layout'), 'roster', 'hptt_roster',
+			);
+			
+			$this->pdh->add_object_tablepreset($this->config->get('eqdkp_layout'), 'roster', 'hptt_roster',
 					array('name' => 'wow_achievementpoints', 'sort' => true, 'th_add' => 'width="160"', 'td_add' => '')
-				);
+			);
+			
+			//Ranks
+			$this->game->addRank(0, "Guildmaster");
+			$this->game->addRank(1, "Officer");
+			$this->game->addRank(2, "Veteran");
+			$this->game->addRank(3, "Member");
+			$this->game->addRank(4, "Initiate", true);
+			$this->game->addRank(5, "Dummy Rank #1");
+			$this->game->addRank(6, "Dummy Rank #2");
+			$this->game->addRank(7, "Dummy Rank #3");
+			$this->game->addRank(8, "Dummy Rank #4");
+			$this->game->addRank(9, "Dummy Rank #5");
 
-			}
-			return $info;
+		}
+		
+		public function uninstall(){
+			$this->game->removeLink("WoW Battle.net");
 		}
 
 		/**
