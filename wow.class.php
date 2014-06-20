@@ -200,20 +200,20 @@ if(!class_exists('wow')) {
 			$arrEventIDs = array();
 			//Mop Events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_10'), 0, "mv.png");
-			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_25'), 0, "mv.png");		
+			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_25'), 0, "mv.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_heartoffear_10'), 0, "hf.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_heartoffear_25'), 0, "hf.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_endlessspring_10'), 0, "tes.png");
-			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_endlessspring_25'), 0, "tes.png");			
+			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_endlessspring_25'), 0, "tes.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_throneofthunder_10'), 0, "tot.png");
-			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_throneofthunder_25'), 0, "tot.png");		
+			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_throneofthunder_25'), 0, "tot.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_siegeoforgrimmar'), 0, "soo.png");
 
 			//Classic
 			$arrClassicEventIDs = array();
-			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('wotlk'), 0, "wotlk.png");			
-			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('cataclysm'), 0, "cata.png");		
-			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('burning_crusade'), 0, "bc.png");		
+			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('wotlk'), 0, "wotlk.png");
+			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('cataclysm'), 0, "cata.png");
+			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('burning_crusade'), 0, "bc.png");
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('classic'), 0, "classic.png");
 				
 			$intItempoolDefault = $this->game->addItempool("Default", "Default Itempool");
