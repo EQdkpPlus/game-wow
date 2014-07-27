@@ -520,7 +520,7 @@
 						break;
 						case 'item':
 							$itemData = $this->game->obj['armory']->item($v_charfeed['itemid']);
-							$item = infotooltip($itemData['name'], $v_charfeed['itemid'], false, false, false, true, $chardata['name'], unsanitize($this->config->get('uc_servername')));
+							$item = infotooltip($itemData['name'], $v_charfeed['itemid'], false, false, false, true, array(unsanitize($this->config->get('uc_servername')), $chardata['name']));
 							$cnf_output = sprintf($this->game->glang('charnf_item'), $item);
 							$v_charfeed['icon'] = 'http://eu.media.blizzard.com/wow/icons/18/'.$itemData['icon'].'.jpg';
 						break;

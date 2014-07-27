@@ -1128,7 +1128,7 @@ if(!class_exists('wow')) {
 
 			// fill the item slots with data
 			foreach ($d_itemoptions as $slot=>$options){
-				$a_items[$options['position']][] = (isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? infotooltip($data[$slot]['name'], $data[$slot]['id'], false, 0, $icons_size, false, $member_name, false, false, '', $slot) : "<img src='".$this->server_path."games/wow/profiles/slots/".$options['bnetid'].".png' height='$icons_size' width='$icons_size' alt='' />";
+				$a_items[$options['position']][] = (isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? infotooltip($data[$slot]['name'], $data[$slot]['id'], false, 0, $icons_size, false, array(false, $member_name, $slot)) : "<img src='".$this->server_path."games/wow/profiles/slots/".$options['bnetid'].".png' height='$icons_size' width='$icons_size' alt='' />";
 			}
 			return $a_items;
 		}
