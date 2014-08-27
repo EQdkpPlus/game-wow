@@ -22,7 +22,8 @@ if ( !defined('EQDKP_INC') ){
 
 if(!class_exists('wow')) {
 	class wow extends game_generic {
-
+		
+		protected static $apiLevel = 20;
 		public $version			= '5.4.5';
 		protected $this_game	= 'wow';
 		protected $types		= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'professions', 'chartooltip');	// which information are stored?
@@ -37,7 +38,7 @@ if(!class_exists('wow')) {
 		public $no_reg_obj		= array('bnet_armory');												// a list with all objects, which dont need registry
 		public $langs			= array('english', 'german');										// in which languages do we have information?
 		public $importers 		= array();
-		
+			
 		protected $ArrInstanceCategories = array(
 			'classic'	=> array(2717, 2677, 3429, 3428),
 			'bc'		=> array(3457, 3836, 3923, 3607, 3845, 3606, 3959, 4075),
