@@ -4,11 +4,10 @@
  * License:		Creative Commons - Attribution-Noncommercial-Share Alike 3.0 Unported
  * Link:		http://creativecommons.org/licenses/by-nc-sa/3.0/
  * -----------------------------------------------------------------------
- * Began:		2010
  * Date:		$Date$
  * -----------------------------------------------------------------------
  * @author		$Author$
- * @copyright	2006-2011 EQdkp-Plus Developer Team
+ * @copyright	2006-2014 EQdkp-Plus Developer Team
  * @link		http://eqdkp-plus.com
  * @package		eqdkp-plus
  * @version		$Rev$
@@ -23,21 +22,21 @@ if ( !defined('EQDKP_INC') ){
 if(!class_exists('wow')) {
 	class wow extends game_generic {
 		
-		protected static $apiLevel = 20;
-		public $version			= '5.4.5';
-		protected $this_game	= 'wow';
-		protected $types		= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'professions', 'chartooltip');	// which information are stored?
-		protected $classes		= array();
-		protected $roles		= array();
-		protected $races		= array();															// for each type there must be the according var
-		protected $factions		= array();															// and the according function: load_$type
-		protected $filters		= array();
-		protected $realmlist	= array();
-		protected $professions	= array();
-		public $objects			= array('bnet_armory');												// eventually there are some objects (php-classes) in this game
-		public $no_reg_obj		= array('bnet_armory');												// a list with all objects, which dont need registry
-		public $langs			= array('english', 'german');										// in which languages do we have information?
-		public $importers 		= array();
+		protected static $apiLevel	= 20;
+		public $version				= '5.4.5';
+		protected $this_game		= 'wow';
+		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'professions', 'chartooltip');	// which information are stored?
+		protected $classes			= array();
+		protected $roles			= array();
+		protected $races			= array();															// for each type there must be the according var
+		protected $factions			= array();															// and the according function: load_$type
+		protected $filters			= array();
+		protected $realmlist		= array();
+		protected $professions		= array();
+		public $objects				= array('bnet_armory');												// eventually there are some objects (php-classes) in this game
+		public $no_reg_obj			= array('bnet_armory');												// a list with all objects, which dont need registry
+		public $langs				= array('english', 'german');										// in which languages do we have information?
+		public $importers 			= array();
 			
 		protected $ArrInstanceCategories = array(
 			'classic'	=> array(2717, 2677, 3429, 3428),
@@ -182,13 +181,7 @@ if(!class_exists('wow')) {
 			parent::__construct();
 			$this->pdh->register_read_module($this->this_game, $this->path . 'pdh/read/'.$this->this_game);
 		}
-		
-		
-		/**
-		 * Installs a Game
-		 * 
-		 * @param string $install
-		 */
+
 		public function install($blnEQdkpInstall=false){
 
 			//Reset Things
@@ -196,8 +189,7 @@ if(!class_exists('wow')) {
 			$this->game->resetItempools();
 			$this->game->resetMultiDKPPools();
 			$this->game->resetRanks();
-			
-			
+
 			$arrEventIDs = array();
 			//Mop Events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_10'), 0, "mv.png");
@@ -216,29 +208,29 @@ if(!class_exists('wow')) {
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('cataclysm'), 0, "cata.png");
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('burning_crusade'), 0, "bc.png");
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('classic'), 0, "classic.png");
-				
+
 			$intItempoolDefault = $this->game->addItempool("Default", "Default Itempool");
 			$intItempoolClassic = $this->game->addItempool("Classic", "Classic Itempool");
-			
+
 			$this->game->addMultiDKPPool("Default", "Default MultiDKPPool", $arrEventIDs, array($intItempoolDefault));
 			$this->game->addMultiDKPPool("Classic", "Classic MultiDKPPool", $arrClassicEventIDs, array($intItempoolClassic));
-			
+
 			//Links
 			$this->game->addLink('WoW Battle.net', 'http://eu.battle.net/wow/');
-			
+
 			//Columns for Roster
 			$this->pdh->add_object_tablepreset($this->config->get('eqdkp_layout'), 'roster', 'hptt_roster',
 					array('name' => 'wow_charicon', 'sort' => false, 'th_add' => 'width="52"', 'td_add' => '')
 			);
-			
+
 			$this->pdh->add_object_tablepreset($this->config->get('eqdkp_layout'), 'roster', 'hptt_roster',
 					array('name' => 'profile_guild', 'sort' => true, 'th_add' => 'width="160"', 'td_add' => '')
 			);
-			
+
 			$this->pdh->add_object_tablepreset($this->config->get('eqdkp_layout'), 'roster', 'hptt_roster',
 					array('name' => 'wow_achievementpoints', 'sort' => true, 'th_add' => 'width="160"', 'td_add' => '')
 			);
-			
+
 			//Ranks
 			$this->game->addRank(0, "Guildmaster");
 			$this->game->addRank(1, "Officer");
@@ -257,11 +249,6 @@ if(!class_exists('wow')) {
 			$this->game->removeLink("WoW Battle.net");
 		}
 
-		/**
-		 * Initialises filters
-		 *
-		 * @param array $langs
-		 */
 		protected function load_filters($langs){
 			if(!count($this->classes)) {
 				$this->load_type('classes', $langs);
@@ -294,7 +281,7 @@ if(!class_exists('wow')) {
 				);
 			}
 		}
-		
+
 		public function decorate_classes($class_id, $profile=array(), $size=16, $pathonly=false) {
 			$big = ($size > 40) ? '_b' : '';
 			if(is_file($this->root_path.'games/'.$this->this_game.'/icons/classes/'.$class_id.$big.'.png')){
@@ -304,9 +291,6 @@ if(!class_exists('wow')) {
 			return false;
 		}
 
-		/*
-		 * add professions to array
-		 */
 		public function profilefields(){
 			// Category 'character' is a fixed one! All others are created dynamically!
 			$this->load_type('professions', array($this->lang));
@@ -413,7 +397,7 @@ if(!class_exists('wow')) {
 			);
 			return $xml_fields;
 		}
-		
+
 		public function cronjobOptions(){
 			$arrOptions = array(
 				'sync_ranks'	=> array(
@@ -424,12 +408,12 @@ if(!class_exists('wow')) {
 			);
 			return $arrOptions;
 		}
-		
+
 		public function cronjob($arrParams = array()){
 			$blnSyncRanks = ((int)$arrParams['sync_ranks'] == 1) ? true : false;
 			
 			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
-			
+
 			//Guildimport
 			$guilddata	= $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('uc_servername'), true);
 			if(!isset($guilddata['status'])){
@@ -483,9 +467,8 @@ if(!class_exists('wow')) {
 					}
 				}
 			}
-			
-			//Guildupdate
 
+			//Guildupdate
 			$members	= $this->pdh->get('member', 'names', array());
 			if(is_array($members)){
 				asort($members);
@@ -523,10 +506,6 @@ if(!class_exists('wow')) {
 					}
 				}
 			}
-			
-			
-			
-			
 			$this->pdh->process_hook_queue();
 		}
 		
