@@ -552,7 +552,7 @@ if(!class_exists('wow')) {
 		######################################################################
 		
 		/**
-		 *	was tut dieses?
+		 *	Content for the Chartooltip
 		 *
 		 */		
 		public function chartooltip($intCharID){
