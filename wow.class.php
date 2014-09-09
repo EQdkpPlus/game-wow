@@ -168,6 +168,7 @@ if(!class_exists('wow')) {
 		public $lang			= false;
 
 		public function __construct() {
+			parent::__construct();
 			$this->importers = array(
 				'char_import'		=> 'charimporter.php',						// filename of the character import
 				'char_update'		=> 'charimporter.php',						// filename of the character update, member_id (POST) is passed
@@ -176,9 +177,17 @@ if(!class_exists('wow')) {
 				'import_reseturl'	=> 'charimporter.php'.$this->SID.'&resetcache=true',		// filename of the reset cache
 				'guild_imp_rsn'		=> true,									// Guild import & Mass update requires server name
 				'import_data_cache'	=> true,									// Is the data cached and requires a reset call?
+				'apikey'			=> array(
+					'status'	=> 'required',
+					'steps'		=> array(
+						'apikey_title_step1'	=> 'apikey_content_step1',
+						'apikey_title_step2'	=> 'apikey_content_step2',
+						'apikey_title_step3'	=> 'apikey_content_step3'
+					),
+				)
 			);
 			
-			parent::__construct();
+			
 			$this->pdh->register_read_module($this->this_game, $this->path . 'pdh/read/'.$this->this_game);
 		}
 

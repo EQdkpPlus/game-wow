@@ -173,7 +173,6 @@ $english_array = array(
 		'challenge'						=> 'Challenge Mode',
 		'challenge_title'				=> 'Challenge Mode Leaderboards',
 		'off_realm_toon'				=> 'This character seems to be not in your guild. As the challenges are Battle-Realm based, could be foreign characters in this list.',
-		
 
 		// Profile Admin area
 		'core_sett_fs_gamesettings'		=> 'WoW Settings',
@@ -193,6 +192,12 @@ $english_array = array(
 		'uc_data_lang_help'				=> 'In which language should the data be fetched from external website?',
 		'uc_error_head'					=> 'ERROR',
 		'uc_error_noserver'				=> 'There is no server saved in the global settings. The server is required for fetching external data. Please report it to an administrator.',
+		'apikey_title_step1'			=> 'API Key Information',
+		'apikey_content_step1'			=> 'The new battle.net export API requires every user of the data API to register the APP for an individual API key. you are not able to import or update chars from battle.net without this API key. You are able to get one for free by registering your application.',
+		'apikey_title_step2'			=> 'Receive an API key for free',
+		'apikey_content_step2'			=> 'Visit the <a href="https://dev.battle.net" target="_blank">Battle.net API</a> page and create a new Mashery Account. Register a <a href="https://dev.battle.net/apps/register" target="_blank">new Application</a> by using the guild name as name, your website and a short description. Select the checkbox "Issue a new key for game APIs". You will receive the key as an email.',
+		'apikey_title_step3'			=> 'Enter API key',
+		'apikey_content_step3'			=> 'Enter the API-key you received as an email in this field.<br/>API-Key: {APIKEY_FORM}',
 		
 		// Armory Import
 		#'uc_armory_loc'					=> 'Realmserver\'s location',
@@ -307,8 +312,8 @@ $english_array = array(
 		'bossprogress_heroicruns'		=> '%sx heroic',
 		'heroicrun'						=> 'heroic',
 
-		'wotlk'           				=> 'Wrath of the Lich King',
-		'cataclysm'       				=> 'Cataclysm',
+		'wotlk'							=> 'Wrath of the Lich King',
+		'cataclysm'						=> 'Cataclysm',
 		'burning_crusade'				=> 'Burning Crusade',
 		'classic'						=> 'Classic',
 		
