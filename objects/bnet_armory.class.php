@@ -18,22 +18,20 @@
  * Based on the new battlenet API, see documentation: http://blizzard.github.com/api-wow-docs/
  */
 
-/*********** TODO ************ 
-- testing of the header sending & API KEY
-******************************/
-
 if ( !defined('EQDKP_INC') ){
 	header('HTTP/1.0 404 Not Found');exit;
 }
 
 class bnet_armory {
 
-	private $version		= '5.2.1';
+	private $version		= '6.0.0';
 	private $build			= '$Rev$';
 	private $chariconUpdates = 0;
 	private $chardataUpdates = 0;
-	const apiurl			= 'http://{region}.battle.net/api/';
+	const apiurl			= 'https://{region}.api.battle.net/';
 	const staticrenderurl	= 'http://{region}.battle.net/static-render/';
+	const staticimages		= 'http://{region}.battle.net/wow/static/images/';
+	const staticicons		= 'http://{region}.media.blizzard.com/wow/icons/';
 	const tabardrenderurl	= 'http://{region}.battle.net/wow/static/images/guild/tabards/';
 
 	private $_config		= array(
@@ -134,6 +132,7 @@ class bnet_armory {
 		'us'	=> 'US',
 		'kr'	=> 'KR',
 		'tw'	=> 'TW',
+		'sea'	=> 'SEA',
 	);
 	private $converts		= array();
 
@@ -144,14 +143,11 @@ class bnet_armory {
 	* @param $locale		The Language of the data
 	* @return bool
 	*/
-	public function __construct($serverloc='us', $locale='en_EN', $apikeys=false){
+	public function __construct($serverloc='us', $locale='en_EN', $apikey=false){
 		$this->_config['serverloc']	= ($serverloc != '') ? $serverloc : 'en_EN';
 		$this->_config['locale']	= $locale;
 		$this->setApiUrl($this->_config['serverloc']);
-		if(isset($apikeys['apiKeyPrivate']) && isset($apikeys['apiKeyPublic'])){
-			$this->_config['apiKeyPrivate']	= $apikeys['apiKeyPrivate'];
-			$this->_config['apiKeyPublic']	= $apikeys['apiKeyPublic'];
-		}
+		$this->_config['apiKey']	= $apikey;
 	}
 	
 	public function __get($name) {
@@ -182,9 +178,8 @@ class bnet_armory {
 		if(isset($setting['caching'])){
 			$this->_config['caching']	= $setting['caching'];
 		}
-		if(isset($setting['apiKeyPrivate']) && isset($setting['apiKeyPublic'])){
-			$this->_config['apiKeyPrivate']	= $setting['apiKeyPrivate'];
-			$this->_config['apiKeyPublic']	= $setting['apiKeyPublic'];
+		if(isset($setting['apiKey'])){
+			$this->_config['apiKey']	= $setting['apiKey'];
 		}
 	}
 
@@ -194,6 +189,12 @@ class bnet_armory {
 
 	public function getVersion(){
 		return $this->version.((preg_match('/\d+/', $this->build, $match))? '#'.$match[0] : '');
+	}
+
+	public function apiURL2profileURL($sufix='/wow'){
+		$linkprfx	= str_replace('https://', 'http://', $this->_config['apiUrl']);
+		$linkprfx	= str_replace('.api', '', $linkprfx);
+		return $linkprfx.$sufix;
 	}
 
 	/**
@@ -206,7 +207,7 @@ class bnet_armory {
 	* @return string		output
 	*/
 	public function bnlink($user, $server, $mode='char', $guild='', $talents=array()){
-		$linkprfx	= str_replace('/api', '/wow', $this->_config['apiUrl']);
+		$linkprfx	= $this->apiURL2profileURL();
 		switch ($mode) {
 			case 'char':
 				return $linkprfx.sprintf('character/%s/%s/simple', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
@@ -274,7 +275,7 @@ class bnet_armory {
 		$basicparam	= array('guild', 'stats', 'feed', 'talents', 'items', 'titles', 'professions', 'achievements', 'progression');
 		$usedparams = array_merge($basicparam, $params);
 		$force		= (count($params) > 1 && $force == false) ? true : $force;
-		$wowurl		= $this->_config['apiUrl'].sprintf('wow/character/%s/%s?locale=%s&fields='.implode(',', $usedparams), $realm, $user, $this->_config['locale']);
+		$wowurl		= $this->_config['apiUrl'].sprintf('wow/character/%s/%s?locale=%s&apikey=%s&fields='.implode(',', $usedparams), $realm, $user, $this->_config['locale'], $this->_config['apiKey']);
 		$json		= $this->get_CachedData('chardata_'.$user.$realm, $force);		
 		if(!$json && ($this->chardataUpdates < $this->_config['maxChardataUpdates'])){
 			$json	= $this->read_url($wowurl);
@@ -303,7 +304,7 @@ class bnet_armory {
 			$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
 			// this is due to an api bug and may be removed some day, thumbs are always set and could be 404!
 			if(filesize($img_charicon) < 400){
-				$linkprfx	= str_replace('/api', '/wow/static/images/2d/avatar/', $this->_config['apiUrl']);
+				$linkprfx	= $this->apiURL2profileURL('/wow/static/images/2d/avatar/');
 				$this->set_CachedData($this->read_url($linkprfx.sprintf('%s-%s.jpg', $chardata['race'], $chardata['gender'])), $cached_img, true);
 			}
 			$this->chariconUpdates++;
@@ -319,7 +320,7 @@ class bnet_armory {
 	}
 
 	public function characterIconSimple($race, $gender='0'){
-		return sprintf('http://eu.battle.net/wow/static/images/2d/profilemain/race/%s-%s.jpg', $race, $gender);
+		return $this->_config['staticimageURL'].sprintf('2d/profilemain/race/%s-%s.jpg', $race, $gender);
 	}
 
 	/**
@@ -346,7 +347,7 @@ class bnet_armory {
 	}
 
 	public function talentIcon($name){
-		return 'http://'.$this->_config['serverloc'].'.media.blizzard.com/wow/icons/36/'.$name.'.jpg';
+		return $this->_config['staticiconURL'].'36/'.$name.'.jpg';
 	}
 
 	public function selectedTitle($titles, $cleantitle=false){
@@ -378,7 +379,7 @@ class bnet_armory {
 	public function guild($guild, $realm, $force=false){
 		$realm	= $this->ConvertInput($this->cleanServername($realm));
 		$guild	= $this->ConvertInput($guild);
-		$wowurl	= $this->_config['apiUrl'].sprintf('wow/guild/%s/%s?locale=%s&fields=members,achievements,news,challenge', $realm, $guild, $this->_config['locale']);
+		$wowurl	= $this->_config['apiUrl'].sprintf('wow/guild/%s/%s?locale=%s&fields=members,achievements,news,challenge&apikey=%s', $realm, $guild, $this->_config['locale'], $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('guilddata_'.$guild.$realm, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'guilddata_'.$guild.$realm);
@@ -521,7 +522,7 @@ class bnet_armory {
 	* @return bol
 	*/
 	public function realm($realms, $force=false){
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/realm/status?locale=%s&realms=%s', $this->_config['locale'], $realms = ((is_array($realms)) ? implode(",",$realms) : ''));
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/realm/status?locale=%s&realms=%s&apikey=%s', $this->_config['locale'], $realms = ((is_array($realms)) ? implode(",",$realms) : ''), $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('realmdata_'.str_replace(",", "", $realms), $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'realmdata_'.str_replace(",", "", $realms));
@@ -546,7 +547,7 @@ class bnet_armory {
 			case 'rbg':	$teamsize = 'rbg'; break;
 			default: $teamsize = '2v2';
 		}
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/leaderboard/%s?locale=%s', $this->ConvertInput($realm), $teamsize, $this->ConvertInput($teamname), $this->_config['locale']);
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/leaderboard/%s?locale=%s&apikey=%s', $this->ConvertInput($realm), $teamsize, $this->ConvertInput($teamname), $this->_config['locale'], $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('pvpdata_'.$guild.$teamname.$teamsize, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'pvpdata_'.$guild.$teamname.$teamsize);
@@ -564,7 +565,7 @@ class bnet_armory {
 	* @return bol
 	*/
 	public function item($itemid, $force=false){
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/item/%s?locale=%s', $itemid, $this->_config['locale']);
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/item/%s?locale=%s&apikey=%s', $itemid, $this->_config['locale'], $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('itemdata_'.$itemid, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'itemdata_'.$itemid);
@@ -582,7 +583,7 @@ class bnet_armory {
 	* @return bol
 	*/
 	public function achievement($achievementid, $force=false){
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/achievement/%s?locale=%s', $achievementid, $this->_config['locale']);
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/achievement/%s?locale=%s&apikey=%s', $achievementid, $this->_config['locale'], $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('achievementdata_'.$achievementid, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'achievementdata_'.$achievementid);
@@ -601,7 +602,7 @@ class bnet_armory {
 	* @return bol
 	*/
 	public function quest($questid, $force=false){
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/quest/%s?locale=%s', $questid, $this->_config['locale']);
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/quest/%s?locale=%s&apikey=%s', $questid, $this->_config['locale'], $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('questdatadata_'.$questid, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'questdatadata_'.$questid);
@@ -619,7 +620,7 @@ class bnet_armory {
 	* @return bol
 	*/
 	public function recipe($recipeid, $force=false){
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/recipe/%s?locale=%s', $recipeid, $this->_config['locale']);
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/recipe/%s?locale=%s&apikey=%s', $recipeid, $this->_config['locale'], $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('recipedatadata_'.$recipeid, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'recipedatadata_'.$recipeid);
@@ -637,7 +638,7 @@ class bnet_armory {
 	* @return bol
 	*/
 	public function spell($spellid, $force=false){
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/spell/%s?locale=%s', $spellid, $this->_config['locale']);
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/spell/%s?locale=%s&apikey=%s', $spellid, $this->_config['locale'], $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('spelldatadata_'.$spellid, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'spelldatadata_'.$spellid);
@@ -655,7 +656,7 @@ class bnet_armory {
 	* @return bol
 	*/
 	public function challenge($realm, $force=false){
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/challenge/%s?locale=%s', $this->ConvertInput($realm), $this->_config['locale']);
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/challenge/%s?locale=%s&apikey=%s', $this->ConvertInput($realm), $this->_config['locale'], $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('challengedatadata_'.$realm, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'challengedatadata_'.$realm);
@@ -673,7 +674,7 @@ class bnet_armory {
 	* @return bol
 	*/
 	public function battlepet($abilityid, $force=false){
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/battlePet/ability/%s?locale=%s', $abilityid, $this->_config['locale']);
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/battlePet/ability/%s?locale=%s&apikey=%s', $abilityid, $this->_config['locale'], $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('battlepetdatadata_'.$abilityid, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'battlepetdatadata_'.$abilityid);
@@ -691,7 +692,7 @@ class bnet_armory {
 	* @return bol
 	*/
 	public function auction($realm, $force=false){
-		$wowurl = $this->_config['apiUrl'].sprintf('api/wow/auction/data/%s?locale=%s', $this->ConvertInput($realm), $this->_config['locale']);
+		$wowurl = $this->_config['apiUrl'].sprintf('api/wow/auction/data/%s?locale=%s&apikey=%s', $this->ConvertInput($realm), $this->_config['locale'], $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('auctiondatadata_'.$realm, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'auctiondatadata_'.$realm);
@@ -703,7 +704,7 @@ class bnet_armory {
 
 	// DATA RESOURCES
 	public function getdata($type='character', $sub_type='achievements', $force=false){
-		$wowurl	= $this->_config['apiUrl'].sprintf('wow/data/'.$type.'/'.$sub_type.'?locale=%s', $this->_config['locale']);
+		$wowurl	= $this->_config['apiUrl'].sprintf('wow/data/'.$type.'/'.$sub_type.'?locale=%s&apikey=%s', $this->_config['locale'], $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('data_'.$type.'_'.$sub_type, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'data_'.$type.'_'.$sub_type);
@@ -884,7 +885,9 @@ class bnet_armory {
 	protected function setApiUrl($serverloc){
 		$this->_config['apiUrl']				= str_replace('{region}', $serverloc, self::apiurl);
 		$this->_config['apiRenderUrl']			= str_replace('{region}', $serverloc, self::staticrenderurl);
+		$this->_config['staticimageURL']		= str_replace('{region}', $serverloc, self::staticimages);
 		$this->_config['apiTabardRenderUrl']	= str_replace('{region}', $serverloc, self::tabardrenderurl);
+		$this->_config['staticiconURL']			= str_replace('{region}', $serverloc, self::staticicons);
 	}
 
 	/**
@@ -894,22 +897,12 @@ class bnet_armory {
 	* @return json
 	*/
 	protected function read_url($url) {
-		$apikeyhead = (isset($this->_config['apiKeyPrivate']) && isset($this->_config['apiKeyPublic']) && $this->_config['apiKeyPrivate'] != '' && $this->_config['apiKeyPublic'] != '') ? $this->gen_api_header($url) : '';
 		if(!is_object($this->puf)) {
 			global $eqdkp_root_path;
 			include_once($eqdkp_root_path.'core/urlfetcher.class.php');
 			$this->puf = new urlfetcher();
 		}
-		return $this->puf->fetch($url, $apikeyhead);
-	}
-
-	private function gen_api_header($url){
-		$date = date(DATE_RFC2822);
-		$headers = array(
-			'Date: '. $date,
-			'Authorization: BNET '. $this->_config['apiKeyPublic'] .':'. base64_encode(hash_hmac('sha1', "GET\n{$date}\n{$url}\n", $this->_config['apiKeyPrivate'], true))
-		);
-		return $headers;
+		return $this->puf->fetch($url);
 	}
 
 	/**

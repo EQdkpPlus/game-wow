@@ -25,7 +25,7 @@ class guildImporter extends page_generic {
 		$handler = array();
 		parent::__construct(false, $handler, array());
 		$this->user->check_auth('a_members_man');
-		$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
+		$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang'), $this->config->get('game_importer_apikey')));
 		$this->process();
 	}
 

@@ -31,7 +31,7 @@ class charImporter extends page_generic {
 		parent::__construct(false, $handler, array());
 		$this->user->check_auth('u_member_man');
 		$this->user->check_auth('u_member_add');
-		$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
+		$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang'), $this->config->get('game_importer_apikey')));
 		$this->process();
 	}
 
