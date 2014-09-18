@@ -309,7 +309,7 @@ if(!class_exists('wow')) {
 					'type'			=> 'text',
 					'category'		=> 'character',
 					'lang'			=> 'uc_guild',
-					'size'			=> 40,
+					'size'			=> 32,
 					'undeletable'	=> true,
 					'sort'			=> 1
 				),
@@ -363,7 +363,7 @@ if(!class_exists('wow')) {
 					'lang'			=> 'uc_bar_2name',
 					'options'		=> array('rage' => 'uc_bar_rage', 'energy' => 'uc_bar_energy', 'mana' => 'uc_bar_mana', 'focus' => 'uc_bar_focus', 'runic-power' => 'uc_bar_runic-power'),
 					'tolang'		=> true,
-					'size'			=> 40,
+					'size'			=> 32,
 					'undeletable'	=> true,
 					'sort'			=> 7
 				),
