@@ -399,7 +399,7 @@ class bnet_armory {
 	* @return bol
 	*/
 	public function guildTabard($emblemdata, $faction, $guild, $imgwidth=215){
-		$cached_img	= sprintf('image_tabard_%s_w%s.png', strtolower(str_replace(' ', '', $guild)), $imgwidth);
+		$cached_img	= sprintf('image_tabard_%s_w%s.png', strtolower(str_replace(' ', '', $this->clean_name($guild))), $imgwidth);
 		$imgfile_sp = $this->get_CachedData($cached_img, false, true, false, true);
 		if(!$imgfile = $this->get_CachedData($cached_img, false, true)){
 			if(!function_exists('imagecreatefrompng') || version_compare(PHP_VERSION, "5.3.0", '<')){
