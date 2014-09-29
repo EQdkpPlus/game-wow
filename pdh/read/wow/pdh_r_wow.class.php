@@ -65,7 +65,7 @@ if (!class_exists('pdh_r_wow')) {
 		*/
 		public function init(){
 			$this->data = array();
-			$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang'), $this->config->get('game_importer_apikey')));
+			$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang')));
 			$this->guilddata = $this->game->obj['armory']->guild(unsanitize($this->config->get('guildtag')), unsanitize($this->config->get('uc_servername')));
 			$guildMembers = array();
 

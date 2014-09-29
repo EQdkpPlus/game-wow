@@ -340,7 +340,7 @@
 	");
 
 	// Armory based information
-	$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang'), $this->config->get('game_importer_apikey')));
+	$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang')));
 	$member_servername	= unsanitize($this->pdh->get('member', 'profile_field', array($this->url_id, 'servername')));
 	$servername			= ($member_servername != '') ? $member_servername : unsanitize($this->config->get('uc_servername'));
 	

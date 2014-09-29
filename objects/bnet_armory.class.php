@@ -143,11 +143,11 @@ class bnet_armory {
 	* @param $locale		The Language of the data
 	* @return bool
 	*/
-	public function __construct($serverloc='us', $locale='en_EN', $apikey=false){
+	public function __construct($serverloc='us', $locale='en_EN'){
 		$this->_config['serverloc']	= ($serverloc != '') ? $serverloc : 'en_EN';
 		$this->_config['locale']	= $locale;
 		$this->setApiUrl($this->_config['serverloc']);
-		$this->_config['apiKey']	= $apikey;
+		$this->_config['apiKey']	= (defined('GAME_IMPORTER_APIKEY')) ? GAME_IMPORTER_APIKEY : false;
 	}
 	
 	public function __get($name) {

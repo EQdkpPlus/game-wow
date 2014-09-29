@@ -98,7 +98,8 @@ if(!class_exists('armory')) {
 			if($init) {
 				// construct armory object
 				include_once($this->root_path.'games/wow/objects/bnet_armory.class.php');
-				$this->bnet = new bnet_armory($this->config['armory_region'], $this->av_langs[$this->config['game_language']], $this->config['game_importer_apikey']);
+				define('GAME_IMPORTER_APIKEY', $this->config['game_importer_apikey']);
+				$this->bnet = new bnet_armory($this->config['armory_region'], $this->av_langs[$this->config['game_language']]);
 			}
 		}
 

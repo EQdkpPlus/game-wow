@@ -421,7 +421,7 @@ if(!class_exists('wow')) {
 		public function cronjob($arrParams = array()){
 			$blnSyncRanks = ((int)$arrParams['sync_ranks'] == 1) ? true : false;
 			
-			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang'), $this->config->get('game_importer_apikey')));
+			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
 			//Guildimport
 			$guilddata	= $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('uc_servername'), true);
@@ -603,7 +603,7 @@ if(!class_exists('wow')) {
 		 * Parse the guild news of armory
 		 */
 		public function parseGuildnews($arrNews, $intCount = 50, $arrTypes = false){
-			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang'), $this->config->get('game_importer_apikey')));
+			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
 			$arrOut = array();
 
@@ -708,7 +708,7 @@ if(!class_exists('wow')) {
 		 * parse the guild achievement overview of armory
 		 */
 		public function parseGuildAchievementOverview($arrAchievs){
-			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang'), $this->config->get('game_importer_apikey')));
+			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
 			$arrGuildAchievementsData = $this->game->obj['armory']->getdata('guild', 'achievements');
 			$arrOut = array();
@@ -780,7 +780,7 @@ if(!class_exists('wow')) {
 		 * parse the guild achievement overview of armory
 		 */
 		public function parseCharAchievementOverview($chardata){
-			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang'), $this->config->get('game_importer_apikey')));
+			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
 			$arrAchievs = $chardata['achievements'];
 			$arrCharAchievementsData = $this->game->obj['armory']->getdata('character', 'achievements');
@@ -846,7 +846,7 @@ if(!class_exists('wow')) {
 		 * parse the latest guild achievements of armory
 		 */
 		public function parseLatestGuildAchievements($arrAchievs, $intCount = 10){
-			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang'), $this->config->get('game_importer_apikey')));
+			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
 			$arrAchieveTimes = $arrAchievs['achievementsCompletedTimestamp'];
 			$arrAchievs		 = $arrAchievs['achievementsCompleted'];
@@ -876,7 +876,7 @@ if(!class_exists('wow')) {
 		 * parse the latest char achievements of armory
 		 */
 		public function parseLatestCharAchievements($chardata, $charname, $intCount = 10){
-			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang'), $this->config->get('game_importer_apikey')));
+			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
 			$arrAchievs			= $chardata['achievements'];
 			$arrAchieveTimes	= $arrAchievs['achievementsCompletedTimestamp'];
