@@ -22,7 +22,7 @@ if ( !defined('EQDKP_INC') ){
 	header('HTTP/1.0 404 Not Found');exit;
 }
 
-class bnet_armory {
+class bnet_armory extends gen_class {
 
 	private $version		= '6.0.0';
 	private $build			= '$Rev$';
@@ -147,7 +147,7 @@ class bnet_armory {
 		$this->_config['serverloc']	= ($serverloc != '') ? $serverloc : 'en_EN';
 		$this->_config['locale']	= $locale;
 		$this->setApiUrl($this->_config['serverloc']);
-		$this->_config['apiKey']	= (defined('GAME_IMPORTER_APIKEY')) ? GAME_IMPORTER_APIKEY : false;
+		$this->_config['apiKey']	= (defined('GAME_IMPORTER_APIKEY')) ? GAME_IMPORTER_APIKEY : registry::register('game')->get_import_apikey();
 	}
 	
 	public function __get($name) {
