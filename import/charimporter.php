@@ -114,24 +114,26 @@ class charImporter extends page_generic {
 					i=0;
 	
 				if (chardataArry.length >= i){
-					$.post("charimporter.php'.$this->SID.'&ajax_massupdate=true&totalcount="+chardataArry.length+"&actcount="+i, chardataArry[i], function(data){
-						chardata = $.parseJSON(data);
-						if(chardata.success == "imported"){
-							successdata = "<span style=\"color:green;\">'.$this->game->glang('uc_armory_updated').'</span>";
-						}else{
-							successdata = "<span style=\"color:red;\">'.$this->game->glang('uc_armory_updfailed').'<br/>"+
-							((chardata.error) ? "'.$this->game->glang('uc_armory_impfail_reason').' "+chardata.error : "")+"</span>";
-						}
-						$("#guildimport_dataset fieldset.data").prepend("<dl><dt><label><img src=\""+ chardata.image +"\" alt=\"charicon\" height=\"84\" width=\"84\" /></label></dt><dd>"+ chardata.name+"<br/>"+ successdata +"</dd></dl>").children(":first").hide().fadeIn("slow");
-						$("#progressbar").progressbar({ value: ((i/chardataArry.length)*100) })
-						if(chardataArry.length > i+1){
-							getData(i+1);
-						}else{
-							$.post("charimporter.php'.$this->SID.'&ajax_mudate=true");
-							$("#controlbox").html("<dl><div class=\"infobox infobox-large infobox-green clearfix\"><i class=\"fa fa-check fa-4x pull-left\"></i> '.$this->game->glang('uc_cupdt_header_fnsh').'</div></dl>").fadeIn("slow");
-							return;
-						}
-					});
+					setTimeout(function(){
+						$.post("charimporter.php'.$this->SID.'&ajax_massupdate=true&totalcount="+chardataArry.length+"&actcount="+i, chardataArry[i], function(data){
+							chardata = $.parseJSON(data);
+							if(chardata.success == "imported"){
+								successdata = "<span style=\"color:green;\">'.$this->game->glang('uc_armory_updated').'</span>";
+							}else{
+								successdata = "<span style=\"color:red;\">'.$this->game->glang('uc_armory_updfailed').'<br/>"+
+								((chardata.error) ? "'.$this->game->glang('uc_armory_impfail_reason').' "+chardata.error : "")+"</span>";
+							}
+							$("#guildimport_dataset fieldset.data").prepend("<dl><dt><label><img src=\""+ chardata.image +"\" alt=\"charicon\" height=\"84\" width=\"84\" /></label></dt><dd>"+ chardata.name+"<br/>"+ successdata +"</dd></dl>").children(":first").hide().fadeIn("slow");
+							$("#progressbar").progressbar({ value: ((i/chardataArry.length)*100) })
+							if(chardataArry.length > i+1){
+								getData(i+1);
+							}else{
+								$.post("charimporter.php'.$this->SID.'&ajax_mudate=true");
+								$("#controlbox").html("<dl><div class=\"infobox infobox-large infobox-green clearfix\"><i class=\"fa fa-check fa-4x pull-left\"></i> '.$this->game->glang('uc_cupdt_header_fnsh').'</div></dl>").fadeIn("slow");
+								return;
+							}
+						});
+					}, 80);
 				}
 			}');
 
