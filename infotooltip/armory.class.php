@@ -162,13 +162,21 @@ if(!class_exists('armory')) {
 				$char_data = $this->bnet->character($data[1], $data[0]);
 			}
 			//check for error
-			if(isset($item_data['status']) && $item_data['status'] == 'error') {
+			if(isset($item_data['status']) && $item_data['status'] == 'error' ) {
 				$this->pdl->log('infotooltip', 'Battle.net responded with an error. Reason: '.$item_data['reason']);
 				$item['baditem'] = true;
 				$item['name'] = $itemname;
 				$item['id'] = $item_id;
 				return $item;
 			}
+			if (isset($item_data['code']) && isset($item_data['detail'])){
+				$this->pdl->log('infotooltip', 'Battle.net responded with an error. Reason: '.$item_data['detail']);
+				$item['baditem'] = true;
+				$item['name'] = $itemname;
+				$item['id'] = $item_id;
+				return $item;
+			}
+			
 			$item['name'] = $item_data['name'];
 			$item['id'] = $item_data['id'];
 			$item['lang'] = $lang;
