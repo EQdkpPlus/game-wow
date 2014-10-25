@@ -83,16 +83,35 @@ if(!class_exists('wowhead')) {
 		}
 
 		protected function getItemData($item_id, $lang, $itemname='', $type='items'){
-			settype($item_id, 'int');
+
 			if(!$item_id) {
 				$item['baditem'] = true;
 				return $item;
 			}
+			
+			$bonus = 0;
+			
+			$arrItemData = explode(':', $item_id);
+			if (count($arrItemData) > 1){
+				$item_id = $arrItemData[0];
+				$arrBonus = array();
+				foreach($arrItemData as $key => $val){
+					if ($key > 11){
+						$arrBonus[] = (int)$val;
+					}
+				}
+				//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
+				$bonus = max($arrBonus);
+			}
+			
 			$item = array('id' => $item_id);
 			$url = ($lang == 'en') ? 'www' : $lang;
-			$item['link'] = 'http://'.$url.'.wowhead.com/item='.$item['id'].'&xml';
+
+			$item['link'] = 'http://'.$url.'.wowhead.com/item='.$item['id'].'&bonus='.$bonus.'&xml';
+
 			$this->pdl->log('infotooltip', 'fetch item-data from: '.$item['link']);
 			$itemxml = $this->puf->fetch($item['link'], array('Cookie: cookieLangId="'.$lang.'";'));
+
 			if($itemxml AND $itemxml != 'ERROR') $itemxml = simplexml_load_string($itemxml);
 
 			$item['name'] = ((!is_numeric($itemname) AND strlen($itemname) > 0) OR !is_object($itemxml)) ? $itemname : trim($itemxml->item->name);
@@ -106,12 +125,14 @@ if(!class_exists('wowhead')) {
 			}
 
 			//build itemhtml
+			
 			$html = str_replace('"', "'", $itemxml->item->htmlTooltip);
-			$template_html = trim(file_get_contents($this->root_path.'infotooltip/includes/parser/templates/wow_popup.tpl'));
+			$template_html = trim(file_get_contents($this->root_path.'games/wow/infotooltip/templates/wow_popup.tpl'));
 			$item['html'] = str_replace('{ITEM_HTML}', stripslashes($html), $template_html);
 			$item['lang'] = $lang;
 			$item['icon'] = (string) strtolower($itemxml->item->icon);
 			$item['color'] = 'q'.$this->convert_color((string) $itemxml->item->quality);
+			
 			return $item;
 		}
 
