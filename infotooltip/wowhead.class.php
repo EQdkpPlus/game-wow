@@ -83,7 +83,8 @@ if(!class_exists('wowhead')) {
 		}
 
 		protected function getItemData($item_id, $lang, $itemname='', $type='items'){
-
+			$orig_id = $item_id;
+			
 			if(!$item_id) {
 				$item['baditem'] = true;
 				return $item;
@@ -120,7 +121,7 @@ if(!class_exists('wowhead')) {
 				//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
 				
 			}
-			
+
 			$item = array('id' => $item_id);
 			$url = ($lang == 'en') ? 'www' : $lang;
 			
@@ -142,7 +143,9 @@ if(!class_exists('wowhead')) {
 					
 					$item['icon'] = htmlentities($arrMatches[6]);
 					$item['color'] = 'q'.(int)$arrMatches[4];
-
+					
+					//Reset Item ID, because the full name is the one we should store in DB
+					$item['id'] = $orig_id;
 					return $item;
 					
 				} else {
