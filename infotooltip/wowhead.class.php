@@ -91,84 +91,75 @@ if(!class_exists('wowhead')) {
 			
 			$bonus = 0;
 			
+			$myItemData = array(
+					'ench' => 0,
+					'gems' => array(),
+					'lvl'  => 0,
+					'upgd' => 0,
+					'bonus' => array(),
+			);
+			
 			$arrItemData = explode(':', $item_id);
 			if (count($arrItemData) > 1){
 				$item_id = $arrItemData[0];
 				$arrBonus = array();
+
 				foreach($arrItemData as $key => $val){
+					if ($key == 1) $myItemData['ench'] = $val;
+					if ($key == 8) $myItemData['lvl'] = $val;
+					if ($key == 9) $myItemData['upgd'] = $val;
+					if ($key > 2 && $key < 7){
+						$myItemData['gems'][] = $val;
+					}
+					
 					if ($key > 11){
-						$arrBonus[] = (int)$val;
+						$myItemData['bonus'][] = $val;
 					}
 				}
+				//112417:0:0:0:0:0:0:0:lvl90:upg 491:dif 5:2:448:449
 				//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
-				$bonus = max($arrBonus);
+				
 			}
 			
 			$item = array('id' => $item_id);
 			$url = ($lang == 'en') ? 'www' : $lang;
-
-			$item['link'] = 'http://'.$url.'.wowhead.com/item='.$item['id'].'&bonus='.$bonus.'&xml';
+			
+			$item['link'] = 'http://'.$url.'.wowhead.com/item='.$item['id'].'&power&bonus='.implode(':', $myItemData['bonus']).'&upgd='.$myItemData['upgd'].'&lvl='.$myItemData['lvl'].'&ench='.$myItemData['ench'].'&gems='.implode(',',$myItemData['gems']);
 
 			$this->pdl->log('infotooltip', 'fetch item-data from: '.$item['link']);
-			$itemxml = $this->puf->fetch($item['link'], array('Cookie: cookieLangId="'.$lang.'";'));
+			$someJS = $this->puf->fetch($item['link'], array('Cookie: cookieLangId="'.$lang.'";'));
+			if ($someJS){
+				$arrMatches = array();
+				$intCount = preg_match("/name_(.*): '(.*)',(\s*)quality: (.*),(\s*)icon: '(.*)',(\s*)tooltip_(.*): '(.*)'/", $someJS, $arrMatches);
+				if ($intCount){
 
-			if($itemxml AND $itemxml != 'ERROR') $itemxml = simplexml_load_string($itemxml);
+					$item['name'] = htmlentities(stripslashes($arrMatches[2]));
+					
+					$html = $arrMatches[9];
+					$template_html = trim(file_get_contents($this->root_path.'games/wow/infotooltip/templates/wow_popup.tpl'));
+					$item['html'] = str_replace('{ITEM_HTML}', stripslashes($html), $template_html);
+					$item['lang'] = $lang;
+					
+					$item['icon'] = htmlentities($arrMatches[6]);
+					$item['color'] = 'q'.(int)$arrMatches[4];
 
-			$item['name'] = ((!is_numeric($itemname) AND strlen($itemname) > 0) OR !is_object($itemxml)) ? $itemname : trim($itemxml->item->name);
-			$item['lang'] = $lang;
-
-			//filter baditems
-			if(!is_object($itemxml) OR !isset($itemxml->item->htmlTooltip) OR strlen($itemxml->item->htmlTooltip) < 5) {
-				$this->pdl->log('infotooltip', 'no xml-object returned');
+					return $item;
+					
+				} else {
+					$this->pdl->log('infotooltip', 'no match found');
+					$item['baditem'] = true;
+					return $item;
+				}
+			} else {
+				$this->pdl->log('infotooltip', 'no data from URL');
 				$item['baditem'] = true;
 				return $item;
 			}
 
-			//build itemhtml
-			
-			$html = str_replace('"', "'", $itemxml->item->htmlTooltip);
-			$template_html = trim(file_get_contents($this->root_path.'games/wow/infotooltip/templates/wow_popup.tpl'));
-			$item['html'] = str_replace('{ITEM_HTML}', stripslashes($html), $template_html);
-			$item['lang'] = $lang;
-			$item['icon'] = (string) strtolower($itemxml->item->icon);
-			$item['color'] = 'q'.$this->convert_color((string) $itemxml->item->quality);
-			
+			$item['baditem'] = true;
 			return $item;
 		}
 
-		/*
-		 * Translate Old-Colors to new css-classes
-		 */
-		private function convert_color($color) {
-			if(is_numeric($color)) return $color;
-			$color_array = array(
-				'Verbreitet' => 1,
-				'Common' => 1,
-				'Común' => 1,
-				'Classique' => 1,
-				'Обычный' => 1,
-				'Selten' => 2,
-				'Uncommon' => 2,
-				'Bonne' => 2,
-				'Poco Común' => 2,
-				'Необычный' => 2,
-				'Rar' => 3,
-				'Rare' => 3,
-				'Raro' => 3,
-				'Редкий' => 3,
-				'Episch' => 4,
-				'Epic' => 4,
-				'Épica' => 4,
-				'Épique' => 4,
-				'Эпический' => 4,
-				'Legendär' => 5,
-				'Legendary' => 5,
-				'Légendaire' => 5,
-				'Legendaria' => 5,
-				'Легендарный' => 5
-			);
-			return $color_array[$color];
-		}
 	}
 }
 ?>
