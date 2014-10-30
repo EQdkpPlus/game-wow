@@ -24,10 +24,11 @@ if ( !defined('EQDKP_INC') ){
 
 class bnet_armory extends gen_class {
 
-	private $version		= '6.0.0';
+	private $version		= '6.0.2';
 	private $build			= '$Rev$';
 	private $chariconUpdates = 0;
 	private $chardataUpdates = 0;
+	private $ratepersecond	= 10;
 	const apiurl			= 'https://{region}.api.battle.net/';
 	const staticrenderurl	= 'http://{region}.battle.net/static-render/';
 	const staticimages		= 'http://{region}.battle.net/wow/static/images/';
@@ -565,14 +566,55 @@ class bnet_armory extends gen_class {
 	* @return bol
 	*/
 	public function item($itemid, $force=false){
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/item/%s?locale=%s&apikey=%s', $itemid, $this->_config['locale'], $this->_config['apiKey']);
-		if(!$json	= $this->get_CachedData('itemdata_'.$itemid, $force)){
-			$json	= $this->read_url($wowurl);
+		$tmp_itemid		= explode(':', $itemid);
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/item/%s?locale=%s&apikey=%s', $tmp_itemid[0], $this->_config['locale'], $this->_config['apiKey']);
+		if(!$json		= $this->get_CachedData('itemdata_'.$itemid, $force)){
+			$json		= $this->read_url($wowurl);
+			$metadata	= $this->eqdkpitemid_meta($itemid);
+			$json		= $this->item_context($json, $metadata);
 			$this->set_CachedData($json, 'itemdata_'.$itemid);
 		}
 		$itemdata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($itemdata);
 		return (!$errorchk) ? $itemdata: $errorchk;
+	}
+	
+	public function eqdkpitemid_meta($item_id){
+		//112417:0:0:0:0:0:0:0:lvl90:upg 491:dif 5:2:448:449
+		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
+		$arrItemData = explode(':', $item_id);
+		// 3 and 4 are normal, 5 and 6 are heroic
+		$difficulty	= (isset($arrItemData[11])) ? $arrItemData[11] : 0;
+		switch($difficulty){
+			case '0' || '3' || '4': $itemdiff = 'normal';
+			case '5' || '6': $itemdiff = 'heroic';
+			default: $itemdiff = 'normal';
+		}
+		return array(
+			'difficulty'	=> $itemdiff,
+			'bonuslist'		=> (isset($arrItemData[12]) && $arrItemData[12] > 1) ? array_slice($arrItemData, 13, $arrItemData[12]) : 0,
+			'gems'			=> (isset($arrItemData[8])) ? array_slice($arrItemData, 2, 4) : array(),
+			'lvl'			=> (isset($arrItemData[8])) ? $arrItemData[8] : 0,
+			'upgd'			=> (isset($arrItemData[9])) ? $arrItemData[9] : 0,
+			'enchant'		=> (isset($arrItemData[1])) ? $arrItemData[1] : 0,
+		);
+	}
+
+	//{"id":110050,"availableContexts":["dungeon-level-up-1","dungeon-level-up-2","dungeon-level-up-3","dungeon-level-up-4","dungeon-normal","dungeon-heroic"]}
+	public function item_context($itemdata, $itemmetadata){
+		$itemdata		= json_decode($itemdata, true);
+		$bonuslist		= (isset($itemmetadata['bonuslist'])) ? '&bl='.implode(',',$itemmetadata['bonuslist']) : '';
+		$contextname	= array_values($this->helper_partialmatch($itemmetadata['difficulty'], $itemdata['availableContexts']))[0];
+
+		if(isset($itemdata['availableContexts']) && is_array($itemdata['availableContexts']) && count($itemdata['availableContexts']) > 0 && isset($contextname[0])){
+			$wowurl		= $this->_config['apiUrl'].sprintf('wow/item/%s/%s?locale=%s&apikey=%s%s', $itemdata['id'], $contextname, $this->_config['locale'], $this->_config['apiKey'],$bonuslist);
+			return $this->read_url($wowurl);
+		}
+		return $itemdata;
+	}
+	
+	private function helper_partialmatch($search_text, $array){
+		return preg_grep("/".$search_text."/", $array);
 	}
 	
 	/**
@@ -706,12 +748,35 @@ class bnet_armory extends gen_class {
 	public function getdata($type='character', $sub_type='achievements', $force=false){
 		$wowurl	= $this->_config['apiUrl'].sprintf('wow/data/'.$type.'/'.$sub_type.'?locale=%s&apikey=%s', $this->_config['locale'], $this->_config['apiKey']);
 		if(!$json	= $this->get_CachedData('data_'.$type.'_'.$sub_type, $force)){
+			$this->downloadORwait();
 			$json	= $this->read_url($wowurl);
+			$this->set_lastdownload();
 			$this->set_CachedData($json, 'data_'.$type.'_'.$sub_type);
 		}
 		$chardata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($chardata);
 		return (!$errorchk) ? $chardata: $errorchk;
+	}
+
+	private function downloadORwait(){
+		// one second = 1000000 ms. As the limit is 10/s, we have to wait 100000 = 0.1s
+		list($int,$dec)=explode('.', $this->get_lastdownload());
+		$rate 		= 1000000/$this->ratepersecond;
+		$time2wait	= $rate-$dec;
+		if($time2wait > 0){
+			usleep($time2wait);
+		}
+	}
+
+	private function get_lastdownload(){
+		$rfilename	= (is_object($this->pfh)) ? $this->pfh->FolderPath('armory', 'cache').'_lastdownload' : 'data/_times';
+		if(is_file($rfilename)){
+			return @file_get_contents($rfilename);
+		}
+	}
+	
+	private function set_lastdownload(){
+		$this->pfh->putContent($this->pfh->FolderPath('armory', 'cache').'_lastdownload', microtime());
 	}
 	
 	/**
