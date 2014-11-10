@@ -345,7 +345,7 @@
 	$servername			= ($member_servername != '') ? $member_servername : unsanitize($this->config->get('uc_servername'));
 	
 	$chardata			= $this->game->obj['armory']->character(unsanitize($member['name']), $servername);
-	if($this->config->get('uc_servername') != '' && !isset($chardata['status'])){
+	if($this->config->get('game_importer_apikey') != '' && $this->config->get('uc_servername') != '' && !isset($chardata['status'])){
 
 		// profilers
 		$a_profilers	= array(
