@@ -163,7 +163,7 @@ if($this->config->get('uc_servername') && $this->config->get('uc_server_loc')){
 	}
 }
 
-$faction = ($this->config->get('uc_faction')) ? $this->config->get('uc_faction') : 'alliance';
+$faction = ($this->config->get('faction')) ? $this->config->get('faction') : 'alliance';
 
 $this->tpl->assign_vars(array(
 		'FACTION'		=> $faction,
