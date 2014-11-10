@@ -193,12 +193,6 @@ if(!class_exists('wow')) {
 
 		public function install($blnEQdkpInstall=false){
 
-			//Reset Things
-			$this->game->resetEvents();
-			$this->game->resetItempools();
-			$this->game->resetMultiDKPPools();
-			$this->game->resetRanks();
-
 			$arrEventIDs = array();
 			//Mop Events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_10'), 0, "mv.png");
@@ -217,11 +211,10 @@ if(!class_exists('wow')) {
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('cataclysm'), 0, "cata.png");
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('burning_crusade'), 0, "bc.png");
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('classic'), 0, "classic.png");
+			
+			$this->game->updateDefaultMultiDKPPool('Default', 'Default MultiDKPPool', $arrEventIDs);
 
-			$intItempoolDefault = $this->game->addItempool("Default", "Default Itempool");
 			$intItempoolClassic = $this->game->addItempool("Classic", "Classic Itempool");
-
-			$this->game->addMultiDKPPool("Default", "Default MultiDKPPool", $arrEventIDs, array($intItempoolDefault));
 			$this->game->addMultiDKPPool("Classic", "Classic MultiDKPPool", $arrClassicEventIDs, array($intItempoolClassic));
 
 			//Links
