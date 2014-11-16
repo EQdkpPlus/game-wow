@@ -28,7 +28,7 @@ class bnet_armory extends gen_class {
 	private $build			= '$Rev$';
 	private $chariconUpdates = 0;
 	private $chardataUpdates = 0;
-	private $ratepersecond	= 10;
+	private $ratepersecond	= 100;
 	const apiurl			= 'https://{region}.api.battle.net/';
 	const staticrenderurl	= 'http://{region}.battle.net/static-render/';
 	const staticimages		= 'http://{region}.battle.net/wow/static/images/';
