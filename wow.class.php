@@ -23,7 +23,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 		
 		protected static $apiLevel	= 20;
-		public $version				= '5.4.5';
+		public $version				= '6.0.2';
 		protected $this_game		= 'wow';
 		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
@@ -43,7 +43,8 @@ if(!class_exists('wow')) {
 			'bc'		=> array(3457, 3836, 3923, 3607, 3845, 3606, 3959, 4075),
 			'wotlk'		=> array(4603, 3456, 4493, 4500, 4273, 2159, 4722, 4812, 4987),
 			'cataclysm'	=> array(5600, 5094, 5334, 5638, 5723, 5892),
-			'mop'		=> array(6125, 6297, 6067, 6622, 6738)
+			'mop'		=> array(6125, 6297, 6067, 6622, 6738),
+			'wod'		=> array(6967, 6996),
 		);
 		
 		protected $class_dependencies = array(
@@ -194,6 +195,10 @@ if(!class_exists('wow')) {
 		public function install($blnEQdkpInstall=false){
 
 			$arrEventIDs = array();
+			//WoD Events
+			#$arrEventIDs[] = $this->game->addEvent($this->glang('mop_bf_10'), 0, "bf.png");
+			#$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_25'), 0, "mv.png");
+			
 			//Mop Events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_10'), 0, "mv.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_25'), 0, "mv.png");
@@ -211,6 +216,7 @@ if(!class_exists('wow')) {
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('cataclysm'), 0, "cata.png");
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('burning_crusade'), 0, "bc.png");
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('classic'), 0, "classic.png");
+			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('mop'), 0, "mop.png");
 			
 			$this->game->updateDefaultMultiDKPPool('Default', 'Default MultiDKPPool', $arrEventIDs);
 
@@ -1121,7 +1127,7 @@ if(!class_exists('wow')) {
 				foreach($chardata['progression']['raids'] as $v_progression){
 
 					// parse the bosses
-					$a_bosses = array('progress_normal' => 0, 'progress_heroic' => 0);
+					$a_bosses = array('progress_normal' => 0, 'progress_heroic' => 0, 'progress_mythic' => 0);
 					if(isset($v_progression['bosses']) && is_array($v_progression['bosses'])){
 						foreach($v_progression['bosses'] as $bosses){
 							$a_bosses['bosses'] = $bosses;
@@ -1132,6 +1138,9 @@ if(!class_exists('wow')) {
 							}
 							if($bosses['heroicKills'] > 0){
 								$a_bosses['progress_heroic']++;
+							}
+							if(isset($bosses['mythicKills']) && $bosses['mythicKills'] > 0){
+								$a_bosses['progress_mythic']++;
 							}
 						}
 					}
@@ -1147,8 +1156,10 @@ if(!class_exists('wow')) {
 						'bosses_max'	=> count($v_progression['bosses']),
 						'bosses_normal'	=> $a_bosses['progress_normal'],
 						'bosses_heroic'	=> $a_bosses['progress_heroic'],
+						'bosses_mythic'	=> $a_bosses['progress_mythic'],
 						'runs_normal'	=> $v_progression['normal'],
 						'runs_heroic'	=> $v_progression['heroic'],
+						'runs_mythic'	=> $v_progression['mythic'],
 						
 					);
 				}

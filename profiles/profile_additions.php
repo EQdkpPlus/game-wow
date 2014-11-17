@@ -206,6 +206,8 @@
 		.raideventicon.id6067 { background-position:  -1830px 0; }
 		.raideventicon.id6622 { background-position:  -1891px 0; }
 		.raideventicon.id6738 { background-position:  -1952px 0; }
+		.raideventicon.id6967 { background-position:  -2013px 0; }
+		.raideventicon.id6996 { background-position:  -2074px 0; }
 		
 		#wow_icons_left .q img, #wow_icons_right .q img, #wow_icons_bottom .q img {
 			border: 1px solid #ffd100;
@@ -560,12 +562,14 @@
 												<div class='td'></div>
 												<div class='td'>".$this->game->glang('normalrun')."</div>
 												<div class='td'>".$this->game->glang('heroicrun')."</div>
+												<div class='td'>".$this->game->glang('mythicrun')."</div>
 											</div>";
 					foreach($v_bossprogress['bosses'] as $bosses){
 						$tt_bossprogress .= "<div class='tr'>
 												<div class='td nowrap'>".$bosses['name']."</div>
 												<div class='td nowrap'>".(isset($bosses['normalKills']) ? $bosses['normalKills'] : 0)."</div>
 												<div class='td nowrap'>".(isset($bosses['heroicKills']) ? $bosses['heroicKills'] : 0)."</div>
+												<div class='td nowrap'>".(isset($bosses['mythicKills']) ? $bosses['mythicKills'] : 0)."</div>
 											</div>";
 					}
 					$tt_bossprogress .= '</div>';
@@ -581,7 +585,7 @@
 						'NAME'		=> $v_bossprogress['name'],
 						'BARS_TT'	=> $tt_bossprogress,
 						'BARS_BAR'	=> $bar_bc_normal.$bar_bc_heroic,
-						'RUNS'		=> sprintf($this->game->glang('bossprogress_normalruns'), $v_bossprogress['runs_normal']).' '.sprintf($this->game->glang('bossprogress_heroicruns'), $v_bossprogress['runs_heroic'])
+						'RUNS'		=> sprintf($this->game->glang('bossprogress_normalruns'), $v_bossprogress['runs_normal']).' | '.sprintf($this->game->glang('bossprogress_heroicruns'), $v_bossprogress['runs_heroic']).' | '.sprintf($this->game->glang('bossprogress_mythicruns'), $v_bossprogress['runs_mythic'])
 					));
 				}
 			}

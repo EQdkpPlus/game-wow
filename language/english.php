@@ -169,6 +169,7 @@ $english_array = array(
 		'uc_achievement_tab_wotlk'		=> 'Wrath of the Lich King',
 		'uc_achievement_tab_cataclysm'	=> 'Cataclysm',
 		'uc_achievement_tab_mop'		=> 'Mists of Pandaria',
+		'uc_achievement_tab_wod'		=> 'Warlords of Draenor',
 		
 		'challenge'						=> 'Challenge Mode',
 		'challenge_title'				=> 'Challenge Mode Leaderboards',
@@ -311,6 +312,8 @@ $english_array = array(
 		'normalrun'						=> 'normal',
 		'bossprogress_heroicruns'		=> '%sx heroic',
 		'heroicrun'						=> 'heroic',
+		'bossprogress_mythicruns'		=> '%sx mystic',
+		'mythicrun'						=> 'mystic',
 
 		'wotlk'							=> 'Wrath of the Lich King',
 		'cataclysm'						=> 'Cataclysm',
