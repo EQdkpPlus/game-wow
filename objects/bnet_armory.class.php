@@ -195,7 +195,7 @@ class bnet_armory extends gen_class {
 	public function apiURL2profileURL($sufix='/wow'){
 		$linkprfx	= str_replace('https://', 'http://', $this->_config['apiUrl']);
 		$linkprfx	= str_replace('.api', '', $linkprfx);
-		return $linkprfx.$sufix;
+		return $linkprfx.$sufix.'/';
 	}
 
 	/**
@@ -305,7 +305,7 @@ class bnet_armory extends gen_class {
 			$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
 			// this is due to an api bug and may be removed some day, thumbs are always set and could be 404!
 			if(filesize($img_charicon) < 400){
-				$linkprfx	= $this->apiURL2profileURL('/wow/static/images/2d/avatar/');
+				$linkprfx	= $this->apiURL2profileURL('wow/static/images/2d/avatar/');
 				$this->set_CachedData($this->read_url($linkprfx.sprintf('%s-%s.jpg', $chardata['race'], $chardata['gender'])), $cached_img, true);
 			}
 			$this->chariconUpdates++;
