@@ -326,6 +326,12 @@ $german_array = array(
 		'mop_throneofthunder_10'		=> 'Thron des Donners (10)',
 		'mop_throneofthunder_25'		=> 'Thron des Donners (25)',
 		'mop_siegeoforgrimmar'			=> 'Schlacht um Orgrimmar',
+		'wod_hm_normal'					=> 'Hochfels Normal',
+		'wod_hm_heroic'					=> 'Hochfels Heroisch',
+		'wod_hm_mythic'					=> 'Hochfels Mystisch (20)',
+		'wod_brf_normal'				=> 'Schwarzfelsgießerei Normal',
+		'wod_brf_heroic'				=> 'Schwarzfelsgießerei Heroisch',
+		'wod_brf_mythic'				=> 'Schwarzfelsgießerei Mythisch (20)',
 
 		'char_news'						=> 'Char News',
 		'no_armory'						=> 'Es konnten keine gültigen Daten für diesen Charakter geladen werden. Die battle.net API meldet folgenden Fehler: "%s".',

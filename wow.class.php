@@ -196,8 +196,12 @@ if(!class_exists('wow')) {
 
 			$arrEventIDs = array();
 			//WoD Events
-			#$arrEventIDs[] = $this->game->addEvent($this->glang('mop_bf_10'), 0, "bf.png");
-			#$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_25'), 0, "mv.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_hm_normal'), 0, "hm.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_hm_heroic'), 0, "hm.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_hm_mythic'), 0, "hm.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_brf_normal'), 0, "brf.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_brf_heroic'), 0, "brf.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_brf_mythic'), 0, "brf.png");
 			
 			//Mop Events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_10'), 0, "mv.png");

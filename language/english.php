@@ -329,6 +329,13 @@ $english_array = array(
 		'mop_throneofthunder_10'		=> 'Throne of Thunder (10)',
 		'mop_throneofthunder_25'		=> 'Throne of Thunder (25)',
 		'mop_siegeoforgrimmar'			=> 'Siege of Orgrimmar',
+		'wod_hm_normal'					=> 'Highmaul Normal',
+		'wod_hm_heroic'					=> 'Highmaul Heroic',
+		'wod_hm_mythic'					=> 'Highmaul Mythic (20)',
+		'wod_brf_normal'				=> 'Blackrock Foundry Normal',
+		'wod_brf_heroic'				=> 'Blackrock Foundry Heroic',
+		'wod_brf_mythic'				=> 'Blackrock Foundry Mythic (20)',
+		
 
 		'char_news'						=> 'Char News',
 		'no_armory'						=> 'The data for this char could not be loaded. The battle.net API returned an error: "%s".',
