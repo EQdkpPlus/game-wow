@@ -231,15 +231,15 @@ if(!class_exists('wow')) {
 			$this->game->addLink('WoW Battle.net', 'http://eu.battle.net/wow/');
 
 			//Columns for Roster
-			$this->pdh->add_object_tablepreset($this->config->get('eqdkp_layout'), 'roster', 'hptt_roster',
+			$this->pdh->add_object_tablepreset('roster', 'hptt_roster',
 					array('name' => 'wow_charicon', 'sort' => false, 'th_add' => 'width="52"', 'td_add' => '')
 			);
 
-			$this->pdh->add_object_tablepreset($this->config->get('eqdkp_layout'), 'roster', 'hptt_roster',
+			$this->pdh->add_object_tablepreset('roster', 'hptt_roster',
 					array('name' => 'profile_guild', 'sort' => true, 'th_add' => 'width="160"', 'td_add' => '')
 			);
 
-			$this->pdh->add_object_tablepreset($this->config->get('eqdkp_layout'), 'roster', 'hptt_roster',
+			$this->pdh->add_object_tablepreset('roster', 'hptt_roster',
 					array('name' => 'wow_achievementpoints', 'sort' => true, 'th_add' => 'width="160"', 'td_add' => '')
 			);
 
