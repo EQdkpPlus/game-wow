@@ -192,7 +192,7 @@ class bnet_armory extends gen_class {
 		return $this->version.((preg_match('/\d+/', $this->build, $match))? '#'.$match[0] : '');
 	}
 
-	public function apiURL2profileURL($sufix='/wow'){
+	public function apiURL2profileURL($sufix='wow'){
 		$linkprfx	= str_replace('https://', 'http://', $this->_config['apiUrl']);
 		$linkprfx	= str_replace('.api', '', $linkprfx);
 		return $linkprfx.$sufix.'/';

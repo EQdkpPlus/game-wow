@@ -170,7 +170,6 @@ $this->tpl->assign_vars(array(
 		'REALM'			=> $this->config->get('uc_servername'),
 		'REGION'		=> strtoupper($this->config->get('uc_server_loc')),
 		'GUILD'			=> $this->config->get('guildtag'),
-		'LEVEL'			=> (isset($guilddata['level'])) ? $guilddata['level'] : 0,
 		'ACHIEV_POINTS'	=> (isset($guilddata['achievementPoints'])) ? $guilddata['achievementPoints'] : 0,
 		'L_SKILLS'		=> $this->game->glang('skills'),
 		'L_ACHIEVEMENT_POINTS'	=> $this->game->glang('achievement_points'),
