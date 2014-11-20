@@ -339,7 +339,7 @@ if(!class_exists('wow')) {
 					'type'			=> 'spinner',
 					'category'		=> 'character',
 					'lang'			=> 'uc_level',
-					'max'			=> 90,
+					'max'			=> 100,
 					'min'			=> 1,
 					'undeletable'	=> true,
 					'sort'			=> 4
