@@ -193,6 +193,7 @@ $english_array = array(
 		'uc_data_lang_help'				=> 'In which language should the data be fetched from external website?',
 		'uc_error_head'					=> 'ERROR',
 		'uc_error_noserver'				=> 'There is no server saved in the global settings. The server is required for fetching external data. Please report it to an administrator.',
+		'uc_error_nodata_bnet'			=> 'The battle.net API returned incomplete data for this char. Please try again later.',
 		'apikey_title_step1'			=> 'API Key Information',
 		'apikey_content_step1'			=> 'The new battle.net export API requires every user of the data API to register the APP for an individual API key. you are not able to import or update chars from battle.net without this API key. You are able to get one for free by registering your application.',
 		'apikey_title_step2'			=> 'Receive an API key for free',

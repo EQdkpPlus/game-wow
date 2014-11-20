@@ -191,6 +191,7 @@ $german_array = array(
 		'uc_data_lang_help'				=> 'In welcher Sprache sollen die Daten vom externen Anbieter geladen werden?',
 		'uc_error_head'					=> 'FEHLER',
 		'uc_error_noserver'				=> 'Es wurde kein Server in den globalen Einstellungen gefunden. Dieser wird für die Nutzung dieses Features jedoch benötigt. Bitte benachrichtige einen Administrator.',
+		'uc_error_nodata_bnet'			=> 'Die battle.net API lieferte unvollständige Datensätze. Bitte versuche es später erneut.',
 		'apikey_title_step1'			=> 'API-Schlüssel Informationen',
 		'apikey_content_step1'			=> 'Bei der neuen battle.net API muss jede App einen individuellen API-Schlüssel für den Datenabruf erstellen. Ohne den API-Schlüssel können keine Charaketere von battle.net aktualisiert oder importiert werden. Diese Anleitung hilft dir beim Registrieren des API-Schlüssels.',
 		'apikey_title_step2'			=> 'Erhalte einen kostenlosen API-Schlüssel',

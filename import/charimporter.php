@@ -160,7 +160,7 @@ class charImporter extends page_generic {
 		$servername		= ($char_server != '') ? $char_server : $this->config->get('uc_servername');
 		$chardata		= $this->game->obj['armory']->character(unsanitize($this->in->get('charname', '')), unsanitize($servername), true);
 
-		if(!isset($chardata['status'])){
+		if(!isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 			$errormsg	= '';
 			$charname	= $chardata['name'];
 			$charicon	= $this->game->obj['armory']->characterIcon($chardata);
@@ -189,7 +189,7 @@ class charImporter extends page_generic {
 			$successmsg	= ($info) ? 'imported' : 'error';
 		}else{
 			$successmsg	= 'error';
-			$errormsg	= $chardata['reason'];
+			$errormsg	= (isset($chardata['reason']) && !empty($chardata['reason'])) ? $chardata['reason'] : $this->game->glang('uc_error_nodata_bnet');
 			$charname	= $this->in->get('charname', '');
 			$charicon	= $this->server_path.'images/global/avatar-default.svg';
 		}
