@@ -481,6 +481,9 @@ if(!class_exists('wow')) {
 			}
 
 			//Guildupdate
+			$ratepersecond = 100;
+			$rate 		= 1000000/$ratepersecond;
+			
 			$members	= $this->pdh->get('member', 'names', array());
 			if(is_array($members)){
 				asort($members);
@@ -488,13 +491,16 @@ if(!class_exists('wow')) {
 					if($membername != ''){
 						$charid = $this->pdh->get('member', 'id', array($membername));
 						if($charid){
-							$chardata	= $this->game->obj['armory']->character($membername, $this->config->get('uc_servername'), true);
+							$char_server	= $this->pdh->get('member', 'profile_field', array($charid, 'servername'));
+							$servername		= ($char_server != '') ? $char_server : $this->config->get('uc_servername');
+							$chardata		= $this->game->obj['armory']->character($membername, unsanitize($servername), true);
 							
-							if(!isset($chardata['status'])){
+							if(!isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 								$errormsg	= '';
 								$charname	= $chardata['name'];
-							
+								
 								// insert into database
+
 								$info = $this->pdh->put('member', 'addorupdate_member', array($charid, array(
 										'name'				=> $membername,
 										'lvl'				=> $chardata['level'],
@@ -513,8 +519,12 @@ if(!class_exists('wow')) {
 										'second_bar'		=> $chardata['stats']['power'],
 										'second_name'		=> $chardata['stats']['powerType'],
 								), 0));
+
 							}
 						}
+					}
+					if($rate > 0){
+						usleep($rate);
 					}
 				}
 			}
