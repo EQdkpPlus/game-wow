@@ -134,10 +134,10 @@ class guildImporter extends page_generic {
 				$jsondata[] = array(
 					'thumbnail'		=> $guildchars['character']['thumbnail'],
 					'name'			=> $guildchars['character']['name'],
-					'class'			=> $guildchars['character']['class'],
-					'race'			=> $guildchars['character']['race'],
+					'class'			=> $this->game->obj['armory']->ConvertID($guildchars['character']['class'], 'int', 'classes'),
+					'race'			=> $this->game->obj['armory']->ConvertID($guildchars['character']['race'], 'int', 'races'),
 					'level'			=> $guildchars['character']['level'],
-					'gender'		=> $guildchars['character']['gender'],
+					'gender'		=> $this->game->obj['armory']->ConvertID($guildchars['character']['gender'], 'int', 'gender'),
 					'rank'			=> $guildchars['rank'],
 					'servername'	=> $guildchars['character']['realm'],
 					'guild'			=> $guildchars['character']['guild'],
