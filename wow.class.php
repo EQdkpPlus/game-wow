@@ -486,7 +486,7 @@ if(!class_exists('wow')) {
 			
 			$members	= $this->pdh->get('member', 'names', array());
 			if(is_array($members)){
-				asort($members);
+				shuffle($members);
 				foreach($members as $membername){
 					if($membername != ''){
 						$charid = $this->pdh->get('member', 'id', array($membername));
