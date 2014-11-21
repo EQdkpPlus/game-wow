@@ -81,8 +81,8 @@ class bnet_armory extends gen_class {
 			'26'	=> 13,		// Pandaren horde
 		),
 		'gender' => array(
-			'0'		=> 'Male',
-			'1'		=> 'Female',
+			'0'		=> 'male',
+			'1'		=> 'female',
 		),
 		'talent'	=> array(
 			0	=> array(

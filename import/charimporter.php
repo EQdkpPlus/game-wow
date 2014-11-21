@@ -342,7 +342,7 @@ class charImporter extends page_generic {
 		$data = array(
 			'name'				=> $this->in->get('member_name'),
 			'level'				=> $this->in->get('member_level', 0),
-			'gender'			=> $this->in->get('gender', 'Male'),
+			'gender'			=> $this->in->get('gender', 'male'),
 			'race'				=> $this->in->get('member_race_id', 0),
 			'class'				=> $this->in->get('member_class_id', 0),
 			'guild'				=> $this->in->get('guild',''),
