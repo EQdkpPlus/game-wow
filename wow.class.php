@@ -433,10 +433,10 @@ if(!class_exists('wow')) {
 					$jsondata = array(
 							'thumbnail'	=> $guildchars['character']['thumbnail'],
 							'name'		=> $guildchars['character']['name'],
-							'class'		=> $this->game->obj['armory']->ConvertID($guildchars['character']['class'], 'int', 'classes'),
-							'race'		=> $this->game->obj['armory']->ConvertID($guildchars['character']['race'], 'int', 'races'),
+							'class'		=> $this->game->obj['armory']->ConvertID((int)$guildchars['character']['class'], 'int', 'classes'),
+							'race'		=> $this->game->obj['armory']->ConvertID((int)$guildchars['character']['race'], 'int', 'races'),
 							'level'		=> $guildchars['character']['level'],
-							'gender'	=> $this->game->obj['armory']->ConvertID($guildchars['character']['gender'], 'int', 'gender'),
+							'gender'	=> $this->game->obj['armory']->ConvertID((int)$guildchars['character']['gender'], 'int', 'gender'),
 							'rank'		=> $guildchars['rank'],
 					);
 					
@@ -468,8 +468,8 @@ if(!class_exists('wow')) {
 						$dataarry = array(
 								'name'		=> $jsondata['name'],
 								'lvl'		=> $jsondata['level'],
-								'classid'	=> $this->game->obj['armory']->ConvertID(intval($jsondata['class']), 'int', 'classes'),
-								'raceid'	=> $this->game->obj['armory']->ConvertID(intval($jsondata['class']), 'int', 'races'),
+								'classid'	=> $jsondata['class'],
+								'raceid'	=> $jsondata['race'],
 								'rankid'	=> $intRankID,
 						);
 						$myStatus = $this->pdh->put('member', 'addorupdate_member', array(0, $dataarry));
