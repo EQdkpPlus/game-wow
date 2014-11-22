@@ -37,6 +37,8 @@ if(!class_exists('wow')) {
 		public $no_reg_obj			= array('bnet_armory');												// a list with all objects, which dont need registry
 		public $langs				= array('english', 'german');										// in which languages do we have information?
 		public $importers 			= array();
+		
+		public $character_unique_ids = array('servername');
 			
 		protected $ArrInstanceCategories = array(
 			'classic'	=> array(2717, 2677, 3429, 3428),
