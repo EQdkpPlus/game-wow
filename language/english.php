@@ -178,7 +178,7 @@ $english_array = array(
 		// Profile Admin area
 		'core_sett_fs_gamesettings'		=> 'WoW Settings',
 		'importer_head_txt'				=> 'battle.net Importer',
-		'uc_servername_help'			=> 'Name of your realmserver (e.g. Mal\'Ganis)',
+		'servername_help'			=> 'Name of your realmserver (e.g. Mal\'Ganis)',
 		'uc_lockserver'					=> 'Lock the realm name for users',
 		'uc_lockserver_help'			=> 'The realm name is not changeable for users',
 		'uc_update_all'					=> 'Update from battle.net',
@@ -205,7 +205,7 @@ $english_array = array(
 		#'uc_armory_loc'					=> 'Realmserver\'s location',
 		"uc_updat_armory" 				=> "Refresh from armory",
 		'uc_charname'					=> 'Character\'s name',
-		'uc_servername'					=> 'Realm\'s name',
+		'servername'					=> 'Realm\'s name',
 		'uc_charfound'					=> "The character <b>%1\$s</b> has been found in the armory.",
 		'uc_charfound2'					=> "This character was updated on <b>%1\$s</b>.",
 		'uc_charfound3'					=> 'ATTENTION: Importing will overwrite the existing data!',

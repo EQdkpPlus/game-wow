@@ -178,7 +178,7 @@ $german_array = array(
 		// Profile Admin area
 		'core_sett_fs_gamesettings'		=> 'WoW Einstellungen',
 		'importer_head_txt'				=> 'battle.net Importer',
-		'uc_servername_help'			=> 'Servername des Spielservers (z.B. Mal\'Ganis)',
+		'servername_help'			=> 'Servername des Spielservers (z.B. Mal\'Ganis)',
 		'uc_update_all'					=> 'Von battle.net aktualisieren',
 		'uc_update_all_help'			=> 'Alle Profilinformationen mit Profilerdaten von battle.net aktualisieren',
 		'uc_importer_cache'				=> 'Leere Cache des Importers',
@@ -202,7 +202,7 @@ $german_array = array(
 		// Armory Import
 		"uc_updat_armory" 				=> "Vom battle.net aktualisieren",
 		'uc_charname'					=> 'Charaktername',
-		'uc_servername'					=> 'Realm-Name',
+		'servername'					=> 'Realm-Name',
 		'uc_charfound'					=> "Der Charakter  <b>%1\$s</b> wurde im battle.net gefunden.",
 		'uc_charfound2'					=> "Das letzte Update dieses Charakters war am <b>%1\$s</b>.",
 		'uc_charfound3'					=> 'ACHTUNG: Beim Import werden bisher gespeicherte Daten überschrieben!',
