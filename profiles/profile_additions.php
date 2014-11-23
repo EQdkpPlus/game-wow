@@ -344,17 +344,17 @@
 	// Armory based information
 	$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang')));
 	$member_servername	= unsanitize($this->pdh->get('member', 'profile_field', array($this->url_id, 'servername')));
-	$servername			= ($member_servername != '') ? $member_servername : unsanitize($this->config->get('uc_servername'));
+	$servername			= ($member_servername != '') ? $member_servername : unsanitize($this->config->get('servername'));
 	
 	$chardata			= $this->game->obj['armory']->character(unsanitize($member['name']), $servername);
-	if($this->config->get('game_importer_apikey') != '' && $this->config->get('uc_servername') != '' && !isset($chardata['status'])){
+	if($this->config->get('game_importer_apikey') != '' && $this->config->get('servername') != '' && !isset($chardata['status'])){
 
 		// profilers
 		$a_profilers	= array(
 			1	=> array(
 				'icon'	=> $this->server_path.'games/wow/profiles/profilers/askmrrobot.png',
 				'name'	=> 'AskMrRobot.com',
-				'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($this->config->get('uc_servername')), 'askmrrobot')
+				'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($this->config->get('servername')), 'askmrrobot')
 			)
 		);
 
@@ -377,7 +377,7 @@
 		$items = $this->game->callFunc('getItemArray', array($chardata['items'], unsanitize($member['name'])));
 
 		// talents & professions
-		$this->tpl->assign_array('bnetlinks',	$this->game->obj['armory']->a_bnlinks(unsanitize($member['name']),unsanitize($this->config->get('uc_servername')), $chardata['guild']['name']));
+		$this->tpl->assign_array('bnetlinks',	$this->game->obj['armory']->a_bnlinks(unsanitize($member['name']),unsanitize($this->config->get('servername')), $chardata['guild']['name']));
 		$this->tpl->assign_array('items',		$items);
 
 		// talents
@@ -504,7 +504,7 @@
 				switch ($v_charfeed['type']){
 						case 'achievement':
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$v_charfeed['achievementID'], $arrCharacterAchievements);
-							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($this->config->get('uc_servername')), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
+							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($this->config->get('servername')), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
 							$class='';
 							if ($v_charfeed['accountWide']) $class = 'accountwide';
 						
@@ -516,13 +516,13 @@
 						break;
 						case 'criteria':
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$v_charfeed['achievementID'], $arrCharacterAchievements);
-							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($this->config->get('uc_servername')), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
+							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($this->config->get('servername')), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
 							
 							$cnf_output = sprintf($this->game->glang('charnf_criteria'), '<b>'.$v_charfeed['criteria'].'</b>', '<a href="'.$bnetLink.'">'.$v_charfeed['title'].'</a>');
 						break;
 						case 'item':
 							$itemData = $this->game->obj['armory']->item($v_charfeed['itemid']);
-							$item = infotooltip($itemData['name'], $v_charfeed['itemid'], false, false, false, true, array(unsanitize($this->config->get('uc_servername')), $chardata['name']));
+							$item = infotooltip($itemData['name'], $v_charfeed['itemid'], false, false, false, true, array(unsanitize($this->config->get('servername')), $chardata['name']));
 							$cnf_output = sprintf($this->game->glang('charnf_item'), $item);
 							$v_charfeed['icon'] = 'http://eu.media.blizzard.com/wow/icons/18/'.$itemData['icon'].'.jpg';
 						break;
@@ -598,7 +598,7 @@
 				'NAME'	=> $v_achievements['name'],
 				'BAR'	=> $this->jquery->progressbar('guildachievs_'.$id_achievements, 0, array('completed' => $v_achievements['completed'], 'total' => $v_achievements['total'], 'text' => '%progress% (%percentage%)')),
 				'ID'	=> $id_achievements,
-				'LINK'	=> ($id_achievements != 'total') ? $this->game->obj['armory']->bnlink($chardata['name'], register('config')->get('uc_servername'), 'achievements').'#achievement#'.$id_achievements : '',
+				'LINK'	=> ($id_achievements != 'total') ? $this->game->obj['armory']->bnlink($chardata['name'], register('config')->get('servername'), 'achievements').'#achievement#'.$id_achievements : '',
 			));
 		}
 
@@ -656,8 +656,8 @@
 
 		$this->tpl->assign_vars(array(
 			'ARMORY'				=> 0,
-			'CHARDATA_GUILDREALM'	=> $this->config->get('uc_servername'),
-			'NO_SERVER_SET'			=> ($this->config->get('uc_servername') != '') ? false : true,
+			'CHARDATA_GUILDREALM'	=> $this->config->get('servername'),
+			'NO_SERVER_SET'			=> ($this->config->get('servername') != '') ? false : true,
 			'CHARACTER_IMG'			=> $this->game->obj['armory']->characterIconSimple($this->game->obj['armory']->ConvertID($member['race'], 'int', 'races', true), ((strtolower($member['gender']) == 'female') ? '1' : '0')),
 			'POWER_BAR_NAME'		=> ($this->game->glang('uc_bar_'.$member['second_name'])) ? $this->game->glang('uc_bar_'.$member['second_name']) : $member['second_name'],
 			'ERRORMSG_BNET'			=> sprintf($this->game->glang('no_armory'), $chardata['reason']),

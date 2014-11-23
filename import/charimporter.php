@@ -68,7 +68,7 @@ class charImporter extends page_generic {
 		$this->user->check_auth('a_members_man');
 
 		// quit if there is not a server….
-		if($this->config->get('uc_servername') == ''){
+		if($this->config->get('servername') == ''){
 			return '<fieldset class="settings mediumsettings">
 							<dl>
 								<dt><label>'.$this->game->glang('uc_error_head').'</label></dt>
@@ -157,7 +157,7 @@ class charImporter extends page_generic {
 	public function ajax_massupdate(){
 		// due to connected/virtual realms, check for a servername of the char
 		$char_server	= $this->pdh->get('member', 'profile_field', array($this->in->get('charid', 0), 'servername'));
-		$servername		= ($char_server != '') ? $char_server : $this->config->get('uc_servername');
+		$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 		$chardata		= $this->game->obj['armory']->character(unsanitize($this->in->get('charname', '')), unsanitize($servername), true);
 
 		if(!isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
@@ -218,9 +218,9 @@ class charImporter extends page_generic {
 		
 		// Server Name
 		$hmtlout .= '<dl>
-				<dt><label>'.$this->game->glang('uc_servername').'</label></dt>
+				<dt><label>'.$this->game->glang('servername').'</label></dt>
 				<dd>';
-		$hmtlout .= new htext('servername', array('value' => (($this->config->get('uc_servername')) ? stripslashes($this->config->get('uc_servername')) : ''), 'size' => '25', 'autocomplete' => $this->game->get('realmlist')));
+		$hmtlout .= new htext('servername', array('value' => (($this->config->get('servername')) ? stripslashes($this->config->get('servername')) : ''), 'size' => '25', 'autocomplete' => $this->game->get('realmlist')));
 		
 		$hmtlout .= '</dd>
 			</dl>
@@ -248,7 +248,7 @@ class charImporter extends page_generic {
 			// We'll update an existing one...
 			$isindatabase	= $this->in->get('member_id', 0);
 			$isMemberName	= $this->pdh->get('member', 'name', array($isindatabase));
-			$isServerName	= $this->config->get('uc_servername');
+			$isServerName	= $this->config->get('servername');
 			$isServerLoc	= $this->config->get('uc_server_loc');
 			$is_mine		= ($this->pdh->get('member', 'userid', array($isindatabase)) == $this->user->data['user_id']) ? true : false;
 		}else{
@@ -376,7 +376,7 @@ class charImporter extends page_generic {
 	public function display(){
 
 		// quit if there is not a server….
-		if($this->config->get('uc_servername') == ''){
+		if($this->config->get('servername') == ''){
 			$this->tpl->assign_vars(array(
 				'DATA'		=> '<fieldset class="settings mediumsettings">
 							<dl>
@@ -386,7 +386,7 @@ class charImporter extends page_generic {
 						</fieldset>'
 			));
 		}else{
-			$stepnumber		= ($this->config->get('uc_servername') && $this->config->get('uc_server_loc') && $this->in->get('member_id',0) > 0 && $this->in->get('step',0) == 0) ? 1 : $this->in->get('step',0);
+			$stepnumber		= ($this->config->get('servername') && $this->config->get('uc_server_loc') && $this->in->get('member_id',0) > 0 && $this->in->get('step',0) == 0) ? 1 : $this->in->get('step',0);
 			$urladdition	 = ($this->in->get('member_id',0)) ? '&amp;member_id='.$this->in->get('member_id',0) : '';
 			$funcname		 = 'perform_step'.$stepnumber;
 			$this->tpl->assign_vars(array(

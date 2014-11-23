@@ -320,7 +320,7 @@ if(!class_exists('wow')) {
 				),
 				'servername'	=> array(
 					'category'		=> 'character',
-					'lang'			=> 'uc_servername',
+					'lang'			=> 'servername',
 					'type'			=> 'text',
 					'size'			=> '21',
 					'edecode'		=> true,
@@ -429,7 +429,7 @@ if(!class_exists('wow')) {
 			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
 			//Guildimport
-			$guilddata	= $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('uc_servername'), true);
+			$guilddata	= $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('servername'), true);
 			if(!isset($guilddata['status'])){
 				foreach($guilddata['members'] as $guildchars){
 					$jsondata = array(
@@ -494,7 +494,7 @@ if(!class_exists('wow')) {
 						$charid = $this->pdh->get('member', 'id', array($membername));
 						if($charid){
 							$char_server	= $this->pdh->get('member', 'profile_field', array($charid, 'servername'));
-							$servername		= ($char_server != '') ? $char_server : $this->config->get('uc_servername');
+							$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 							$chardata		= $this->game->obj['armory']->character($membername, unsanitize($servername), true);
 							
 							if(!isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
@@ -559,8 +559,8 @@ if(!class_exists('wow')) {
 					),
 				),
 				// TODO: check if apostrophe is saved correctly
-				'uc_servername'	=> array(
-					'lang'			=> 'uc_servername',
+				'servername'	=> array(
+					'lang'			=> 'servername',
 					'type'			=> 'text',
 					'size'			=> '21',
 					'autocomplete'	=> $this->game->get('realmlist'),
@@ -686,7 +686,7 @@ if(!class_exists('wow')) {
 						case 'guildAchievement':{
 							if (is_array($arrTypes) && !in_array('guildAchievement', $arrTypes)) continue;
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$val['achievement']['id'], $arrGuildAchievementsData);
-							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('uc_servername'), 'guild-achievements', $this->config->get('guildtag')).'#'.$achievCat.':a'.$val['achievement']['id'];
+							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'#'.$achievCat.':a'.$val['achievement']['id'];
 						$arrOut[] = array(
 							'text' => sprintf($this->glang('news_guildAchievement'), '<a href="'.$bnetLink.'">'.$val['achievement']['title'].'</a>', $val['achievement']['points']),
 							'icon' => "http://eu.media.blizzard.com/wow/icons/18/".$val['achievement']['icon'].".jpg",
@@ -704,7 +704,7 @@ if(!class_exists('wow')) {
 								$charLink = $val['character'];
 							}
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$val['achievement']['id'], $arrAchievementsData);
-							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('uc_servername'), 'achievements').'#'.$achievCat.':a'.$val['achievement']['id'];
+							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'achievements').'#'.$achievCat.':a'.$val['achievement']['id'];
 							$arrOut[] = array(
 								'text' => sprintf($this->glang('news_playerAchievement'), $charLink, '<a href="'.$bnetLink.'">'.$val['achievement']['title'].'</a>', $val['achievement']['points']),
 								'icon' => "http://eu.media.blizzard.com/wow/icons/18/".$val['achievement']['icon'].".jpg",
@@ -876,7 +876,7 @@ if(!class_exists('wow')) {
 				$achievData = $this->game->obj['armory']->achievement($achievID);
 				if ($achievData){
 					$arrAchievsOut[] = array(
-						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink('', $this->config->get('uc_servername'), 'guild-achievements', $this->config->get('guildtag')).'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrGuildAchievementsData).':a'.$achievID.'">'.$achievData['title'].'</a>',
+						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink('', $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrGuildAchievementsData).':a'.$achievID.'">'.$achievData['title'].'</a>',
 						'icon'	=> '<img src="http://eu.media.blizzard.com/wow/icons/18/'.$achievData['icon'].'.jpg" alt="" />',
 						'desc'	=> $achievData['description'],
 						'points'=> $achievData['points'],
@@ -908,7 +908,7 @@ if(!class_exists('wow')) {
 				if ($achievData){
 					$class = ($achievData['accountWide'] == 1) ? 'accountwide' : '';
 					$arrAchievsOut[] = array(
-						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink($charname, $this->config->get('uc_servername'), 'achievements').'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrCharAchievementsData).':a'.$achievID.'" class="'.$class.'">'.$achievData['title'].'</a>',
+						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink($charname, $this->config->get('servername'), 'achievements').'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrCharAchievementsData).':a'.$achievID.'" class="'.$class.'">'.$achievData['title'].'</a>',
 						'icon'	=> '<img src="http://eu.media.blizzard.com/wow/icons/18/'.$achievData['icon'].'.jpg" alt="" />',
 						'desc'	=> $achievData['description'],
 						'points'=> $achievData['points'],
@@ -937,7 +937,7 @@ if(!class_exists('wow')) {
 								'realm'			=> $a_members['character']['realm'],
 								'guild'			=> $a_members['character']['guild'],
 								'class'			=> $this->game->obj['armory']->ConvertID($a_members['character']['class'], 'int', 'classes'),
-								'off_realm'		=> ($this->config->get('uc_servername') != $a_members['character']['realm']) ? true : false,
+								'off_realm'		=> ($this->config->get('servername') != $a_members['character']['realm']) ? true : false,
 								'memberid'		=> (isset($memberid) && $memberid > 0) ? $memberid : 0,
 							);
 						}

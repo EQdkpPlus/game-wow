@@ -32,7 +32,7 @@ class guildImporter extends page_generic {
 	public function perform_step0(){
 
 		// quit if there is not a server….
-		if($this->config->get('uc_servername') == ''){
+		if($this->config->get('servername') == ''){
 			return '<fieldset class="settings mediumsettings">
 							<dl>
 								<dt><label>'.$this->game->glang('uc_error_head').'</label></dt>
@@ -52,8 +52,8 @@ class guildImporter extends page_generic {
 				<dd>'.new htext('guildname', array('value' => $this->config->get('guildtag'), 'size' => '40')).'</dd>
 			</dl>
 			<dl>
-				<dt><label>'.$this->game->glang('uc_servername').'</label></dt>
-				<dd>'.new htext('servername', array('value'=> $this->config->get('uc_servername'), 'size'=>'40', 'autocomplete' => $this->game->get('realmlist'))).'</dd>
+				<dt><label>'.$this->game->glang('servername').'</label></dt>
+				<dd>'.new htext('servername', array('value'=> $this->config->get('servername'), 'size'=>'40', 'autocomplete' => $this->game->get('realmlist'))).'</dd>
 			</dl>
 			<dl>
 				<dt><label>'.$this->game->glang('uc_delete_chars_onimport').'</label></dt>
@@ -90,7 +90,7 @@ class guildImporter extends page_generic {
 		}
 		
 		// generate output
-		$guilddata	= $this->game->obj['armory']->guild(unsanitize($this->in->get('guildname', '')), unsanitize($this->in->get('servername', $this->config->get('uc_servername'))), true);
+		$guilddata	= $this->game->obj['armory']->guild(unsanitize($this->in->get('guildname', '')), unsanitize($this->in->get('servername', $this->config->get('servername'))), true);
 
 		if(!isset($guilddata['status'])){
 			//Suspend all Chars

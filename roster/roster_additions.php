@@ -66,9 +66,9 @@
 
 # Amory Stuff
 $guilddata = false;
-if($this->config->get('uc_servername') && $this->config->get('uc_server_loc')){
+if($this->config->get('servername') && $this->config->get('uc_server_loc')){
 	$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang')));
-	$guilddata = $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('uc_servername'));
+	$guilddata = $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('servername'));
 	$this->tpl->assign_array('guilddata', $guilddata);
 	if ($guilddata && !isset($chardata['status'])){
 		infotooltip_js();
@@ -100,7 +100,7 @@ if($this->config->get('uc_servername') && $this->config->get('uc_server_loc')){
 				'NAME'	=> $val['name'],
 				'BAR'	=> $this->jquery->progressbar('guildachievs_'.$id, 0, array('completed' => $val['completed'], 'total' => $val['total'],'text' => '%progress% (%percentage%)')),
 				'ID'	=> $id,
-				'LINK'	=> ($id != 'total') ? $this->game->obj['armory']->bnlink('', register('config')->get('uc_servername'), 'guild-achievements', register('config')->get('guildtag')).'#achievement#'.$id : '',
+				'LINK'	=> ($id != 'total') ? $this->game->obj['armory']->bnlink('', register('config')->get('servername'), 'guild-achievements', register('config')->get('guildtag')).'#achievement#'.$id : '',
 			));
 		}
 		
@@ -167,7 +167,7 @@ $faction = ($this->config->get('faction')) ? $this->config->get('faction') : 'al
 
 $this->tpl->assign_vars(array(
 		'FACTION'		=> $faction,
-		'REALM'			=> $this->config->get('uc_servername'),
+		'REALM'			=> $this->config->get('servername'),
 		'REGION'		=> strtoupper($this->config->get('uc_server_loc')),
 		'GUILD'			=> $this->config->get('guildtag'),
 		'ACHIEV_POINTS'	=> (isset($guilddata['achievementPoints'])) ? $guilddata['achievementPoints'] : 0,
