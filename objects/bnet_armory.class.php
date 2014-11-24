@@ -155,8 +155,16 @@ class bnet_armory extends gen_class {
 		if(class_exists('registry')) {
 			if($name == 'pfh') return registry::register('file_handler');
 			if($name == 'puf') return registry::register('urlfetcher');
+			if($name == 'pdl') return registry::register('plus_debug_logger');
 		}
 		return null;
+	}
+	
+	private function _debug($strValue){
+		if(class_exists('plus_debug_logger')){
+			if(!$this->pdl->type_known('bnet_armory')) $this->pdl->register_type('bnet_armory', null, null, array(2,3,4));
+			$this->pdl->log('bnet_armory', $strValue);
+		}
 	}
 
 	/**
@@ -277,6 +285,7 @@ class bnet_armory extends gen_class {
 		$usedparams = array_merge($basicparam, $params);
 		$force		= (count($params) > 1 && $force == false) ? true : $force;
 		$wowurl		= $this->_config['apiUrl'].sprintf('wow/character/%s/%s?locale=%s&apikey=%s&fields='.implode(',', $usedparams), $realm, $user, $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('Character: '.$wowurl);
 		$json		= $this->get_CachedData('chardata_'.$user.$realm, $force);		
 		if(!$json && ($this->chardataUpdates < $this->_config['maxChardataUpdates'])){
 			$json	= $this->read_url($wowurl);
@@ -381,6 +390,7 @@ class bnet_armory extends gen_class {
 		$realm	= $this->ConvertInput($this->cleanServername($realm));
 		$guild	= $this->ConvertInput($guild);
 		$wowurl	= $this->_config['apiUrl'].sprintf('wow/guild/%s/%s?locale=%s&fields=members,achievements,news,challenge&apikey=%s', $realm, $guild, $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('Guild: '.$wowurl);
 		if(!$json	= $this->get_CachedData('guilddata_'.$guild.$realm, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'guilddata_'.$guild.$realm);
@@ -524,6 +534,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function realm($realms, $force=false){
 		$wowurl = $this->_config['apiUrl'].sprintf('wow/realm/status?locale=%s&realms=%s&apikey=%s', $this->_config['locale'], $realms = ((is_array($realms)) ? implode(",",$realms) : ''), $this->_config['apiKey']);
+		$this->_debug('Realm: '.$wowurl);
 		if(!$json	= $this->get_CachedData('realmdata_'.str_replace(",", "", $realms), $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'realmdata_'.str_replace(",", "", $realms));
@@ -549,6 +560,7 @@ class bnet_armory extends gen_class {
 			default: $teamsize = '2v2';
 		}
 		$wowurl = $this->_config['apiUrl'].sprintf('wow/leaderboard/%s?locale=%s&apikey=%s', $this->ConvertInput($realm), $teamsize, $this->ConvertInput($teamname), $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('PVPTeam: '.$wowurl);
 		if(!$json	= $this->get_CachedData('pvpdata_'.$guild.$teamname.$teamsize, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'pvpdata_'.$guild.$teamname.$teamsize);
@@ -568,6 +580,7 @@ class bnet_armory extends gen_class {
 	public function item($itemid, $force=false){
 		$tmp_itemid		= explode(':', $itemid);
 		$wowurl = $this->_config['apiUrl'].sprintf('wow/item/%s?locale=%s&apikey=%s', $tmp_itemid[0], $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('Item: '.$wowurl);
 		if(!$json		= $this->get_CachedData('itemdata_'.$itemid, $force)){
 			$json		= $this->read_url($wowurl);
 			$metadata	= $this->eqdkpitemid_meta($itemid);
@@ -626,6 +639,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function achievement($achievementid, $force=false){
 		$wowurl = $this->_config['apiUrl'].sprintf('wow/achievement/%s?locale=%s&apikey=%s', $achievementid, $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('Achievement: '.$wowurl);
 		if(!$json	= $this->get_CachedData('achievementdata_'.$achievementid, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'achievementdata_'.$achievementid);
@@ -645,6 +659,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function quest($questid, $force=false){
 		$wowurl = $this->_config['apiUrl'].sprintf('wow/quest/%s?locale=%s&apikey=%s', $questid, $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('Quest: '.$wowurl);
 		if(!$json	= $this->get_CachedData('questdatadata_'.$questid, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'questdatadata_'.$questid);
@@ -663,6 +678,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function recipe($recipeid, $force=false){
 		$wowurl = $this->_config['apiUrl'].sprintf('wow/recipe/%s?locale=%s&apikey=%s', $recipeid, $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('Recipe: '.$wowurl);
 		if(!$json	= $this->get_CachedData('recipedatadata_'.$recipeid, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'recipedatadata_'.$recipeid);
@@ -681,6 +697,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function spell($spellid, $force=false){
 		$wowurl = $this->_config['apiUrl'].sprintf('wow/spell/%s?locale=%s&apikey=%s', $spellid, $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('Spell: '.$wowurl);
 		if(!$json	= $this->get_CachedData('spelldatadata_'.$spellid, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'spelldatadata_'.$spellid);
@@ -699,6 +716,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function challenge($realm, $force=false){
 		$wowurl = $this->_config['apiUrl'].sprintf('wow/challenge/%s?locale=%s&apikey=%s', $this->ConvertInput($realm), $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('Challenge: '.$wowurl);
 		if(!$json	= $this->get_CachedData('challengedatadata_'.$realm, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'challengedatadata_'.$realm);
@@ -717,6 +735,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function battlepet($abilityid, $force=false){
 		$wowurl = $this->_config['apiUrl'].sprintf('wow/battlePet/ability/%s?locale=%s&apikey=%s', $abilityid, $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('Battlepet: '.$wowurl);
 		if(!$json	= $this->get_CachedData('battlepetdatadata_'.$abilityid, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'battlepetdatadata_'.$abilityid);
@@ -735,6 +754,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function auction($realm, $force=false){
 		$wowurl = $this->_config['apiUrl'].sprintf('api/wow/auction/data/%s?locale=%s&apikey=%s', $this->ConvertInput($realm), $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('Auction: '.$wowurl);
 		if(!$json	= $this->get_CachedData('auctiondatadata_'.$realm, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'auctiondatadata_'.$realm);
@@ -747,6 +767,7 @@ class bnet_armory extends gen_class {
 	// DATA RESOURCES
 	public function getdata($type='character', $sub_type='achievements', $force=false){
 		$wowurl	= $this->_config['apiUrl'].sprintf('wow/data/'.$type.'/'.$sub_type.'?locale=%s&apikey=%s', $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('Data Resource: '.$wowurl);
 		if(!$json	= $this->get_CachedData('data_'.$type.'_'.$sub_type, $force)){
 			$this->downloadORwait();
 			$json	= $this->read_url($wowurl);
