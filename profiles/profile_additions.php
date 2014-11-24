@@ -613,14 +613,14 @@
 					'DATE'	=> $this->time->nice_date($v_latestAchievements['date'], 60*60*24*7),
 			));
 		}
-
+		
 		$this->tpl->assign_vars(array(
 			'ARMORY'				=> 1,
 			'CHARDATA_ICON'			=> $this->game->obj['armory']->characterIcon($chardata),
 			'CHARACTER_IMG'			=> $this->game->obj['armory']->characterImage($chardata, 'big'),
 			'CHARDATA_NAME'			=> $chardata['name'],
 			'CHARDATA_GUILDNAME'	=> $chardata['guild']['name'],
-			'CHARDATA_GUILDREALM'	=> $chardata['guild']['realm'],
+			'CHARDATA_GUILDREALM'	=> ($member['servername'] && $member['servername'] != $chardata['guild']['realm']) ? $member['servername'] : $chardata['guild']['realm'],
 			'CHARDATA_POINTS'		=> $chardata['achievementPoints'],
 			'CHARDATA_TITLE'		=> $this->game->obj['armory']->selectedTitle($chardata['titles'], true),
 
@@ -656,7 +656,7 @@
 
 		$this->tpl->assign_vars(array(
 			'ARMORY'				=> 0,
-			'CHARDATA_GUILDREALM'	=> $this->config->get('servername'),
+			'CHARDATA_GUILDREALM'	=> ($member['servername'] && $member['servername'] != $this->config->get('servername')) ? $member['servername'] : $this->config->get('servername'),
 			'NO_SERVER_SET'			=> ($this->config->get('servername') != '') ? false : true,
 			'CHARACTER_IMG'			=> $this->game->obj['armory']->characterIconSimple($this->game->obj['armory']->ConvertID($member['race'], 'int', 'races', true), ((strtolower($member['gender']) == 'female') ? '1' : '0')),
 			'POWER_BAR_NAME'		=> ($this->game->glang('uc_bar_'.$member['second_name'])) ? $this->game->glang('uc_bar_'.$member['second_name']) : $member['second_name'],
