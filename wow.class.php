@@ -620,10 +620,10 @@ if(!class_exists('wow')) {
 		public function calendar_membertooltip($memberid){
 			$talents		= $this->game->glang('talents');
 			$member_data	= $this->pdh->get('member', 'array', array($memberid));
-			$membertalents	= (isset($talents[$member_data['class_id']])) ? $talents[$member_data['class_id']] : array(0,0,0,0);
+
 			return array(
-				$this->game->glang('talents_tt_1').': '.((isset($membertalents[$member_data['skill_1']])) ? $membertalents[$member_data['skill_1']] : ' -- '),
-				$this->game->glang('talents_tt_2').': '.((isset($membertalents[$member_data['skill_2']])) ? $membertalents[$member_data['skill_2']] : ' -- '),
+				$this->game->glang('talents_tt_1').': '.$this->pdh->geth('member', 'profile_field', array($memberid, 'talent1', true)),
+				$this->game->glang('talents_tt_2').': '.$this->pdh->geth('member', 'profile_field', array($memberid, 'talent2', true)),
 			);
 		}
 
