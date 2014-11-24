@@ -261,7 +261,7 @@ class charImporter extends page_generic {
 				$is_mine	= (($hasuserid > 0) ? (($hasuserid == $this->user->data['user_id']) ? true : false) : true);	// we are a normal user
 			}
 		}
-
+		
 		if($is_mine){
 			// Load the Armory Data
 			$this->game->obj['armory']->setSettings(array('loc'=>$isServerLoc));
@@ -285,8 +285,8 @@ class charImporter extends page_generic {
 			$hmtlout	.= new hhidden('prof2_value', array('value' => $chardata['professions']['primary'][1]['rank']));
 
 			// talents
-			$hmtlout	.= new hhidden('skill_1', array('value' => $this->game->obj['armory']->ConvertTalent($chardata['talents'][0]['spec']['icon'])));
-			$hmtlout	.= new hhidden('skill_2', array('value' => $this->game->obj['armory']->ConvertTalent($chardata['talents'][1]['spec']['icon'])));
+			$hmtlout	.= new hhidden('talent1', array('value' => $this->game->obj['armory']->ConvertTalent($chardata['talents'][0]['spec']['icon'])));
+			$hmtlout	.= new hhidden('talent2', array('value' => $this->game->obj['armory']->ConvertTalent($chardata['talents'][1]['spec']['icon'])));
 			
 
 			// health/power bar
@@ -348,8 +348,8 @@ class charImporter extends page_generic {
 			'prof1_value'		=> $this->in->get('prof1_value', 0),
 			'prof2_name'		=> $this->game->get_id('professions', $this->in->get('prof2_name', '')),
 			'prof2_value'		=> $this->in->get('prof2_value', 0),
-			'skill_1'			=> $this->in->get('skill_1', 0),
-			'skill_2'			=> $this->in->get('skill_2', 0),
+			'talent1'			=> $this->in->get('talent1', 0),
+			'talent2'			=> $this->in->get('talent2', 0),
 			'health_bar'		=> $this->in->get('health_bar', 0),
 			'second_bar'		=> $this->in->get('second_bar', 0),
 			'second_name'		=> $this->in->get('second_name', ''),
