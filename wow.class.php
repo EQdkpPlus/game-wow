@@ -419,18 +419,30 @@ if(!class_exists('wow')) {
 						'name'	=> 'sync_ranks',
 						'type'	=> 'radio',
 				),
+				'delete_chars'	=> array(
+						'lang'	=> 'Delete Chars that have left the Guild',
+						'name'	=> 'delete_chars',
+						'type'	=> 'radio',
+				),
 			);
 			return $arrOptions;
 		}
 
 		public function cronjob($arrParams = array()){
 			$blnSyncRanks = ((int)$arrParams['sync_ranks'] == 1) ? true : false;
+			$blnDeleteChars = ((int)$arrParams['delete_chars'] == 1) ? true : false;
 			
 			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
 			//Guildimport
 			$guilddata	= $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('servername'), true);
 			if(!isset($guilddata['status'])){
+				//Suspend all Chars
+				if ($blnDeleteChars){
+					$this->pdh->put('member', 'suspend', array('all'));
+				}
+				
+				
 				foreach($guilddata['members'] as $guildchars){
 					$jsondata = array(
 							'thumbnail'	=> $guildchars['character']['thumbnail'],
@@ -463,6 +475,12 @@ if(!class_exists('wow')) {
 								'rankid'	=> $intRankID,
 							);
 							$myStatus = $this->pdh->put('member', 'addorupdate_member', array($intMemberID, $dataarry));
+						}
+						
+						//Revoke Char
+						if($blnDeleteChars){
+							$this->pdh->put('member', 'revoke', array($intMemberID));
+							$this->pdh->process_hook_queue();
 						}
 							
 					} else {
