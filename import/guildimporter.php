@@ -190,35 +190,31 @@ class guildImporter extends page_generic {
 			$inRankID = $this->in->get('rank', 0);
 			if (isset($arrRanks[$inRankID])) $intRankID = $arrRanks[$inRankID];
 		}
-
-		if(in_array($this->in->get('name', ''), $this->pdh->get('member', 'names', array()))){
+		
+		$strMembername = $this->in->get('name', '');
+		$strServername = $this->in->get('servername', '');
+		
+		$intMemberID = $this->pdh->get('member', 'id', array($strMembername, array('servername' => $strServername)));
+		
+		if($intMemberID){
 			$successmsg = 'available';
-
-			// Fix for connected realms....
-			$member_id = $this->pdh->get('member', 'id', array($this->in->get('name', '')));
 			
-			$server_name = $this->in->get('servername', '');
-			if(isset($server_name) && $server_name != ''){
-				$this->pdh->put('member', 'update_profilefield', array($member_id, array('servername'=>$server_name)));
+			if($strServername != ''){
+				$this->pdh->put('member', 'update_profilefield', array($intMemberID, array('servername'=> $strServername)));
 			}
 
 			//Revoke Char
 			if ($this->in->get('del', '') == 'true'){
-				if ($member_id) {
-					$this->pdh->put('member', 'revoke', array($member_id));
-					$this->pdh->process_hook_queue();
-				}
+				$this->pdh->put('member', 'revoke', array($intMemberID));
+				$this->pdh->process_hook_queue();
 			}
 			
 			//Sync Rank
 			if ($this->in->get('sync_rank') == 'true'){
-				$member_id = $this->pdh->get('member', 'id', array($this->in->get('name', '')));
-				if ($member_id) {
-					$dataarry = array(
-						'rankid'	=> $intRankID,
-					);
-					$myStatus = $this->pdh->put('member', 'addorupdate_member', array($member_id, $dataarry));
-				}
+				$dataarry = array(
+					'rankid'	=> $intRankID,
+				);
+				$myStatus = $this->pdh->put('member', 'addorupdate_member', array($intMemberID, $dataarry));
 			}
 			
 		}else{
@@ -230,8 +226,8 @@ class guildImporter extends page_generic {
 				'class'			=> $this->game->obj['armory']->ConvertID($this->in->get('class', 0), 'int', 'classes'),
 				'race'			=> $this->game->obj['armory']->ConvertID($this->in->get('race', 0), 'int', 'races'),
 				'guild'			=> $this->in->get('guild', ''),
-				'servername'	=> $this->in->get('servername', ''),
-				'gender'		=> $this->game->obj['armory']->ConvertID($this->in->get('gender', 0), 'int', 'gender')
+				'servername'	=> $strServername,
+				'gender'		=> $this->game->obj['armory']->ConvertID($this->in->get('gender', 0), 'int', 'gender'),
 				'rankid'		=> $intRankID,
 			);
 			$myStatus = $this->pdh->put('member', 'addorupdate_member', array(0, $dataarry));

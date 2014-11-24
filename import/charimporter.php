@@ -78,21 +78,18 @@ class charImporter extends page_generic {
 		}
 
 		$memberArry	= array();
-		$members	= $this->pdh->get('member', 'names', array());
-		if(is_array($members)){
-			asort($members);
-			foreach($members as $membernames){
-				if($membernames != ''){
-					$charid = $this->pdh->get('member', 'id', array($membernames));
-					if($charid){
-						$memberArry[] = array(
-							'charname'	=> $membernames,
-							'charid'	=> $charid,
-						);
-					}
-				}
+		$arrMemberIDs = $this->pdh->get('member', 'id_list', array());
+		$arrMemberIDs = $this->pdh->sort($arrMemberIDs, 'member', 'name', 'asc');
+		foreach($arrMemberIDs as $memberID){
+			$strMemberName = $this->pdh->get('member', 'name', array($memberID));
+			if (strlen($strMemberName)){
+				$memberArry[] = array(
+						'charname'	=> $strMemberName,
+						'charid'	=> $memberID,
+				);
 			}
 		}
+
 		$hmtlout = '<div id="guildimport_dataset">
 						<div id="controlbox">
 							<fieldset class="settings">
@@ -253,7 +250,7 @@ class charImporter extends page_generic {
 			$is_mine		= ($this->pdh->get('member', 'userid', array($isindatabase)) == $this->user->data['user_id']) ? true : false;
 		}else{
 			// Check for existing member name
-			$isindatabase	= $this->pdh->get('member', 'id', array($this->in->get('charname')));
+			$isindatabase	= $this->pdh->get('member', 'id', array($this->in->get('charname'), array('servername' => $this->in->get('servername'))));
 			$hasuserid		= ($isindatabase > 0) ? $this->pdh->get('member', 'userid', array($isindatabase)) : 0;
 			$isMemberName	= $this->in->get('charname');
 			$isServerName	= $this->in->get('servername');
