@@ -85,46 +85,51 @@ class bnet_armory extends gen_class {
 			'1'		=> 'female',
 		),
 		'talent'	=> array(
-			0	=> array(
-				'spell_deathknight_bloodpresence',			// DK
-				'spell_nature_starfall',					// Druid
-				'ability_hunter_bestialdiscipline',			// Hunter
-				'spell_holy_magicalsentry',					// Mage
-				'spell_holy_holybolt',						// Paladin
-				'spell_holy_powerwordshield',				// Priest
-				'ability_rogue_eviscerate',					// Rogue
-				'spell_nature_lightning',					// Shaman
-				'spell_shadow_deathcoil',					// Warlock
-				'ability_warrior_savageblow',				// Warrior
-				'spell_monk_brewmaster_spec',				// Monk
-			),
-			1	=> array(
-				'spell_deathknight_frostpresence',			// DK
-				'ability_druid_catform',					// Druid
-				'ability_hunter_focusedaim',				// Hunter
-				'spell_fire_firebolt02',					// Mage
-				'ability_paladin_shieldofthetemplar',		// Paladin
-				'spell_holy_guardianspirit',				// Priest
-				'ability_backstab',							// Rogue
-				'spell_shaman_improvedstormstrike',			// Shaman
-				'spell_shadow_metamorphosis',				// Warlock
-				'ability_warrior_innerrage',				// Warrior
-				'spell_monk_mistweaver_spec',				// Monk
-			),
-			2	=> array(
-				'spell_deathknight_unholypresence',			// DK
-				'ability_racial_bearform',					// Druid
-				'ability_hunter_camouflage',				// Hunter
-				'spell_frost_frostbolt02',					// Mage
-				'spell_holy_auraoflight',					// Paladin
-				'spell_shadow_shadowwordpain',				// Priest
-				'ability_stealth',							// Rogue
-				'spell_nature_magicimmunity',				// Shaman
-				'spell_shadow_rainoffire',					// Warlock
-				'ability_warrior_defensivestance',			// Warrior
-				'spell_monk_windwalker_spec',				// Monk
-			),
-			3	=> array('spell_nature_healingtouch')		// Druid
+			//DK
+			0 => 'spell_deathknight_bloodpresence',
+			1 => 'spell_deathknight_frostpresence',
+			2 => 'spell_deathknight_unholypresence',
+			//Druid
+			3 => 'spell_nature_starfall',
+			4 => 'ability_druid_catform',
+			5 => 'ability_racial_bearform',
+			6 => 'spell_nature_healingtouch',
+			//Hunter
+			7 => 'ability_hunter_bestialdiscipline',
+			8 => 'ability_hunter_focusedaim',
+			9 => 'ability_hunter_camouflage',
+			//Mage
+			10 => 'spell_holy_magicalsentry',
+			11 => 'spell_fire_firebolt02',
+			12 => 'spell_frost_frostbolt02',
+			//Paladin
+			13 => 'spell_holy_holybolt',
+			14 => 'ability_paladin_shieldofthetemplar',
+			15 => 'spell_holy_auraoflight',
+			//Priest
+			16 => 'spell_holy_powerwordshield',
+			17 => 'spell_holy_guardianspirit',
+			18 => 'spell_shadow_shadowwordpain',
+			//Rogue
+			19 => 'ability_rogue_eviscerate',
+			20 => 'ability_backstab',
+			21 => 'ability_stealth',
+			//Shaman
+			22 => 'spell_nature_lightning',
+			23 => 'spell_shaman_improvedstormstrike',
+			24 => 'spell_nature_magicimmunity',
+			//Warlock
+			25 => 'spell_shadow_deathcoil',
+			26 => 'spell_shadow_metamorphosis',
+			27 => 'spell_shadow_rainoffire',
+			//Warrior
+			28 => 'ability_warrior_savageblow',
+			29 => 'ability_warrior_innerrage',
+			30 => 'ability_warrior_defensivestance',
+			//Monk
+			31 => 'spell_monk_brewmaster_spec',
+			32 => 'spell_monk_mistweaver_spec',
+			33 => 'spell_monk_windwalker_spec',
 		),
 	);
 
