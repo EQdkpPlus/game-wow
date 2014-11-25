@@ -150,6 +150,7 @@ if($this->config->get('servername') && $this->config->get('uc_server_loc')){
 						'CLASSID'		=> $chalmember['class'],
 						'SHOW_LINK'		=> ($chalmember['memberid'] > 0) ? true : false,
 						'MEMBERID'		=> $chalmember['memberid'],
+						'MEMBER_LINK'	=> $this->pdh->get('member', 'memberlink', array($chalmember['memberid'], $this->routing->simpleBuild('character'), '', true)),
 					));
 				}
 			}
