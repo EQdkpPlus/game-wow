@@ -206,6 +206,7 @@ $german_array = array(
 		'uc_charfound'					=> "Der Charakter  <b>%1\$s</b> wurde im battle.net gefunden.",
 		'uc_charfound2'					=> "Das letzte Update dieses Charakters war am <b>%1\$s</b>.",
 		'uc_charfound3'					=> 'ACHTUNG: Beim Import werden bisher gespeicherte Daten überschrieben!',
+		'uc_charfound4'					=> 'ACHTUNG: Der Charakter wurde schon im System gefunden. Er wird daher nicht importiert sondern aktualisiert.',
 		'uc_armory_imported'			=> 'Charakter erfolgreich importiert',
 		'uc_armory_updated'				=> 'Charakter erfolgreich aktualisiert',
 		'uc_armory_impfailed'			=> 'Charakter nicht importiert',
@@ -241,6 +242,7 @@ $german_array = array(
 		'uc_lastupdate'					=> 'Letzte Aktualisierung',
 
 		'uc_prof_import'				=> 'importieren',
+		'uc_prof_update'				=> 'aktualisieren',
 		'uc_import_forw'				=> 'Start',
 		'uc_imp_succ'					=> 'Die Daten wurden erfolgreich importiert',
 		'uc_upd_succ'					=> 'Die Daten wurden erfolgreich aktualisiert',

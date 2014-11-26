@@ -209,6 +209,7 @@ $english_array = array(
 		'uc_charfound'					=> "The character <b>%1\$s</b> has been found in the armory.",
 		'uc_charfound2'					=> "This character was updated on <b>%1\$s</b>.",
 		'uc_charfound3'					=> 'ATTENTION: Importing will overwrite the existing data!',
+		'uc_charfound4'					=> 'ATTENTION: The character is already existing in the system. The character will not be imported but updated',
 		'uc_armory_imported'			=> 'Charakter successfully imported',
 		'uc_armory_updated'				=> 'Charakter successfully updated',
 		'uc_armory_impfailed'			=> 'Charakter not imported',
@@ -244,6 +245,7 @@ $english_array = array(
 		'uc_lastupdate'					=> 'Last Update',
 
 		'uc_prof_import'				=> 'import',
+		'uc_prof_update'				=> 'update',
 		'uc_import_forw'				=> 'continue',
 		'uc_imp_succ'					=> 'The data has been imported successfully',
 		'uc_upd_succ'					=> 'The data has been updated successfully',

@@ -235,7 +235,7 @@ class charImporter extends page_generic {
 			</dl>';
 		
 		$hmtlout .= '</fieldset>';
-		$hmtlout .= '<br/><input type="submit" name="submiti" value="'.$this->game->glang('uc_import_forw').'" class="mainoption" />';
+		$hmtlout .= '<br/><button type="submit" name="submiti"><i class="fa fa-download"></i> '.$this->game->glang('uc_import_forw').'</button>';
 		return $hmtlout;
 	}
 
@@ -298,7 +298,7 @@ class charImporter extends page_generic {
 			if(!isset($chardata['status'])){
 				$hmtlout	.= '
 				<div class="infobox infobox-large infobox-red clearfix">
-					<i class="fa fa-exclamation-triangle fa-4x pull-left"></i> '.$this->game->glang('uc_charfound3').'
+					<i class="fa fa-exclamation-triangle fa-4x pull-left"></i> '.(($isindatabase) ? $this->game->glang('uc_charfound4') : $this->game->glang('uc_charfound3')).'
 				</div>
 
 				<fieldset class="settings mediumsettings">
@@ -321,7 +321,9 @@ class charImporter extends page_generic {
 				$hmtlout	.= '
 					</dl>
 					</fieldset>';
-				$hmtlout		.= '<center><input type="submit" name="submiti" value="'.$this->game->glang('uc_prof_import').'" class="mainoption" /></center>';
+				$hmtlout		.= '<center>
+										<button type="submit" name="submiti"><i class="fa fa-refresh"></i> '.(($isindatabase) ? $this->game->glang('uc_prof_update') : $this->game->glang('uc_prof_import')).'</button>
+									</center>';
 			}else{
 				$hmtlout		.= '<div class="infobox infobox-large infobox-red clearfix">
 										<i class="fa fa-exclamation-triangle fa-4x pull-left"></i> <b>WARNING: </b> '.$chardata['reason'].'

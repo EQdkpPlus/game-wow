@@ -80,7 +80,7 @@ class guildImporter extends page_generic {
 					<dd>'.new hdropdown('rank_sort', array('options' => array(1=>$this->game->glang('uc_rank_filter1a'), 2=>$this->game->glang('uc_rank_filter1b')))).' '.new htext('filter_rank', array('value' => 0, 'size' => '5')).'</dd>
 				</dl>
 			</fieldset>';
-		$hmtlout .= '<br/><input type="submit" name="submiti" value="'.$this->game->glang('uc_import_forw').'" class="mainoption bi_ok" />';
+		$hmtlout .= '<br/><button type="submit" name="submiti"><i class="fa fa-download"></i> '.$this->game->glang('uc_import_forw').'</button>';
 		return $hmtlout;
 	}
 

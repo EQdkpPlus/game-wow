@@ -604,9 +604,11 @@ class bnet_armory extends gen_class {
 		// 3 and 4 are normal, 5 and 6 are heroic
 		$difficulty	= (isset($arrItemData[11])) ? $arrItemData[11] : 0;
 		switch($difficulty){
-			case '0' || '3' || '4': $itemdiff = 'normal';
-			case '5' || '6': $itemdiff = 'heroic';
-			default: $itemdiff = 'normal';
+			case '0' || '1' || '3' || '4' || '9' || '14':	$itemdiff = 'normal';
+			case '2' || '5' || '6' || '11' || '15':			$itemdiff = 'heroic';
+			case '16':										$itemdiff = 'mythic';
+			case '7':										$itemdiff = 'finder';
+			default:										$itemdiff = 'normal';
 		}
 		return array(
 			'difficulty'	=> $itemdiff,
