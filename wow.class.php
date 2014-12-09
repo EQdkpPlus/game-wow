@@ -25,7 +25,7 @@ if(!class_exists('wow')) {
 		protected static $apiLevel	= 20;
 		public $version				= '6.0.2';
 		protected $this_game		= 'wow';
-		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'professions', 'chartooltip');	// which information are stored?
+		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
 		protected $roles			= array();
 		protected $races			= array();															// for each type there must be the according var
@@ -145,10 +145,24 @@ if(!class_exists('wow')) {
 		);
 		
 		public $default_roles = array(
-			1	=> array(2, 5, 6, 8, 11),
-			2	=> array(1, 2, 5, 10, 11),
-			3	=> array(2, 3, 4, 6, 8, 9),
-			4	=> array(1, 2, 5, 7, 8, 10, 11)
+			1	=> array(2, 5, 6, 8, 11),			// healer
+			2	=> array(1, 2, 5, 10, 11),			// tank
+			3	=> array(2, 3, 4, 6, 8, 9),			// dd distance
+			4	=> array(1, 2, 5, 7, 8, 10, 11)		// dd near
+		);
+		
+		public $default_classrole = array(
+			1	=> 4,	// Death Knight
+			2	=> 4,	// Druid
+			3	=> 3,	// Hunter
+			4	=> 3,	// Mage
+			5	=> 4,	// Paladin
+			6	=> 1,	// Priest
+			7	=> 4,	// Rogue
+			8	=> 4,	// Shaman
+			9	=> 3,	// Warlock
+			10	=> 1,	// Warrior
+			11	=> 4,	// Monk
 		);
 		
 		protected $class_colors = array(
