@@ -39,6 +39,7 @@ class bnet_armory extends gen_class {
 		'serverloc'				=> 'us',
 		'locale'				=> 'en',
 		'caching'				=> true,
+		'image-caching'			=> true,
 		'caching_time'			=> 24,
 		'apiUrl'				=> '',
 		'apiRenderUrl'			=> '',
@@ -192,6 +193,9 @@ class bnet_armory extends gen_class {
 		if(isset($setting['caching'])){
 			$this->_config['caching']	= $setting['caching'];
 		}
+		if(isset($setting['image-caching'])){
+			$this->_config['image-caching']	= $setting['image-caching'];
+		}
 		if(isset($setting['apiKey'])){
 			$this->_config['apiKey']	= $setting['apiKey'];
 		}
@@ -335,7 +339,7 @@ class bnet_armory extends gen_class {
 	}
 
 	public function characterIconSimple($race, $gender='0'){
-		return $this->_config['staticimageURL'].sprintf('2d/profilemain/race/%s-%s.jpg', $race, $gender);
+		return $this->cacheIcon($this->_config['staticimageURL'].sprintf('2d/profilemain/race/%s-%s.jpg', $race, $gender), false);
 	}
 
 	/**
@@ -362,7 +366,21 @@ class bnet_armory extends gen_class {
 	}
 
 	public function talentIcon($name){
-		return $this->_config['staticiconURL'].'36/'.$name.'.jpg';
+		return $this->cacheIcon($this->_config['staticiconURL'].'36/'.$name.'.jpg');
+	}
+
+	public function cacheIcon($url, $withsize = true, $forceUpdateAll = false){
+		if(!$this->_config['image-caching']) { return $url; }
+		$path			= explode('/', $url);
+		$image_name		= (($withsize) ? $path[count($path)-2].'_' : '').$path[count($path)-1];
+		$img_icon		= $this->get_CachedData($image_name, false, true, false,true);
+		
+		// download the icon
+		if(!$img_icon || $forceUpdateAll){
+			$this->set_CachedData($this->read_url($url), $image_name, true);
+			$img_icon	= $this->get_CachedData($image_name, false, true, false,true);
+		}
+		return $img_icon;
 	}
 
 	public function selectedTitle($titles, $cleantitle=false){
