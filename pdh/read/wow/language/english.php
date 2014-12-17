@@ -1,6 +1,6 @@
 <?php
 /*	Project:	EQdkp-Plus
- *	Package:	World of Warcraft game package
+ *	Package:	EQdkp-Plus Language File
  *	Link:		http://eqdkp-plus.eu
  *
  *	Copyright (C) 2006-2015 EQdkp-Plus Developer Team
@@ -18,24 +18,28 @@
  *	You should have received a copy of the GNU Affero General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-if (!defined('EQDKP_INC'))
-{
-  header('HTTP/1.0 404 Not Found'); exit;
+ 
+if (!defined('EQDKP_INC')) {
+	die('You cannot access this file directly.');
 }
 
-$module_lang = array(
-	'charicon'           => '',
-	'achievementpoints' 	=> 'Achievement Points',
-	'averageItemLevelEquipped' => 'Itemlevel (eqipped)',
-	'profilers'				=> 'Externe Profilseiten'
-);
+//Language: English	
+//Created by EQdkp Plus Translation Tool on  2014-12-17 21:28
+//File: games/wow/pdh/read/wow/language/english.php
+//Source-Language: german
 
-$preset_lang = array(
-  'wow_charicon' 			=> 'WoW Charicon',
-  'wow_achievementpoints'	=> 'WoW Achievement Points',
-  'wow_gearlevel' 			=> 'WoW Itemlevel (eqipped)',
-  'wow_profiler' 			=> 'WoW external profile pages',
-);
+$module_lang = array(
+	"charicon" => '',
+	"achievementpoints" => 'Achievement Points',
+	"averageItemLevelEquipped" => 'Itemlevel (eqipped)',
+	"profilers" => 'Externe Profilseiten',
+	);
+	$preset_lang = array(
+	"wow_charicon" => 'WoW Charicon',
+	"wow_achievementpoints" => 'WoW Achievement Points',
+	"wow_gearlevel" => 'WoW Itemlevel (eqipped)',
+	"wow_profiler" => 'WoW external profile pages',
+	);
+	
 
 ?>
