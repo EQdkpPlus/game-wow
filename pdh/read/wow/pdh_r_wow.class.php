@@ -121,7 +121,7 @@ if (!class_exists('pdh_r_wow')) {
 			if ($charicon == '') {
 				$charicon = $this->server_path.'images/global/avatar-default.svg';
 			}
-			return '<img src="'.$charicon.'" alt="Char-Icon" height="48" />';
+			return '<img src="'.$charicon.'" alt="Char-Icon" height="48" class="gameicon"/>';
 		}
 
 		public function get_averageItemLevelEquipped($member_id){
@@ -154,7 +154,7 @@ if (!class_exists('pdh_r_wow')) {
 			
 			if(is_array($a_profilers)){
 				foreach($a_profilers as $v_profiler){
-					$output	.= '<a href="'.$v_profiler['url'].'"><img src="'.$v_profiler['icon'].'" alt="'.$v_profiler['name'].'" width="20" /></a> '; 
+					$output	.= '<a href="'.$v_profiler['url'].'"><img src="'.$v_profiler['icon'].'" alt="'.$v_profiler['name'].'" width="20" class="gameicon"/></a> '; 
 				}
 			}
 			return $output;

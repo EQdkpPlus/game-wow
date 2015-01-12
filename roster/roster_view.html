@@ -1,7 +1,7 @@
 <div id="guild_header_wrap">	
 	<div id="guild_header_banner_{FACTION}">
 		<div id="guild_emblem">
-			<img src="{TABARD}" alt="Guildtabard" />
+			<img src="{TABARD}" alt="Guildtabard" class="gameicon" />
 		</div>	
 		<div id="guild_name">{GUILD}</div>
 		<div id="guild_realm">{REGION}-{REALM} &bull; {ACHIEV_POINTS} <i class="adminicon"></i></div>
@@ -20,7 +20,7 @@
 	
 		
 	<div id="news">
-		<table width="100%" class="colorswitch hoverrows" cellspacing="0" cellpadding="6">
+		<table class="table fullwidth colorswitch hoverrows">
 		<!-- BEGIN guildnews -->
 		<tr>
 			<td width="25">{guildnews.ICON}
@@ -43,7 +43,7 @@
 		<!-- END guildachievs -->
 		<div class="clear"></div>
 		<h2>{GL_latest_guildachievs}</h2>
-		<table width="100%" class="colorswitch hoverrows" cellspacing="0" cellpadding="6">
+		<table class="table fullwidth colorswitch hoverrows">
 		<!-- BEGIN latestachievs -->
 		<tr>
 			<td width="25">{latestachievs.ICON}
@@ -62,7 +62,7 @@
 	<div id="challenge">
 		<div class="challenge_title">{GL_challenge_title}</div>
 		<!-- BEGIN challenges -->
-		<table width="100%" class="colorswitch hoverrows" cellspacing="0" cellpadding="6">
+		<table class="table fullwidth colorswitch hoverrows">
 		<tr>
 			<th colspan="3" class="dungeon-name">
 				<span class="zone-thumbnail thumb-{challenges.ICON}"></span>
@@ -97,7 +97,7 @@
 		<div class="roster_class_container" data-level-id="{class_row.CLASS_LEVEL}" <!-- IF class_row.IS_PRIMARY -->data-is-primary="1" data-class-id="{class_row.CLASS_ID}"<!-- ENDIF -->>
 			<h{class_row.CLASS_LEVEL} class="<!-- IF class_row.IS_PRIMARY -->class_{class_row.CLASS_ID}<!-- ENDIF --> level_{class_row.CLASS_LEVEL}">{class_row.CLASS_ICONS} {class_row.CLASS_NAME}</h1>
 			<!-- IF class_row.ENDLEVEL -->
-			<table width="100%" class="colorswitch hoverrows" cellspacing="0" cellpadding="2">
+			<table class="table fullwidth colorswitch hoverrows">
 				{class_row.MEMBER_LIST}
 			</table>
 			<br /><br />
