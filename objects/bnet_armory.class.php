@@ -620,6 +620,8 @@ class bnet_armory extends gen_class {
 		//112417:0:0:0:0:0:0:0:lvl90:upg 491:dif 5:2:448:449
 		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
 		$arrItemData = explode(':', $item_id);
+		if(!is_array($arrItemData) || (is_array($arrItemData) && count($arrItemData)<5)) { return false; }
+		
 		// 3 and 4 are normal, 5 and 6 are heroic
 		$difficulty	= (isset($arrItemData[11])) ? $arrItemData[11] : 0;
 		switch($difficulty){
@@ -641,13 +643,15 @@ class bnet_armory extends gen_class {
 
 	//{"id":110050,"availableContexts":["dungeon-level-up-1","dungeon-level-up-2","dungeon-level-up-3","dungeon-level-up-4","dungeon-normal","dungeon-heroic"]}
 	public function item_context($itemdata, $itemmetadata){
-		$itemdata		= json_decode($itemdata, true);
-		$bonuslist		= (isset($itemmetadata['bonuslist'])) ? '&bl='.implode(',',$itemmetadata['bonuslist']) : '';
-		$contextname	= array_values($this->helper_partialmatch($itemmetadata['difficulty'], $itemdata['availableContexts']))[0];
+		if($itemmetadata){
+			$itemdata		= json_decode($itemdata, true);
+			$bonuslist		= (isset($itemmetadata['bonuslist'])) ? '&bl='.implode(',',$itemmetadata['bonuslist']) : '';
+			$contextname	= array_values($this->helper_partialmatch($itemmetadata['difficulty'], $itemdata['availableContexts']))[0];
 
-		if(isset($itemdata['availableContexts']) && is_array($itemdata['availableContexts']) && count($itemdata['availableContexts']) > 0 && isset($contextname[0])){
-			$wowurl		= $this->_config['apiUrl'].sprintf('wow/item/%s/%s?locale=%s&apikey=%s%s', $itemdata['id'], $contextname, $this->_config['locale'], $this->_config['apiKey'],$bonuslist);
-			return $this->read_url($wowurl);
+			if(isset($itemdata['availableContexts']) && is_array($itemdata['availableContexts']) && count($itemdata['availableContexts']) > 0 && isset($contextname[0])){
+				$wowurl		= $this->_config['apiUrl'].sprintf('wow/item/%s/%s?locale=%s&apikey=%s%s', $itemdata['id'], $contextname, $this->_config['locale'], $this->_config['apiKey'],$bonuslist);
+				return $this->read_url($wowurl);
+			}
 		}
 		return $itemdata;
 	}
