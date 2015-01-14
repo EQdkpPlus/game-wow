@@ -647,11 +647,18 @@ class bnet_armory extends gen_class {
 			$itemdata		= json_decode($itemdata, true);
 			$bonuslist		= (isset($itemmetadata['bonuslist'])) ? '&bl='.implode(',',$itemmetadata['bonuslist']) : '';
 			$contextname	= array_values($this->helper_partialmatch($itemmetadata['difficulty'], $itemdata['availableContexts']))[0];
-
-			if(isset($itemdata['availableContexts']) && is_array($itemdata['availableContexts']) && count($itemdata['availableContexts']) > 0 && isset($contextname[0])){
-				$wowurl		= $this->_config['apiUrl'].sprintf('wow/item/%s/%s?locale=%s&apikey=%s%s', $itemdata['id'], $contextname, $this->_config['locale'], $this->_config['apiKey'],$bonuslist);
-				return $this->read_url($wowurl);
-			}
+			$availContexts	= $itemdata['availableContexts'];
+			$itemid			= $itemdata['id'];
+		}else{
+			$itemdata_tmp	= json_decode($itemdata, true);
+			$bonuslist		= '';
+			$contextname	= 'raid-normal';
+			$availContexts	= (isset($itemdata_tmp['availableContexts']) &&$itemdata_tmp['availableContexts'][0] != '') ? $itemdata_tmp['availableContexts'] : false;
+			$itemid			= $itemdata_tmp['id'];
+		}
+		if(isset($availContexts) && is_array($availContexts) && count($availContexts) > 0 && isset($contextname)){
+			$wowurl		= $this->_config['apiUrl'].sprintf('wow/item/%s/%s?locale=%s&apikey=%s%s', $itemid, $contextname, $this->_config['locale'], $this->_config['apiKey'],$bonuslist);
+			return $this->read_url($wowurl);
 		}
 		return $itemdata;
 	}
