@@ -64,7 +64,7 @@
 									<table width="100%" border="0">
 										<tr valign="top" >
 											<td width="100%">
-												<table border="0" cellspacing="0" cellpadding="2" width="100%" >
+												<table class="table fullwidth">
 													<tr>
 														<th align="center" ><a target="_blank" href="{bnetlinks:talents}">{GL_skills}</a></th>
 													</tr>
@@ -75,7 +75,7 @@
 																	<!-- BEGIN talents -->
 																	<li>
 																		<a href='#talenttab-{talents.ID}'>
-																			<span class="talenttab_icon"><img class="icon-frame" src="{talents.ICON}" alt=""/></span>
+																			<span class="talenttab_icon"><img class="icon-frame gameicon" src="{talents.ICON}" alt="" /></span>
 																			<span class="talenttab_name">{talents.NAME}</span>
 																			<!-- IF talents.SELECTED --><span class="talenttab_select"><i class="fa fa-check-square fa-fw fa-lg" style="color:green;"></i></span><!-- ENDIF -->
 																		</a>
@@ -84,10 +84,10 @@
 																</ul>
 																<!-- BEGIN talents -->
 																<div id="talenttab-{talents.ID}">
-																	<table border="0" width="100%" cellspacing="0" cellpadding="0" id="talents_{talents.ID}">
+																	<table id="talents_{talents.ID}" class="table fullwidth">
 																		<tr>
 																			<td width="70%">
-																				<table border="0" width="100%" cellspacing="0" cellpadding="0">
+																				<table class="table fullwidth">
 																					<!-- BEGIN special -->
 																					<tr <!-- IF talents.special.DESCRIPTION --> class="coretip" data-coretip="{talents.special.DESCRIPTION}" <!-- ENDIF -->>
 																						<td class="absmiddle" width="34" align="center">{talents.special.ICON}</td>
@@ -97,7 +97,7 @@
 																				</table>
 																			</td>
 																			<td width="30%">
-																			<table border="0" width="100%" cellspacing="0" cellpadding="0">
+																			<table class="table fullwidth">
 																					<tr style="height:24px;">
 																						<td colspan="3">{GL_major_glyphs}</td>
 																					</tr>
@@ -131,14 +131,14 @@
 										</tr>
 										<tr>
 											<td>
-												<table border="0" width="100%" cellspacing="0" cellpadding="2" >
+												<table class="table fullwidth">
 													<tr>
 														<th colspan="2" align="center" ><a target="_blank" href="{bnetlinks:profession}">{GL_uc_prof_professions}</a></th>
 													</tr>
 													<!-- BEGIN professions -->
 													<tr class="row2 profession-row">
 														<td>
-															<span class="profession-icon icon-frame frame-14"><img src="{professions.ICON}" alt="" /></span><span class="profession-name">{professions.NAME}</span>
+															<span class="profession-icon icon-frame frame-14"><img src="{professions.ICON}" alt="" class="gameicon" /></span><span class="profession-name">{professions.NAME}</span>
 														</td>
 														<td width="60%">
 															{professions.BAR}
@@ -150,7 +150,7 @@
 										</tr>
 										<tr>
 											<td>
-												<table border="0" width="100%" cellspacing="0" cellpadding="2" >
+												<table class="table fullwidth">
 													<tr>
 														<th>
 															<div class="floatLeft" style="line-height: 25px;">
@@ -172,7 +172,7 @@
 															<div id="boxes">
 																<!-- BEGIN charattribute_group -->
 																<div id='{charattribute_group.ID}'>
-																	<table width='100%' cellspacing='0' cellpadding='2' class='colorswitch hoverrows'>
+																	<table class='table fullwidth colorswitch hoverrows'>
 																	<!-- BEGIN charattributes -->
 																		<tr>
 																			<td width='170'>{charattribute_group.charattributes.NAME}</td>
@@ -190,7 +190,7 @@
 										</tr>
 										<tr>
 											<td>
-												<table border="0" width="100%" cellspacing="0" cellpadding="2" >
+												<table class="table fullwidth">
 													<tr>
 														<th>
 															<div class="floatLeft" style="line-height: 25px;">{GL_profilers}</div>
@@ -200,7 +200,7 @@
 														<td width="100%">
 															<div id="boxes">
 																<!-- BEGIN profilers -->
-																<a href="{profilers.URL}"><img src="{profilers.IMG}" alt="{profilers.ALT}" /></a>
+																<a href="{profilers.URL}"><img src="{profilers.IMG}" alt="{profilers.ALT}" class="gameicon" /></a>
 																<!-- END profilers -->
 															</div>
 														</td>
@@ -218,7 +218,7 @@
 	</div>
 	<br />
 
-	<table width="100%" border="0" cellspacing="1" cellpadding="1" class="borderless">
+	<table class="table fullwidth borderless">
 		<tr>
 			<td valign="top" width="95%">
 				<div id='char1_tabs'>
@@ -240,7 +240,7 @@
 
 								<!-- BEGIN bossprogress_cat -->
 								<div id="achievementtab-{bossprogress_cat.ID}">
-									<table border="0" width="100%" class="colorswitch">
+									<table class="table fullwidth colorswitch">
 									<!-- BEGIN bossprogress_val -->
 										<tr>
 											<td class="raideventicon id{bossprogress_cat.bossprogress_val.ID}"></td>
@@ -271,7 +271,7 @@
 
 							<div class="clear"></div>
 							<h2>{GL_latest_guildachievs}</h2>
-							<table width="100%" class="colorswitch hoverrows" cellspacing="0" cellpadding="6">
+							<table class="table fullwidth colorswitch hoverrows">
 							<!-- BEGIN latestachievements -->
 							<tr>
 								<td width="25">{latestachievements.ICON}
@@ -290,13 +290,13 @@
 
 					<div id="char1tabs-3">
 						<div class="tab-content">
-							<table width='100%' border='0' cellspacing='1' cellpadding='2' class='colorswitch'>
+							<table class='table fullwidth colorswitch'>
 								<tr>
 									<th  align='center' colspan='4' class='nowrap'>{GL_charnewsfeed}</th>
 								</tr>
 								<!-- BEGIN charfeed -->
 								<tr style='height:28;' align='center'>
-									<td width='28' height='28'><img src='{charfeed.ICON}' alt='feedicon' /></td>
+									<td width='28' height='28'><img src='{charfeed.ICON}' alt='feedicon' class="gameicon" /></td>
 									<td align='left'>{charfeed.TEXT}</td>
 									<td width='120' align='center'>{charfeed.DATE}</td>
 								</tr>
@@ -308,7 +308,7 @@
 					<!-- IF S_ADMIN -->
 					<div id="char1tabs-4">
 						<div class="tab-content">
-							<table width="100%" border="0" cellspacing="0" cellpadding="1">
+							<table class="table fullwidth">
 								<tr class="row1" >
 									<td align="left" width="40%" class="nowrap">
 										{NOTES}
@@ -325,10 +325,23 @@
 	<br />
 	<br />
 <!-- ELSE -->
-<div class="row1">
-	<table width="100%" cellspacing="0" cellpadding="1" border="0" style="max-width:1140px;">
-		<tr>
-			<td><div id="profile">
+
+<!-- IF ERRORMSG_BNET != "" -->
+<div class="infobox infobox-large infobox-red clearfix">
+	<i class="icon-laptop fa-4x pull-left"></i> {ERRORMSG_BNET}
+</div>
+<!-- ENDIF -->
+
+<!-- IF NO_SERVER_SET -->
+<div class="infobox infobox-large infobox-red clearfix">
+	<i class="fa fa-exclamation-triangle fa-4x pull-left"></i> {GL_no_realm}
+</div>
+<!-- ENDIF -->
+
+<div class="grid">
+	<div class="onerow">
+		<div class="col12 last">
+			<div id="profile">
 					<div id="profile_charicon">
 						<img border='0' src="{CHARDATA_ICON}" alt="" />
 					</div>
@@ -350,66 +363,47 @@
 					</div>
 					<div class="clear"></div>
 				</div>
-			</td>
-		</tr>
-
-		<tr class="row1" >
-			<td valign="top" align="center">
-
-				<table border="0" align="left" width="100%" style="height: 550px;">
-					<tr valign="top">
-						<td  width="27"> &nbsp;</td>
-						<td style="background: #1e130d url({CHARACTER_IMG}) center top no-repeat;"></td>
-						<td width="400">
-
-							<div class="healthpowerbar">
-								<ul>
-									<li class="health"><span class="name">{GL_health}</span><span class="value">{DATA_HEALTH_BAR}</span></li>
-									<li class="{DATA_SECOND_NAME}"><span class="name">{POWER_BAR_NAME}</span><span class="value">{DATA_SECOND_BAR}</span></li>
-								</ul>
-							</div>
-
-							<table width="100%" border="0">
-								<tr valign="top" >
-									<td width="100%">
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<table border="0" width="100%" cellspacing="0" cellpadding="2" >
-											<tr>
-												<th colspan="2" align="center" >{GL_uc_prof_professions}</th>
-											</tr>
-											<!-- BEGIN professions -->
-											<tr class="row2 profession-row">
-												<td>
-													<span class="profession-icon icon-frame frame-14"><img src="{professions.ICON}" alt="" /></span><span class="profession-name">{professions.NAME}</span>
-												</td>
-												<td width="200px">
-													{professions.BAR}
-												</td>
-											</tr>
-											<!-- END professions -->
-										</table>
-									</td>
-								</tr>
-							</table>
-							<br/>
-							<div class="infobox infobox-large infobox-red clearfix">
-								<i class="icon-laptop fa-4x pull-left"></i> {ERRORMSG_BNET}
-							</div>
-							<!-- IF NO_SERVER_SET -->
-							<div class="infobox infobox-large infobox-red clearfix">
-								<i class="fa fa-exclamation-triangle fa-4x pull-left"></i> {GL_no_realm}
-							</div>
-							<!-- ENDIF -->
-						</td>
-					</tr>
-			 	</table>
-			</td>
-		</tr>
-	</table>
+		</div>
 	</div>
+	
+	<div class="onerow">
+		<div class="col6">
+			<table border="0" align="left" width="100%" style="height: 550px; max-width:740px;">
+				<tr valign="top">
+					<td style="background: #1e130d url({CHARACTER_IMG}) center top no-repeat;"></td>
+				</tr>
+		 	</table>
+		
+		</div>
+		<div class="col4">
+			<div class="healthpowerbar">
+				<ul>
+					<li class="health"><span class="name">{GL_health}</span><span class="value">{DATA_HEALTH_BAR}</span></li>
+					<li class="{DATA_SECOND_NAME}"><span class="name">{POWER_BAR_NAME}</span><span class="value">{DATA_SECOND_BAR}</span></li>
+				</ul>
+			</div>
+			
+			<table class="table fullwidth">
+				<tr>
+					<th colspan="2" align="center" >{GL_uc_prof_professions}</th>
+				</tr>
+				<!-- BEGIN professions -->
+				<tr class="row2 profession-row">
+					<td>
+						<span class="profession-icon icon-frame frame-14"><img src="{professions.ICON}" alt="" class="gameicon"/></span><span class="profession-name">{professions.NAME}</span>
+					</td>
+					<td width="200px">
+						{professions.BAR}
+					</td>
+				</tr>
+				<!-- END professions -->
+			</table>
+		</div>
+		<div class="col2 last">
+		</div>
+	</div>
+</div>
+<br />
 <!-- ENDIF -->
 
 <div class="tableHeader">
@@ -417,7 +411,7 @@
 </div>
 <input type="checkbox" onchange="window.location='{SID}&with_twinks='+ ((this.checked) ? 0 : 1)" name="with_twinks" value="1" <!-- IF not S_WITH_TWINK_DKP -->checked="checked"<!-- ENDIF -->/> {L_points_for_this_char}
 <br /><br />
-<table width="100%" border="0" cellspacing="1" cellpadding="2" class="hptt colorswitch scrollable-x borderless">
+<table class="table fullwidth hptt colorswitch scrollable-x borderless">
 	{MEMBER_POINTS}
 </table>
 <br />
@@ -451,7 +445,7 @@
 		<div class="tableHeader">
 			<h2>{L_raid_attendance_history}</h2>
 		</div>
-		<table width="100%" border="0" cellspacing="1" cellpadding="2" class="hptt colorswitch scrollable-x">
+		<table class="table fullwidth hptt colorswitch scrollable-x">
 		{RAID_OUT}
 		</table>
 		<div class="center pagination_wrapper">
@@ -464,7 +458,7 @@
 		<div class="tableHeader">
 			<h2>{L_item_purchase_history}</h2>
 		</div>
-		<table width="100%" border="0" cellspacing="1" cellpadding="2" class="hptt colorswitch scrollable-x">
+		<table class="table fullwidth hptt colorswitch scrollable-x">
 		{ITEM_OUT}
 		</table>
 		<div class="center pagination_wrapper">
@@ -478,7 +472,7 @@
 		<div class="tableHeader">
 			<h2>{L_individual_adjustment_history}</h2>
 		</div>
-		<table width="100%" border="0" cellspacing="1" cellpadding="2" class="hptt colorswitch scrollable-x">
+		<table class="table fullwidth hptt colorswitch scrollable-x">
 		{ADJUSTMENT_OUT}
 		</table>
 		<div class="center pagination_wrapper">
@@ -489,7 +483,7 @@
 
 	<!-- ATTENDANCE -->
 	<div id="fragment-2-4">
-		<table width="100%" border="0" cellspacing="1" cellpadding="2" class="hptt colorswitch scrollable-x">
+		<table class="table fullwidth hptt colorswitch scrollable-x">
 		{EVENT_ATT_OUT}
 		</table>
 	</div>

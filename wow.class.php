@@ -908,7 +908,7 @@ if(!class_exists('wow')) {
 				if ($achievData){
 					$arrAchievsOut[] = array(
 						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink('', $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrGuildAchievementsData).':a'.$achievID.'">'.$achievData['title'].'</a>',
-						'icon'	=> '<img src="http://eu.media.blizzard.com/wow/icons/18/'.$achievData['icon'].'.jpg" alt="" />',
+						'icon'	=> '<img class="gameicon" src="http://eu.media.blizzard.com/wow/icons/18/'.$achievData['icon'].'.jpg" alt="" />',
 						'desc'	=> $achievData['description'],
 						'points'=> $achievData['points'],
 						'date'	=> substr($arrAchieveTimes[$key], 0, -3),
@@ -940,7 +940,7 @@ if(!class_exists('wow')) {
 					$class = ($achievData['accountWide'] == 1) ? 'accountwide' : '';
 					$arrAchievsOut[] = array(
 						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink($charname, $this->config->get('servername'), 'achievements').'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrCharAchievementsData).':a'.$achievID.'" class="'.$class.'">'.$achievData['title'].'</a>',
-						'icon'	=> '<img src="http://eu.media.blizzard.com/wow/icons/18/'.$achievData['icon'].'.jpg" alt="" />',
+						'icon'	=> '<img class="gameicon" src="http://eu.media.blizzard.com/wow/icons/18/'.$achievData['icon'].'.jpg" alt="" />',
 						'desc'	=> $achievData['description'],
 						'points'=> $achievData['points'],
 						'date'	=> substr($arrAchieveTimes[$key], 0, -3),
