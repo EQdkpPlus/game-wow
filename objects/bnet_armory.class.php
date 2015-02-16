@@ -155,7 +155,7 @@ class bnet_armory extends gen_class {
 		$this->_config['serverloc']	= ($serverloc != '') ? $serverloc : 'en_EN';
 		$this->_config['locale']	= $locale;
 		$this->setApiUrl($this->_config['serverloc']);
-		$this->_config['apiKey']	= (defined('GAME_IMPORTER_APIKEY')) ? GAME_IMPORTER_APIKEY : registry::register('game')->get_import_apikey();
+		$this->_config['apiKey']	= (defined('GAME_IMPORTER_APIKEY')) ? GAME_IMPORTER_APIKEY : (class_exists('registry')) ? registry::register('game')->get_import_apikey() : '';
 	}
 	
 	public function __get($name) {
@@ -652,8 +652,8 @@ class bnet_armory extends gen_class {
 		}else{
 			$itemdata_tmp	= json_decode($itemdata, true);
 			$bonuslist		= '';
-			$contextname	= 'raid-normal';
 			$availContexts	= (isset($itemdata_tmp['availableContexts']) &&$itemdata_tmp['availableContexts'][0] != '') ? $itemdata_tmp['availableContexts'] : false;
+			$contextname	= (in_array('raid-normal', $itemdata_tmp['availableContexts'])) ? 'raid-normal' : $itemdata_tmp['availableContexts'][0];
 			$itemid			= $itemdata_tmp['id'];
 		}
 		if(isset($availContexts) && is_array($availContexts) && count($availContexts) > 0 && isset($contextname)){
