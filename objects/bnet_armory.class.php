@@ -615,6 +615,20 @@ class bnet_armory extends gen_class {
 		$errorchk	= $this->CheckIfError($itemdata);
 		return (!$errorchk) ? $itemdata: $errorchk;
 	}
+
+	public function armory2itemid($id, $context, $bonuslist=array(), $itemlevel='0'){
+		switch($context){
+			case 'raid-normal':		$item_difficulty = '1';
+			case 'raid-heroic':		$item_difficulty = '15';
+			case 'raid-mythic':		$item_difficulty = '16';
+			case 'raid-finder':		$item_difficulty = '7';
+			case 'trade-skill':		$item_difficulty = '99';
+			default:							$item_difficulty = '1';
+		}
+		
+		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
+		return $itemid.':0:0:0:0:0:0:0:'.$itemlevel.':0:'.$item_difficulty.':'.count($bonuslist).':'.implode(':',$bonuslist);
+	}
 	
 	public function eqdkpitemid_meta($item_id){
 		//112417:0:0:0:0:0:0:0:lvl90:upg 491:dif 5:2:448:449
@@ -629,6 +643,7 @@ class bnet_armory extends gen_class {
 			case '2' || '5' || '6' || '11' || '15':			$itemdiff = 'heroic';
 			case '16':										$itemdiff = 'mythic';
 			case '7':										$itemdiff = 'finder';
+			case '99':										$itemdiff = 'skill';
 			default:										$itemdiff = 'normal';
 		}
 		return array(
