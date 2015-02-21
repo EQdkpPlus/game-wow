@@ -155,7 +155,7 @@ class bnet_armory extends gen_class {
 		$this->_config['serverloc']	= ($serverloc != '') ? $serverloc : 'en_EN';
 		$this->_config['locale']	= $locale;
 		$this->setApiUrl($this->_config['serverloc']);
-		$this->_config['apiKey']	= (defined('GAME_IMPORTER_APIKEY')) ? GAME_IMPORTER_APIKEY : (class_exists('registry')) ? registry::register('game')->get_import_apikey() : '';
+		$this->_config['apiKey']	= (defined('GAME_IMPORTER_APIKEY')) ? GAME_IMPORTER_APIKEY : ((class_exists('registry')) ? registry::register('game')->get_import_apikey() : '');
 	}
 	
 	public function __get($name) {
