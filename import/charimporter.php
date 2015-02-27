@@ -278,7 +278,7 @@ class charImporter extends page_generic {
 			$hmtlout	.= new hhidden('member_race_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['race'], 'int', 'races')));
 			$hmtlout	.= new hhidden('member_class_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['class'], 'int', 'classes')));
 			$hmtlout	.= new hhidden('guild', array('value' => $chardata['guild']['name']));
-			$hmtlout	.= new hhidden('servername', array('value' => $isServerName));
+			$hmtlout	.= new hhidden('servername', array('value' => $chardata['realm']));
 			$hmtlout	.= new hhidden('last_update', array('value' => ($chardata['lastModified']/1000)));
 
 			// primary professions
@@ -315,9 +315,9 @@ class charImporter extends page_generic {
 					<dl>';
 				if(!$isindatabase){
 					if($this->user->check_auth('u_member_conn', false)){
-						$hmtlout	.= $this->user->lang('overtake_char').' '.new hradio('overtakeuser', array('value' => 1));
+						$hmtlout	.= '<dt>'.$this->user->lang('overtake_char').'</dt><dd>'.new hradio('overtakeuser', array('value' => 1)).'</dd>';
 					}else{
-						$hmtlout	.= $this->user->lang('overtake_char').' '.new hradio('overtakeuser', array('value' => 1, 'disabled' => true));
+						$hmtlout	.= '<dt>'.$this->user->lang('overtake_char').'</dt><dd>'.new hradio('overtakeuser', array('value' => 1, 'disabled' => true)).'</dd>';
 						$hmtlout	.= new hhidden('overtakeuser', array('value' => '1'));
 					}
 				}
