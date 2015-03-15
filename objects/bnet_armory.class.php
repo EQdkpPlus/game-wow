@@ -616,7 +616,7 @@ class bnet_armory extends gen_class {
 		return (!$errorchk) ? $itemdata: $errorchk;
 	}
 
-	public function armory2itemid($id, $context, $bonuslist=array(), $itemlevel='0'){
+	public function armory2itemid($itemid, $context, $bonuslist=array(), $itemlevel='0'){
 		switch($context){
 			case 'raid-normal':		$item_difficulty = '1';
 			case 'raid-heroic':		$item_difficulty = '15';
