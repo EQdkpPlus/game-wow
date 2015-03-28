@@ -526,7 +526,7 @@ if(!class_exists('wow')) {
 					
 					$char_server	= $this->pdh->get('member', 'profile_field', array($memberID, 'servername'));
 					$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
-					$chardata		= $this->game->obj['armory']->character($membername, unsanitize($servername), true);
+					$chardata		= $this->game->obj['armory']->character($strMemberName, unsanitize($servername), true);
 						
 					if(!isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 						$errormsg	= '';
@@ -535,7 +535,7 @@ if(!class_exists('wow')) {
 						// insert into database
 					
 						$info = $this->pdh->put('member', 'addorupdate_member', array($charid, array(
-								'name'				=> $membername,
+								'name'				=> $strMemberName,
 								'level'				=> $chardata['level'],
 								'gender'			=> $this->game->obj['armory']->ConvertID($chardata['gender'], 'int', 'gender'),
 								'race'				=> $this->game->obj['armory']->ConvertID($chardata['race'], 'int', 'races'),
