@@ -198,7 +198,7 @@ $german_array = array(
 		'apikey_title_step1'			=> 'API-Schlüssel Informationen',
 		'apikey_content_step1'			=> 'Bei der neuen battle.net API muss jede App einen individuellen API-Schlüssel für den Datenabruf erstellen. Ohne den API-Schlüssel können keine Charaketere von battle.net aktualisiert oder importiert werden. Diese Anleitung hilft dir beim Registrieren des API-Schlüssels.',
 		'apikey_title_step2'			=> 'Erhalte einen kostenlosen API-Schlüssel',
-		'apikey_content_step2'			=> 'Besuche die <a href="https://dev.battle.net" target="_blank">Battle.net API</a> Seite und erstelle einen neuen Mashery Account. Registriere eine <a href="https://dev.battle.net/apps/register" target="_blank">neue Anwendung</a> und benutze dazu den Gildenamen, die Webseite und eine Kurzbeschreibung. Wähle die Scheckbox "Issue a new key for game APIs". Der Schlüssel wird per E-Mail zugesendet.',
+		'apikey_content_step2'			=> 'Besuche die <a href="https://dev.battle.net" target="_blank">Battle.net API</a> Seite und erstelle einen neuen Mashery Account. Registriere eine <a href="https://dev.battle.net/apps/register" target="_blank">neue Anwendung</a> und benutze dazu den Gildenamen, die Webseite und eine Kurzbeschreibung. Wähle die Checkbox "Issue a new key for game APIs". Der Schlüssel wird per E-Mail zugesendet.',
 		'apikey_title_step3'			=> 'Gib den API-Schlüssen ein',
 		'apikey_content_step3'			=> 'Gib hier den API-Schlüssel den du per E-Mail erhalten hast ein.<br/>API-Schlüssel: {APIKEY_FORM}',
 	
