@@ -44,7 +44,6 @@ table.wh_outer {
 
 	height: 0;
 	min-width: 350px;
-    	width:expression(this.width < 350 ? "350px" : true);
 }
 
 table.wowhead_tooltip {
@@ -60,7 +59,6 @@ table.wowhead_tooltip {
 	width: auto;
 	height: 0;
 	max-width: 400px;
-	width:expression(this.width > 300 ? "300px" : true);
 }
 
 table.wowhead_tooltip td, table.wowhead_tooltip tr, table.wowhead_tooltip th {
@@ -147,7 +145,6 @@ table.wowhead_tooltip div.wh_inner{
 	width: auto;
 
 	max-width: 400px;
-	width:expression(this.width > 300 ? "300px" : true);
 
 	font-family: Verdana, sans-serif;
 	font-variant: normal;
@@ -167,7 +164,6 @@ table.wowhead_tooltip div.wh_inner{
     border-collapse: collapse;
     margin-right: 0;
     width: 100%;
-    width:expression(this.width < 390 ? "390px" : true);
 }
 
 .wowhead_tooltip tbody {
