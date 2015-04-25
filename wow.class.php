@@ -27,7 +27,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 		
 		protected static $apiLevel	= 20;
-		public $version				= '6.1.5';
+		public $version				= '6.1.6';
 		protected $this_game		= 'wow';
 		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
@@ -464,14 +464,14 @@ if(!class_exists('wow')) {
 				foreach($guilddata['members'] as $guildchars){
 					$jsondata = array(
 							'thumbnail'	=> $guildchars['character']['thumbnail'],
-							'name'		=> $guildchars['character']['name'],
+							'name'		=> sanitize($guildchars['character']['name']),
 							'class'		=> $this->game->obj['armory']->ConvertID((int)$guildchars['character']['class'], 'int', 'classes'),
 							'race'		=> $this->game->obj['armory']->ConvertID((int)$guildchars['character']['race'], 'int', 'races'),
 							'level'		=> $guildchars['character']['level'],
 							'gender'	=> $this->game->obj['armory']->ConvertID((int)$guildchars['character']['gender'], 'int', 'gender'),
 							'rank'		=> $guildchars['rank'],
-							'servername'=> $guildchars['character']['realm'],
-							'guild'		=> $guildchars['character']['guild'],
+							'servername'=> sanitize($guildchars['character']['realm']),
+							'guild'		=> sanitize($guildchars['character']['guild']),
 					);
 					
 					//Build Rank ID
@@ -483,7 +483,7 @@ if(!class_exists('wow')) {
 					}
 					
 					//char available
-					$intMemberID = $this->pdh->get('member', 'id', array($jsondata['name'], array('servername' => $jsondata['servername'])));
+					$intMemberID = $this->pdh->get('member', 'id', array(sanitize($jsondata['name']), array('servername' => sanitize($jsondata['servername']))));
 								
 					if($intMemberID){
 							
@@ -526,7 +526,7 @@ if(!class_exists('wow')) {
 					
 					$char_server	= $this->pdh->get('member', 'profile_field', array($memberID, 'servername'));
 					$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
-					$chardata		= $this->game->obj['armory']->character($strMemberName, unsanitize($servername), true);
+					$chardata		= $this->game->obj['armory']->character($membername, unsanitize($servername), true);
 						
 					if(!isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 						$errormsg	= '';
@@ -535,12 +535,11 @@ if(!class_exists('wow')) {
 						// insert into database
 					
 						$info = $this->pdh->put('member', 'addorupdate_member', array($charid, array(
-								'name'				=> $strMemberName,
 								'level'				=> $chardata['level'],
 								'gender'			=> $this->game->obj['armory']->ConvertID($chardata['gender'], 'int', 'gender'),
 								'race'				=> $this->game->obj['armory']->ConvertID($chardata['race'], 'int', 'races'),
 								'class'				=> $this->game->obj['armory']->ConvertID($chardata['class'], 'int', 'classes'),
-								'guild'				=> $chardata['guild']['name'],
+								'guild'				=> sanitize($chardata['guild']['name']),
 								'last_update'		=> ($chardata['lastModified']/1000),
 								'prof1_name'		=> $this->game->get_id('professions', $chardata['professions']['primary'][0]['name']),
 								'prof1_value'		=> $chardata['professions']['primary'][0]['rank'],
