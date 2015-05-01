@@ -160,7 +160,7 @@ class charImporter extends page_generic {
 		$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 		$chardata		= $this->game->obj['armory']->character(unsanitize($this->in->get('charname', '')), unsanitize($servername), true);
 
-		if(!isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
+		if($chardata && !isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 			$errormsg	= '';
 			$charname	= $chardata['name'];
 			$charicon	= $this->game->obj['armory']->characterIcon($chardata);

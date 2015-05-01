@@ -95,7 +95,7 @@ class guildImporter extends page_generic {
 		// generate output
 		$guilddata	= $this->game->obj['armory']->guild(unsanitize($this->in->get('guildname', '')), unsanitize($this->in->get('servername', $this->config->get('servername'))), true);
 
-		if(!isset($guilddata['status'])){
+		if($guilddata && !isset($guilddata['status'])){
 			//Suspend all Chars
 			if ($this->in->get('delete_old_chars',0)){
 				$this->pdh->put('member', 'suspend', array('all'));
