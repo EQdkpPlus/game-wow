@@ -618,12 +618,12 @@ class bnet_armory extends gen_class {
 
 	public function armory2itemid($itemid, $context, $bonuslist=array(), $itemlevel='0'){
 		switch($context){
-			case 'raid-normal':		$item_difficulty = '1';
-			case 'raid-heroic':		$item_difficulty = '15';
-			case 'raid-mythic':		$item_difficulty = '16';
-			case 'raid-finder':		$item_difficulty = '7';
-			case 'trade-skill':		$item_difficulty = '99';
-			default:							$item_difficulty = '1';
+			case 'raid-normal':		$item_difficulty = '1'; break;
+			case 'raid-heroic':		$item_difficulty = '15'; break;
+			case 'raid-mythic':		$item_difficulty = '16'; break;
+			case 'raid-finder':		$item_difficulty = '7'; break;
+			case 'trade-skill':		$item_difficulty = '99'; break;
+			default:				$item_difficulty = '1'; break;
 		}
 		
 		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
@@ -632,23 +632,35 @@ class bnet_armory extends gen_class {
 	
 	public function eqdkpitemid_meta($item_id){
 		//112417:0:0:0:0:0:0:0:lvl90:upg 491:dif 5:2:448:449
-		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
+		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:11numBonusIDs:bonusID1:bonusID2...
 		$arrItemData = explode(':', $item_id);
 		if(!is_array($arrItemData) || (is_array($arrItemData) && count($arrItemData)<5)) { return false; }
 		
 		// 3 and 4 are normal, 5 and 6 are heroic
-		$difficulty	= (isset($arrItemData[11])) ? $arrItemData[11] : 0;
+		$difficulty	= (isset($arrItemData[10])) ? $arrItemData[10] : 0;
+
 		switch($difficulty){
-			case '0' || '1' || '3' || '4' || '9' || '14':	$itemdiff = 'normal';
-			case '2' || '5' || '6' || '11' || '15':			$itemdiff = 'heroic';
-			case '16':										$itemdiff = 'mythic';
-			case '7':										$itemdiff = 'finder';
-			case '99':										$itemdiff = 'skill';
-			default:										$itemdiff = 'normal';
+			case '0':
+			case '1':
+			case '3':
+			case '4':
+			case '9':
+			case '14':	$itemdiff = 'normal'; break;
+			
+			case '2':
+			case '5':
+			case '6':
+			case '11':
+			case '15':	$itemdiff = 'heroic'; break;
+			
+			case '16':	$itemdiff = 'mythic'; break;
+			case '7':	$itemdiff = 'finder'; break;
+			case '99':	$itemdiff = 'skill'; break;
+			default:	$itemdiff = 'normal'; break;
 		}
 		return array(
 			'difficulty'	=> $itemdiff,
-			'bonuslist'		=> (isset($arrItemData[12]) && $arrItemData[12] > 1) ? array_slice($arrItemData, 13, $arrItemData[12]) : 0,
+			'bonuslist'		=> (isset($arrItemData[11]) && $arrItemData[11] > 1) ? array_slice($arrItemData, 12, $arrItemData[11]) : 0,
 			'gems'			=> (isset($arrItemData[8])) ? array_slice($arrItemData, 2, 4) : array(),
 			'lvl'			=> (isset($arrItemData[8])) ? $arrItemData[8] : 0,
 			'upgd'			=> (isset($arrItemData[9])) ? $arrItemData[9] : 0,
@@ -671,7 +683,9 @@ class bnet_armory extends gen_class {
 			$contextname	= (in_array('raid-normal', $itemdata_tmp['availableContexts'])) ? 'raid-normal' : $itemdata_tmp['availableContexts'][0];
 			$itemid			= $itemdata_tmp['id'];
 		}
+
 		if(isset($availContexts) && is_array($availContexts) && count($availContexts) > 0 && isset($contextname)){
+
 			$wowurl		= $this->_config['apiUrl'].sprintf('wow/item/%s/%s?locale=%s&apikey=%s%s', $itemid, $contextname, $this->_config['locale'], $this->_config['apiKey'],$bonuslist);
 			return $this->read_url($wowurl);
 		}
