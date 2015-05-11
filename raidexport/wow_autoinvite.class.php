@@ -48,7 +48,7 @@ if(!function_exists('wowautoinviteexport')){
 		return $eclass;
 	}
 	
-	function wowautoinviteexport($raid_id){
+	function wowautoinviteexport($raid_id, $raid_groups){
 		$attendees	= registry::register('plus_datahandler')->get('calendar_raids_attendees', 'attendees', array($raid_id));
 		$guests		= registry::register('plus_datahandler')->get('calendar_raids_guests', 'members', array($raid_id));
 
@@ -60,7 +60,8 @@ if(!function_exists('wowautoinviteexport')){
 				'class'		=> autoinvite_eclass(registry::register('plus_datahandler')->get('member', 'classid', array($id_attendees))),
 				'note'		=> unsanitize($d_attendees['note']),
 				'level'		=> registry::register('plus_datahandler')->get('member', 'level', array($id_attendees)),
-				'guest'		=> false
+				'guest'		=> false,
+				'group'		=> $d_attendees['raidgroup']
 			);
 		}
 		foreach($guests as $guestsdata){
@@ -70,7 +71,8 @@ if(!function_exists('wowautoinviteexport')){
 				'class'		=> autoinvite_eclass($guestsdata['class']),
 				'note'		=> unsanitize($guestsdata['note']),
 				'level'		=> 0,
-				'guest'		=> true
+				'guest'		=> true,
+				'group'		=> $guestsdata['raidgroup']
 			);
 		}
 		$json = json_encode($a_json);
@@ -78,7 +80,7 @@ if(!function_exists('wowautoinviteexport')){
 
 		registry::register('template')->add_js('
 			genOutput()
-			$("input[type=\'checkbox\']").change(function (){
+			$("input[type=\'checkbox\'], #raidgroup").change(function (){
 				genOutput()
 			});
 		', "docready");
@@ -104,14 +106,20 @@ if(!function_exists('wowautoinviteexport')){
 
 			$.each(attendee_data, function(i, item) {
 				if((cb_guests && item.guest == true) || (cb_confirmed && !item.guest && item.status == 0) || (cb_signedin && item.status == 1) || (cb_backup && item.status == 3)){
-					output += item.name + ":" + item.class + ":" + item.level + ":1:-:" +item.note + "\n";
+					if($("#raidgroup").val() == "0" || (item.group > 0 && item.group == $("#raidgroup").val())){
+						output += item.name + ":" + item.class + ":" + item.level + ":1:-:" +item.note + "\n";
+					}
 				}
 			});
 			$("#attendeeout").html(output);
 		}
 			');
-
-		$text  = "<input type='checkbox' checked='checked' name='confirmed' id='cb_confirmed' value='true'> ".registry::fetch('user')->lang(array('raidevent_raid_status', 0));
+		$text  = "<dt><label>".registry::fetch('user')->lang('raidevent_export_raidgroup')."</label></dt>
+						<dd>
+							".new hdropdown('raidgroup', array('options' => $raid_groups, 'value' => 0, 'id' => 'raidgroup'))."
+						</dd>
+					</dl><dl>";
+		$text .= "<input type='checkbox' checked='checked' name='confirmed' id='cb_confirmed' value='true'> ".registry::fetch('user')->lang(array('raidevent_raid_status', 0));
 		$text .= "<input type='checkbox' checked='checked' name='guests' id='cb_guests' value='true'> ".registry::fetch('user')->lang('raidevent_raid_guests');
 		$text .= "<input type='checkbox' checked='checked' name='signedin' id='cb_signedin' value='true'> ".registry::fetch('user')->lang(array('raidevent_raid_status', 1));
 		$text .= "<input type='checkbox' name='backup' id='cb_backup' value='true'> ".registry::fetch('user')->lang(array('raidevent_raid_status', 3));

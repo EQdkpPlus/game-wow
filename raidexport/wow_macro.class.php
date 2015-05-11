@@ -30,7 +30,7 @@ $rpexport_plugin['wow_macro.class.php'] = array(
 	'version'		=> '2.0.0');
 
 if(!function_exists('WoWMacroexport')){
-	function WoWMacroexport($raid_id){
+	function WoWMacroexport($raid_id, $raid_groups){
 		$attendees	= registry::register('plus_datahandler')->get('calendar_raids_attendees', 'attendees', array($raid_id));
 		$guests		= registry::register('plus_datahandler')->get('calendar_raids_guests', 'members', array($raid_id));
 
@@ -39,14 +39,16 @@ if(!function_exists('WoWMacroexport')){
 			$a_json[]	= array(
 				'name'		=> unsanitize(registry::register('plus_datahandler')->get('member', 'name', array($id_attendees))),
 				'status'	=> $d_attendees['signup_status'],
-				'guest'		=> false
+				'guest'		=> false,
+				'group'		=> $d_attendees['raidgroup']
 			);
 		}
 		foreach($guests as $guestsdata){
 			$a_json[]	= array(
 				'name'		=> unsanitize($guestsdata['name']),
 				'status'	=> false,
-				'guest'		=> true
+				'guest'		=> true,
+				'group'		=> $guestsdata['raidgroup']
 			);
 		}
 		$json = json_encode($a_json);
@@ -54,7 +56,7 @@ if(!function_exists('WoWMacroexport')){
 
 		registry::register('template')->add_js('
 			genOutput()
-			$("input[type=\'checkbox\']").change(function (){
+			$("input[type=\'checkbox\'], #raidgroup").change(function (){
 				genOutput()
 			});
 		', "docready");
@@ -71,14 +73,20 @@ if(!function_exists('WoWMacroexport')){
 
 			$.each(attendee_data, function(i, item) {
 				if((cb_guests && item.guest == true) || (cb_confirmed && !item.guest && item.status == 0) || (cb_signedin && item.status == 1) || (cb_backup && item.status == 3)){
-					output += "/inv " + item.name + "\n";
+					if($("#raidgroup").val() == "0" || (item.group > 0 && item.group == $("#raidgroup").val())){
+						output += "/inv " + item.name + "\n";
+					}
 				}
 			});
 			$("#attendeeout").html(output);
 		}
 			');
-
-		$text  = "<input type='checkbox' checked='checked' name='confirmed' id='cb_confirmed' value='true'> ".registry::fetch('user')->lang(array('raidevent_raid_status', 0));
+		$text  = "<dt><label>".registry::fetch('user')->lang('raidevent_export_raidgroup')."</label></dt>
+							<dd>
+								".new hdropdown('raidgroup', array('options' => $raid_groups, 'value' => 0, 'id' => 'raidgroup'))."
+							</dd>
+						</dl><dl>";
+		$text .= "<input type='checkbox' checked='checked' name='confirmed' id='cb_confirmed' value='true'> ".registry::fetch('user')->lang(array('raidevent_raid_status', 0));
 		$text .= "<input type='checkbox' checked='checked' name='guests' id='cb_guests' value='true'> ".registry::fetch('user')->lang('raidevent_raid_guests');
 		$text .= "<input type='checkbox' checked='checked' name='signedin' id='cb_signedin' value='true'> ".registry::fetch('user')->lang(array('raidevent_raid_status', 1));
 		$text .= "<input type='checkbox' name='backup' id='cb_backup' value='true'> ".registry::fetch('user')->lang(array('raidevent_raid_status', 3));
