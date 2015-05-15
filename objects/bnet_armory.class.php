@@ -302,6 +302,9 @@ class bnet_armory extends gen_class {
 			$this->set_CachedData($json, 'chardata_'.$user.$realm);
 			$this->chardataUpdates++;
 		}
+		//Try to get old data
+		if(!$json) $json = $this->get_CachedData('chardata_'.$user.$realm, false, false, true);
+		
 		$chardata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($chardata);
 		return (!$errorchk) ? $chardata: $errorchk;
@@ -331,10 +334,12 @@ class bnet_armory extends gen_class {
 		}
 		
 		if (!$img_charicon){
-			$img_charicon	= $this->get_CachedData($cached_img, false, true);
+			//Try to get old data
+			$img_charicon	= $this->get_CachedData($cached_img, false, true, true);
+			$img_charicon_sp= $this->get_CachedData($cached_img, false, true, true, true);
 			if(filesize($img_charicon) < 400){
 				$img_charicon = $img_charicon_sp = "";
-			} else $img_charicon = $this->get_CachedData($cached_img, false, true, false, true);
+			}
 		}
 		return $img_charicon_sp;
 	}
@@ -363,6 +368,7 @@ class bnet_armory extends gen_class {
 			$this->set_CachedData($this->read_url($this->_config['apiRenderUrl'].sprintf('%s/%s', $this->_config['serverloc'], $imgfile)), $cached_img, true);
 			$img_charicon	= $this->get_CachedData($cached_img, false, true, false,true);
 		}
+		
 		return $img_charicon;
 	}
 
@@ -418,6 +424,10 @@ class bnet_armory extends gen_class {
 		if(!$json	= $this->get_CachedData('guilddata_'.$guild.$realm, $force)){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'guilddata_'.$guild.$realm);
+		}
+		//get old data
+		if(!$json) {
+			$json = $this->get_CachedData('guilddata_'.$guild.$realm, false, false, true);
 		}
 		$chardata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($chardata);
