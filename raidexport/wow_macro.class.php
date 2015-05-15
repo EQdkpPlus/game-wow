@@ -30,7 +30,7 @@ $rpexport_plugin['wow_macro.class.php'] = array(
 	'version'		=> '2.0.0');
 
 if(!function_exists('WoWMacroexport')){
-	function WoWMacroexport($raid_id, $raid_groups){
+	function WoWMacroexport($raid_id, $raid_groups=0){
 		$attendees	= registry::register('plus_datahandler')->get('calendar_raids_attendees', 'attendees', array($raid_id));
 		$guests		= registry::register('plus_datahandler')->get('calendar_raids_guests', 'members', array($raid_id));
 
@@ -81,11 +81,15 @@ if(!function_exists('WoWMacroexport')){
 			$("#attendeeout").html(output);
 		}
 			');
-		$text  = "<dt><label>".registry::fetch('user')->lang('raidevent_export_raidgroup')."</label></dt>
+			
+			if(is_array($raid_groups)){
+				$text  = "<dt><label>".registry::fetch('user')->lang('raidevent_export_raidgroup')."</label></dt>
 							<dd>
 								".new hdropdown('raidgroup', array('options' => $raid_groups, 'value' => 0, 'id' => 'raidgroup'))."
 							</dd>
 						</dl><dl>";
+			}
+
 		$text .= "<input type='checkbox' checked='checked' name='confirmed' id='cb_confirmed' value='true'> ".registry::fetch('user')->lang(array('raidevent_raid_status', 0));
 		$text .= "<input type='checkbox' checked='checked' name='guests' id='cb_guests' value='true'> ".registry::fetch('user')->lang('raidevent_raid_guests');
 		$text .= "<input type='checkbox' checked='checked' name='signedin' id='cb_signedin' value='true'> ".registry::fetch('user')->lang(array('raidevent_raid_status', 1));

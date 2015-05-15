@@ -580,14 +580,17 @@
 					// normal
 					$bar_bc_normal		= $this->jquery->progressbar('bcnormal_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_normal'], 'total' => $v_bossprogress['bosses_max'], 'text' => '%progress% (%percentage%)'));
 
-					//Heroic
+					// heroic
 					$bar_bc_heroic		= $this->jquery->progressbar('bcheroic_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_heroic'], 'total' => $v_bossprogress['bosses_max'], 'text' => '%progress% (%percentage%)'));
+
+					// mythic
+					$bar_bc_mythic		= $this->jquery->progressbar('bcmythic_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_mythic'], 'total' => $v_bossprogress['bosses_max'], 'text' => '%progress% (%percentage%)'));
 
 					$this->tpl->assign_block_vars('bossprogress_cat.bossprogress_val', array(
 						'ID'		=> $v_bossprogress['id'],
 						'NAME'		=> $v_bossprogress['name'],
 						'BARS_TT'	=> $tt_bossprogress,
-						'BARS_BAR'	=> $bar_bc_normal.$bar_bc_heroic,
+						'BARS_BAR'	=> $bar_bc_normal.$bar_bc_heroic.$bar_bc_mythic,
 						'RUNS'		=> sprintf($this->game->glang('bossprogress_normalruns'), $v_bossprogress['runs_normal']).' | '.sprintf($this->game->glang('bossprogress_heroicruns'), $v_bossprogress['runs_heroic']).' | '.sprintf($this->game->glang('bossprogress_mythicruns'), $v_bossprogress['runs_mythic'])
 					));
 				}
