@@ -106,7 +106,7 @@ if(!function_exists('wowautoinviteexport')){
 
 			$.each(attendee_data, function(i, item) {
 				if((cb_guests && item.guest == true) || (cb_confirmed && !item.guest && item.status == 0) || (cb_signedin && item.status == 1) || (cb_backup && item.status == 3)){
-					if($("#raidgroup").val() == "0" || (item.group > 0 && item.group == $("#raidgroup").val())){
+					if($("#raidgroup").length == 0 || $("#raidgroup").val() == "0" || (item.group > 0 && item.group == $("#raidgroup").val())){
 						output += item.name + ":" + item.class + ":" + item.level + ":1:-:" +item.note + "\n";
 					}
 				}
