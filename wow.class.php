@@ -635,12 +635,20 @@ if(!class_exists('wow')) {
 		 * Per game data for the calendar Tooltip
 		 */
 		public function calendar_membertooltip($memberid){
-			$talents		= $this->game->glang('talents');
+			$talents			= $this->game->glang('talents');
 			$member_data	= $this->pdh->get('member', 'array', array($memberid));
+
+			// itemlevel in tooltip
+			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
+			$char_server	= $this->pdh->get('member', 'profile_field', array($memberid, 'servername'));
+			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
+			$chardata		= $this->game->obj['armory']->character($member_data['name'], unsanitize($servername), true);
+			$itemlevel		= (isset($chardata['items']['averageItemLevel'])) ? $chardata['items']['averageItemLevel'] : '--';
 
 			return array(
 				$this->game->glang('talents_tt_1').': '.$this->pdh->geth('member', 'profile_field', array($memberid, 'talent1', true)),
 				$this->game->glang('talents_tt_2').': '.$this->pdh->geth('member', 'profile_field', array($memberid, 'talent2', true)),
+				$this->game->glang('caltooltip_itemlvl').': '.$itemlevel,
 			);
 		}
 

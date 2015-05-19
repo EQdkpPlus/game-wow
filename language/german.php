@@ -121,6 +121,7 @@ $german_array = array(
 		'tier_token'	=> 'Token: ',
 		'talents_tt_1'	=> 'Primäres Talent',
 		'talents_tt_2'	=> 'Sekundäres Talent',
+		'caltooltip_itemlvl'	=> 'Item-Level',
 		
 		// Profile information
 		'uc_prof_professions'			=> 'Berufe',

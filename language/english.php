@@ -127,6 +127,7 @@ $english_array = array(
 	"tier_token" => 'Token: ',
 	"talents_tt_1" => 'Primary Talent',
 	"talents_tt_2" => 'Secondary Talent',
+	'caltooltip_itemlvl'	=> 'Itemlevel',
 	"uc_prof_professions" => 'Professions',
 	"skills" => 'Specialization',
 	"corevalues" => 'Core Attributes',
