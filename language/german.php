@@ -313,11 +313,11 @@ $german_array = array(
 
 		// bossprogress
 		'bossprogress_normalruns'		=> '%sx normal',
-		'normalrun'						=> 'Normal',
+		'normalrun'						=> 'N',
 		'bossprogress_heroicruns'		=> '%sx heroisch',
-		'heroicrun'						=> 'Heroisch',
+		'heroicrun'						=> 'H',
 		'bossprogress_mythicruns'		=> '%sx mystisch',
-		'mythicrun'						=> 'Mystisch',
+		'mythicrun'						=> 'M',
 
 		'wotlk'							=> 'Wrath of the Lich King',
 		'cataclysm'						=> 'Cataclysm',
