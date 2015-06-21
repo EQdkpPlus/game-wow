@@ -36,11 +36,14 @@ if(!function_exists('WoWMacroexport')){
 
 		$a_json	= array();
 		foreach($attendees as $id_attendees=>$d_attendees){
+			$char_server	= registry::register('plus_datahandler')->get('member', 'profile_field', array($id_attendees, 'servername'));
+			$servername		= ($char_server != registry::register('config')->get('servername')) ? $char_server : false;
 			$a_json[]	= array(
 				'name'		=> unsanitize(registry::register('plus_datahandler')->get('member', 'name', array($id_attendees))),
 				'status'	=> $d_attendees['signup_status'],
 				'guest'		=> false,
-				'group'		=> $d_attendees['raidgroup']
+				'group'		=> $d_attendees['raidgroup'],
+				'realm'		=> $servername
 			);
 		}
 		foreach($guests as $guestsdata){
@@ -48,7 +51,8 @@ if(!function_exists('WoWMacroexport')){
 				'name'		=> unsanitize($guestsdata['name']),
 				'status'	=> false,
 				'guest'		=> true,
-				'group'		=> $guestsdata['raidgroup']
+				'group'		=> $guestsdata['raidgroup'],
+				'realm'		=> false
 			);
 		}
 		$json = json_encode($a_json);
@@ -74,7 +78,8 @@ if(!function_exists('WoWMacroexport')){
 			$.each(attendee_data, function(i, item) {
 				if((cb_guests && item.guest == true) || (cb_confirmed && !item.guest && item.status == 0) || (cb_signedin && item.status == 1) || (cb_backup && item.status == 3)){
 					if($("#raidgroup").length == 0 || $("#raidgroup").val() == "0" || (item.group > 0 && item.group == $("#raidgroup").val())){
-						output += "/inv " + item.name + "\n";
+						realmdata	 = (item.realm) ? "-" + item.realm : "";
+						output		+= "/inv " + item.name + realmdata + "\n";
 					}
 				}
 			});
