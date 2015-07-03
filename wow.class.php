@@ -27,7 +27,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 		
 		protected static $apiLevel	= 20;
-		public $version				= '6.1.8';
+		public $version				= '6.2.0';
 		protected $this_game		= 'wow';
 		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
@@ -43,14 +43,15 @@ if(!class_exists('wow')) {
 		public $importers 			= array();
 		
 		public $character_unique_ids = array('servername');
-			
+
+		// http://eu.battle.net/wow/static/images/character/summary/raid-icons.jpg
 		protected $ArrInstanceCategories = array(
 			'classic'	=> array(2717, 2677, 3429, 3428),
 			'bc'		=> array(3457, 3836, 3923, 3607, 3845, 3606, 3959, 4075),
 			'wotlk'		=> array(4603, 3456, 4493, 4500, 4273, 2159, 4722, 4812, 4987),
 			'cataclysm'	=> array(5600, 5094, 5334, 5638, 5723, 5892),
 			'mop'		=> array(6125, 6297, 6067, 6622, 6738),
-			'wod'		=> array(6967, 6996),
+			'wod'		=> array(6967, 6996, 7545),
 		);
 		
 		protected $class_dependencies = array(
