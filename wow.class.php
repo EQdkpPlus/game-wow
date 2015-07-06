@@ -454,13 +454,12 @@ if(!class_exists('wow')) {
 			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
 			//Guildimport
-			$guilddata	= $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('servername'), true);
-			if(!isset($guilddata['status'])){
+			$guilddata	= $this->game->obj['armory']->guild($this->config->get('guildtag'), unsanitize($this->config->get('servername')), true);
+			if($guilddata && !isset($guilddata['status'])){
 				//Suspend all Chars
 				if ($blnDeleteChars){
 					$this->pdh->put('member', 'suspend', array('all'));
 				}
-				
 				
 				foreach($guilddata['members'] as $guildchars){
 					$jsondata = array(
@@ -484,10 +483,9 @@ if(!class_exists('wow')) {
 					}
 					
 					//char available
-					$intMemberID = $this->pdh->get('member', 'id', array(sanitize($jsondata['name']), array('servername' => sanitize($jsondata['servername']))));
+					$intMemberID = $this->pdh->get('member', 'id', array($jsondata['name'], array('servername' => $jsondata['servername'])));
 								
 					if($intMemberID){
-							
 						//Sync Rank
 						if ($blnSyncRanks){
 							$dataarry = array(
@@ -529,18 +527,19 @@ if(!class_exists('wow')) {
 					$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 					$chardata		= $this->game->obj['armory']->character($membername, unsanitize($servername), true);
 						
-					if(!isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
+					if($chardata && !isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 						$errormsg	= '';
 						$charname	= $chardata['name'];
 					
 						// insert into database
 					
-						$info = $this->pdh->put('member', 'addorupdate_member', array($charid, array(
+						$info = $this->pdh->put('member', 'addorupdate_member', array($memberID, array(
 								'level'				=> $chardata['level'],
 								'gender'			=> $this->game->obj['armory']->ConvertID($chardata['gender'], 'int', 'gender'),
 								'race'				=> $this->game->obj['armory']->ConvertID($chardata['race'], 'int', 'races'),
 								'class'				=> $this->game->obj['armory']->ConvertID($chardata['class'], 'int', 'classes'),
 								'guild'				=> sanitize($chardata['guild']['name']),
+								'servername'		=> $servername,
 								'last_update'		=> ($chardata['lastModified']/1000),
 								'prof1_name'		=> $this->game->get_id('professions', $chardata['professions']['primary'][0]['name']),
 								'prof1_value'		=> $chardata['professions']['primary'][0]['rank'],
