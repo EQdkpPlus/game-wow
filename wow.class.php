@@ -438,6 +438,11 @@ if(!class_exists('wow')) {
 						'name'	=> 'sync_ranks',
 						'type'	=> 'radio',
 				),
+				'char_import_ranks_level'	=> array(
+						'lang'	=> 'Import characters with a level higher than',
+						'name'	=> 'char_import_ranks_level',
+						'type'	=> 'text',
+				),
 				'delete_chars'	=> array(
 						'lang'	=> 'Delete Chars that have left the Guild',
 						'name'	=> 'delete_chars',
@@ -501,7 +506,10 @@ if(!class_exists('wow')) {
 						}
 							
 					} else {
-					
+						if ((int)$arrParams['char_import_ranks_level'] > 0 && (int)$jsondata['rank'] < (int)$arrParams['char_import_ranks_level']) {
+							continue;
+						}
+						
 						//Create new char
 						$jsondata['rankid'] = $intRankID;
 
