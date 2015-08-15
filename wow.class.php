@@ -496,7 +496,8 @@ if(!class_exists('wow')) {
 							$dataarry = array(
 								'rankid'	=> $intRankID,
 							);
-							$myStatus = $this->pdh->put('member', 'addorupdate_member', array($intMemberID, $dataarry));
+							//Disable logging for chars that will be updated
+							$myStatus = $this->pdh->put('member', 'addorupdate_member', array($intMemberID, $dataarry,false, false));
 						}
 						
 						//Revoke Char
@@ -512,7 +513,8 @@ if(!class_exists('wow')) {
 						
 						//Create new char
 						$jsondata['rankid'] = $intRankID;
-
+						
+						//Logging is still active, because its a new char
 						$myStatus = $this->pdh->put('member', 'addorupdate_member', array(0, $jsondata));
 					
 						// reset the cache
