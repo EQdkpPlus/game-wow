@@ -316,7 +316,7 @@ $german_array = array(
 		'normalrun'						=> 'N',
 		'bossprogress_heroicruns'		=> '%sx heroisch',
 		'heroicrun'						=> 'H',
-		'bossprogress_mythicruns'		=> '%sx mystisch',
+		'bossprogress_mythicruns'		=> '%sx mythisch',
 		'mythicrun'						=> 'M',
 
 		'wotlk'							=> 'Wrath of the Lich King',
