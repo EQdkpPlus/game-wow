@@ -115,36 +115,72 @@ if(!class_exists('wowhead')) {
 					'ench' => 0,
 					'gems' => array(),
 					'lvl'  => 0,
-					'upgd' => 0,
+					'spez' => 0,
+					'upgd_type' => 0,
 					'bonus' => array(),
+					'num_bonus' => 0,
+					'upgd_id' => '',
 			);
 			
 			$arrItemData = explode(':', $item_id);
 			if (count($arrItemData) > 1){
 				$item_id = $arrItemData[0];
-				$arrBonus = array();
-
-				foreach($arrItemData as $key => $val){
-					if ($key == 1) $myItemData['ench'] = $val;
-					if ($key == 8) $myItemData['lvl'] = $val;
-					if ($key == 9) $myItemData['upgd'] = $val;
-					if ($key > 2 && $key < 7){
-						$myItemData['gems'][] = $val;
-					}
-					
-					if ($key > 11){
-						$myItemData['bonus'][] = $val;
-					}
-				}
-				//112417:0:0:0:0:0:0:0:lvl90:upg 491:dif 5:2:448:449
-				//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
 				
+				//Detect if old or new (6.2.0) format
+				$intTotalCount = count($arrItemData);
+				$intBonusCount = $arrItemData[12];
+				$isUpgrade = ((int)$arrItemData[10] != 0) ? true : false;
+				$intShouldCount = 13 + $intBonusCount + (($isUpgrade) ? 1 : 0);
+				$blnIsNewFormat = ($intShouldCount === $intTotalCount) ? true : false;
+				
+				$arrBonus = array();
+				
+				if($blnIsNewFormat){
+					foreach($arrItemData as $key => $val){
+						if ($key == 1) $myItemData['ench'] = $val;
+						if ($key == 8) $myItemData['lvl'] = $val;
+						if ($key == 9) $myItemData['spez'] = $val;
+						if ($key == 10) $myItemData['upgd_type'] = $val;
+						if ($key == 11) $myItemData['inst_diff'] = $val;
+						if ($key == 12) $myItemData['num_bonus'] = $val;
+						if ($key > 2 && $key < 7){
+							$myItemData['gems'][] = $val;
+						}
+							
+						if ($key > 12 && $key < (13+$myItemData['num_bonus'])){
+							$myItemData['bonus'][] = $val;
+						}
+						
+						if($key > (12+$myItemData['num_bonus'])){
+							$myItemData['upgd_id'] = $val;
+						}
+		
+						//124139:0      :     0:     0:     0:     0:       0:       0:      100:           267:              0:                   6:          1:     567
+						//itemID:enchant:gemID1:gemID2:gemID3:gemID4:suffixID:uniqueID:linkLevel:specializationID:upgradeTypeID:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2
+					}
+				} else {
+					foreach($arrItemData as $key => $val){
+						if ($key == 1) $myItemData['ench'] = $val;
+						if ($key == 8) $myItemData['lvl'] = $val;
+						if ($key == 9) $myItemData['upgd_id'] = $val;
+						if ($key > 2 && $key < 7){
+							$myItemData['gems'][] = $val;
+						}
+							
+						if ($key > 11){
+							$myItemData['bonus'][] = $val;
+						}
+					}
+					//112417:0:0:0:0:0:0:0:lvl90:upg 491:dif 5:2:448:449
+					//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...		
+				}
 			}
 
+			
 			$item = array('id' => $item_id);
 			$url = ($lang == 'en') ? 'www' : $lang;
 			
-			$item['link'] = 'http://'.$url.'.wowhead.com/item='.$item['id'].'&power&bonus='.implode(':', $myItemData['bonus']).'&upgd='.$myItemData['upgd'].'&lvl='.$myItemData['lvl'].'&ench='.$myItemData['ench'].'&gems='.implode(',',$myItemData['gems']);
+			$item['link'] = 'http://'.$url.'.wowhead.com/item='.$item['id'].'&power&bonus='.implode(':', $myItemData['bonus']).'&upgd='.$myItemData['upgd_id'].'&lvl='.$myItemData['lvl'].'&ench='.$myItemData['ench'].'&gems='.implode(',',$myItemData['gems']);
 
 			$this->pdl->log('infotooltip', 'fetch item-data from: '.$item['link']);
 			$someJS = $this->puf->fetch($item['link'], array('Cookie: cookieLangId="'.$lang.'";'));
