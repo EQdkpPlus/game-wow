@@ -146,7 +146,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Initialize the Class
-	* 
+	*
 	* @param $serverloc		Location of Server
 	* @param $locale		The Language of the data
 	* @return bool
@@ -157,7 +157,7 @@ class bnet_armory extends gen_class {
 		$this->setApiUrl($this->_config['serverloc']);
 		$this->_config['apiKey']	= (defined('GAME_IMPORTER_APIKEY')) ? GAME_IMPORTER_APIKEY : ((class_exists('registry')) ? registry::register('game')->get_import_apikey() : '');
 	}
-	
+
 	public function __get($name) {
 		if(class_exists('registry')) {
 			if($name == 'pfh') return registry::register('file_handler');
@@ -166,7 +166,7 @@ class bnet_armory extends gen_class {
 		}
 		return null;
 	}
-	
+
 	private function _debug($strValue){
 		if(class_exists('plus_debug_logger')){
 			if(!$this->pdl->type_known('bnet_armory')) $this->pdl->register_type('bnet_armory', null, null, array(2,3,4));
@@ -176,7 +176,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Set some settings
-	* 
+	*
 	* @param $setting	Which language to import
 	* @return bool
 	*/
@@ -218,7 +218,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Generate Link to Armory
-	* 
+	*
 	* @param $user			Name of the User
 	* @param $server		Name of the WoW Server
 	* @param $mode			Which page to open? (char, talent, statistics, reputation, guild, achievements)
@@ -257,7 +257,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Return an array with all links for one char
-	* 
+	*
 	* @param $user			Name of the User
 	* @param $server		Name of the WoW Server
 	* @return string		output
@@ -281,7 +281,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Fetch character information
-	* 
+	*
 	* @param $user		Character Name
 	* @param $realm		Realm Name
 	* @param $force		Force the cache to update
@@ -296,7 +296,7 @@ class bnet_armory extends gen_class {
 		$force		= (count($params) > 1 && $force == false) ? true : $force;
 		$wowurl		= $this->_config['apiUrl'].sprintf('wow/character/%s/%s?locale=%s&apikey=%s&fields='.implode(',', $usedparams), $realm, $user, $this->_config['locale'], $this->_config['apiKey']);
 		$this->_debug('Character: '.$wowurl);
-		$json		= $this->get_CachedData('chardata_'.$user.$realm, $force);		
+		$json		= $this->get_CachedData('chardata_'.$user.$realm, $force);
 		if(!$json && ($this->chardataUpdates < $this->_config['maxChardataUpdates'])){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'chardata_'.$user.$realm);
@@ -304,7 +304,7 @@ class bnet_armory extends gen_class {
 		}
 		//Try to get old data
 		if(!$json) $json = $this->get_CachedData('chardata_'.$user.$realm, false, false, true);
-		
+
 		$chardata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($chardata);
 		return (!$errorchk) ? $chardata: $errorchk;
@@ -312,7 +312,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Create full character Icon Link
-	* 
+	*
 	* @param $thumb		Thumbinformation returned by battlenet JSON feed
 	* @return string
 	*/
@@ -320,7 +320,7 @@ class bnet_armory extends gen_class {
 		$cached_img	= str_replace(array('/', '-'), '_', 'image_character_'.$this->_config['serverloc'].'_'.$chardata['thumbnail']);
 		$img_charicon	= $this->get_CachedData($cached_img, false, true);
 		$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
-		
+
 		if(!$img_charicon && ($forceUpdateAll || ($this->chariconUpdates < $this->_config['maxChariconUpdates']))){
 			$this->set_CachedData($this->read_url($this->_config['apiRenderUrl'].sprintf('%s/%s', $this->_config['serverloc'], $chardata['thumbnail'])), $cached_img, true);
 			$img_charicon	= $this->get_CachedData($cached_img, false, true);
@@ -332,7 +332,7 @@ class bnet_armory extends gen_class {
 			}
 			$this->chariconUpdates++;
 		}
-		
+
 		if (!$img_charicon){
 			//Try to get old data
 			$img_charicon	= $this->get_CachedData($cached_img, false, true, true);
@@ -350,7 +350,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Create full character Image Link
-	* 
+	*
 	* @param $thumb		Thumbinformation returned by battlenet JSON feed
 	* @param $type		Image tyoe, big or inset
 	* @return string
@@ -368,7 +368,7 @@ class bnet_armory extends gen_class {
 			$this->set_CachedData($this->read_url($this->_config['apiRenderUrl'].sprintf('%s/%s', $this->_config['serverloc'], $imgfile)), $cached_img, true);
 			$img_charicon	= $this->get_CachedData($cached_img, false, true, false,true);
 		}
-		
+
 		return $img_charicon;
 	}
 
@@ -381,7 +381,7 @@ class bnet_armory extends gen_class {
 		$path			= explode('/', $url);
 		$image_name		= (($withsize) ? $path[count($path)-2].'_' : '').$path[count($path)-1];
 		$img_icon		= $this->get_CachedData($image_name, false, true, false,true);
-		
+
 		// download the icon
 		if(!$img_icon || $forceUpdateAll){
 			$this->set_CachedData($this->read_url($url), $image_name, true);
@@ -410,7 +410,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Fetch guild information
-	* 
+	*
 	* @param $user		Character Name
 	* @param $realm		Realm Name
 	* @param $force		Force the cache to update?
@@ -436,7 +436,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Generate guild tabard & save in cache
-	* 
+	*
 	* @param $emblemdata	emblem data array of battle.net api
 	* @param $faction		name of the faction
 	* @param $guild			name of the guild
@@ -544,12 +544,12 @@ class bnet_armory extends gen_class {
 			}else{
 				$img_tabard = $img_genoutput;
 			}
-			
+
 			$strTmpFolder = (is_object($this->pfh)) ? $this->pfh->FolderPath('tmp', '').$cached_img : $imgfile;
-			
+
 			//Create PNG
 			imagepng($img_tabard,$strTmpFolder);
-			
+
 			//Move from tmp-Folder to right folder
 			if (is_object($this->pfh)){
 				$this->pfh->FileMove($strTmpFolder, $imgfile);
@@ -561,7 +561,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Fetch realm information
-	* 
+	*
 	* @param $realm		Realm Name
 	* @param $force		Force the cache to update?
 	* @return bol
@@ -580,7 +580,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Fetch pvpteam information
-	* 
+	*
 	* @param $teamsize	TeamSize = "2v2" | "3v3" | "5v5" | "rbg"
 	* @param $force		Force the cache to update?
 	* @return bol
@@ -606,7 +606,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Fetch item information
-	* 
+	*
 	* @param $itemid	battlenet Item ID
 	* @param $force		Force the cache to update?
 	* @return bol
@@ -635,19 +635,20 @@ class bnet_armory extends gen_class {
 			case 'trade-skill':		$item_difficulty = '99'; break;
 			default:				$item_difficulty = '1'; break;
 		}
-		
+
 		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
 		return $itemid.':0:0:0:0:0:0:0:'.$itemlevel.':0:'.$item_difficulty.':'.count($bonuslist).':'.implode(':',$bonuslist);
 	}
-	
+
 	public function eqdkpitemid_meta($item_id){
 		//112417:0:0:0:0:0:0:0:lvl90:upg 491:dif 5:2:448:449
 		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:11numBonusIDs:bonusID1:bonusID2...
+		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:specializationID:upgradeType:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...:upgradeId
 		$arrItemData = explode(':', $item_id);
 		if(!is_array($arrItemData) || (is_array($arrItemData) && count($arrItemData)<5)) { return false; }
-		
+
 		// 3 and 4 are normal, 5 and 6 are heroic
-		$difficulty	= (isset($arrItemData[10])) ? $arrItemData[10] : 0;
+		$difficulty	= (isset($arrItemData[11])) ? $arrItemData[11] : 0;
 
 		switch($difficulty){
 			case '0':
@@ -656,24 +657,27 @@ class bnet_armory extends gen_class {
 			case '4':
 			case '9':
 			case '14':	$itemdiff = 'normal'; break;
-			
+
 			case '2':
 			case '5':
 			case '6':
 			case '11':
 			case '15':	$itemdiff = 'heroic'; break;
-			
-			case '16':	$itemdiff = 'mythic'; break;
+
+			case '16':
+			case '23':	$itemdiff = 'mythic'; break;
 			case '7':	$itemdiff = 'finder'; break;
 			case '99':	$itemdiff = 'skill'; break;
 			default:	$itemdiff = 'normal'; break;
 		}
 		return array(
 			'difficulty'	=> $itemdiff,
-			'bonuslist'		=> (isset($arrItemData[11]) && $arrItemData[11] > 1) ? array_slice($arrItemData, 12, $arrItemData[11]) : 0,
-			'gems'			=> (isset($arrItemData[8])) ? array_slice($arrItemData, 2, 4) : array(),
+			'bonuslist'		=> (isset($arrItemData[12]) && $arrItemData[12] > 1) ? array_slice($arrItemData, 13, $arrItemData[12]) : 0,
+			'gems'			=> (isset($arrItemData[2]) || isset($arrItemData[3]) || isset($arrItemData[4])) ? array_slice($arrItemData, 2, 4) : array(),
 			'lvl'			=> (isset($arrItemData[8])) ? $arrItemData[8] : 0,
-			'upgd'			=> (isset($arrItemData[9])) ? $arrItemData[9] : 0,
+			'specID'		=> (isset($arrItemData[9])) ? $arrItemData[9] : 0,
+			'upgdType'		=> (isset($arrItemData[10])) ? $arrItemData[10] : 0,
+			'upgd'			=> (isset(end($arrItemData))) ? end($arrItemData) : 0,
 			'enchant'		=> (isset($arrItemData[1])) ? $arrItemData[1] : 0,
 		);
 	}
@@ -701,14 +705,14 @@ class bnet_armory extends gen_class {
 		}
 		return $itemdata;
 	}
-	
+
 	private function helper_partialmatch($search_text, $array){
 		return preg_grep("/".$search_text."/", $array);
 	}
-	
+
 	/**
 	* Fetch achievement information
-	* 
+	*
 	* @param $achievementid		battlenet Achievement ID
 	* @param $force				Force the cache to update?
 	* @return bol
@@ -728,7 +732,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Fetch quest information
-	* 
+	*
 	* @param $questid	battlenet quest ID
 	* @param $force		Force the cache to update?
 	* @return bol
@@ -747,7 +751,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Fetch recipe information
-	* 
+	*
 	* @param $questid	battlenet quest ID
 	* @param $force		Force the cache to update?
 	* @return bol
@@ -766,7 +770,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Fetch spell information
-	* 
+	*
 	* @param $questid	battlenet quest ID
 	* @param $force		Force the cache to update?
 	* @return bol
@@ -785,7 +789,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Fetch challenge mode information
-	* 
+	*
 	* @param $realm		battlenet realm
 	* @param $force		Force the cache to update?
 	* @return bol
@@ -804,7 +808,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Fetch challenge mode information
-	* 
+	*
 	* @param $abilityid	Ability ID
 	* @param $force		Force the cache to update?
 	* @return bol
@@ -823,7 +827,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* This API resource provides a per-realm list of recently generated auction house data dumps.
-	* 
+	*
 	* @param $abilityid	Ability ID
 	* @param $force		Force the cache to update?
 	* @return bol
@@ -871,11 +875,11 @@ class bnet_armory extends gen_class {
 			return @file_get_contents($rfilename);
 		}
 	}
-	
+
 	private function set_lastdownload(){
 		$this->pfh->putContent($this->pfh->FolderPath('armory', 'cache').'_lastdownload', microtime());
 	}
-	
+
 	/**
 	 * Returns Category for Achievement-ID, usefull for Armory-Links
 	 *
@@ -889,7 +893,7 @@ class bnet_armory extends gen_class {
 			foreach ($arrAchievs['achievements'] as $arrAchievs2){
 				if ((int)$arrAchievs2['id'] == $intAchievID) return $intCatID;
 			}
-			
+
 			if (isset($arrAchievs['categories'])){
 				foreach ($arrAchievs['categories'] as $arrCatAchievs2){
 					$intNewCatID = $intCatID . ':'. $arrCatAchievs2['id'];
@@ -903,7 +907,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Check if the JSON is an error result
-	* 
+	*
 	* @param $data		XML Data of Char
 	* @return error code
 	*/
@@ -921,7 +925,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Clean the Servername if taken from Database
-	* 
+	*
 	* @return string output
 	*/
 	public function cleanServername($server){
@@ -930,7 +934,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Convert from Armory ID to EQDKP Id or reverse
-	* 
+	*
 	* @param $name			name/id to convert
 	* @param $type			int/string?
 	* @param $cat			category (classes, races, months)
@@ -950,7 +954,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Convert talent from icon to id
-	* 
+	*
 	* @param $name			name/id to convert
 	* @return string/int output
 	*/
@@ -960,8 +964,8 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Prepare a string for beeing sent to armory
-	* 
-	* @param $input 
+	*
+	* @param $input
 	* @return string output
 	*/
 	public function ConvertInput($input, $removeslash=false, $removespace=false){
@@ -972,7 +976,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Write JSON to Cache
-	* 
+	*
 	* @param	$json		XML string
 	* @param	$filename	filename of the cache file
 	* @return --
@@ -990,7 +994,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* get the cached JSON if not outdated & available
-	* 
+	*
 	* @param	$filename	filename of the cache file
 	* @param	$force		force an update of the cached json file
 	* @return --
@@ -1008,7 +1012,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* strip all non conform chars out of the filename
-	* 
+	*
 	* @param	$name	name of the file to be cleaned
 	* @return --
 	*/
@@ -1018,7 +1022,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* delete the cached data
-	* 
+	*
 	* @return --
 	*/
 	public function DeleteCache(){
@@ -1029,7 +1033,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* check if binary files or json/data
-	* 
+	*
 	* @param	$input	the input
 	* @param	$binary	true/false
 	* @return --
@@ -1040,7 +1044,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* set the API Url
-	* 
+	*
 	* @param	$serverloc	the location of the server
 	* @return --
 	*/
@@ -1054,7 +1058,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Fetch the Data from URL
-	* 
+	*
 	* @param $url URL to Download
 	* @return json
 	*/
@@ -1069,7 +1073,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Check if an error occured
-	* 
+	*
 	* @return error
 	*/
 	public function CheckError(){
@@ -1078,7 +1082,7 @@ class bnet_armory extends gen_class {
 
 	/**
 	* Check if the function imagelayereffect for GD is available
-	* 
+	*
 	* @return true/false
 	*/
 	private function checkImageLayerEffect(){
