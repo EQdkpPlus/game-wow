@@ -677,7 +677,7 @@ class bnet_armory extends gen_class {
 			'lvl'			=> (isset($arrItemData[8])) ? $arrItemData[8] : 0,
 			'specID'		=> (isset($arrItemData[9])) ? $arrItemData[9] : 0,
 			'upgdType'		=> (isset($arrItemData[10])) ? $arrItemData[10] : 0,
-			'upgd'			=> (isset(end($arrItemData))) ? end($arrItemData) : 0,
+			'upgd'			=> (end($arrItemData) !== false) ? end($arrItemData) : 0,
 			'enchant'		=> (isset($arrItemData[1])) ? $arrItemData[1] : 0,
 		);
 	}
