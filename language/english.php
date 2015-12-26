@@ -299,6 +299,7 @@ $english_array = array(
 	"cataclysm" => 'Cataclysm',
 	"burning_crusade" => 'Burning Crusade',
 	"classic" => 'Classic',
+	'mop'	=> 'Mists of Pandaria',
 	"mop_mogushan_10" => 'Mogu\'shan Vaults (10)',
 	"mop_mogushan_25" => 'Mogu\'shan Vaults (25)',
 	"mop_heartoffear_10" => 'Heart of Fear (10)',

@@ -323,7 +323,8 @@ $german_array = array(
 		'cataclysm'						=> 'Cataclysm',
 		'burning_crusade'				=> 'Burning Crusade',
 		'classic'						=> 'Classic',
-		
+		'mop'							=> 'Mists of Pandaria',
+			
 		'mop_mogushan_10'				=> 'Mogu\'shangewölbe (10)',
 		'mop_mogushan_25'				=> 'Mogu\'shangewölbe (25)',
 		'mop_heartoffear_10'			=> 'Das Herz der Angst (10)',
