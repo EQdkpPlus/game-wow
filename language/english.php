@@ -3,7 +3,7 @@
  *	Package:	EQdkp-Plus Language File
  *	Link:		http://eqdkp-plus.eu
  *
- *	Copyright (C) 2006-2015 EQdkp-Plus Developer Team
+ *	Copyright (C) 2006-2016 EQdkp-Plus Developer Team
  *
  *	This program is free software: you can redistribute it and/or modify
  *	it under the terms of the GNU Affero General Public License as published
@@ -299,7 +299,7 @@ $english_array = array(
 	"cataclysm" => 'Cataclysm',
 	"burning_crusade" => 'Burning Crusade',
 	"classic" => 'Classic',
-	'mop'	=> 'Mists of Pandaria',
+	'mop' => 'Mists of Pandaria',
 	"mop_mogushan_10" => 'Mogu\'shan Vaults (10)',
 	"mop_mogushan_25" => 'Mogu\'shan Vaults (25)',
 	"mop_heartoffear_10" => 'Heart of Fear (10)',

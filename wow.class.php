@@ -3,7 +3,7 @@
  *	Package:	World of Warcraft game package
  *	Link:		http://eqdkp-plus.eu
  *
- *	Copyright (C) 2006-2015 EQdkp-Plus Developer Team
+ *	Copyright (C) 2006-2016 EQdkp-Plus Developer Team
  *
  *	This program is free software: you can redistribute it and/or modify
  *	it under the terms of the GNU Affero General Public License as published
@@ -660,6 +660,19 @@ if(!class_exists('wow')) {
 				$this->game->glang('talents_tt_2').': '.$this->pdh->geth('member', 'profile_field', array($memberid, 'talent2', true)),
 				$this->game->glang('caltooltip_itemlvl').': '.$itemlevel,
 			);
+		}
+		
+		/**
+		 * Append Servername to Charname
+		 * 
+		 * {@inheritDoc}
+		 * @see game_generic::handle_export_charnames()
+		 */
+		public function handle_export_charnames($strCharname, $intCharID){
+			$char_server	= $this->pdh->get('member', 'profile_field', array($intCharID, 'servername'));
+			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
+			
+			return $strCharname.(($servername != "") ? '-'.unsanitize($servername) : '');
 		}
 
 		/**
