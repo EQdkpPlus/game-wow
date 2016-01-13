@@ -148,11 +148,6 @@ class guildImporter extends page_generic {
 			}
 
 			$this->tpl->add_js('
-				$( "#progressbar" ).progressbar({
-					value: 0
-				});
-				getData();', 'docready');
-			$this->tpl->add_js('
 			var guilddataArry = $.parseJSON(\''.json_encode($jsondata, JSON_HEX_APOS).'\');
 			function getData(i){
 				if (!i)
@@ -178,7 +173,13 @@ class guildImporter extends page_generic {
 						}
 					});
 				}
-			}');
+			} //end getData(i)
+					
+			$( "#progressbar" ).progressbar({
+				value: 0
+			});
+			getData();		
+			');
 		}else{
 			$hmtlout .= '<div class="infobox infobox-large infobox-red clearfix"><i class="fa fa-exclamation-triangle fa-4x pull-left"></i> <span id="error_message_txt">'.$guilddata['reason'].'</span></div>';
 		}

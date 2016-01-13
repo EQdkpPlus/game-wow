@@ -598,7 +598,7 @@ if(!class_exists('wow')) {
 						'zh_CN'	=> 'Chinese'
 					),
 				),
-				// TODO: check if apostrophe is saved correctly
+
 				'servername'	=> array(
 					'lang'			=> 'servername',
 					'type'			=> 'text',
