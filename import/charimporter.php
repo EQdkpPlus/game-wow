@@ -106,7 +106,6 @@ class charImporter extends page_generic {
 						</fieldset>
 					</div>';
 
-		$this->tpl->add_js('$( "#progressbar" ).progressbar({ value: 0 }); getData();', 'docready');
 		$this->tpl->add_js('
 			var chardataArry = $.parseJSON(\''.json_encode($memberArry).'\');
 			function getData(i){
@@ -135,7 +134,9 @@ class charImporter extends page_generic {
 						});
 					}, 80);
 				}
-			}');
+			}
+			$( "#progressbar" ).progressbar({ value: 0 }); getData();	
+			');
 
 		$this->tpl->assign_vars(array(
 			'DATA'		=> $hmtlout,
