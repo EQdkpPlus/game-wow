@@ -27,7 +27,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 		
 		protected static $apiLevel	= 20;
-		public $version				= '6.2.5';
+		public $version				= '6.2.6';
 		protected $this_game		= 'wow';
 		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
@@ -516,6 +516,8 @@ if(!class_exists('wow')) {
 						
 						//Logging is still active, because its a new char
 						$myStatus = $this->pdh->put('member', 'addorupdate_member', array(0, $jsondata));
+						
+						echo "<br/>add member ".$jsondata['name'];
 					
 						// reset the cache
 						$this->pdh->process_hook_queue();
@@ -562,6 +564,7 @@ if(!class_exists('wow')) {
 								'second_name'		=> $chardata['stats']['powerType'],
 						), 0));
 					
+						echo "<br/>update memberid ".$memberID;
 					}
 					
 					if($rate > 0){
@@ -571,6 +574,7 @@ if(!class_exists('wow')) {
 			}
 
 			$this->pdh->process_hook_queue();
+			$this->config->set(array('uc_profileimported'=> $this->time->time));
 		}
 		
 		public function admin_settings() {
