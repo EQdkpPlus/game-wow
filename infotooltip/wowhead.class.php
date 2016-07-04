@@ -29,7 +29,7 @@ if(!class_exists('wowhead')) {
 		public $settings = array(
 			'itt_icon_loc' => array(
 				'type' => 'text',
-				'default' => 'http://static.wowhead.com/images/wow/icons/large/'),
+				'default' => 'https://wow.zamimg.com/images/wow/icons/large/'),
 			'itt_icon_ext' => array(
 				'type' => 'text',
 				'default' => '.jpg'),
