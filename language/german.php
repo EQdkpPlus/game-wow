@@ -55,7 +55,8 @@ $german_array = array(
 		8	=> 'Schamane',
 		9	=> 'Hexenmeister',
 		10	=> 'Krieger',
-		11	=> 'Mönch'
+		11	=> 'Mönch',
+		12	=> 'Demonenjäger',
 	),
 	'talents'		=> array(
 		0 	=> 'Blut',
@@ -92,6 +93,8 @@ $german_array = array(
 		31 	=> 'Braumeister',
 		32 	=> 'Nebelwirker',
 		33 	=> 'Windläufer',
+		34	=> 'Verwüstung'
+		35	=> 'Rachsucht',
 	),
 	'roles' => array(
 		1	=> 'Heiler',
@@ -122,7 +125,7 @@ $german_array = array(
 		'talents_tt_1'	=> 'Primäres Talent',
 		'talents_tt_2'	=> 'Sekundäres Talent',
 		'caltooltip_itemlvl'	=> 'Item-Level',
-		
+
 		// Profile information
 		'uc_prof_professions'			=> 'Berufe',
 		'skills'						=> 'Talente',
@@ -174,7 +177,7 @@ $german_array = array(
 		'uc_achievement_tab_cataclysm'	=> 'Cataclysm',
 		'uc_achievement_tab_mop'		=> 'Mists of Pandaria',
 		'uc_achievement_tab_wod'		=> 'Warlords of Draenor',
-		
+
 		'challenge'						=> 'Herausforderungsmodus',
 		'challenge_title'				=> 'Herausforderungsmodus: Ranglisten',
 		'off_realm_toon'				=> 'Dieser Charakter scheint nicht in deiner Gilde zu sein. Da die Herausforderungen realmübergreifend sind, können auch fremde Charakter in dieser Liste auftauchen.',
@@ -202,7 +205,7 @@ $german_array = array(
 		'apikey_content_step2'			=> 'Besuche die <a href="https://dev.battle.net" target="_blank">Battle.net API</a> Seite und erstelle einen neuen Mashery Account. Registriere eine <a href="https://dev.battle.net/apps/register" target="_blank">neue Anwendung</a> und benutze dazu den Gildenamen, die Webseite und eine Kurzbeschreibung. Wähle die Checkbox "Issue a new key for game APIs". Der Schlüssel wird per E-Mail zugesendet.',
 		'apikey_title_step3'			=> 'Gib den API-Schlüssen ein',
 		'apikey_content_step3'			=> 'Gib hier den API-Schlüssel den du per E-Mail erhalten hast ein.<br/>API-Schlüssel: {APIKEY_FORM}',
-	
+
 		// Armory Import
 		"uc_updat_armory" 				=> "Vom battle.net aktualisieren",
 		'uc_charname'					=> 'Charaktername',
@@ -217,7 +220,7 @@ $german_array = array(
 		'uc_armory_updfailed'			=> 'Charakter nicht aktualisiert',
 		'uc_armory_impfail_reason'		=> 'Grund:',
 		'uc_armory_impduplex'			=> 'Charakter ist bereits vorhanden',
-		
+
 		// guild importer
 		'uc_class_filter'				=> 'Klasse',
 		'uc_class_nofilter'				=> 'Nicht filtern',
@@ -324,7 +327,7 @@ $german_array = array(
 		'burning_crusade'				=> 'Burning Crusade',
 		'classic'						=> 'Classic',
 		'mop'							=> 'Mists of Pandaria',
-			
+
 		'mop_mogushan_10'				=> 'Mogu\'shangewölbe (10)',
 		'mop_mogushan_25'				=> 'Mogu\'shangewölbe (25)',
 		'mop_heartoffear_10'			=> 'Das Herz der Angst (10)',
@@ -344,7 +347,7 @@ $german_array = array(
 		'char_news'						=> 'Char News',
 		'no_armory'						=> 'Es konnten keine gültigen Daten für diesen Charakter geladen werden. Die battle.net API meldet folgenden Fehler: "%s".',
 		'no_realm'						=> 'Um den vollen Funktionsumfang dieser Seite nutzen zu können, muss in den Administrator-Einstellungen ein gültiger World of Warcraft Server hinterlegt werden.',
-		
+
 		'guildachievs_total_completed'	=> 'Vollständig abgeschlossen',
 		'latest_guildachievs'			=> 'Kürzlich erhalten',
 		'guildnews'						=> 'Gildennews',

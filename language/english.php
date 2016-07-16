@@ -18,17 +18,17 @@
  *	You should have received a copy of the GNU Affero General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 if (!defined('EQDKP_INC')) {
 	die('You cannot access this file directly.');
 }
 
-//Language: English	
+//Language: English
 //Created by EQdkp Plus Translation Tool on  2014-12-17 23:17
 //File: games/wow/language/english.php
 //Source-Language: german
 
-$english_array = array( 
+$english_array = array(
 	"factions" => array(
 	"alliance" => 'Alliance',
 	"horde" => 'Horde',
@@ -62,6 +62,7 @@ $english_array = array(
 	9 => 'Warlock',
 	10 => 'Warrior',
 	11 => 'Monk',
+	12	=> 'Demon Hunter',
 	),
 	"talents" => array(
 	0 => 'Blood',
@@ -98,6 +99,8 @@ $english_array = array(
 	31 => 'Brewmaster',
 	32 => 'Mistweaver',
 	33 => 'Windwalker',
+	34 => 'Havoc'
+	35 => 'Vengeance',
 	),
 	"roles" => array(
 	1 => 'Healer',
@@ -699,7 +702,7 @@ $english_array = array(
 	363 => 'Naxxramas',
 	364 => 'Les Clairvoyants',
 	),
-	
+
 );
 
 ?>
