@@ -99,7 +99,7 @@ $english_array = array(
 	31 => 'Brewmaster',
 	32 => 'Mistweaver',
 	33 => 'Windwalker',
-	34 => 'Havoc'
+	34 => 'Havoc',
 	35 => 'Vengeance',
 	),
 	"roles" => array(
@@ -334,6 +334,8 @@ $english_array = array(
 	"empty" => 'Empty',
 	"major_glyphs" => 'Major Glyphs',
 	"minor_glyphs" => 'Minor Glyphs',
+	"core_sett_f_itt_icon_small_loc"=> "URL leading to small icons",
+	"core_sett_f_help_itt_icon_small_loc"	=> "If the URL is unknown, switch parser and back again, to load standard values.",
 	),
 	"realmlist" => array(
 	0 => 'Eldre\'Thalas',

@@ -218,7 +218,7 @@ if(!class_exists('wow')) {
 				)
 			);
 
-
+			$this->strStaticIconUrl = $this->config->get('itt_icon_small_loc').'%s'.$this->config->get('itt_icon_ext');
 			$this->pdh->register_read_module($this->this_game, $this->path . 'pdh/read/'.$this->this_game);
 		}
 
@@ -730,7 +730,7 @@ if(!class_exists('wow')) {
 						}
 						$arrOut[] = array(
 							'text' => sprintf($this->glang('news_itemLoot'), $charLink, infotooltip($itemData['name'], $val['itemId'], false, false, false, true)),
-							'icon' => "http://eu.media.blizzard.com/wow/icons/18/".$itemData['icon'].".jpg",
+							'icon' => sprintf($this->strStaticIconUrl, $itemData['icon']),
 							'date' => substr($val['timestamp'], 0, -3),
 						);
 						}
@@ -747,7 +747,7 @@ if(!class_exists('wow')) {
 						}
 						$arrOut[] = array(
 							'text' => sprintf($this->glang('news_itemPurchase'), $charLink, infotooltip($itemData['name'], $val['itemId'], false, false, false, true)),
-							'icon' => "http://eu.media.blizzard.com/wow/icons/18/".$itemData['icon'].".jpg",
+							'icon' => sprintf($this->strStaticIconUrl, $itemData['icon']),
 							'date' => substr($val['timestamp'], 0, -3),
 						);
 						break;
@@ -767,7 +767,7 @@ if(!class_exists('wow')) {
 							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'#'.$achievCat.':a'.$val['achievement']['id'];
 						$arrOut[] = array(
 							'text' => sprintf($this->glang('news_guildAchievement'), '<a href="'.$bnetLink.'">'.$val['achievement']['title'].'</a>', $val['achievement']['points']),
-							'icon' => "http://eu.media.blizzard.com/wow/icons/18/".$val['achievement']['icon'].".jpg",
+							'icon' => sprintf($this->strStaticIconUrl, $val['achievement']['icon']),
 							'date' => substr($val['timestamp'], 0, -3),
 						);
 						}
@@ -785,7 +785,7 @@ if(!class_exists('wow')) {
 							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'achievements').'#'.$achievCat.':a'.$val['achievement']['id'];
 							$arrOut[] = array(
 								'text' => sprintf($this->glang('news_playerAchievement'), $charLink, '<a href="'.$bnetLink.'">'.$val['achievement']['title'].'</a>', $val['achievement']['points']),
-								'icon' => "http://eu.media.blizzard.com/wow/icons/18/".$val['achievement']['icon'].".jpg",
+								'icon' => sprintf($this->strStaticIconUrl, $val['achievement']['icon']),
 								'date' => substr($val['timestamp'], 0, -3),
 							);
 						}
@@ -955,7 +955,7 @@ if(!class_exists('wow')) {
 				if ($achievData){
 					$arrAchievsOut[] = array(
 						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink('', $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrGuildAchievementsData).':a'.$achievID.'">'.$achievData['title'].'</a>',
-						'icon'	=> '<img class="gameicon" src="http://eu.media.blizzard.com/wow/icons/18/'.$achievData['icon'].'.jpg" alt="" />',
+						'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" />',
 						'desc'	=> $achievData['description'],
 						'points'=> $achievData['points'],
 						'date'	=> substr($arrAchieveTimes[$key], 0, -3),
@@ -987,7 +987,7 @@ if(!class_exists('wow')) {
 					$class = ($achievData['accountWide'] == 1) ? 'accountwide' : '';
 					$arrAchievsOut[] = array(
 						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink($charname, $this->config->get('servername'), 'achievements').'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrCharAchievementsData).':a'.$achievID.'" class="'.$class.'">'.$achievData['title'].'</a>',
-						'icon'	=> '<img class="gameicon" src="http://eu.media.blizzard.com/wow/icons/18/'.$achievData['icon'].'.jpg" alt="" />',
+						'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" />',
 						'desc'	=> $achievData['description'],
 						'points'=> $achievData['points'],
 						'date'	=> substr($arrAchieveTimes[$key], 0, -3),
@@ -1079,7 +1079,7 @@ if(!class_exists('wow')) {
 							$spezialisation[$v_spezialisation['tier']] = array(
 								'name'			=> $v_spezialisation['spell']['name'],
 								'description'	=> $v_spezialisation['spell']['description'],
-								'icon'			=> sprintf('http://eu.media.blizzard.com/wow/icons/18/%s.jpg', $v_spezialisation['spell']['icon'])
+								'icon'			=> sprintf($this->strStaticIconUrl, $v_spezialisation['spell']['icon'])
 							);
 						}
 					}
@@ -1092,7 +1092,7 @@ if(!class_exists('wow')) {
 								$glyphs[$id_glyphs][] = array(
 									'name'		=> $v_glyph['name'],
 									'item'		=> $v_glyph['item'],
-									'icon'		=> sprintf('http://eu.media.blizzard.com/wow/icons/18/%s.jpg', $v_glyph['icon'])
+									'icon'		=> sprintf($this->strStaticIconUrl, $v_glyph['icon'])
 								);
 							}
 						}
@@ -1127,7 +1127,7 @@ if(!class_exists('wow')) {
 								'timestamp'	=> $d_charfeed['timestamp']/ 1000,
 								'title'		=> $d_charfeed['achievement']['title'],
 								'points'	=> $d_charfeed['achievement']['points'],
-								'icon'		=> sprintf('http://eu.media.blizzard.com/wow/icons/18/%s.jpg', $d_charfeed['achievement']['icon']),
+								'icon'		=> sprintf($this->strStaticIconUrl, $d_charfeed['achievement']['icon']),
 								'hero'		=> ($d_charfeed['featOfStrength'] == 1) ? true : false,
 								'achievementID' => $d_charfeed['achievement']['id'],
 								'accountWide'=> ($d_charfeed['achievement']['accountWide'] == 1) ? true : false,
@@ -1138,7 +1138,7 @@ if(!class_exists('wow')) {
 								'type'		=> 'bosskill',
 								'timestamp'	=> $d_charfeed['timestamp']/ 1000,
 								'title'		=> $d_charfeed['achievement']['title'],
-								'icon'		=> sprintf('http://eu.media.blizzard.com/wow/icons/18/%s.jpg', $d_charfeed['achievement']['icon']),
+								'icon'		=> sprintf($this->strStaticIconUrl, $d_charfeed['achievement']['icon']),
 								'quantity'  => $d_charfeed['quantity'],
 							);
 						break;
@@ -1149,7 +1149,7 @@ if(!class_exists('wow')) {
 								'criteria'	=> $d_charfeed['criteria']['description'],
 								'title'		=> $d_charfeed['achievement']['title'],
 								'achievementID' => $d_charfeed['achievement']['id'],
-								'icon'		=> sprintf('http://eu.media.blizzard.com/wow/icons/18/%s.jpg', $d_charfeed['achievement']['icon'])
+								'icon'		=> sprintf($this->strStaticIconUrl, $d_charfeed['achievement']['icon'])
 							);
 						break;
 						case 'LOOT':

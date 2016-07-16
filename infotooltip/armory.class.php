@@ -21,7 +21,7 @@
 
 if(!class_exists('armory')) {
 	class armory extends itt_parser {
-	
+
 		public static $shortcuts = array('puf' => 'urlfetcher');
 
 		public $av_langs = array('en' => 'en_US', 'de' => 'de_DE', 'fr' => 'fr_FR', 'ru' => 'ru_RU');#, 'jp' => 'ja_JP');
@@ -29,20 +29,27 @@ if(!class_exists('armory')) {
 		public $settings = array(
 			'itt_icon_loc' => array(
 				'type' => 'text',
-				'default' => 'http://eu.media.blizzard.com/wow/icons/56/'),
+				'default' => 'http://eu.media.blizzard.com/wow/icons/56/'
+			),
+			'itt_icon_small_loc' => array(
+				'type' => 'text',
+				'default' => 'http://eu.media.blizzard.com/wow/icons/18/'
+			),
 			'itt_icon_ext' => array(
 				'type' => 'text',
-				'default' => '.jpg'),
+				'default' => '.jpg'
+			),
 			'itt_default_icon' => array(
 				'type' => 'text',
-				'default' => 'inv_misc_questionmark')
+				'default' => 'inv_misc_questionmark'
+			)
 			);
 
 		private $url_prefix = '';
 		private $searched_langs = array();
 		private $armory_lang = array();
 		private $enchants = array();
-		
+
 		private $reforged_stats = array(
 			//   id			   from, to
 				120		=> array(13, 6),
@@ -123,8 +130,8 @@ if(!class_exists('armory')) {
 			$url = 'http://'.$this->url_prefix.'.battle.net/wow/'.$lang.'/search?f=wowitem&q='.$encoded_name;
 			$this->pdl->log('infotooltip', 'Search for ItemID at '.$url);
 			$data = $this->puf->fetch($url);
-			
-			
+
+
 			if(preg_match_all('#<a href=\"\/wow\/([a-z]{2})\/item\/(.*?)\" class=\"(.*?)\">#', $data, $matches)){
 				if((int)$matches[2] > 0){
 					$item_id = $matches[2][0];
@@ -152,7 +159,7 @@ if(!class_exists('armory')) {
 			$this->pdl->log('infotooltip', $debug_out);
 			return array($item_id, 'items');
 		}
-		
+
 		protected function getItemData($item_id, $lang, $itemname='', $type='items', $data=array()){
 			$this->pdl->log('infotooltip', 'armory->getItemData called: item_id: '.$item_id.', lang: '.$lang.', itemname: '.$itemname.', data: '.implode(', ', $data));
 			if($item_id <= 0) {
@@ -180,7 +187,7 @@ if(!class_exists('armory')) {
 				$item['id'] = $item_id;
 				return $item;
 			}
-			
+
 			$item['name'] = $item_data['name'];
 			$item['id'] = $item_data['id'];
 			$item['lang'] = $lang;
@@ -209,16 +216,16 @@ if(!class_exists('armory')) {
 				return false;
 			}
 			$html .= "<table><tr><td><b class=\"".$item['color']."\">".$item['name']."</b><br/>";
-			
+
 			// required
 			$html .= "<table><tr><td>".$this->armory_lang[$lang]['requiredSkill']." ".$this->armory_lang[$lang]['itemClass'][$data['itemClass']][$data['itemSubClass']]." (".$data['requiredSkillRank'].")</td></tr></table>";
-			
+
 			// ItemLevel
 			if(!empty($data['itemLevel'])) $html .= $this->armory_lang[$lang]['itemLevel']." ".$data['itemLevel']."<br />";
-			
+
 			// spells
 			$html .= "<span class=\"q2\">".$this->armory_lang[$lang]['trigger']['ON_USE']." ".$data['description']."</span><br />";
-			
+
 			// Sell-Price
 			if(!empty($data['buyPrice'])) {
 				$cop = $data['buyPrice']%100;
@@ -226,7 +233,7 @@ if(!class_exists('armory')) {
 				$gold = $data['buyPrice']-$cop-$sil;
 				$html .= "<span class=\"moneygold\">".($gold/10000)."</span> <span  class=\"moneysilver\">".($sil/100)."</span> <span  class=\"moneycopper\">".$cop."</span><br />";
 			}
-			
+
 			$html .= "</td></tr></table>";
 			$tpl_html = file_get_contents($this->root_path.'games/wow/infotooltip/templates/wow_popup.tpl');
 			$html = str_replace('{ITEM_HTML}', $html, $tpl_html);
@@ -243,7 +250,7 @@ if(!class_exists('armory')) {
 				$data['itemLevel'] = $char_data['itemLevel'];
 				if(!empty($char_data['weaponInfo'])) $data['weaponInfo'] = $char_data['weaponInfo'];
 				if(!empty($char_data['stats'])) $data['bonusStats'] = $char_data['stats'];
-				
+
 				$char_data_params = $char_data['tooltipParams'];
 			}
 			if(!isset($this->armory_lang[$lang]) OR sizeof($this->armory_lang[$lang]) < 1) {
@@ -258,8 +265,8 @@ if(!class_exists('armory')) {
 			// Item upgrade information
 			if(!empty($char_data_params['upgrade'])) $html .= "<span class=\"q\">" . $this->armory_lang[$lang]['upgraded'].": " . $char_data_params['upgrade']['current'] . "/" . $char_data_params['upgrade']['total']."</span><br />";
 			$html .= (!empty($data['itemBind'])) ? $this->armory_lang[$lang]['itemBind'][$data['itemBind']]."<br />" : "";
-			//if(!empty($data['maxCount'])) $html .= 'max-count?'; //($data['maxCount']) ? $this->armory_lang[$lang]['tooltip']['unique-equipped'] : 
-			
+			//if(!empty($data['maxCount'])) $html .= 'max-count?'; //($data['maxCount']) ? $this->armory_lang[$lang]['tooltip']['unique-equipped'] :
+
 			// item class information
 			if(!empty($data['inventoryType']))
 				$html .= "<table><tr><td>".$this->armory_lang[$lang]['inventoryType'][$data['inventoryType']]."</td><th>".$this->armory_lang[$lang]['itemClass'][$data['itemClass']][$data['itemSubClass']]."</th></tr></table>";
@@ -271,11 +278,11 @@ if(!class_exists('armory')) {
 				$html .= "</td><td>".$this->armory_lang[$lang]['weaponSpeed']." ".$data['weaponInfo']['weaponSpeed']."</td></tr></table>";
 				$html .= "(".$data['weaponInfo']['dps']." ".$this->armory_lang[$lang]['dps'].")<br />";
 			}
-			
+
 			//armor
 			if(!empty($data['armor'])) $html .= $data['armor']." ".$this->armory_lang[$lang]['armor']."<br />";
 			// (!empty($data['baseArmor'])) ? ((isset($tooltip_data['b_armor'])) ? "<span class=\"q2\">".$tooltip_data['armor'].' '.$this->armory_lang[$lang]['tooltip']['armor']."</span>" : $tooltip_data['armor'].$this->armory_lang[$lang]['tooltip']['armor'])."<br />" : "";
-			
+
 			// main stats
 			if(!empty($data['bonusStats'])) {
 				foreach($data['bonusStats'] as $stat) {
@@ -285,7 +292,7 @@ if(!class_exists('armory')) {
 					$html .= "+".$stat['amount']." ".$this->armory_lang[$lang]['bonusStats'][$stat['stat']]."<br />";
 				}
 			}
-			
+
 			// secondary stats
 			if(!empty($data['bonusStats'])) {
 				// Check for reforge
@@ -303,18 +310,18 @@ if(!class_exists('armory')) {
 					$html .= "</span><br />";
 				}
 			}
-			
+
 			$html .= "</td></tr></table><table class=\"tooltipGrouping\"><tr><td>";
-			
+
 			// Enchants
 			if(isset($char_data_params['enchant'])) {
 				$this->load_enchants($lang);
 				$html .= "<span class=\"q2\">" . $this->armory_lang[$lang]['enchanted'] . ":  " .$this->enchants[$lang][$char_data_params['enchant']]."</span><br />";
-			}			
-			
+			}
+
 			// Check for extra socket and if found, add prismatic socket
 			if(!empty($char_data_params['extraSocket'])) $data['socketInfo']['sockets'][] = array('type' => "PRISMATIC");
-			
+
 			// Sockets
 			$socket_bonus = false;
 			if(!empty($data['socketInfo'])) {
@@ -336,21 +343,21 @@ if(!class_exists('armory')) {
 				$sock_class = ($socket_bonus) ? "q2" : "q0";
 				$html .= "<span class=\"".$sock_class."\">".$this->armory_lang[$lang]['socketBonus'].": ".$data['socketInfo']['socketBonus']."</span>";
 			}
-			
+
 			// set-bonus
 			if(!empty($data['itemSet'])) {
 				$html .= "</td></tr></table><table class=\"tooltipGrouping\"><tr><td>";
 				$html .= "<span class=\"q\">".$data['itemSet']['name']."</span><br />";
 				if(!empty($char_data_params['set'])) $set_count = count($char_data_params['set']);
-				
-				/* Marking and listing of set items disabled. 
+
+				/* Marking and listing of set items disabled.
 				 * Set items of different iLvl may be combined, but how to find all other item sets to check for item id?
-				 * 
+				 *
 				foreach($data['itemSet']['items'] as $sdata) {
 					$sclass = 'q0';
 					if(in_array($sdata, $char_data_params['set'])) {
 						$sclass = 'q8';
-					} 
+					}
 					$itemName = $sdata;
 					$html .= "<div class=\"".$sclass." indent\">". $itemName ."</div>";
 				}*/
@@ -362,18 +369,18 @@ if(!class_exists('armory')) {
 					$html .= "<span class=\"".$sclass."\">(".$bonus['threshold'].") ".$bonus['description']."</span><br />";
 				}
 			}
-			
+
 			// yellow description
 			if(!empty($data['description'])) $html .= "<span class=\"q\">".$data['description']."</span><br />";
-			
+
 			// spells
 			if(!empty($data['itemSpells'])) {
 				foreach($data['itemSpells'] as $spell) {
 					$html .= "<span class=\"q2\">".$this->armory_lang[$lang]['trigger'][$spell['trigger']]." ".$spell['spell']['description']."</span><br />";
 				}
-			}			
+			}
 			$html .= "</td></tr></table><table class=\"tooltipGrouping\"><tr><td>";
-			
+
 			// durability
 			if(!empty($data['maxDurability'])) $html .= $this->armory_lang[$lang]['maxDurability'].": ".$data['maxDurability']." / ".$data['maxDurability']."<br />";
 			// class restriction
@@ -390,7 +397,7 @@ if(!class_exists('armory')) {
 				//$html .= (isset($tooltip_data['requires']['name']) AND $tooltip_data['requires']['name']) ? $this->armory_lang[$lang]['tooltip']['requires']." ".$tooltip_data['requires']['name']." (".$tooltip_data['requires']['rank'].")<br />" : "";
 			}
 			if(!empty($data['requiredLevel'])) $html .= $this->armory_lang[$lang]['requiredLevel']." ".$data['requiredLevel']."<br />";
-			
+
 			// Sell-Price
 			if(!empty($data['sellPrice'])) {
 				$cop = $data['sellPrice']%100;
@@ -398,9 +405,9 @@ if(!class_exists('armory')) {
 				$gold = $data['sellPrice']-$cop-$sil;
 				$html .= "<span class=\"moneygold\">".($gold/10000)."</span> <span  class=\"moneysilver\">".($sil/100)."</span> <span  class=\"moneycopper\">".$cop."</span><br />";
 			}
-						
+
 			// drop-source
-			/*			
+			/*
 			$html .= "</td></tr></table><table class=\"tooltipGrouping\"><tr><td>";
 			if(!empty($data['itemSource'])) {
 				/* $lng_str = (isset($this->armory_lang[$lang]['source'][$tooltip_data['drop']['value']])) ? $this->armory_lang[$lang]['source'][$tooltip_data['drop']['value']] : $tooltip_data['drop']['value'];
@@ -411,7 +418,7 @@ if(!class_exists('armory')) {
 					$html .= "<span class=\"q\">".$this->armory_lang[$lang]['source']['droprate']."</span> ".$this->armory_lang[$lang]['drop'][$tooltip_data['drop']['drop']]."<br />";
 				}
 			}*/
-			
+
 			$html .= "</td></tr></table>";
 			$tpl_html = file_get_contents($this->root_path.'games/wow/infotooltip/templates/wow_popup.tpl');
 			$html = str_replace('{ITEM_HTML}', $html, $tpl_html);
@@ -435,7 +442,7 @@ if(!class_exists('armory')) {
 				$this->armory_lang[$language] = $lang;
 			}
 		}
-		
+
 		private function load_enchants($language) {
 			if(empty($this->enchants[$language])) {
 				$file = $this->root_path.'games/wow/infotooltip/armory/enchants_'.$language.'.php';
@@ -453,7 +460,7 @@ if(!class_exists('armory')) {
 				$this->enchants[$language] = $enchants;
 			}
 		}
-		
+
 		private function socket_match($gem, $socket) {
 			if($gem == $socket) return true;
 			switch($socket) {
@@ -468,7 +475,7 @@ if(!class_exists('armory')) {
 			}
 			return false;
 		}
-		
+
 		private function class_name($class_id) {
 			if(empty($this->class_names)) {
 				$class_names = $this->bnet->getdata('character', 'classes');

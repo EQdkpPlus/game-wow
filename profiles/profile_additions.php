@@ -26,13 +26,13 @@
 
 	// Add css & JS Code
 	$this->tpl->add_css("
-		.uc_logo_Alliance { 
+		.uc_logo_Alliance {
 			background:url('".$this->server_path."games/wow/profiles/factions/alliance-icon.png');
 		}
-		.uc_logo_Horde { 
+		.uc_logo_Horde {
 			background:url('".$this->server_path."games/wow/profiles/factions/horde-icon.png');
 		}
-		.uc_name { 
+		.uc_name {
 			text-align: left;
 			color: white;
 			font-weight: bold;
@@ -50,13 +50,13 @@
 			padding-left: 6px;
 			z-index: 10;
 		}
-		
+
 		ul#wow_icons_left img, ul#wow_icons_right img, ul#wow_icons_bottom img{
 			box-shadow: 0 0 8px black;
 			-webkit-border-radius: 4px;
 			border-radius: 4px;
 		}
-		
+
 		.uc_nametd {
 			border-bottom: 1px solid white;
 		}
@@ -88,17 +88,17 @@
 			padding: 5px;
 			cursor: pointer;
 		}
-		
+
 		#profile {
 			padding: 6px;
 			position: relative;
-		}		
-		
+		}
+
 		#profile_charicon {
-			height:100px; 
+			height:100px;
 			float: left;
 		}
-		
+
 		#profile_charname {
 			font-size: 56px;
 			font-weight: bold;
@@ -106,32 +106,32 @@
 			line-height: 1.1em;
 			margin-left: 8px;
 			vertical-align: top;
-			height:60px; 
+			height:60px;
 			float: left;
 		}
-		
+
 		#profile_titel_guild {
-			height: 60px; 
+			height: 60px;
 			float: left;
 			padding-left: 16px;
 			padding-top: 10px;
 			font-size: 14px;
 			line-height: 25px;
 		}
-		
+
 		.profile_guild {
 			font-size: 20px;
 			color: #FFB100;
 			line-height: 15px;
 		}
-		
+
 		#profile_charinfos {
 			float:left;
 			font-size: 15px;
 			margin-left: 8px;
 			margin-top: -4px;
 		}
-		
+
 		.profile_charname{
 			top: 0;
 			right: 0;
@@ -166,13 +166,13 @@
 			line-height: 0.8em;
 			margin-right: 4px;
 			vertical-align: top;
-			height: 60px; 
+			height: 60px;
 			float: left;
 		}
 		.profile_itemlevel_txt {
 			display: inline-block;
 		}
-		
+
 		.profile_itemlevel_avgtxt, .profile_itemlevel_eq{
 			margin-left: 6px;
 		}
@@ -212,7 +212,7 @@
 		.raideventicon.id6967 { background-position:  -2013px 0; }
 		.raideventicon.id6996 { background-position:  -2074px 0; }
 		.raideventicon.id7545 { background-position:  -2135px 0; }
-		
+
 		#wow_icons_left .q img, #wow_icons_right .q img, #wow_icons_bottom .q img {
 			border: 1px solid #ffd100;
 		}
@@ -243,7 +243,7 @@
 		#wow_icons_left .q8 img, #wow_icons_right .q8 img, #wow_icons_bottom .q8 img {
 			border: 1px solid #ffff98;
 		}
-		
+
 		.accountwide { color: #00AEFF !important; }
 
 		.icon-frame {
@@ -349,7 +349,7 @@
 	$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang')));
 	$member_servername	= unsanitize($this->pdh->get('member', 'profile_field', array($this->url_id, 'servername')));
 	$servername			= ($member_servername != '') ? $member_servername : unsanitize($this->config->get('servername'));
-	
+
 	$chardata			= $this->game->obj['armory']->character(unsanitize($member['name']), $servername);
 	if($this->config->get('game_importer_apikey') != '' && $this->config->get('servername') != '' && !isset($chardata['status'])){
 
@@ -503,7 +503,8 @@
 		$d_charfeed = $this->game->callFunc('ParseCharNews', array($chardata));
 		$cnf_output = '';
 		if (is_array($d_charfeed)) {
-			$arrCharacterAchievements = $this->game->obj['armory']->getdata();
+			$strStaticIconUrl			= $this->config->get('itt_icon_small_loc').'%s'.$this->config->get('itt_icon_ext');
+			$arrCharacterAchievements	= $this->game->obj['armory']->getdata();
 			foreach ($d_charfeed as $v_charfeed){
 				switch ($v_charfeed['type']){
 						case 'achievement':
@@ -511,7 +512,7 @@
 							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($this->config->get('servername')), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
 							$class='';
 							if ($v_charfeed['accountWide']) $class = 'accountwide';
-						
+
 							$cnf_output = ($v_charfeed['hero']) ? sprintf($this->game->glang('charnf_achievement_hero'), '<a href="'.$bnetLink.'" class="'.$class.'">'.$v_charfeed['title'].'</a>') : sprintf($this->game->glang('charnf_achievement'), '<a href="'.$bnetLink.'" class="'.$class.'">'.$v_charfeed['title'].'</a>', $v_charfeed['points']);
 
 						break;
@@ -521,14 +522,14 @@
 						case 'criteria':
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$v_charfeed['achievementID'], $arrCharacterAchievements);
 							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($this->config->get('servername')), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
-							
+
 							$cnf_output = sprintf($this->game->glang('charnf_criteria'), '<b>'.$v_charfeed['criteria'].'</b>', '<a href="'.$bnetLink.'">'.$v_charfeed['title'].'</a>');
 						break;
 						case 'item':
 							$itemData = $this->game->obj['armory']->item($v_charfeed['itemid']);
 							$item = infotooltip($itemData['name'], $v_charfeed['itemid'], false, false, false, true, array(unsanitize($this->config->get('servername')), $chardata['name']));
 							$cnf_output = sprintf($this->game->glang('charnf_item'), $item);
-							$v_charfeed['icon'] = 'http://eu.media.blizzard.com/wow/icons/18/'.$itemData['icon'].'.jpg';
+							$v_charfeed['icon'] = sprintf($this->strStaticIconUrl, $itemData['icon']);
 						break;
 				}
 				$this->tpl->assign_block_vars('charfeed', array(
@@ -620,7 +621,7 @@
 					'DATE'	=> $this->time->nice_date($v_latestAchievements['date'], 60*60*24*7),
 			));
 		}
-		
+
 		$this->tpl->assign_vars(array(
 			'ARMORY'				=> 1,
 			'CHARDATA_ICON'			=> $this->game->obj['armory']->characterIcon($chardata),
