@@ -25,7 +25,7 @@ if ( !defined('EQDKP_INC') ){
 
 if(!class_exists('wow')) {
 	class wow extends game_generic {
-		
+
 		protected static $apiLevel	= 20;
 		public $version				= '6.2.6';
 		protected $this_game		= 'wow';
@@ -41,8 +41,12 @@ if(!class_exists('wow')) {
 		public $no_reg_obj			= array('bnet_armory');												// a list with all objects, which dont need registry
 		public $langs				= array('english', 'german');										// in which languages do we have information?
 		public $importers 			= array();
-		
+
 		public $character_unique_ids = array('servername');
+
+		public $game_settings		= array(
+			'calendar_hide_emptyroles'	=> false,
+		);
 
 		// http://eu.battle.net/wow/static/images/character/summary/raid-icons.jpg
 		protected $ArrInstanceCategories = array(
@@ -53,7 +57,7 @@ if(!class_exists('wow')) {
 			'mop'		=> array(6125, 6297, 6067, 6622, 6738),
 			'wod'		=> array(6967, 6996, 7545),
 		);
-		
+
 		protected $class_dependencies = array(
 			array(
 				'name'		=> 'faction',
@@ -148,14 +152,14 @@ if(!class_exists('wow')) {
 				),
 			),
 		);
-		
+
 		public $default_roles = array(
 			1	=> array(2, 5, 6, 8, 11),			// healer
 			2	=> array(1, 2, 5, 10, 11),			// tank
 			3	=> array(2, 3, 4, 6, 8, 9),			// dd distance
 			4	=> array(1, 2, 5, 7, 8, 10, 11)		// dd near
 		);
-		
+
 		public $default_classrole = array(
 			1	=> 4,	// Death Knight
 			2	=> 4,	// Druid
@@ -169,7 +173,7 @@ if(!class_exists('wow')) {
 			10	=> 1,	// Warrior
 			11	=> 4,	// Monk
 		);
-		
+
 		protected $class_colors = array(
 			1	=> '#C41F3B',
 			2	=> '#FF7C0A',
@@ -183,7 +187,7 @@ if(!class_exists('wow')) {
 			10	=> '#C69B6D',
 			11	=> '#00C77B',
 		);
-		
+
 		protected $glang		= array();
 		protected $lang_file	= array();
 		protected $path			= '';
@@ -208,8 +212,8 @@ if(!class_exists('wow')) {
 					),
 				)
 			);
-			
-			
+
+
 			$this->pdh->register_read_module($this->this_game, $this->path . 'pdh/read/'.$this->this_game);
 		}
 
@@ -223,7 +227,7 @@ if(!class_exists('wow')) {
 			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_brf_normal'), 0, "brf.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_brf_heroic'), 0, "brf.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_brf_mythic'), 0, "brf.png");
-			
+
 			//Mop Events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_10'), 0, "mv.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_25'), 0, "mv.png");
@@ -242,7 +246,7 @@ if(!class_exists('wow')) {
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('burning_crusade'), 0, "bc.png");
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('classic'), 0, "classic.png");
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('mop'), 0, "mop.png");
-			
+
 			$this->game->updateDefaultMultiDKPPool('Default', 'Default MultiDKPPool', $arrEventIDs);
 
 			$intItempoolClassic = $this->game->addItempool("Classic", "Classic Itempool");
@@ -277,7 +281,7 @@ if(!class_exists('wow')) {
 			$this->game->addRank(9, "Dummy Rank #5");
 
 		}
-		
+
 		public function uninstall(){
 			$this->game->removeLink("WoW Battle.net");
 		}
@@ -455,7 +459,7 @@ if(!class_exists('wow')) {
 		public function cronjob($arrParams = array()){
 			$blnSyncRanks = ((int)$arrParams['sync_ranks'] == 1) ? true : false;
 			$blnDeleteChars = ((int)$arrParams['delete_chars'] == 1) ? true : false;
-			
+
 			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
 			//Guildimport
@@ -465,7 +469,7 @@ if(!class_exists('wow')) {
 				if ($blnDeleteChars){
 					$this->pdh->put('member', 'suspend', array('all'));
 				}
-				
+
 				foreach($guilddata['members'] as $guildchars){
 					$jsondata = array(
 							'thumbnail'	=> $guildchars['character']['thumbnail'],
@@ -478,7 +482,7 @@ if(!class_exists('wow')) {
 							'servername'=> sanitize($guildchars['character']['realm']),
 							'guild'		=> sanitize($guildchars['character']['guild']),
 					);
-					
+
 					//Build Rank ID
 					$intRankID = $this->pdh->get('rank', 'default', array());
 					if ($blnSyncRanks){
@@ -486,10 +490,10 @@ if(!class_exists('wow')) {
 						$inRankID = (int)$jsondata['rank'];
 						if (isset($arrRanks[$inRankID])) $intRankID = $arrRanks[$inRankID];
 					}
-					
+
 					//char available
 					$intMemberID = $this->pdh->get('member', 'id', array($jsondata['name'], array('servername' => $jsondata['servername'])));
-								
+
 					if($intMemberID){
 						//Sync Rank
 						if ($blnSyncRanks){
@@ -499,26 +503,26 @@ if(!class_exists('wow')) {
 							//Disable logging for chars that will be updated
 							$myStatus = $this->pdh->put('member', 'addorupdate_member', array($intMemberID, $dataarry,false, false));
 						}
-						
+
 						//Revoke Char
 						if($blnDeleteChars){
 							$this->pdh->put('member', 'revoke', array($intMemberID));
 							$this->pdh->process_hook_queue();
 						}
-							
+
 					} else {
 						if ((int)$arrParams['char_import_ranks_level'] > 0 && (int)$jsondata['rank'] < (int)$arrParams['char_import_ranks_level']) {
 							continue;
 						}
-						
+
 						//Create new char
 						$jsondata['rankid'] = $intRankID;
-						
+
 						//Logging is still active, because its a new char
 						$myStatus = $this->pdh->put('member', 'addorupdate_member', array(0, $jsondata));
-						
+
 						echo "<br/>add member ".$jsondata['name'];
-					
+
 						// reset the cache
 						$this->pdh->process_hook_queue();
 					}
@@ -528,23 +532,23 @@ if(!class_exists('wow')) {
 			//Guildupdate
 			$ratepersecond = 100;
 			$rate 		= 1000000/$ratepersecond;
-			
+
 			$arrMemberIDs = $this->pdh->get('member', 'id_list', array());
 			shuffle($arrMemberIDs);
 			foreach($arrMemberIDs as $memberID){
 				$strMemberName = $this->pdh->get('member', 'name', array($memberID));
 				if (strlen($strMemberName)){
-					
+
 					$char_server	= $this->pdh->get('member', 'profile_field', array($memberID, 'servername'));
 					$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 					$chardata		= $this->game->obj['armory']->character($membername, unsanitize($servername), true);
-						
+
 					if($chardata && !isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 						$errormsg	= '';
 						$charname	= $chardata['name'];
-					
+
 						// insert into database
-					
+
 						$info = $this->pdh->put('member', 'addorupdate_member', array($memberID, array(
 								'level'				=> $chardata['level'],
 								'gender'			=> $this->game->obj['armory']->ConvertID($chardata['gender'], 'int', 'gender'),
@@ -563,10 +567,10 @@ if(!class_exists('wow')) {
 								'second_bar'		=> $chardata['stats']['power'],
 								'second_name'		=> $chardata['stats']['powerType'],
 						), 0));
-					
+
 						echo "<br/>update memberid ".$memberID;
 					}
-					
+
 					if($rate > 0){
 						usleep($rate);
 					}
@@ -576,7 +580,7 @@ if(!class_exists('wow')) {
 			$this->pdh->process_hook_queue();
 			$this->config->set(array('uc_profileimported'=> $this->time->time));
 		}
-		
+
 		public function admin_settings() {
 			$settingsdata_admin = array(
 				'uc_server_loc'	=> array(
@@ -612,17 +616,17 @@ if(!class_exists('wow')) {
 			);
 			return $settingsdata_admin;
 		}
-		
+
 		######################################################################
 		##																	##
 		##							EXTRA FUNCTIONS							##
 		##																	##
 		######################################################################
-		
+
 		/**
 		 *	Content for the Chartooltip
 		 *
-		 */		
+		 */
 		public function chartooltip($intCharID){
 			$template = $this->root_path.'games/'.$this->this_game.'/chartooltip/chartooltip.tpl';
 			$content = file_get_contents($template);
@@ -633,15 +637,15 @@ if(!class_exists('wow')) {
 			$charhtml = '<b>'.$this->pdh->get('member', 'html_name', array($intCharID)).'</b><br />';
 			$guild = $this->pdh->get('member', 'profile_field', array($intCharID, 'guild'));
 			if (strlen($guild)) $charhtml .= '<br />&laquo;'.$guild.'&raquo;';
-			
+
 			$charhtml .= '<br />'.$this->pdh->get('member', 'html_racename', array($intCharID));
 			$charhtml .= ' '.$this->pdh->get('member', 'html_classname', array($intCharID));
 			$charhtml .= '<br />'.$this->user->lang('level').' '.$this->pdh->get('member', 'level', array($intCharID));
-			
-			
+
+
 			$content = str_replace('{CHAR_ICON}', $charicon, $content);
 			$content = str_replace('{CHAR_HTML}', $charhtml, $content);
-			
+
 			return $content;
 		}
 
@@ -665,17 +669,17 @@ if(!class_exists('wow')) {
 				$this->game->glang('caltooltip_itemlvl').': '.$itemlevel,
 			);
 		}
-		
+
 		/**
 		 * Append Servername to Charname
-		 * 
+		 *
 		 * {@inheritDoc}
 		 * @see game_generic::handle_export_charnames()
 		 */
 		public function handle_export_charnames($strCharname, $intCharID){
 			$char_server	= $this->pdh->get('member', 'profile_field', array($intCharID, 'servername'));
 			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
-			
+
 			return $strCharname.(($servername != "") ? '-'.unsanitize($servername) : '');
 		}
 
@@ -694,18 +698,18 @@ if(!class_exists('wow')) {
 				$i = 0;
 				foreach($arrNews as $val){
 					if ($i == $intCount) break;
-					
+
 					switch($val['type']){
 						case 'guildCreated':
 						if (is_array($arrTypes) && !in_array('guildCreated', $arrTypes)) continue;
-						
+
 						$arrOut[] = array(
 							'text' => $this->glang('news_guildCreated'),
 							'icon' => $this->server_path.'games/wow/roster/newsfeed_guild.png',
 							'date' => substr($val['timestamp'], 0, -3),
 						);
 						break;
-						
+
 						case 'itemLoot':{
 							if (is_array($arrTypes) && !in_array('itemLoot', $arrTypes)) continue;
 						$itemData = $this->game->obj['armory']->item($val['itemId']);
@@ -722,7 +726,7 @@ if(!class_exists('wow')) {
 						);
 						}
 						break;
-						
+
 						case 'itemPurchase':
 						if (is_array($arrTypes) && !in_array('itemPurchase', $arrTypes)) continue;
 						$itemData = $this->game->obj['armory']->item($val['itemId']);
@@ -738,7 +742,7 @@ if(!class_exists('wow')) {
 							'date' => substr($val['timestamp'], 0, -3),
 						);
 						break;
-						
+
 						case 'guildLevel':
 						if (is_array($arrTypes) && !in_array('guildLevel', $arrTypes)) continue;
 						$arrOut[] = array(
@@ -747,7 +751,7 @@ if(!class_exists('wow')) {
 							'date' => substr($val['timestamp'], 0, -3),
 						);
 						break;
-						
+
 						case 'guildAchievement':{
 							if (is_array($arrTypes) && !in_array('guildAchievement', $arrTypes)) continue;
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$val['achievement']['id'], $arrGuildAchievementsData);
@@ -761,7 +765,7 @@ if(!class_exists('wow')) {
 						break;
 						case 'playerAchievement':{
 							if (is_array($arrTypes) && !in_array('playerAchievement', $arrTypes)) continue;
-							
+
 							$charID = register('pdh')->get('member', 'id', array(trim($val['character'])));
 							if ($charID) {
 								$charLink = register('pdh')->get('member', 'html_memberlink', array($charID, $this->routing->simpleBuild('character'),'', false, false, true, true));
@@ -1035,11 +1039,11 @@ if(!class_exists('wow')) {
 				foreach ($chardata['professions']['primary'] as $k_profession => $v_profession){
 					$akt = (int)$v_profession['rank'];
 					$max = (int)$v_profession['max'];
-	
+
 					if($akt>$max){
 						$max = $akt;
 					}
-	
+
 					$professions[$k_profession] = array(
 						'name'			=> $v_profession['name'],
 						'icon'			=> $this->server_path."games/wow/profiles/professions/".(($v_profession['icon']) ? $v_profession['icon'] : '0').".jpg",
@@ -1242,7 +1246,7 @@ if(!class_exists('wow')) {
 						'runs_normal'	=> $v_progression['normal'],
 						'runs_heroic'	=> $v_progression['heroic'],
 						'runs_mythic'	=> $v_progression['mythic'],
-						
+
 					);
 				}
 			}
