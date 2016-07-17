@@ -33,7 +33,7 @@ if(!class_exists('wowhead')) {
 			),
 			'itt_icon_small_loc' => array(
 				'type' => 'text',
-				'default' => 'http://eu.media.blizzard.com/wow/icons/18/'
+				'default' => 'https://wow.zamimg.com/images/wow/icons/small/'
 			),
 			'itt_icon_ext' => array(
 				'type' => 'text',

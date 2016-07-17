@@ -529,7 +529,7 @@
 							$itemData = $this->game->obj['armory']->item($v_charfeed['itemid']);
 							$item = infotooltip($itemData['name'], $v_charfeed['itemid'], false, false, false, true, array(unsanitize($this->config->get('servername')), $chardata['name']));
 							$cnf_output = sprintf($this->game->glang('charnf_item'), $item);
-							$v_charfeed['icon'] = sprintf($this->strStaticIconUrl, $itemData['icon']);
+							$v_charfeed['icon'] = sprintf($strStaticIconUrl, $itemData['icon']);
 						break;
 				}
 				$this->tpl->assign_block_vars('charfeed', array(
