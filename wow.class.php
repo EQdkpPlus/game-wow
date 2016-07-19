@@ -90,7 +90,7 @@ if(!class_exists('wow')) {
 				'parent'	=> array(
 					'race' => array(
 						0 	=> 'all',							// Unknown
-						1 	=> array(1,4,6,7,9,10,11),			// Gnome
+						1 	=> array(1,3,4,6,7,9,10,11),		// Gnome
 						2 	=> array(1,3,4,5,6,7,9,10,11),		// Human
 						3 	=> array(1,3,4,5,6,7,8,9,10,11),	// Dwarf
 						4 	=> array(1,2,3,4,6,7,10,11,12),		// Night Elf
