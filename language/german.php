@@ -59,40 +59,52 @@ $german_array = array(
 		12	=> 'Demonenjäger',
 	),
 	'talents'		=> array(
+		// Death Knight
 		0 	=> 'Blut',
 		1 	=> 'Frost',
 		2 	=> 'Unheilig',
+		// Druid
 		3 	=> 'Gleichgewicht',
 		4 	=> 'Wildheit',
 		5 	=> 'Wächter',
 		6 	=> 'Wiederherstellung',
+		// Hunter
 		7 	=> 'Tierherrschaft',
 		8 	=> 'Treffsicherheit',
 		9 	=> 'Überleben',
+		// Mage
 		10 	=> 'Arkan',
 		11 	=> 'Feuer',
 		12 	=> 'Frost',
+		// Paladin
 		13 	=> 'Heilig',
 		14 	=> 'Schutz',
 		15 	=> 'Vergeltung',
+		// Priest
 		16 	=> 'Disziplin',
 		17 	=> 'Heilig',
 		18 	=> 'Schatten',
+		// Rogue
 		19 	=> 'Meucheln',
-		20 	=> 'Kampf',
+		20 	=> 'Gesetztlosigkeit',
 		21 	=> 'Täuschung',
+		// Shaman
 		22 	=> 'Elementar',
 		23 	=> 'Verstärkung',
 		24 	=> 'Wiederherstellung',
+		// Warlock
 		25 	=> 'Gebrechen',
 		26 	=> 'Dämonologie',
 		27 	=> 'Zerstörung',
+		// Warrior
 		28 	=> 'Waffen',
 		29 	=> 'Furor',
 		30 	=> 'Schutz',
+		// Monk
 		31 	=> 'Braumeister',
 		32 	=> 'Nebelwirker',
 		33 	=> 'Windläufer',
+		// demon hunter
 		34	=> 'Verwüstung',
 		35	=> 'Rachsucht',
 	),
