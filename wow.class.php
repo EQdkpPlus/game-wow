@@ -227,6 +227,12 @@ if(!class_exists('wow')) {
 			$arrEventIDs = array();
 
 			// Legion events
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_en_normal'), 0, "en.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_en_heroic'), 0, "en.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_en_mythic'), 0, "en.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_nh_normal'), 0, "nh.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_nh_heroic'), 0, "nh.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_nh_mythic'), 0, "nh.png");
 
 			// WoD Events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_hm_normal'), 0, "hm.png");

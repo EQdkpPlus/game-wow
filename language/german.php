@@ -327,6 +327,7 @@ $german_array = array(
 		'burning_crusade'				=> 'Burning Crusade',
 		'classic'						=> 'Classic',
 		'mop'							=> 'Mists of Pandaria',
+		'leg'							=> 'Legion',
 
 		'mop_mogushan_10'				=> 'Mogu\'shangewölbe (10)',
 		'mop_mogushan_25'				=> 'Mogu\'shangewölbe (25)',
@@ -337,12 +338,20 @@ $german_array = array(
 		'mop_throneofthunder_10'		=> 'Thron des Donners (10)',
 		'mop_throneofthunder_25'		=> 'Thron des Donners (25)',
 		'mop_siegeoforgrimmar'			=> 'Schlacht um Orgrimmar',
+
 		'wod_hm_normal'					=> 'Hochfels Normal',
 		'wod_hm_heroic'					=> 'Hochfels Heroisch',
 		'wod_hm_mythic'					=> 'Hochfels Mystisch (20)',
 		'wod_brf_normal'				=> 'Schwarzfelsgießerei Normal',
 		'wod_brf_heroic'				=> 'Schwarzfelsgießerei Heroisch',
 		'wod_brf_mythic'				=> 'Schwarzfelsgießerei Mythisch (20)',
+
+		'leg_en_normal'					=> 'Smaragdgrüner Albtraum Normal',
+		'leg_en_heroic'					=> 'Smaragdgrüner Albtraum Heroisch',
+		'leg_en_mythic'					=> 'Smaragdgrüner Albtraum Mythisch (20)',
+		'leg_nh_normal'					=> 'Die Nachtfestung Normal',
+		'leg_nh_heroic'					=> 'Die Nachtfestung Heroisch',
+		'leg_nh_mythic'					=> 'Die Nachtfestung Mythisch (20)',
 
 		'char_news'						=> 'Char News',
 		'no_armory'						=> 'Es konnten keine gültigen Daten für diesen Charakter geladen werden. Die battle.net API meldet folgenden Fehler: "%s".',
