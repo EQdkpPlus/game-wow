@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU Affero General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 define('EQDKP_INC', true);
 $eqdkp_root_path = './../../../';
 include_once ($eqdkp_root_path . 'common.php');
@@ -91,7 +91,7 @@ class guildImporter extends page_generic {
 		if($this->in->get('guildname', '') == ''){
 			return '<div class="infobox infobox-large infobox-red clearfix"><i class="fa fa-exclamation-triangle fa-4x pull-left"></i> <span id="error_message_txt>'.$this->game->glang('uc_imp_noguildname').'</span></div>';
 		}
-		
+
 		// generate output
 		$guilddata	= $this->game->obj['armory']->guild(unsanitize($this->in->get('guildname', '')), unsanitize($this->in->get('servername', $this->config->get('servername'))), true);
 
@@ -100,7 +100,7 @@ class guildImporter extends page_generic {
 			if ($this->in->get('delete_old_chars',0)){
 				$this->pdh->put('member', 'suspend', array('all'));
 			}
-		
+
 			$hmtlout = '<div id="guildimport_dataset">
 							<div id="controlbox">
 								<fieldset class="settings">
@@ -148,14 +148,14 @@ class guildImporter extends page_generic {
 			}
 
 			$this->tpl->add_js('
-			var guilddataArry = $.parseJSON(\''.json_encode($jsondata, JSON_HEX_APOS).'\');
+			var guilddataArry = JSON.parse(\''.json_encode($jsondata, JSON_HEX_APOS).'\');
 			function getData(i){
 				if (!i)
 					i=0;
-	
+
 				if (guilddataArry.length >= i){
 					$.post("guildimporter.php'.$this->SID.'&del='.(($this->in->get('delete_old_chars',0)) ? 'true' : 'false').'&sync_rank='.(($this->in->get('sync_ranks',0)) ? 'true' : 'false').'&step=2&totalcount="+guilddataArry.length+"&actcount="+i, guilddataArry[i], function(data){
-						guilddata = $.parseJSON(data);
+						guilddata = JSON.parse(data);
 						if(guilddata.success == "available"){
 							successdata = "<span style=\"color:orange;\">'.$this->game->glang('uc_armory_impduplex').'</span>";
 						}else if(guilddata.success == "imported"){
@@ -174,11 +174,11 @@ class guildImporter extends page_generic {
 					});
 				}
 			} //end getData(i)
-					
+
 			$( "#progressbar" ).progressbar({
 				value: 0
 			});
-			getData();		
+			getData();
 			');
 		}else{
 			$hmtlout .= '<div class="infobox infobox-large infobox-red clearfix"><i class="fa fa-exclamation-triangle fa-4x pull-left"></i> <span id="error_message_txt">'.$guilddata['reason'].'</span></div>';
@@ -194,15 +194,15 @@ class guildImporter extends page_generic {
 			$inRankID = $this->in->get('rank', 0);
 			if (isset($arrRanks[$inRankID])) $intRankID = $arrRanks[$inRankID];
 		}
-		
+
 		$strMembername = $this->in->get('name', '');
 		$strServername = $this->in->get('servername', '');
-		
+
 		$intMemberID = $this->pdh->get('member', 'id', array($strMembername, array('servername' => $strServername)));
-		
+
 		if($intMemberID){
 			$successmsg = 'available';
-			
+
 			if($strServername != ''){
 				$this->pdh->put('member', 'update_profilefield', array($intMemberID, array('servername'=> $strServername)));
 			}
@@ -212,7 +212,7 @@ class guildImporter extends page_generic {
 				$this->pdh->put('member', 'revoke', array($intMemberID));
 				$this->pdh->process_hook_queue();
 			}
-			
+
 			//Sync Rank
 			if ($this->in->get('sync_rank') == 'true'){
 				$dataarry = array(
@@ -220,7 +220,7 @@ class guildImporter extends page_generic {
 				);
 				$myStatus = $this->pdh->put('member', 'addorupdate_member', array($intMemberID, $dataarry));
 			}
-			
+
 		}else{
 
 			//Create new char
@@ -235,7 +235,7 @@ class guildImporter extends page_generic {
 				'rankid'		=> $intRankID,
 			);
 			$myStatus = $this->pdh->put('member', 'addorupdate_member', array(0, $dataarry));
-			
+
 			$successmsg = ($myStatus) ? 'imported' : 'failed';
 
 			// reset the cache
@@ -246,7 +246,7 @@ class guildImporter extends page_generic {
 		$chararray	= array('thumbnail'=>$this->in->get('thumbnail', ''), 'race'=>$this->in->get('race', 0), 'gender'=>$this->in->get('gender', 0));
 		$charicon = $this->game->obj['armory']->characterIcon($chararray);
 		if ($charicon == "") $charicon = $this->server_path.'images/global/avatar-default.svg';
-		
+
 		die(json_encode(array(
 			'image'		=> $charicon,
 			'name'		=> $this->in->get('name', ''),

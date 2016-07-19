@@ -18,17 +18,17 @@
  *	You should have received a copy of the GNU Affero General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 if (!defined('EQDKP_INC')) {
 	die('You cannot access this file directly.');
 }
 
-//Language: English	
+//Language: English
 //Created by EQdkp Plus Translation Tool on  2014-12-17 23:17
 //File: games/wow/language/english.php
 //Source-Language: german
 
-$english_array = array( 
+$english_array = array(
 	"factions" => array(
 	"alliance" => 'Alliance',
 	"horde" => 'Horde',
@@ -62,6 +62,7 @@ $english_array = array(
 	9 => 'Warlock',
 	10 => 'Warrior',
 	11 => 'Monk',
+	12	=> 'Demon Hunter',
 	),
 	"talents" => array(
 	0 => 'Blood',
@@ -84,7 +85,7 @@ $english_array = array(
 	17 => 'Holy',
 	18 => 'Shadow',
 	19 => 'Assassination',
-	20 => 'Combat',
+	20 => 'Outlaw',
 	21 => 'Subtlety',
 	22 => 'Elemental',
 	23 => 'Enhancement',
@@ -98,6 +99,8 @@ $english_array = array(
 	31 => 'Brewmaster',
 	32 => 'Mistweaver',
 	33 => 'Windwalker',
+	34 => 'Havoc',
+	35 => 'Vengeance',
 	),
 	"roles" => array(
 	1 => 'Healer',
@@ -300,6 +303,7 @@ $english_array = array(
 	"burning_crusade" => 'Burning Crusade',
 	"classic" => 'Classic',
 	'mop' => 'Mists of Pandaria',
+	'leg'							=> 'Legion',
 	"mop_mogushan_10" => 'Mogu\'shan Vaults (10)',
 	"mop_mogushan_25" => 'Mogu\'shan Vaults (25)',
 	"mop_heartoffear_10" => 'Heart of Fear (10)',
@@ -315,6 +319,12 @@ $english_array = array(
 	"wod_brf_normal" => 'Blackrock Foundry Normal',
 	"wod_brf_heroic" => 'Blackrock Foundry Heroic',
 	"wod_brf_mythic" => 'Blackrock Foundry Mythic (20)',
+	'leg_en_normal'	=> 'Emerald Nightmare Normal',
+	'leg_en_heroic'	=> 'Emerald Nightmare Heroic',
+	'leg_en_mythic'	=> 'Emerald Nightmare Mythic (20)',
+	'leg_nh_normal'	=> 'Nighthold Normal',
+	'leg_nh_heroic'	=> 'Nighthold Heroic',
+	'leg_nh_mythic'	=> 'Nighthold Mythic (20)',
 	"char_news" => 'Char News',
 	"no_armory" => 'The data for this char could not be loaded. The battle.net API returned an error: "%s".',
 	"no_realm" => 'To use the whole functionality please enter a valid World of Warcraft game server name in administrator settings.',
@@ -331,6 +341,8 @@ $english_array = array(
 	"empty" => 'Empty',
 	"major_glyphs" => 'Major Glyphs',
 	"minor_glyphs" => 'Minor Glyphs',
+	"core_sett_f_itt_icon_small_loc"=> "URL leading to small icons",
+	"core_sett_f_help_itt_icon_small_loc"	=> "If the URL is unknown, switch parser and back again, to load standard values.",
 	),
 	"realmlist" => array(
 	0 => 'Eldre\'Thalas',
@@ -699,7 +711,7 @@ $english_array = array(
 	363 => 'Naxxramas',
 	364 => 'Les Clairvoyants',
 	),
-	
+
 );
 
 ?>

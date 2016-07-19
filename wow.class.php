@@ -27,7 +27,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 
 		protected static $apiLevel	= 20;
-		public $version				= '6.2.6';
+		public $version				= '7.0.0';
 		protected $this_game		= 'wow';
 		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
@@ -90,16 +90,16 @@ if(!class_exists('wow')) {
 				'parent'	=> array(
 					'race' => array(
 						0 	=> 'all',							// Unknown
-						1 	=> array(1,4,6,7,9,10,11),			// Gnome
+						1 	=> array(1,3,4,6,7,9,10,11),		// Gnome
 						2 	=> array(1,3,4,5,6,7,9,10,11),		// Human
 						3 	=> array(1,3,4,5,6,7,8,9,10,11),	// Dwarf
-						4 	=> array(1,2,3,4,6,7,10,11),		// Night Elf
+						4 	=> array(1,2,3,4,6,7,10,11,12),		// Night Elf
 						5 	=> array(1,2,3,4,6,7,8,9,10,11),	// Troll
 						6 	=> array(1,3,4,6,7,9,10,11),		// Undead
 						7 	=> array(1,3,4,7,8,9,10,11),		// Orc
 						8 	=> array(1,2,3,5,6,8,10,11),		// Tauren
 						9 	=> array(1,3,4,5,6,8,10,11),		// Draenai
-						10 	=> array(1,3,4,5,6,7,9,10,11),		// Blood Elf
+						10 	=> array(1,3,4,5,6,7,9,10,11,12),	// Blood Elf
 						11 	=> array(1,2,3,4,6,7,9,10),			// Worgen
 						12 	=> array(1,3,4,6,7,8,9,10),			// Goblin
 						13 	=> array(3,4,6,7,8,10,11),			// Pandaren
@@ -126,6 +126,7 @@ if(!class_exists('wow')) {
 						9 	=> array(25,26,27),	// Warlock
 						10 	=> array(28,29,30),	// Warrior
 						11 	=> array(31,32,33),	// Monk
+						12	=> array(34,35),	// demon hunter
 					),
 				),
 			),
@@ -148,16 +149,17 @@ if(!class_exists('wow')) {
 						9 	=> array(25,26,27),	// Warlock
 						10 	=> array(28,29,30),	// Warrior
 						11 	=> array(31,32,33),	// Monk
+						12	=> array(34,35),	// demon hunter
 					),
 				),
 			),
 		);
 
 		public $default_roles = array(
-			1	=> array(2, 5, 6, 8, 11),			// healer
-			2	=> array(1, 2, 5, 10, 11),			// tank
-			3	=> array(2, 3, 4, 6, 8, 9),			// dd distance
-			4	=> array(1, 2, 5, 7, 8, 10, 11)		// dd near
+			1	=> array(2, 5, 6, 8, 11),				// healer
+			2	=> array(1, 2, 5, 10, 11, 12),			// tank
+			3	=> array(2, 3, 4, 6, 8, 9),				// dd distance
+			4	=> array(1, 2, 5, 7, 8, 10, 11, 12)		// dd near
 		);
 
 		public $default_classrole = array(
@@ -172,20 +174,23 @@ if(!class_exists('wow')) {
 			9	=> 3,	// Warlock
 			10	=> 1,	// Warrior
 			11	=> 4,	// Monk
+			12	=> 2,	// demon hunter
 		);
 
+		// source http://wow.gamepedia.com/Class_colors
 		protected $class_colors = array(
-			1	=> '#C41F3B',
-			2	=> '#FF7C0A',
-			3	=> '#AAD372',
-			4	=> '#68CCEF',
-			5	=> '#F48CBA',
-			6	=> '#FFFFFF',
-			7	=> '#FFF468',
-			8	=> '#1a3caa',
-			9	=> '#9382C9',
-			10	=> '#C69B6D',
-			11	=> '#00C77B',
+			1	=> '#C41F3B',	// Death Knight
+			2	=> '#FF7D0A',	// Druid
+			3	=> '#ABD473',	// Hunter
+			4	=> '#69CCF0',	// Mage
+			5	=> '#F58CBA',	// Paladin
+			6	=> '#FFFFFF',	// Priest
+			7	=> '#FFF569',	// Rogue
+			8	=> '#0070DE',	// Shaman
+			9	=> '#9482C9',	// Warlock
+			10	=> '#C79C6E',	// Warrior
+			11	=> '#00FF96',	// Monk
+			12	=> '#A330C9',	// demon hunter
 		);
 
 		protected $glang		= array();
@@ -213,14 +218,23 @@ if(!class_exists('wow')) {
 				)
 			);
 
-
+			$this->strStaticIconUrl = $this->config->get('itt_icon_small_loc').'%s'.$this->config->get('itt_icon_ext');
 			$this->pdh->register_read_module($this->this_game, $this->path . 'pdh/read/'.$this->this_game);
 		}
 
 		public function install($blnEQdkpInstall=false){
 
 			$arrEventIDs = array();
-			//WoD Events
+
+			// Legion events
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_en_normal'), 0, "en.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_en_heroic'), 0, "en.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_en_mythic'), 0, "en.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_nh_normal'), 0, "nh.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_nh_heroic'), 0, "nh.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_nh_mythic'), 0, "nh.png");
+
+			// WoD Events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_hm_normal'), 0, "hm.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_hm_heroic'), 0, "hm.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_hm_mythic'), 0, "hm.png");
@@ -228,7 +242,7 @@ if(!class_exists('wow')) {
 			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_brf_heroic'), 0, "brf.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_brf_mythic'), 0, "brf.png");
 
-			//Mop Events
+			// Mop Events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_10'), 0, "mv.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_mogushan_25'), 0, "mv.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_heartoffear_10'), 0, "hf.png");
@@ -239,7 +253,7 @@ if(!class_exists('wow')) {
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_throneofthunder_25'), 0, "tot.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('mop_siegeoforgrimmar'), 0, "soo.png");
 
-			//Classic
+			// Classic
 			$arrClassicEventIDs = array();
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('wotlk'), 0, "wotlk.png");
 			$arrClassicEventIDs[] = $this->game->addEvent($this->glang('cataclysm'), 0, "cata.png");
@@ -306,13 +320,14 @@ if(!class_exists('wow')) {
 					array('name' => $names[9], 'value' => 'class:9'),
 					array('name' => $names[10], 'value' => 'class:10'),
 					array('name' => $names[11], 'value' => 'class:11'),
+					array('name' => $names[12], 'value' => 'class:12'),
 					array('name' => '-----------', 'value' => false),
 					array('name' => $this->glang('plate', true, $lang), 'value' => 'class:1,5,10'),
 					array('name' => $this->glang('mail', true, $lang), 'value' => 'class:3,8'),
-					array('name' => $this->glang('leather', true, $lang), 'value' => 'class:2,7,11'),
+					array('name' => $this->glang('leather', true, $lang), 'value' => 'class:2,7,11,12'),
 					array('name' => $this->glang('cloth', true, $lang), 'value' => 'class:4,6,9'),
 					array('name' => '-----------', 'value' => false),
-					array('name' => $this->glang('tier_token', true, $lang).$names[3].', '.$names[10].', '.$names[8].', '.$names[11], 'value' => 'class:3,8,10,11'),
+					array('name' => $this->glang('tier_token', true, $lang).$names[3].', '.$names[10].', '.$names[8].', '.$names[11].', '.$names[12], 'value' => 'class:3,8,10,11,12'),
 					array('name' => $this->glang('tier_token', true, $lang).$names[5].', '.$names[6].', '.$names[9], 'value' => 'class:5,6,9'),
 					array('name' => $this->glang('tier_token', true, $lang).$names[1].', '.$names[2].', '.$names[4].', '.$names[7], 'value' => 'class:1,2,4,7'),
 				);
@@ -364,7 +379,7 @@ if(!class_exists('wow')) {
 					'type'			=> 'spinner',
 					'category'		=> 'character',
 					'lang'			=> 'uc_level',
-					'max'			=> 100,
+					'max'			=> 110,
 					'min'			=> 1,
 					'undeletable'	=> true,
 					'sort'			=> 4
@@ -721,7 +736,7 @@ if(!class_exists('wow')) {
 						}
 						$arrOut[] = array(
 							'text' => sprintf($this->glang('news_itemLoot'), $charLink, infotooltip($itemData['name'], $val['itemId'], false, false, false, true)),
-							'icon' => "http://eu.media.blizzard.com/wow/icons/18/".$itemData['icon'].".jpg",
+							'icon' => sprintf($this->strStaticIconUrl, $itemData['icon']),
 							'date' => substr($val['timestamp'], 0, -3),
 						);
 						}
@@ -738,7 +753,7 @@ if(!class_exists('wow')) {
 						}
 						$arrOut[] = array(
 							'text' => sprintf($this->glang('news_itemPurchase'), $charLink, infotooltip($itemData['name'], $val['itemId'], false, false, false, true)),
-							'icon' => "http://eu.media.blizzard.com/wow/icons/18/".$itemData['icon'].".jpg",
+							'icon' => sprintf($this->strStaticIconUrl, $itemData['icon']),
 							'date' => substr($val['timestamp'], 0, -3),
 						);
 						break;
@@ -758,7 +773,7 @@ if(!class_exists('wow')) {
 							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'#'.$achievCat.':a'.$val['achievement']['id'];
 						$arrOut[] = array(
 							'text' => sprintf($this->glang('news_guildAchievement'), '<a href="'.$bnetLink.'">'.$val['achievement']['title'].'</a>', $val['achievement']['points']),
-							'icon' => "http://eu.media.blizzard.com/wow/icons/18/".$val['achievement']['icon'].".jpg",
+							'icon' => sprintf($this->strStaticIconUrl, $val['achievement']['icon']),
 							'date' => substr($val['timestamp'], 0, -3),
 						);
 						}
@@ -776,7 +791,7 @@ if(!class_exists('wow')) {
 							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'achievements').'#'.$achievCat.':a'.$val['achievement']['id'];
 							$arrOut[] = array(
 								'text' => sprintf($this->glang('news_playerAchievement'), $charLink, '<a href="'.$bnetLink.'">'.$val['achievement']['title'].'</a>', $val['achievement']['points']),
-								'icon' => "http://eu.media.blizzard.com/wow/icons/18/".$val['achievement']['icon'].".jpg",
+								'icon' => sprintf($this->strStaticIconUrl, $val['achievement']['icon']),
 								'date' => substr($val['timestamp'], 0, -3),
 							);
 						}
@@ -946,7 +961,7 @@ if(!class_exists('wow')) {
 				if ($achievData){
 					$arrAchievsOut[] = array(
 						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink('', $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrGuildAchievementsData).':a'.$achievID.'">'.$achievData['title'].'</a>',
-						'icon'	=> '<img class="gameicon" src="http://eu.media.blizzard.com/wow/icons/18/'.$achievData['icon'].'.jpg" alt="" />',
+						'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" />',
 						'desc'	=> $achievData['description'],
 						'points'=> $achievData['points'],
 						'date'	=> substr($arrAchieveTimes[$key], 0, -3),
@@ -978,7 +993,7 @@ if(!class_exists('wow')) {
 					$class = ($achievData['accountWide'] == 1) ? 'accountwide' : '';
 					$arrAchievsOut[] = array(
 						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink($charname, $this->config->get('servername'), 'achievements').'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrCharAchievementsData).':a'.$achievID.'" class="'.$class.'">'.$achievData['title'].'</a>',
-						'icon'	=> '<img class="gameicon" src="http://eu.media.blizzard.com/wow/icons/18/'.$achievData['icon'].'.jpg" alt="" />',
+						'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" />',
 						'desc'	=> $achievData['description'],
 						'points'=> $achievData['points'],
 						'date'	=> substr($arrAchieveTimes[$key], 0, -3),
@@ -1070,7 +1085,7 @@ if(!class_exists('wow')) {
 							$spezialisation[$v_spezialisation['tier']] = array(
 								'name'			=> $v_spezialisation['spell']['name'],
 								'description'	=> $v_spezialisation['spell']['description'],
-								'icon'			=> sprintf('http://eu.media.blizzard.com/wow/icons/18/%s.jpg', $v_spezialisation['spell']['icon'])
+								'icon'			=> sprintf($this->strStaticIconUrl, $v_spezialisation['spell']['icon'])
 							);
 						}
 					}
@@ -1083,7 +1098,7 @@ if(!class_exists('wow')) {
 								$glyphs[$id_glyphs][] = array(
 									'name'		=> $v_glyph['name'],
 									'item'		=> $v_glyph['item'],
-									'icon'		=> sprintf('http://eu.media.blizzard.com/wow/icons/18/%s.jpg', $v_glyph['icon'])
+									'icon'		=> sprintf($this->strStaticIconUrl, $v_glyph['icon'])
 								);
 							}
 						}
@@ -1118,7 +1133,7 @@ if(!class_exists('wow')) {
 								'timestamp'	=> $d_charfeed['timestamp']/ 1000,
 								'title'		=> $d_charfeed['achievement']['title'],
 								'points'	=> $d_charfeed['achievement']['points'],
-								'icon'		=> sprintf('http://eu.media.blizzard.com/wow/icons/18/%s.jpg', $d_charfeed['achievement']['icon']),
+								'icon'		=> sprintf($this->strStaticIconUrl, $d_charfeed['achievement']['icon']),
 								'hero'		=> ($d_charfeed['featOfStrength'] == 1) ? true : false,
 								'achievementID' => $d_charfeed['achievement']['id'],
 								'accountWide'=> ($d_charfeed['achievement']['accountWide'] == 1) ? true : false,
@@ -1129,7 +1144,7 @@ if(!class_exists('wow')) {
 								'type'		=> 'bosskill',
 								'timestamp'	=> $d_charfeed['timestamp']/ 1000,
 								'title'		=> $d_charfeed['achievement']['title'],
-								'icon'		=> sprintf('http://eu.media.blizzard.com/wow/icons/18/%s.jpg', $d_charfeed['achievement']['icon']),
+								'icon'		=> sprintf($this->strStaticIconUrl, $d_charfeed['achievement']['icon']),
 								'quantity'  => $d_charfeed['quantity'],
 							);
 						break;
@@ -1140,7 +1155,7 @@ if(!class_exists('wow')) {
 								'criteria'	=> $d_charfeed['criteria']['description'],
 								'title'		=> $d_charfeed['achievement']['title'],
 								'achievementID' => $d_charfeed['achievement']['id'],
-								'icon'		=> sprintf('http://eu.media.blizzard.com/wow/icons/18/%s.jpg', $d_charfeed['achievement']['icon'])
+								'icon'		=> sprintf($this->strStaticIconUrl, $d_charfeed['achievement']['icon'])
 							);
 						break;
 						case 'LOOT':

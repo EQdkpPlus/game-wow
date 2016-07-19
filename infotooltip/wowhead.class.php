@@ -29,13 +29,20 @@ if(!class_exists('wowhead')) {
 		public $settings = array(
 			'itt_icon_loc' => array(
 				'type' => 'text',
-				'default' => 'https://wow.zamimg.com/images/wow/icons/large/'),
+				'default' => 'https://wow.zamimg.com/images/wow/icons/large/'
+			),
+			'itt_icon_small_loc' => array(
+				'type' => 'text',
+				'default' => 'https://wow.zamimg.com/images/wow/icons/small/'
+			),
 			'itt_icon_ext' => array(
 				'type' => 'text',
-				'default' => '.jpg'),
+				'default' => '.jpg'
+			),
 			'itt_default_icon' => array(
 				'type' => 'text',
-				'default' => 'inv_misc_questionmark')
+				'default' => 'inv_misc_questionmark'
+			)
 		);
 
 		private $searched_langs = array();
@@ -49,7 +56,7 @@ if(!class_exists('wowhead')) {
 			$searchagain++;
 			$this->pdl->log('infotooltip', 'wowhead->searchItemID called: itemname: '.$itemname.', lang: '.$lang.', searchagain: '.$searchagain);
 			$item_id = 0;
-			
+
 			// Ignore blank names.
 			$name = trim($itemname);
 			if (empty($name)) { return null; }
@@ -57,21 +64,21 @@ if(!class_exists('wowhead')) {
 			$encoded_name = urlencode($name);
 			$encoded_name = str_replace('+' , '%20' , $encoded_name);
 			$lang_prefix = ($lang == 'en') ? 'www' : $lang;
-			
+
 			$item_encoded_name = $encoded_name;
 			$item_encoded_name = str_replace("%C3%", "%C3%20%", $item_encoded_name);
-			
+
 			$url = 'http://'.$lang_prefix.'.wowhead.com/item='.$item_encoded_name.'&xml';
 			$this->pdl->log('infotooltip', 'Search for ItemID at '.$url);
 			$item_data = $this->puf->fetch($url);
-			
+
 			$xml = simplexml_load_string($item_data);
 			if(is_object($xml)) {
 				$item_id = (int)$xml->item->attributes()->id;
 			} else {
 				$this->pdl->log('infotooltip', 'Invalid XML');
 			}
-			
+
 			//Use normal search
 			$url = 'http://'.$lang_prefix.'.wowhead.com/search?q='.$encoded_name;
 			$search_data = $this->puf->fetch($url);
@@ -82,7 +89,7 @@ if(!class_exists('wowhead')) {
 				//Take the first one
 				$item_id = $arrUniqueIDs[0];
 			}
-			
+
 			//search in other languages
 			if(!$item_id AND $searchagain < count($this->av_langs)) {
 				$this->pdl->log('infotooltip', 'No Items found.');
@@ -103,14 +110,14 @@ if(!class_exists('wowhead')) {
 
 		protected function getItemData($item_id, $lang, $itemname='', $type='items'){
 			$orig_id = $item_id;
-			
+
 			if(!$item_id) {
 				$item['baditem'] = true;
 				return $item;
 			}
-			
+
 			$bonus = 0;
-			
+
 			$myItemData = array(
 					'ench' => 0,
 					'gems' => array(),
@@ -121,20 +128,20 @@ if(!class_exists('wowhead')) {
 					'num_bonus' => 0,
 					'upgd_id' => '',
 			);
-			
+
 			$arrItemData = explode(':', $item_id);
 			if (count($arrItemData) > 1){
 				$item_id = $arrItemData[0];
-				
+
 				//Detect if old or new (6.2.0) format
 				$intTotalCount = count($arrItemData);
 				$intBonusCount = $arrItemData[12];
 				$isUpgrade = ((int)$arrItemData[10] != 0) ? true : false;
 				$intShouldCount = 13 + $intBonusCount + (($isUpgrade) ? 1 : 0);
 				$blnIsNewFormat = ($intShouldCount === $intTotalCount) ? true : false;
-				
+
 				$arrBonus = array();
-				
+
 				if($blnIsNewFormat){
 					foreach($arrItemData as $key => $val){
 						if ($key == 1) $myItemData['ench'] = $val;
@@ -146,15 +153,15 @@ if(!class_exists('wowhead')) {
 						if ($key > 2 && $key < 7){
 							$myItemData['gems'][] = $val;
 						}
-							
+
 						if ($key > 12 && $key < (13+$myItemData['num_bonus'])){
 							$myItemData['bonus'][] = $val;
 						}
-						
+
 						if($key > (12+$myItemData['num_bonus'])){
 							$myItemData['upgd_id'] = $val;
 						}
-		
+
 						//124139:0      :     0:     0:     0:     0:       0:       0:      100:           267:              0:                   6:          1:     567
 						//itemID:enchant:gemID1:gemID2:gemID3:gemID4:suffixID:uniqueID:linkLevel:specializationID:upgradeTypeID:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2
 					}
@@ -166,20 +173,20 @@ if(!class_exists('wowhead')) {
 						if ($key > 2 && $key < 7){
 							$myItemData['gems'][] = $val;
 						}
-							
+
 						if ($key > 11){
 							$myItemData['bonus'][] = $val;
 						}
 					}
 					//112417:0:0:0:0:0:0:0:lvl90:upg 491:dif 5:2:448:449
-					//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...		
+					//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
 				}
 			}
 
-			
+
 			$item = array('id' => $item_id);
 			$url = ($lang == 'en') ? 'www' : $lang;
-			
+
 			$item['link'] = 'http://'.$url.'.wowhead.com/item='.$item['id'].'&power&bonus='.implode(':', $myItemData['bonus']).'&upgd='.$myItemData['upgd_id'].'&lvl='.$myItemData['lvl'].'&ench='.$myItemData['ench'].'&gems='.implode(',',$myItemData['gems']);
 
 			$this->pdl->log('infotooltip', 'fetch item-data from: '.$item['link']);
@@ -190,19 +197,19 @@ if(!class_exists('wowhead')) {
 				if ($intCount){
 
 					$item['name'] = htmlentities(stripslashes($arrMatches[2]));
-					
+
 					$html = $arrMatches[9];
 					$template_html = trim(file_get_contents($this->root_path.'games/wow/infotooltip/templates/wow_popup.tpl'));
 					$item['html'] = str_replace('{ITEM_HTML}', stripslashes($html), $template_html);
 					$item['lang'] = $lang;
-					
+
 					$item['icon'] = htmlentities($arrMatches[6]);
 					$item['color'] = 'q'.(int)$arrMatches[4];
-					
+
 					//Reset Item ID, because the full name is the one we should store in DB
 					$item['id'] = $orig_id;
 					return $item;
-					
+
 				} else {
 					$this->pdl->log('infotooltip', 'no match found');
 					$item['baditem'] = true;

@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU Affero General Public License
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 define('EQDKP_INC', true);
 $eqdkp_root_path = './../../../';
 include_once ($eqdkp_root_path . 'common.php');
@@ -107,15 +107,15 @@ class charImporter extends page_generic {
 					</div>';
 
 		$this->tpl->add_js('
-			var chardataArry = $.parseJSON(\''.json_encode($memberArry).'\');
+			var chardataArry = JSON.parse(\''.json_encode($memberArry).'\');
 			function getData(i){
 				if (!i)
 					i=0;
-	
+
 				if (chardataArry.length >= i){
 					setTimeout(function(){
 						$.post("charimporter.php'.$this->SID.'&ajax_massupdate=true&totalcount="+chardataArry.length+"&actcount="+i, chardataArry[i], function(data){
-							chardata = $.parseJSON(data);
+							chardata = JSON.parse(data);
 							if(chardata.success == "imported"){
 								successdata = "<span style=\"color:green;\">'.$this->game->glang('uc_armory_updated').'</span>";
 							}else{
@@ -135,7 +135,7 @@ class charImporter extends page_generic {
 					}, 80);
 				}
 			}
-			$( "#progressbar" ).progressbar({ value: 0 }); getData();	
+			$( "#progressbar" ).progressbar({ value: 0 }); getData();
 			');
 
 		$this->tpl->assign_vars(array(
@@ -216,13 +216,13 @@ class charImporter extends page_generic {
 				<dt><label>'.$this->game->glang('uc_charname').'</label></dt>
 				<dd>'.new htext('charname', array('value' => (($tmpmemname) ? $tmpmemname : ''), 'size' => '25')).'</dd>
 			</dl>';
-		
+
 		// Server Name
 		$hmtlout .= '<dl>
 				<dt><label>'.$this->game->glang('servername').'</label></dt>
 				<dd>';
 		$hmtlout .= new htext('servername', array('value' => (($this->config->get('servername')) ? stripslashes($this->config->get('servername')) : ''), 'size' => '25', 'autocomplete' => $this->game->get('realmlist')));
-		
+
 		$hmtlout .= '</dd>
 			</dl>
 			<dl>
@@ -230,14 +230,14 @@ class charImporter extends page_generic {
 				<dd>';
 		if($this->config->get('uc_server_loc')){
 			$hmtlout .= $this->config->get('uc_server_loc');
-			
+
 			$hmtlout .= new hhidden('server_loc', array('value' => $this->config->get('uc_server_loc')));
 		}else{
 			$hmtlout .= new hdropdown('server_loc', array('options' => $this->game->obj['armory']->getServerLoc()));
 		}
 		$hmtlout .= '</dd>
 			</dl>';
-		
+
 		$hmtlout .= '</fieldset>';
 		$hmtlout .= '<br/><button type="submit" name="submiti"><i class="fa fa-download"></i> '.$this->game->glang('uc_import_forw').'</button>';
 		return $hmtlout;
@@ -265,7 +265,7 @@ class charImporter extends page_generic {
 				$is_mine	= (($hasuserid > 0) ? (($hasuserid == $this->user->data['user_id']) ? true : false) : true);	// we are a normal user
 			}
 		}
-		
+
 		if($is_mine){
 			// Load the Armory Data
 			$this->game->obj['armory']->setSettings(array('loc'=>$isServerLoc));
@@ -291,7 +291,7 @@ class charImporter extends page_generic {
 			// talents
 			$hmtlout	.= new hhidden('talent1', array('value' => $this->game->obj['armory']->ConvertTalent($chardata['talents'][0]['spec']['icon'])));
 			$hmtlout	.= new hhidden('talent2', array('value' => $this->game->obj['armory']->ConvertTalent($chardata['talents'][1]['spec']['icon'])));
-			
+
 
 			// health/power bar
 			$hmtlout	.= new hhidden('health_bar', array('value' => $chardata['stats']['health']));

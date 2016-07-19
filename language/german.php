@@ -55,43 +55,58 @@ $german_array = array(
 		8	=> 'Schamane',
 		9	=> 'Hexenmeister',
 		10	=> 'Krieger',
-		11	=> 'Mönch'
+		11	=> 'Mönch',
+		12	=> 'Demonenjäger',
 	),
 	'talents'		=> array(
+		// Death Knight
 		0 	=> 'Blut',
 		1 	=> 'Frost',
 		2 	=> 'Unheilig',
+		// Druid
 		3 	=> 'Gleichgewicht',
 		4 	=> 'Wildheit',
 		5 	=> 'Wächter',
 		6 	=> 'Wiederherstellung',
+		// Hunter
 		7 	=> 'Tierherrschaft',
 		8 	=> 'Treffsicherheit',
 		9 	=> 'Überleben',
+		// Mage
 		10 	=> 'Arkan',
 		11 	=> 'Feuer',
 		12 	=> 'Frost',
+		// Paladin
 		13 	=> 'Heilig',
 		14 	=> 'Schutz',
 		15 	=> 'Vergeltung',
+		// Priest
 		16 	=> 'Disziplin',
 		17 	=> 'Heilig',
 		18 	=> 'Schatten',
+		// Rogue
 		19 	=> 'Meucheln',
-		20 	=> 'Kampf',
+		20 	=> 'Gesetztlosigkeit',
 		21 	=> 'Täuschung',
+		// Shaman
 		22 	=> 'Elementar',
 		23 	=> 'Verstärkung',
 		24 	=> 'Wiederherstellung',
+		// Warlock
 		25 	=> 'Gebrechen',
 		26 	=> 'Dämonologie',
 		27 	=> 'Zerstörung',
+		// Warrior
 		28 	=> 'Waffen',
 		29 	=> 'Furor',
 		30 	=> 'Schutz',
+		// Monk
 		31 	=> 'Braumeister',
 		32 	=> 'Nebelwirker',
 		33 	=> 'Windläufer',
+		// demon hunter
+		34	=> 'Verwüstung',
+		35	=> 'Rachsucht',
 	),
 	'roles' => array(
 		1	=> 'Heiler',
@@ -122,7 +137,7 @@ $german_array = array(
 		'talents_tt_1'	=> 'Primäres Talent',
 		'talents_tt_2'	=> 'Sekundäres Talent',
 		'caltooltip_itemlvl'	=> 'Item-Level',
-		
+
 		// Profile information
 		'uc_prof_professions'			=> 'Berufe',
 		'skills'						=> 'Talente',
@@ -174,7 +189,7 @@ $german_array = array(
 		'uc_achievement_tab_cataclysm'	=> 'Cataclysm',
 		'uc_achievement_tab_mop'		=> 'Mists of Pandaria',
 		'uc_achievement_tab_wod'		=> 'Warlords of Draenor',
-		
+
 		'challenge'						=> 'Herausforderungsmodus',
 		'challenge_title'				=> 'Herausforderungsmodus: Ranglisten',
 		'off_realm_toon'				=> 'Dieser Charakter scheint nicht in deiner Gilde zu sein. Da die Herausforderungen realmübergreifend sind, können auch fremde Charakter in dieser Liste auftauchen.',
@@ -202,7 +217,7 @@ $german_array = array(
 		'apikey_content_step2'			=> 'Besuche die <a href="https://dev.battle.net" target="_blank">Battle.net API</a> Seite und erstelle einen neuen Mashery Account. Registriere eine <a href="https://dev.battle.net/apps/register" target="_blank">neue Anwendung</a> und benutze dazu den Gildenamen, die Webseite und eine Kurzbeschreibung. Wähle die Checkbox "Issue a new key for game APIs". Der Schlüssel wird per E-Mail zugesendet.',
 		'apikey_title_step3'			=> 'Gib den API-Schlüssen ein',
 		'apikey_content_step3'			=> 'Gib hier den API-Schlüssel den du per E-Mail erhalten hast ein.<br/>API-Schlüssel: {APIKEY_FORM}',
-	
+
 		// Armory Import
 		"uc_updat_armory" 				=> "Vom battle.net aktualisieren",
 		'uc_charname'					=> 'Charaktername',
@@ -217,7 +232,7 @@ $german_array = array(
 		'uc_armory_updfailed'			=> 'Charakter nicht aktualisiert',
 		'uc_armory_impfail_reason'		=> 'Grund:',
 		'uc_armory_impduplex'			=> 'Charakter ist bereits vorhanden',
-		
+
 		// guild importer
 		'uc_class_filter'				=> 'Klasse',
 		'uc_class_nofilter'				=> 'Nicht filtern',
@@ -324,7 +339,8 @@ $german_array = array(
 		'burning_crusade'				=> 'Burning Crusade',
 		'classic'						=> 'Classic',
 		'mop'							=> 'Mists of Pandaria',
-			
+		'leg'							=> 'Legion',
+
 		'mop_mogushan_10'				=> 'Mogu\'shangewölbe (10)',
 		'mop_mogushan_25'				=> 'Mogu\'shangewölbe (25)',
 		'mop_heartoffear_10'			=> 'Das Herz der Angst (10)',
@@ -334,6 +350,7 @@ $german_array = array(
 		'mop_throneofthunder_10'		=> 'Thron des Donners (10)',
 		'mop_throneofthunder_25'		=> 'Thron des Donners (25)',
 		'mop_siegeoforgrimmar'			=> 'Schlacht um Orgrimmar',
+
 		'wod_hm_normal'					=> 'Hochfels Normal',
 		'wod_hm_heroic'					=> 'Hochfels Heroisch',
 		'wod_hm_mythic'					=> 'Hochfels Mystisch (20)',
@@ -341,10 +358,17 @@ $german_array = array(
 		'wod_brf_heroic'				=> 'Schwarzfelsgießerei Heroisch',
 		'wod_brf_mythic'				=> 'Schwarzfelsgießerei Mythisch (20)',
 
+		'leg_en_normal'					=> 'Smaragdgrüner Albtraum Normal',
+		'leg_en_heroic'					=> 'Smaragdgrüner Albtraum Heroisch',
+		'leg_en_mythic'					=> 'Smaragdgrüner Albtraum Mythisch (20)',
+		'leg_nh_normal'					=> 'Die Nachtfestung Normal',
+		'leg_nh_heroic'					=> 'Die Nachtfestung Heroisch',
+		'leg_nh_mythic'					=> 'Die Nachtfestung Mythisch (20)',
+
 		'char_news'						=> 'Char News',
 		'no_armory'						=> 'Es konnten keine gültigen Daten für diesen Charakter geladen werden. Die battle.net API meldet folgenden Fehler: "%s".',
 		'no_realm'						=> 'Um den vollen Funktionsumfang dieser Seite nutzen zu können, muss in den Administrator-Einstellungen ein gültiger World of Warcraft Server hinterlegt werden.',
-		
+
 		'guildachievs_total_completed'	=> 'Vollständig abgeschlossen',
 		'latest_guildachievs'			=> 'Kürzlich erhalten',
 		'guildnews'						=> 'Gildennews',
@@ -359,6 +383,9 @@ $german_array = array(
 		'empty'							=> 'Leer',
 		'major_glyphs'					=> 'Erhebliche Glyphen',
 		'minor_glyphs'					=> 'Geringe Glyphen',
+
+		"core_sett_f_itt_icon_small_loc"=> "URL zu den kleinen Icons.",
+		"core_sett_f_help_itt_icon_small_loc"	=> "Falls die URL nicht bekannt ist, einmal den Parser wechseln und wieder zurück, um Standard-Wert zu laden.",
 	),
 
 	'realmlist' => array('Eldre\'Thalas','Spirestone','Shadow Council','Scarlet Crusade','Firetree','Frostmane','Gurubashi','Smolderthorn','Skywall','Windrunner','Nathrezim','Terenas','Arathor','Bonechewer','Dragonmaw','Shadowsong','Silvermoon','Crushridge','Stonemaul','Daggerspine','Stormscale','Dunemaul','Boulderfist','Suramar','Dragonblight','Draenor','Uldum','Bronzebeard','Feathermoon','Bloodscalp','Darkspear','Azjol-Nerub','Perenolde','Argent Dawn','Azgalor','Magtheridon','Trollbane','Gallywix','Madoran','Stormrage','Zul\'jin','Medivh','Durotan','Bloodhoof','Elune','Lothar','Arthas','Mannoroth','Warsong','Shattered Hand','Bleeding Hollow','Skullcrusher','Burning Blade','Gorefiend','Eredar','Shadowmoon','Lightning\'s Blade','Eonar','Gilneas','Kargath','Llane','Earthen Ring','Laughing Skull','Burning Legion','Thunderlord','Malygos','Drakkari','Aggramar','Thunderhorn','Ragnaros','Quel\'Thalas','Dreadmaul','Caelestrasz','Kilrogg','Proudmoore','Nagrand','Frostwolf','Ner\'zhul','Kil\'jaeden','Blackrock','Tichondrius','Silver Hand','Aman\'Thul','Barthilas','Thaurissan','Dath\'Remar','Frostmourne','Khaz\'goroth','Vek\'nilash','Sen\'jin','Aegwynn','Akama','Chromaggus','Draka','Drak\'thul','Garithos','Hakkar','Khaz Modan','Jubei\'Thos','Mug\'thol','Korgath','Kul Tiras','Malorne','Gundrak','Eitrigg','Rexxar','Muradin','Saurfang','Thorium Brotherhood','Runetotem','Garona','Alleria','Hellscream','Blackhand','Whisperwind','Cho\'gall','Illidan','Stormreaver','Gul\'dan','Kael\'thas','Alexstrasza','Kirin Tor','Ravencrest','Goldrinn','Nemesis','Balnazzar','Destromath','Gorgonnash','Dethecus','Spinebreaker','Moonrunner','Sargeras','Kalecgos','Ursin','Dark Iron','Greymane','Wildhammer','Detheroc','Staghelm','Emerald Dream','Maelstrom','Twisting Nether','Azshara','Agamaggan','Lightninghoof','Nazjatar','Malfurion','Baelgun','Azralon','Tol Barad','Duskwood','Zuluhed','Steamwheedle Cartel','Mal\'Ganis','Norgannon','Archimonde','Anetheron','Turalyon','Haomarush','Scilla','Ysondre','Thrall','Ysera','Dentarg','Khadgar','Dalaran','Dalvengyr','Black Dragonflight','Andorhal','Executus','Doomhammer','Icecrown','Deathwing','Kel\'Thuzad','Altar of Storms','Uldaman','Aerie Peak','Onyxia','Demon Soul','Gnomeregan','Anvilmar','The Venture Co','Sentinels','Jaedenar','Tanaris','Alterac Mountains','Undermine','Lethon','Blackwing Lair','Arygos','Lightbringer','Cenarius','Uther','Cenarion Circle','Echo Isles','Hyjal','The Forgotten Coast','Fenris','Anub\'arak','Blackwater Raiders','Vashj','Korialstrasz','Misha','Darrowmere','Ravenholdt','Bladefist','Shu\'halo','Winterhoof','Sisters of Elune','Maiev','Rivendare','Nordrassil','Tortheldrin','Cairne','Drak\'Tharon','Antonidas','Shandris','Moon Guard','Nazgrel','Hydraxis','Wyrmrest Accord','Farstriders','Borean Tundra','Quel\'dorei','Garrosh','Mok\'Nathal','Nesingwary','Drenden','Terokkar','Blade\'s Edge','Exodar','Area 52','Velen','Azuremyst','Auchindoun','The Scryers','Coilfang','Zangarmarsh','Shattered Halls','Blood Furnace','The Underbog','Fizzcrank','Ghostlands','Grizzly Hills','Galakrond','Dawnbringer','Aszune','Sunstrider','Twilight\'s Hammer','Zenedar','Aggra (Português)','Al\'Akir','Sinstralis','Madmortem','Nozdormu','Die Silberne Hand','Zirkel des Cenarius','Dun Morogh','Theradras','Genjuros','Wrathbringer','Nera\'thor','Kult der Verdammten','Das Syndikat','Terrordar','Krag\'jin','Der Rat von Dalaran','Neptulon','The Maelstrom','Sylvanas','Bloodfeather','Darksorrow','Frostwhisper','Defias Brotherhood','Drek\'Thar','Rashgarroth','Throk\'Feroth','Conseil des Ombres','Varimathras','Les Sentinelles','Moonglade','Mazrigos','Talnivarr','Emeriss','Ahn\'Qiraj','Nefarian','Blackmoore','Xavius','Die ewige Wacht','Die Todeskrallen','Scarshield Legion','Die Arguswacht','Outland','Grim Batol','Kazzak','Tarren Mill','Chamber of Aspects','Pozzo dell\'Eternità','Vek\'lor','Taerar','Rajaxx','Ulduar','Der abyssische Rat','Lordaeron','Tirion','Ambossar','Krasus','Die Nachtwache','Arathi','Culte de la Rive noire','Dun Modr','C\'Thun','Sanguino','Shen\'dralar','Tyrande','Minahonda','Los Errantes','Darkmoon Faire','Alonsus','Burning Steppes','Bronze Dragonflight','Anachronos','Colinas Pardas','Kor\'gall','Forscherliga','Un\'Goro','Todeswache','Teldrassil','Der Mithrilorden','Vol\'jin','Arak-arahm','La Croisade écarlate','Confrérie du Thorium','Hellfire','Azuregos','Ashenvale','Booty Bay','Eversong','Thermaplugg','The Sha\'tar','Karazhan','Grom','Blackscar','Gordunni','Lich King','Soulflayer','Deathguard','Sporeggar','Nethersturm','Shattrath','Festung der Stürme','Echsenkessel','Blutkessel','Deepholm','Howling Fjord','Razuvious','Deathweaver','Die Aldor','Das Konsortium','Chants éternels','Marécage de Zangar','Temple noir','Fordragon','Naxxramas','Les Clairvoyants'),
