@@ -56,6 +56,7 @@ if(!class_exists('wow')) {
 			'cataclysm'	=> array(5600, 5094, 5334, 5638, 5723, 5892),
 			'mop'		=> array(6125, 6297, 6067, 6622, 6738),
 			'wod'		=> array(6967, 6996, 7545),
+			'leg'		=> array(8026, 8025),
 		);
 
 		protected $class_dependencies = array(
@@ -1252,7 +1253,7 @@ if(!class_exists('wow')) {
 					$a_raidprogress[$v_progresscat][$v_progression['id']] = array(
 						'id'			=> $v_progression['id'],
 						'name'			=> $v_progression['name'],
-						'icon'			=> $this->server_path.'games/wow/events/'.$v_progression['id'].'.png',
+						'icon'			=> $this->server_path.'games/wow/icons/events/'.$v_progression['id'].'.png',
 						'bosses'		=> $v_progression['bosses'],
 						'bosses_max'	=> count($v_progression['bosses']),
 						'bosses_normal'	=> $a_bosses['progress_normal'],
