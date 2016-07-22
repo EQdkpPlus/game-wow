@@ -56,7 +56,7 @@ $german_array = array(
 		9	=> 'Hexenmeister',
 		10	=> 'Krieger',
 		11	=> 'Mönch',
-		12	=> 'Demonenjäger',
+		12	=> 'Dämonenjäger',
 	),
 	'talents'		=> array(
 		// Death Knight
