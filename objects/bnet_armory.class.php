@@ -25,8 +25,7 @@ if ( !defined('EQDKP_INC') ){
 
 class bnet_armory extends gen_class {
 
-	private $version		= '6.0.2';
-	private $build			= '$Rev$';
+	private $version		= '7.0.0';
 	private $chariconUpdates = 0;
 	private $chardataUpdates = 0;
 	private $ratepersecond	= 100;
