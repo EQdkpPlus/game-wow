@@ -284,9 +284,6 @@ $german_array = array(
 		'mainHandSpeed'					=> 'Geschwindigkeit',
 		'power'							=> 'Angriffskraft',
 		'hasteRating'					=> 'Tempowertung',
-		'hitPercent'					=> 'Trefferwertung',
-		'critChance'					=> 'Kritische Trefferwertung',
-		'expertise'						=> 'Waffenkundewertung',
 		'mastery'						=> 'Meisterschaftswertung',
 
 		'range'							=> 'Distanzkampf',
@@ -307,8 +304,6 @@ $german_array = array(
 		'dodge'							=> 'Ausweichen',
 		'parry'							=> 'Parieren',
 		'block'							=> 'Blocken',
-		'pvpresil'						=> 'PVP-Abhärtung',
-		'pvppower'						=> 'PVP-Macht',
 		'all'							=> 'Alle Werte',
 
 		'achievements'					=> 'Erfolge',
