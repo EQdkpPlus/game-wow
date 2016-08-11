@@ -30,7 +30,7 @@ class bnet_armory extends gen_class {
 	private $chardataUpdates = 0;
 	private $ratepersecond	= 100;
 	const apiurl			= 'https://{region}.api.battle.net/';
-	const staticrenderurl	= 'http://{region}.battle.net/static-render/';
+	const staticrenderurl	= 'http://{region}.battle.net/static-render/';		// http://us.battle.net/forums/en/bnet/topic/20748205383
 	const staticimages		= 'http://{region}.battle.net/wow/static/images/';
 	const staticicons		= 'http://{region}.media.blizzard.com/wow/icons/';
 	const tabardrenderurl	= 'http://{region}.battle.net/wow/static/images/guild/tabards/';
