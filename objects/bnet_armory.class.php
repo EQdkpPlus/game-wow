@@ -63,7 +63,8 @@ class bnet_armory extends gen_class {
 			8		=> '4',		// mage
 			9		=> '9',		// warlock
 			11		=> '2',		// druid
-			10		=> '11',	//monk
+			10		=> '11',		//monk
+			12		=> '12',		// demon hunter
 		),
 		'races' => array(
 			'1'		=> 2,		// human
@@ -113,8 +114,8 @@ class bnet_armory extends gen_class {
 			17 => 'spell_holy_guardianspirit',
 			18 => 'spell_shadow_shadowwordpain',
 			//Rogue
-			19 => 'ability_rogue_eviscerate',
-			20 => 'ability_backstab',
+			19 => 'ability_rogue_deadlybrew',
+			20 => 'inv_sword_30',
 			21 => 'ability_stealth',
 			//Shaman
 			22 => 'spell_nature_lightning',
@@ -132,6 +133,9 @@ class bnet_armory extends gen_class {
 			31 => 'spell_monk_brewmaster_spec',
 			32 => 'spell_monk_mistweaver_spec',
 			33 => 'spell_monk_windwalker_spec',
+			//Demonhunter
+			34 => 'ability_demonhunter_specdps',
+			35 => 'ability_demonhunter_spectank',
 		),
 	);
 
