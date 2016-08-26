@@ -829,14 +829,57 @@ class bnet_armory extends gen_class {
 	}
 
 	/**
+	* The boss API provides information about bosses. A 'boss' in this context should be considered a boss encounter, which may include more than one NPC.
+	*
+	* @param $bossid	Boss ID, if non alle are listed
+	* @param $force		Force the cache to update?
+	* @return bol
+	*/
+	public function boss($bossid=0, $force=false){
+		if($bossid > 0){
+			$wowurl = $this->_config['apiUrl'].sprintf('wow/boss/%s?locale=%s&apikey=%s', $this->ConvertInput($bossid), $this->_config['locale'], $this->_config['apiKey']);
+		}else {
+			$wowurl = $this->_config['apiUrl'].sprintf('wow/boss/?locale=%s&apikey=%s', $this->_config['locale'], $this->_config['apiKey']);
+			$bossid = 'all';
+		}
+
+		$this->_debug('Boss: '.$wowurl);
+		if(!$json	= $this->get_CachedData('bossdatadata_'.$bossid, $force)){
+			$json	= $this->read_url($wowurl);
+			$this->set_CachedData($json, 'bossdatadata_'.$bossid);
+		}
+		$bossdata	= json_decode($json, true);
+		$errorchk	= $this->CheckIfError($bossdata);
+		return (!$errorchk) ? $bossdata : $errorchk;
+	}
+
+	/**
+	* A list of all supported mounts.
+	*
+	* @param $force		Force the cache to update?
+	* @return bol
+	*/
+	public function mount($force=false){
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/mount/?locale=%s&apikey=%s', $this->_config['locale'], $this->_config['apiKey']);
+		$this->_debug('Mount: '.$wowurl);
+		if(!$json	= $this->get_CachedData('mountdatadata', $force)){
+			$json	= $this->read_url($wowurl);
+			$this->set_CachedData($json, 'mountdatadata');
+		}
+		$mountdata	= json_decode($json, true);
+		$errorchk	= $this->CheckIfError($mountdata);
+		return (!$errorchk) ? $mountdata : $errorchk;
+	}
+
+	/**
 	* This API resource provides a per-realm list of recently generated auction house data dumps.
 	*
-	* @param $abilityid	Ability ID
+	* @param $realm	Realmname
 	* @param $force		Force the cache to update?
 	* @return bol
 	*/
 	public function auction($realm, $force=false){
-		$wowurl = $this->_config['apiUrl'].sprintf('api/wow/auction/data/%s?locale=%s&apikey=%s', $this->ConvertInput($realm), $this->_config['locale'], $this->_config['apiKey']);
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/auction/data/%s?locale=%s&apikey=%s', $this->ConvertInput($realm), $this->_config['locale'], $this->_config['apiKey']);
 		$this->_debug('Auction: '.$wowurl);
 		if(!$json	= $this->get_CachedData('auctiondatadata_'.$realm, $force)){
 			$json	= $this->read_url($wowurl);
