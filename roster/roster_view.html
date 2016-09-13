@@ -95,7 +95,7 @@
 	
 	<!-- BEGIN class_row -->
 		<div class="roster_class_container" data-level-id="{class_row.CLASS_LEVEL}" <!-- IF class_row.IS_PRIMARY -->data-is-primary="1" data-class-id="{class_row.CLASS_ID}"<!-- ENDIF -->>
-			<h{class_row.CLASS_LEVEL} class="<!-- IF class_row.IS_PRIMARY -->class_{class_row.CLASS_ID}<!-- ENDIF --> level_{class_row.CLASS_LEVEL}">{class_row.CLASS_ICONS} {class_row.CLASS_NAME}</h1>
+			<h{class_row.CLASS_LEVEL} class="<!-- IF class_row.IS_PRIMARY -->class_{class_row.CLASS_ID}<!-- ENDIF --> level_{class_row.CLASS_LEVEL}">{class_row.CLASS_ICONS} {class_row.CLASS_NAME}</h{class_row.CLASS_LEVEL}>
 			<!-- IF class_row.ENDLEVEL -->
 			<table class="table fullwidth colorswitch hoverrows">
 				{class_row.MEMBER_LIST}
