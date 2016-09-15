@@ -320,7 +320,7 @@ class bnet_armory extends gen_class {
 	* @return string
 	*/
 	public function characterIcon($chardata, $forceUpdateAll = false){
-		$cached_img	= str_replace(array('/', '-'), '_', 'image_character_'.$this->_config['serverloc'].'_'.$chardata['thumbnail']);
+		$cached_img	= 'image_characterIcon_'.$chardata['name'].$chardata['realm'];
 		$img_charicon	= $this->get_CachedData($cached_img, false, true);
 		$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
 
@@ -365,7 +365,7 @@ class bnet_armory extends gen_class {
 			default: $dtype_ending = 'profilemain';
 		}
 		$imgfile = str_replace('avatar.jpg', $dtype_ending.'.jpg', $chardata['thumbnail']);
-		$cached_img	= str_replace(array('/', '-'), '_', 'image_big_character_'.$this->_config['serverloc'].'_'.$imgfile);
+		$cached_img	= 'image_characterIcon_'.$chardata['name'].$chardata['realm'];
 		$img_charicon	= $this->get_CachedData($cached_img, false, true, false, true);
 		if(!$img_charicon || $forceUpdateAll){
 			$this->set_CachedData($this->read_url($this->_config['apiRenderUrl'].sprintf('%s/%s', $this->_config['serverloc'], $imgfile)), $cached_img, true);
