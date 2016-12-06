@@ -454,7 +454,7 @@ if(!class_exists('wow')) {
 
 		public function game_avatar(){
 			if($this->config->get('gameavatar')>0){
-				#$this->hooks->register('user_avatarimg', 'battlenet_user_avatarimg_hook', 'user_avatarimg', 'games/wow/hooks/')
+				$this->hooks->register('user_avatarimg', 'battlenet_user_avatarimg_hook', 'user_avatarimg', 'games/wow/hooks/', array());
 			}
 		}
 
