@@ -221,6 +221,7 @@ if(!class_exists('wow')) {
 
 			$this->strStaticIconUrl = $this->config->get('itt_icon_small_loc').'%s'.$this->config->get('itt_icon_ext');
 			$this->pdh->register_read_module($this->this_game, $this->path . 'pdh/read/'.$this->this_game);
+			$this->game_avatar();
 		}
 
 		public function install($blnEQdkpInstall=false){
@@ -451,6 +452,12 @@ if(!class_exists('wow')) {
 			return $xml_fields;
 		}
 
+		public function game_avatar(){
+			if($this->config->get('gameavatar')>0){
+				#$this->hooks->register('user_avatarimg', 'battlenet_user_avatarimg_hook', 'user_avatarimg', 'games/wow/hooks/')
+			}
+		}
+
 		public function cronjobOptions(){
 			$arrOptions = array(
 				'sync_ranks'	=> array(
@@ -628,6 +635,10 @@ if(!class_exists('wow')) {
 					'type'			=> 'text',
 					'size'			=> '21',
 					'autocomplete'	=> $this->game->get('realmlist'),
+				),
+				'gameavatar'	=> array(
+					'lang'			=> 'gameavatar',
+					'type'			=> 'radio',
 				)
 			);
 			return $settingsdata_admin;
