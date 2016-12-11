@@ -453,9 +453,8 @@ if(!class_exists('wow')) {
 		}
 
 		public function game_avatar(){
-			if($this->config->get('gameavatar')>0){
-				$this->hooks->register('user_avatarimg', 'battlenet_user_avatarimg_hook', 'user_avatarimg', 'games/wow/hooks/', array());
-			}
+			$this->hooks->register('avatar_provider', 'battlenet_user_avatarimg_hook', 'avatar_provider', 'games/wow/hooks/', array());
+			$this->hooks->register('user_avatarimg', 'battlenet_user_avatarimg_hook', 'user_avatarimg', 'games/wow/hooks/', array());
 		}
 
 		public function cronjobOptions(){
@@ -636,10 +635,6 @@ if(!class_exists('wow')) {
 					'size'			=> '21',
 					'autocomplete'	=> $this->game->get('realmlist'),
 				),
-				'gameavatar'	=> array(
-					'lang'			=> 'gameavatar',
-					'type'			=> 'radio',
-				)
 			);
 			return $settingsdata_admin;
 		}

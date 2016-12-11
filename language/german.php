@@ -217,9 +217,6 @@ $german_array = array(
 		'apikey_content_step2'			=> 'Besuche die <a href="https://dev.battle.net" target="_blank">Battle.net API</a> Seite und erstelle einen neuen Mashery Account. Registriere eine <a href="https://dev.battle.net/apps/register" target="_blank">neue Anwendung</a> und benutze dazu den Gildenamen, die Webseite und eine Kurzbeschreibung. Wähle die Checkbox "Issue a new key for game APIs". Der Schlüssel wird per E-Mail zugesendet.',
 		'apikey_title_step3'			=> 'Gib den API-Schlüssen ein',
 		'apikey_content_step3'			=> 'Gib hier den API-Schlüssel den du per E-Mail erhalten hast ein.<br/>API-Schlüssel: {APIKEY_FORM}',
-		'gameavatar'					=> 'Benutze den Avatar des Main-Chars als Benutzer-Avatar',
-		'gameavatar_help'				=> 'Verwende den Avatar des Haupt-Charakters als Standard-Avatar falls der Benutzer keinen eigenen hochgeladen hat.',
-
 		// Armory Import
 		"uc_updat_armory" 				=> "Vom battle.net aktualisieren",
 		'uc_charname'					=> 'Charaktername',

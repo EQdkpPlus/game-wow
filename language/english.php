@@ -198,8 +198,6 @@ $english_array = array(
 	"apikey_content_step2" => 'Visit the <a href="https://dev.battle.net" target="_blank">Battle.net API</a> page and create a new Mashery Account. Register a <a href="https://dev.battle.net/apps/register" target="_blank">new Application</a> by using the guild name as name, your website and a short description. Select the checkbox "Issue a new key for game APIs". You will receive the key as an email.',
 	"apikey_title_step3" => 'Enter API key',
 	"apikey_content_step3" => 'Enter the API-key you received as an email in this field.<br/>API-Key: {APIKEY_FORM}',
-	'gameavatar' => 'Use the character avatar of the main char as default Avatar',
-	'gameavatar_help' => 'Use the Avatar of the main char of the user as the default avatar if the user did not assign an own one.',
 	"uc_updat_armory" => 'Refresh from armory',
 	"uc_charname" => 'Character\'s name',
 	"servername" => 'Realm\'s name',

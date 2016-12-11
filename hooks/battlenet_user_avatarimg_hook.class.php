@@ -27,40 +27,37 @@ if (!class_exists('battlenet_user_avatarimg_hook')){
 	class battlenet_user_avatarimg_hook extends gen_class{
 		/* List of dependencies */
 		public static $shortcuts = array();
+		
+		
+		public function avatar_provider($arrParams)
+		{
+			return array('wow' => array('name' => 'WoW'));
+		}
 
-		public function user_avatarimg($arrOptions){
-			$user_id	= $arrOptions[0];
-			$fullSize	= $arrOptions[1];
-			#$avatarimg	= $arrOptions[2];
-			if($avatarimg && strlen($avatarimg)){
-				$fullSizeImage = $this->pfh->FolderPath('users/'.$user_id,'files').$avatarimg;
-				$thumbnail = $this->pfh->FolderPath('users/thumbs','files').'useravatar_'.$user_id.'_68.'.pathinfo($avatarimg, PATHINFO_EXTENSION);
-				if (!$fullSize && is_file($thumbnail)) return $thumbnail;
-				return $fullSizeImage;
-			}else{
+		public function user_avatarimg($arrParams){
+			$user_id = $arrParams['user_id'];
+			$fullSize = $arrParams['fullsize'];
+			$avatarimg = $arrParams['avatarimg'];
+			$strAvatarType = $arrParams['avatartype'];
+			$blnDefault= $arrParams['default'];
+			if($strAvatarType != 'wow') return array('wow' => '');
+			
+			// get the main char of the user
+			$mainchar	= $this->pdh->get('member', 'mainchar', array($user_id));
+			if($mainchar != ''){
+				$char_server	= $this->pdh->get('member', 'profile_field', array($mainchar, 'servername'));
+				$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
+				$strMemberName	= $this->pdh->get('member', 'name', array($mainchar));
+			
+				$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
+				$chardata		= $this->game->obj['armory']->character($strMemberName, unsanitize($servername), true);
+				$charicon		= $this->game->obj['armory']->characterIcon($chardata);
 
-				// get the main char of the user
-				$mainchar	= $this->pdh->get('member', 'mainchar', array($user_id));
-				if($mainchar != ''){
-					$char_server	= $this->pdh->get('member', 'profile_field', array($mainchar, 'servername'));
-					$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
-					$strMemberName	= $this->pdh->get('member', 'name', array($mainchar));
-
-					$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
-					$chardata		= $this->game->obj['armory']->character($strMemberName, unsanitize($servername), true);
-					$charicon		= $this->game->obj['armory']->characterIcon($chardata);
-d($chardata);
-					if($chardata != ''){
-						return $charicon;
-					}else{
-						include_once $this->root_path.'core/avatar.class.php';
-						$avatar = registry::register('avatar');
-						$result = $avatar->getAvatar($user_id, $this->pdh->get('user', 'name', array($user_id)), (($fullSize) ? 400 : 68));
-						if ($result) return $result;
-					}
+				if($chardata != ''){
+					return array('wow' => $charicon);
 				}
 			}
-			return '';
+			return array('wow' => '');
 		}
 	}
 }
