@@ -189,6 +189,7 @@ $german_array = array(
 		'uc_achievement_tab_cataclysm'	=> 'Cataclysm',
 		'uc_achievement_tab_mop'		=> 'Mists of Pandaria',
 		'uc_achievement_tab_wod'		=> 'Warlords of Draenor',
+		'uc_achievement_tab_leg'		=> 'Legion',
 
 		'challenge'						=> 'Herausforderungsmodus',
 		'challenge_title'				=> 'Herausforderungsmodus: Ranglisten',
@@ -358,6 +359,9 @@ $german_array = array(
 		'leg_nh_normal'					=> 'Die Nachtfestung Normal',
 		'leg_nh_heroic'					=> 'Die Nachtfestung Heroisch',
 		'leg_nh_mythic'					=> 'Die Nachtfestung Mythisch (20)',
+		'leg_tov_normal'					=> 'Die Prüfung der Tapferkeit Normal',
+		'leg_tov_heroic'					=> 'Die Prüfung der Tapferkeit Heroisch',
+		'leg_tov_mythic'					=> 'Die Prüfung der Tapferkeit Mythisch (20)',
 
 		'char_news'						=> 'Char News',
 		'no_armory'						=> 'Es konnten keine gültigen Daten für diesen Charakter geladen werden. Die battle.net API meldet folgenden Fehler: "%s".',

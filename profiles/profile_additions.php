@@ -53,7 +53,6 @@
 
 		ul#wow_icons_left img, ul#wow_icons_right img, ul#wow_icons_bottom img{
 			box-shadow: 0 0 8px black;
-			-webkit-border-radius: 4px;
 			border-radius: 4px;
 		}
 
@@ -214,6 +213,7 @@
 		.raideventicon.id7545 { background-position:  -2135px 0; }
 		.raideventicon.id8026 { background-position:  -2196px 0; }
 		.raideventicon.id8025 { background-position:  -2257px 0; }
+		.raideventicon.id8440 { background-position:  -2318px 0; }
 
 		#wow_icons_left .q img, #wow_icons_right .q img, #wow_icons_bottom .q img {
 			border: 1px solid #ffd100;
@@ -249,10 +249,6 @@
 		.accountwide { color: #00AEFF !important; }
 
 		.icon-frame {
-			-moz-border-bottom-colors: none;
-			-moz-border-left-colors: none;
-			-moz-border-right-colors: none;
-			-moz-border-top-colors: none;
 			background-color: #000000;
 			background-position: 1px 1px;
 			background-repeat: no-repeat;
@@ -264,9 +260,6 @@
 			border-style: solid;
 			border-width: 1px;
 			padding: 1px;
-			-moz-border-radius:4px; /* Firefox */
-			-webkit-border-radius:4px; /* Safari, Chrome */
-			-khtml-border-radius:4px; /* Konqueror */
 			border-radius:4px; /* CSS3 */
 			//display: inline-block !important;
 		}

@@ -53,7 +53,7 @@ if (!class_exists('battlenet_user_avatarimg_hook')){
 				$chardata		= $this->game->obj['armory']->character($strMemberName, unsanitize($servername), true);
 				$charicon		= $this->game->obj['armory']->characterIcon($chardata);
 
-				if($chardata != ''){
+				if($charicon != ''){
 					return array('wow' => $charicon);
 				}
 			}

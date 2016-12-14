@@ -27,7 +27,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 
 		protected static $apiLevel	= 20;
-		public $version				= '7.0.3';
+		public $version				= '7.0.4';
 		protected $this_game		= 'wow';
 		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
@@ -56,7 +56,7 @@ if(!class_exists('wow')) {
 			'cataclysm'	=> array(5600, 5094, 5334, 5638, 5723, 5892),
 			'mop'		=> array(6125, 6297, 6067, 6622, 6738),
 			'wod'		=> array(6967, 6996, 7545),
-			'leg'		=> array(8026, 8025),
+			'leg'		=> array(8026, 8440, 8025),
 		);
 
 		protected $class_dependencies = array(
@@ -235,6 +235,9 @@ if(!class_exists('wow')) {
 			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_nh_normal'), 0, "nh.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_nh_heroic'), 0, "nh.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_nh_mythic'), 0, "nh.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_tov_normal'), 0, "tov.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_tov_heroic'), 0, "tov.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_tov_mythic'), 0, "tov.png");
 
 			// WoD Events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('wod_hm_normal'), 0, "hm.png");
