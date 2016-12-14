@@ -638,6 +638,18 @@ if(!class_exists('wow')) {
 					'size'			=> '21',
 					'autocomplete'	=> $this->game->get('realmlist'),
 				),
+				'profile_boskills_hide'	=> array(
+					'lang'		=> 'uc_profile_boskills_hide',
+					'type' 		=> 'multiselect',
+					'options'	=> array(
+						'classic'	=> $this->game->glang('uc_achievement_tab_classic'),
+						'bc'			=> $this->game->glang('uc_achievement_tab_bc'),
+						'wotlk'		=> $this->game->glang('uc_achievement_tab_wotlk'),
+						'cataclysm'	=> $this->game->glang('uc_achievement_tab_cataclysm'),
+						'mop'			=> $this->game->glang('uc_achievement_tab_mop'),
+						'wod'			=> $this->game->glang('uc_achievement_tab_wod'),
+						'leg'			=> $this->game->glang('uc_achievement_tab_leg'),
+					),
 			);
 			return $settingsdata_admin;
 		}
@@ -1258,7 +1270,7 @@ if(!class_exists('wow')) {
 
 					// put all together in an array
 					$a_category		= array_keys(search_in_array($v_progression['id'], $this->ArrInstanceCategories));
-					$v_progresscat	=  (isset($a_category[0])) ? $a_category[0] : 'default';
+					$v_progresscat	= (isset($a_category[0])) ? $a_category[0] : 'default';
 					$a_raidprogress[$v_progresscat][$v_progression['id']] = array(
 						'id'			=> $v_progression['id'],
 						'name'			=> $v_progression['name'],

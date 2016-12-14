@@ -544,6 +544,9 @@
 		$d_bossprogress		= $this->game->callFunc('ParseRaidProgression', array($chardata));
 		if(is_array($d_bossprogress)){
 			foreach($d_bossprogress as $v_progresscat=>$a_bossprogress){
+				// skip the category if hidden
+				$config_bk_hidden	= (is_array($this->config->get('profile_boskills_hide'))) ? $this->config->get('profile_boskills_hide') : array();
+				if(in_array($v_progresscat, $config_bk_hidden)){ continue; }
 
 				$this->tpl->assign_block_vars('bossprogress_cat', array(
 					'NAME'	=> $this->game->glang('uc_achievement_tab_'.$v_progresscat),

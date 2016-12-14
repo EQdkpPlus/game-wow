@@ -190,6 +190,9 @@ $english_array = array(
 	"uc_server_loc_help" => 'The location of the WoW Server',
 	"uc_data_lang" => 'Language of the data',
 	"uc_data_lang_help" => 'In which language should the data be fetched from external website?',
+	'uc_profile_boskills_hide'		=> 'Profile view: Hide bosses of the following extensions',
+	'uc_profile_boskills_hide_help'=> 'Select all WoW exentsions whose boss kills should not be shown in the characters profile view.',
+		
 	"uc_error_head" => 'ERROR',
 	"uc_error_noserver" => 'There is no server saved in the global settings. The server is required for fetching external data. Please report it to an administrator.',
 	"uc_error_nodata_bnet" => 'The battle.net API returned incomplete data for this char. Please try again later.',
