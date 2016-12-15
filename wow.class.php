@@ -924,7 +924,7 @@ if(!class_exists('wow')) {
 						$done[$arrCatAchievs2['title']] = true;
 						$doneIDs[$arrCatAchievs2['id']] = true;
 
-						if (in_array((int)$arrCatAchievs2['id'], $arrAchievs['achievementsCompleted'])) $completed++;
+						if (is_array($arrAchievs['achievementsCompleted']) && in_array((int)$arrCatAchievs2['id'], $arrAchievs['achievementsCompleted'])) $completed++;
 						$achievs++;
 					}
 
@@ -937,7 +937,7 @@ if(!class_exists('wow')) {
 								$done[$arrCatAchievs3['title']] = true;
 								$doneIDs[$arrCatAchievs3['id']] = true;
 
-								if (in_array((int)$arrCatAchievs3['id'], $arrAchievs['achievementsCompleted'])) $completed++;
+								if (is_array($arrAchievs['achievementsCompleted']) && in_array((int)$arrCatAchievs3['id'], $arrAchievs['achievementsCompleted'])) $completed++;
 								$achievs++;
 							}
 						}
