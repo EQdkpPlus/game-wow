@@ -650,6 +650,7 @@ if(!class_exists('wow')) {
 						'wod'			=> $this->game->glang('uc_achievement_tab_wod'),
 						'leg'			=> $this->game->glang('uc_achievement_tab_leg'),
 					),
+				)
 			);
 			return $settingsdata_admin;
 		}
@@ -911,42 +912,44 @@ if(!class_exists('wow')) {
 			$arrOut['total'] = array(
 				'total' => 0
 			);
-			foreach ($arrCharAchievementsData['achievements'] as $arrCatAchievs){
-				$completed = 0;
-				$achievs = 0;
+			if(is_array($arrCharAchievementsData['achievements'])){
+				foreach ($arrCharAchievementsData['achievements'] as $arrCatAchievs){
+					$completed = 0;
+					$achievs = 0;
 
-				foreach ($arrCatAchievs['achievements'] as $arrCatAchievs2){
+					foreach ($arrCatAchievs['achievements'] as $arrCatAchievs2){
 
-					//if (isset($done[$arrCatAchievs2['title']])) continue;
-					if (isset($doneIDs[$arrCatAchievs2['id']])) continue;
-					$done[$arrCatAchievs2['title']] = true;
-					$doneIDs[$arrCatAchievs2['id']] = true;
+						//if (isset($done[$arrCatAchievs2['title']])) continue;
+						if (isset($doneIDs[$arrCatAchievs2['id']])) continue;
+						$done[$arrCatAchievs2['title']] = true;
+						$doneIDs[$arrCatAchievs2['id']] = true;
 
-					if (in_array((int)$arrCatAchievs2['id'], $arrAchievs['achievementsCompleted'])) $completed++;
-					$achievs++;
-				}
+						if (in_array((int)$arrCatAchievs2['id'], $arrAchievs['achievementsCompleted'])) $completed++;
+						$achievs++;
+					}
 
-				if (isset($arrCatAchievs['categories'])){
-					foreach ($arrCatAchievs['categories'] as $arrCatAchievs2){
+					if (isset($arrCatAchievs['categories'])){
+						foreach ($arrCatAchievs['categories'] as $arrCatAchievs2){
 
-						foreach ($arrCatAchievs2['achievements'] as $arrCatAchievs3){
-							//if (isset($done[$arrCatAchievs3['title']])) continue;
-							if (isset($doneIDs[$arrCatAchievs3['id']])) continue;
-							$done[$arrCatAchievs3['title']] = true;
-							$doneIDs[$arrCatAchievs3['id']] = true;
+							foreach ($arrCatAchievs2['achievements'] as $arrCatAchievs3){
+								//if (isset($done[$arrCatAchievs3['title']])) continue;
+								if (isset($doneIDs[$arrCatAchievs3['id']])) continue;
+								$done[$arrCatAchievs3['title']] = true;
+								$doneIDs[$arrCatAchievs3['id']] = true;
 
-							if (in_array((int)$arrCatAchievs3['id'], $arrAchievs['achievementsCompleted'])) $completed++;
-							$achievs++;
+								if (in_array((int)$arrCatAchievs3['id'], $arrAchievs['achievementsCompleted'])) $completed++;
+								$achievs++;
+							}
 						}
 					}
-				}
 
-				$arrOut[$arrCatAchievs['id']] = array(
-					'id'	=> $arrCatAchievs['id'],
-					'name'	=> $arrCatAchievs['name'],
-					'total' => $achievs,
-					'completed' => $completed,
-				);
+					$arrOut[$arrCatAchievs['id']] = array(
+						'id'	=> $arrCatAchievs['id'],
+						'name'	=> $arrCatAchievs['name'],
+						'total' => $achievs,
+						'completed' => $completed,
+					);
+				}
 			}
 
 			$total = 0;
@@ -1002,27 +1005,32 @@ if(!class_exists('wow')) {
 			$arrAchievs			= $chardata['achievements'];
 			$arrAchieveTimes	= $arrAchievs['achievementsCompletedTimestamp'];
 			$arrAchievs			= $arrAchievs['achievementsCompleted'];
-			array_multisort($arrAchieveTimes, SORT_DESC, SORT_NUMERIC, $arrAchievs);
+			if(is_array($arrAchieveTimes)){
+				array_multisort($arrAchieveTimes, SORT_DESC, SORT_NUMERIC, $arrAchievs);
+			}
 			$count = 0;
 			$arrCharAchievementsData = $this->game->obj['armory']->getdata('character', 'achievements');
 
 			$arrAchievsOut = array();
-			foreach($arrAchievs as $key => $achievID){
-				if ($count == $intCount) break;
-				$count++;
-				$achievData = $this->game->obj['armory']->achievement($achievID);
-				if ($achievData){
-					$class = ($achievData['accountWide'] == 1) ? 'accountwide' : '';
-					$arrAchievsOut[] = array(
-						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink($charname, $this->config->get('servername'), 'achievements').'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrCharAchievementsData).':a'.$achievID.'" class="'.$class.'">'.$achievData['title'].'</a>',
-						'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" />',
-						'desc'	=> $achievData['description'],
-						'points'=> $achievData['points'],
-						'date'	=> substr($arrAchieveTimes[$key], 0, -3),
+			if(is_array($arrAchievs)){
+				foreach($arrAchievs as $key => $achievID){
+					if ($count == $intCount) break;
+					$count++;
+					$achievData = $this->game->obj['armory']->achievement($achievID);
+					if ($achievData){
+						$class = ($achievData['accountWide'] == 1) ? 'accountwide' : '';
+						$arrAchievsOut[] = array(
+							'name'	=> '<a href="'.$this->game->obj['armory']->bnlink($charname, $this->config->get('servername'), 'achievements').'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrCharAchievementsData).':a'.$achievID.'" class="'.$class.'">'.$achievData['title'].'</a>',
+							'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" />',
+							'desc'	=> $achievData['description'],
+							'points'=> $achievData['points'],
+							'date'	=> substr($arrAchieveTimes[$key], 0, -3),
 
-					);
+						);
+					}
 				}
 			}
+
 			return $arrAchievsOut;
 		}
 

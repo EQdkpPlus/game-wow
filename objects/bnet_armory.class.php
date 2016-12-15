@@ -909,7 +909,7 @@ class bnet_armory extends gen_class {
 		// one second = 1000000 ms. As the limit is 10/s, we have to wait 100000 = 0.1s
 		list($int,$dec)=explode('.', $this->get_lastdownload());
 		$rate 		= 1000000/$this->ratepersecond;
-		$time2wait	= $rate-$dec;
+		$time2wait	= $rate-((int)$dec);
 		if($time2wait > 0){
 			usleep($time2wait);
 		}
