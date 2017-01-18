@@ -67,7 +67,7 @@
 	");
 	$this->tpl->css_file($this->path.'games/wow/roster/challenge.css');
 
-# Amory Stuff
+# Armory Stuff
 $guilddata = false;
 if($this->config->get('servername') && $this->config->get('uc_server_loc')){
 	$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang')));
