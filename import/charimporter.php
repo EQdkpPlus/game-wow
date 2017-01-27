@@ -122,7 +122,7 @@ class charImporter extends page_generic {
 								successdata = "<span style=\"color:red;\">'.$this->game->glang('uc_armory_updfailed').'<br/>"+
 								((chardata.error) ? "'.$this->game->glang('uc_armory_impfail_reason').' "+chardata.error : "")+"</span>";
 							}
-							$("#guildimport_dataset fieldset.data").prepend("<dl><dt><label><img src=\""+ chardata.image +"\" alt=\"charicon\" height=\"84\" width=\"84\" /></label></dt><dd>"+ chardata.name+"<br/>"+ successdata +"</dd></dl>").children(":first").hide().fadeIn("slow");
+							$("#guildimport_dataset fieldset.data").prepend("<dl><dt><label><img src=\""+ chardata.image +"\" alt=\"charicon\" height=\"84\" width=\"84\" /></label></dt><dd>"+ chardata.name+" ["+chardata.realm+"]<br/>"+ successdata +"</dd></dl>").children(":first").hide().fadeIn("slow");
 							$("#progressbar").progressbar({ value: ((i/chardataArry.length)*100) })
 							if(chardataArry.length > i+1){
 								getData(i+1);
@@ -198,6 +198,7 @@ class charImporter extends page_generic {
 		die(json_encode(array(
 			'image'		=> $charicon,
 			'name'		=> $charname,
+			'realm'		=> $servername.'/'.$char_server,
 			'success'	=> $successmsg,
 			'error'		=> $errormsg
 		)));
