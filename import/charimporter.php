@@ -198,7 +198,7 @@ class charImporter extends page_generic {
 		die(json_encode(array(
 			'image'		=> $charicon,
 			'name'		=> $charname,
-			'realm'		=> $servername.'/'.$char_server,
+			'realm'		=> $servername,
 			'success'	=> $successmsg,
 			'error'		=> $errormsg
 		)));
@@ -249,8 +249,10 @@ class charImporter extends page_generic {
 		if($this->in->get('member_id', 0) > 0){
 			// We'll update an existing one...
 			$isindatabase	= $this->in->get('member_id', 0);
+			$char_server	= $this->pdh->get('member', 'profile_field', array($isindatabase, 'servername'));
+			$isServerName	= ($char_server != '') ? $char_server : $this->config->get('servername');
 			$isMemberName	= $this->pdh->get('member', 'name', array($isindatabase));
-			$isServerName	= $this->config->get('servername');
+			#$isServerName	= $this->config->get('servername');
 			$isServerLoc	= $this->config->get('uc_server_loc');
 			$is_mine		= ($this->pdh->get('member', 'userid', array($isindatabase)) == $this->user->data['user_id']) ? true : false;
 		}else{
