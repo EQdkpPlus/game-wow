@@ -485,7 +485,7 @@ if(!class_exists('wow')) {
 			$onlyImportRanks = false;
 			if (!empty($arrParams['char_import_only_ranks'])) {
 				$onlyImportRanks = array();
-				$rawOnlyImportRanks = explode(',');
+				$rawOnlyImportRanks = explode(',', $arrParams['char_import_only_ranks']);
 
 				foreach ($rank as $rawOnlyImportRanks) {
 					$rank = trim($rank);
