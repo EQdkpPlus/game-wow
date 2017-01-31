@@ -463,6 +463,11 @@ if(!class_exists('wow')) {
 						'name'	=> 'char_import_ranks_level',
 						'type'	=> 'text',
 				),
+				'char_import_only_ranks' 	=> array(
+						'lang'	=> 'Only import characters with rank (comma separated)',
+						'name'	=> 'char_import_only_ranks',
+						'type'	=> 'text',
+				),
 				'delete_chars'	=> array(
 						'lang'	=> 'Delete Chars that have left the Guild',
 						'name'	=> 'delete_chars',
@@ -475,6 +480,20 @@ if(!class_exists('wow')) {
 		public function cronjob($arrParams = array()){
 			$blnSyncRanks = ((int)$arrParams['sync_ranks'] == 1) ? true : false;
 			$blnDeleteChars = ((int)$arrParams['delete_chars'] == 1) ? true : false;
+
+			// Sanitize the 'only import ranks' param, if provided
+			$onlyImportRanks = false;
+			if (!empty($arrParams['char_import_ranks_level'])) {
+				$onlyImportRanks = array();
+				$rawOnlyImportRanks = explode(',');
+
+				foreach ($rank as $rawOnlyImportRanks) {
+					$rank = trim($rank);
+					if (is_numeric($rank)) {
+						$onlyImportRanks[] = $rank;
+					}
+				}
+			}
 
 			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
@@ -529,6 +548,11 @@ if(!class_exists('wow')) {
 					} else {
 						if ((int)$arrParams['char_import_ranks_level'] > 0 && (int)$jsondata['rank'] < (int)$arrParams['char_import_ranks_level']) {
 							continue;
+						} else if ($onlyImportRanks) {
+							// Skip member unless they have a rank in the list
+							if (!in_array((int)$jsondata['rank'], $onlyImportRanks)) {
+								continue;
+							}
 						}
 
 						//Create new char
