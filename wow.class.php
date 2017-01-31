@@ -566,7 +566,7 @@ if(!class_exists('wow')) {
 
 					$char_server	= $this->pdh->get('member', 'profile_field', array($memberID, 'servername'));
 					$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
-					$chardata		= $this->game->obj['armory']->character($membername, unsanitize($servername), true);
+					$chardata		= $this->game->obj['armory']->character($strMemberName, unsanitize($servername), true);
 
 					if($chardata && !isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 						$errormsg	= '';
