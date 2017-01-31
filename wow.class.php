@@ -474,6 +474,7 @@ if(!class_exists('wow')) {
 				),
 				'char_import_only_ranks' 	=> array(
 						'lang'	=> 'Only import characters with rank (comma separated)',
+						'help'	=> 'Leave empty to import all ranks',
 						'name'	=> 'char_import_only_ranks',
 						'type'	=> 'text',
 				),
