@@ -483,7 +483,7 @@ if(!class_exists('wow')) {
 
 			// Sanitize the 'only import ranks' param, if provided
 			$onlyImportRanks = false;
-			if (!empty($arrParams['char_import_ranks_level'])) {
+			if (!empty($arrParams['char_import_only_ranks'])) {
 				$onlyImportRanks = array();
 				$rawOnlyImportRanks = explode(',');
 
