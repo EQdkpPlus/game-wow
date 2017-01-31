@@ -300,7 +300,7 @@ class bnet_armory extends gen_class {
 		$wowurl		= $this->_config['apiUrl'].sprintf('wow/character/%s/%s?locale=%s&apikey=%s&fields='.implode(',', $usedparams), $realm, $user, $this->_config['locale'], $this->_config['apiKey']);
 		$this->_debug('Character: '.$wowurl);
 		$json		= $this->get_CachedData('chardata_'.$user.$realm, $force);
-		if(!$json && ($this->chardataUpdates < $this->_config['maxChardataUpdates'])){
+		if(!$json && ($force || $this->chardataUpdates < $this->_config['maxChardataUpdates'])){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'chardata_'.$user.$realm);
 			$this->chardataUpdates++;
