@@ -497,7 +497,7 @@ if(!class_exists('wow')) {
 				$onlyImportRanks = array();
 				$rawOnlyImportRanks = explode(',', $arrParams['char_import_only_ranks']);
 
-				foreach ($rank as $rawOnlyImportRanks) {
+				foreach ($rawOnlyImportRanks as $rank) {
 					$rank = trim($rank);
 					if (is_numeric($rank)) {
 						$onlyImportRanks[] = $rank;
