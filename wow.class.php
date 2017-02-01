@@ -723,7 +723,7 @@ if(!class_exists('wow')) {
 			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 			$char_server	= $this->pdh->get('member', 'profile_field', array($memberid, 'servername'));
 			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
-			$chardata		= $this->game->obj['armory']->character($member_data['name'], unsanitize($servername), true);
+			$chardata		= $this->game->obj['armory']->character($member_data['name'], unsanitize($servername), false);
 			$itemlevel		= (isset($chardata['items']['averageItemLevel'])) ? $chardata['items']['averageItemLevel'] : '--';
 
 			return array(
