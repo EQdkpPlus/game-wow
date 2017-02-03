@@ -192,7 +192,7 @@ $english_array = array(
 	"uc_data_lang_help" => 'In which language should the data be fetched from external website?',
 	'uc_profile_boskills_hide'		=> 'Profile view: Hide bosses of the following extensions',
 	'uc_profile_boskills_hide_help'=> 'Select all WoW exentsions whose boss kills should not be shown in the characters profile view.',
-		
+
 	"uc_error_head" => 'ERROR',
 	"uc_error_noserver" => 'There is no server saved in the global settings. The server is required for fetching external data. Please report it to an administrator.',
 	"uc_error_nodata_bnet" => 'The battle.net API returned incomplete data for this char. Please try again later.',
@@ -214,6 +214,8 @@ $english_array = array(
 	"uc_armory_impfailed" => 'Character not imported',
 	"uc_armory_updfailed" => 'Character not updated',
 	"uc_armory_impfail_reason" => 'Reason:',
+	"uc_armory_import_unknownerror" => "Unknown import error - battle.net does not provide an error message",
+	"uc_armory_import_error_code" => "Code: %1$s, Type: %2$s, Details: %3$s",
 	"uc_armory_impduplex" => 'Character is already in the database',
 	"uc_class_filter" => 'Only member of the class',
 	"uc_class_nofilter" => 'No filter',

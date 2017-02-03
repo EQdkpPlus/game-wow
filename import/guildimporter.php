@@ -181,7 +181,16 @@ class guildImporter extends page_generic {
 			getData();
 			');
 		}else{
-			$hmtlout .= '<div class="infobox infobox-large infobox-red clearfix"><i class="fa fa-exclamation-triangle fa-4x pull-left"></i> <span id="error_message_txt">'.$guilddata['reason'].'</span></div>';
+			if(isset($guilddata['reason'])){
+				$errormessage = $guilddata['reason'];
+			}elseif(isset($guilddata['code']) && isset($guilddata['type'])){
+				$errormessage = sprintf($this->game->glang('uc_armory_import_error_code'), $guilddata['code'], $guilddata['type'], $guilddata['detail']);
+			}elseif(isset($guilddata) && is_array($guilddata)){
+				$errormessage = json_encode($guilddata);
+			}else{
+				$errormessage = $this->game->glang('uc_armory_import_unknownerror');
+			}
+			$hmtlout = '<div class="infobox infobox-large infobox-red clearfix"><i class="fa fa-exclamation-triangle fa-4x pull-left"></i> <span id="error_message_txt">'.$errormessage.'</span></div>';
 		}
 		return $hmtlout;
 	}

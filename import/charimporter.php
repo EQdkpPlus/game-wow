@@ -189,8 +189,18 @@ class charImporter extends page_generic {
 			$this->pdh->process_hook_queue();
 			$successmsg	= ($info) ? 'imported' : 'error';
 		}else{
+			if(isset($chardata['reason'])){
+				$errormessage = $chardata['reason'];
+			}elseif(isset($chardata['code']) && isset($chardata['type'])){
+				$errormessage = sprintf($this->game->glang('uc_armory_import_error_code'), $chardata['code'], $chardata['type'], $chardata['detail']);
+			}elseif(isset($chardata) && is_array($chardata)){
+				$errormessage = json_encode($chardata);
+			}else{
+				$errormessage = $this->game->glang('uc_armory_import_unknownerror');
+			}
+
 			$successmsg	= 'error';
-			$errormsg	= (isset($chardata['reason']) && !empty($chardata['reason'])) ? $chardata['reason'] : $this->game->glang('uc_error_nodata_bnet');
+			$errormsg	= $errormessage;
 			$charname	= $this->in->get('charname', '');
 			$charicon	= $this->server_path.'images/global/avatar-default.svg';
 		}
@@ -332,8 +342,17 @@ class charImporter extends page_generic {
 										<button type="submit" name="submiti"><i class="fa fa-refresh"></i> '.(($isindatabase) ? $this->game->glang('uc_prof_update') : $this->game->glang('uc_prof_import')).'</button>
 									</center>';
 			}else{
+				if(isset($chardata['reason'])){
+					$errormessage = $chardata['reason'];
+				}elseif(isset($chardata['code']) && isset($chardata['type'])){
+					$errormessage = sprintf($this->game->glang('uc_armory_import_error_code'), $chardata['code'], $chardata['type'], $chardata['detail']);
+				}elseif(isset($chardata) && is_array($chardata)){
+					$errormessage = json_encode($chardata);
+				}else{
+					$errormessage = $this->game->glang('uc_armory_import_unknownerror');
+				}
 				$hmtlout		.= '<div class="infobox infobox-large infobox-red clearfix">
-										<i class="fa fa-exclamation-triangle fa-4x pull-left"></i> <b>WARNING: </b> '.$chardata['reason'].'
+										<i class="fa fa-exclamation-triangle fa-4x pull-left"></i> <b>WARNING: </b> '.$errormessage.'
 									</div>';
 			}
 		}else{

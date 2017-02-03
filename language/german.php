@@ -233,6 +233,8 @@ $german_array = array(
 		'uc_armory_impfailed'			=> 'Charakter nicht importiert',
 		'uc_armory_updfailed'			=> 'Charakter nicht aktualisiert',
 		'uc_armory_impfail_reason'		=> 'Grund:',
+		"uc_armory_import_unknownerror" => "Unbekannter Fehler beim Import- battle.net hat keine Fehlermeldung zurückgegebn",
+		"uc_armory_import_error_code"	=> "Code: %1$\$s, Typ: %2\$s, Details: %3\$s",
 		'uc_armory_impduplex'			=> 'Charakter ist bereits vorhanden',
 
 		// guild importer
