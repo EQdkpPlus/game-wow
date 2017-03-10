@@ -90,7 +90,7 @@ if(!function_exists('WoWMacroexport')){
 			if(is_array($raid_groups)){
 				$text  = "<dt><label>".registry::fetch('user')->lang('raidevent_export_raidgroup')."</label></dt>
 							<dd>
-								".new hdropdown('raidgroup', array('options' => $raid_groups, 'value' => 0, 'id' => 'raidgroup'))."
+								".(new hdropdown('raidgroup', array('options' => $raid_groups, 'value' => 0, 'id' => 'raidgroup')))->output()."
 							</dd>
 						</dl><dl>";
 			}
