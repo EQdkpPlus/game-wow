@@ -68,7 +68,7 @@ class guildImporter extends page_generic {
 			</dl>
 			</fieldset>
 			<fieldset class="settings mediumsettings">
-				<legend>'.$this->game->glang('uc_filter_name')->output().'</legend>
+				<legend>'.$this->game->glang('uc_filter_name').'</legend>
 
 				<dl>
 					<dt><label>'.$this->game->glang('uc_class_filter').'</label></dt>
