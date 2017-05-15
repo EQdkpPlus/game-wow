@@ -342,8 +342,6 @@ $english_array = array(
 	"news_playerAchievement" => '%1$s earned the achievement %2$s for %3$s points.',
 	"not_assigned" => 'Not assigned',
 	"empty" => 'Empty',
-	"major_glyphs" => 'Major Glyphs',
-	"minor_glyphs" => 'Minor Glyphs',
 	"core_sett_f_itt_icon_small_loc"=> "URL leading to small icons",
 	"core_sett_f_help_itt_icon_small_loc"	=> "If the URL is unknown, switch parser and back again, to load standard values.",
 	),

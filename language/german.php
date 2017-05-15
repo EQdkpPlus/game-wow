@@ -383,8 +383,6 @@ $german_array = array(
 
 		'not_assigned'					=> 'Nicht verteilt',
 		'empty'							=> 'Leer',
-		'major_glyphs'					=> 'Erhebliche Glyphen',
-		'minor_glyphs'					=> 'Geringe Glyphen',
 
 		"core_sett_f_itt_icon_small_loc"=> "URL zu den kleinen Icons.",
 		"core_sett_f_help_itt_icon_small_loc"	=> "Falls die URL nicht bekannt ist, einmal den Parser wechseln und wieder zurück, um Standard-Wert zu laden.",
