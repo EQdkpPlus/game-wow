@@ -392,27 +392,13 @@
 			));
 
 			// talent specialization
-			for ($i_ts = 0; $i_ts < 6; $i_ts ++) {
+			for ($i_ts = 0; $i_ts < 7; $i_ts ++) {
 				$this->tpl->assign_block_vars('talents.special', array(
 					'NAME'			=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['name']) ? $v_talents['talents'][$i_ts]['name'] : $this->game->glang('empty'),
 					'ICON'			=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['icon']) ? '<div class="icon-frame frame-18" style="background-image: url('.$v_talents['talents'][$i_ts]['icon'].');"></div>' : '<div class="icon-frame frame-18 empty"></div>',
 					'DESCRIPTION'	=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['description']) ? $v_talents['talents'][$i_ts]['description'] : false,
 				));
 			}
-
-			// talent glyphs
-			for ($i_tgs = 0; $i_tgs < 3; $i_tgs ++) {
-				$this->tpl->assign_block_vars('talents.glyphs_major', array(
-					'NAME'			=> (isset($v_talents['glyphs']['minor'][$i_tgs]) && $v_talents['glyphs']['major'][$i_tgs]['name']) ? $v_talents['glyphs']['major'][$i_tgs]['name'] : false,
-					'ICON'			=> (isset($v_talents['glyphs']['minor'][$i_tgs]) && $v_talents['glyphs']['major'][$i_tgs]['icon']) ? '<div class="icon-frame frame-18" style="background-image: url('.$v_talents['glyphs']['major'][$i_tgs]['icon'].');"></div>' : '<div class="icon-frame frame-18 empty"></div>',
-				));
-
-				$this->tpl->assign_block_vars('talents.glyphs_minor', array(
-					'NAME'			=> (isset($v_talents['glyphs']['minor'][$i_tgs]) && $v_talents['glyphs']['minor'][$i_tgs]['name']) ? $v_talents['glyphs']['minor'][$i_tgs]['name'] : false,
-					'ICON'			=> (isset($v_talents['glyphs']['minor'][$i_tgs]) && $v_talents['glyphs']['minor'][$i_tgs]['icon']) ? '<div class="icon-frame frame-18" style="background-image: url('.$v_talents['glyphs']['minor'][$i_tgs]['icon'].');"></div>' : '<div class="icon-frame frame-18 empty"></div>',
-				));
-			}
-
 		}
 
 		// professions
