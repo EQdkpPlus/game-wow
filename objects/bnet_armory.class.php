@@ -34,6 +34,7 @@ class bnet_armory extends gen_class {
 	const staticimages		= 'http://{region}.battle.net/wow/static/images/';
 	const staticicons		= 'http://{region}.media.blizzard.com/wow/icons/';
 	const tabardrenderurl	= 'http://{region}.battle.net/wow/static/images/guild/tabards/';
+	const charimageurl		= 'https://render-{region}.worldofwarcraft.com/';
 
 	private $_config		= array(
 		'serverloc'				=> 'us',
@@ -325,7 +326,7 @@ class bnet_armory extends gen_class {
 		$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
 
 		if(!$img_charicon && ($forceUpdateAll || ($this->chariconUpdates < $this->_config['maxChariconUpdates']))){
-			$this->set_CachedData($this->read_url($this->_config['apiRenderUrl'].sprintf('%s/%s', $this->_config['serverloc'], $chardata['thumbnail'])), $cached_img, true);
+			$this->set_CachedData($this->read_url($this->_config['charImageURL'].'character/'.$chardata['thumbnail']), $cached_img, true);
 			$img_charicon	= $this->get_CachedData($cached_img, false, true);
 			$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
 			// this is due to an api bug and may be removed some day, thumbs are always set and could be 404!
@@ -368,7 +369,7 @@ class bnet_armory extends gen_class {
 		$cached_img	= str_replace(array('/', '-'), '_', 'image_characterImage_'.$this->_config['serverloc'].'_'.$imgfile);
 		$img_charicon	= $this->get_CachedData($cached_img, false, true, false, true);
 		if(!$img_charicon || $forceUpdateAll){
-			$this->set_CachedData($this->read_url($this->_config['apiRenderUrl'].sprintf('%s/%s', $this->_config['serverloc'], $imgfile)), $cached_img, true);
+			$this->set_CachedData(   $this->read_url($this->_config['charImageURL'].'character/'.$imgfile), $cached_img, true);
 			$img_charicon	= $this->get_CachedData($cached_img, false, true, false,true);
 		}
 
@@ -1100,6 +1101,7 @@ class bnet_armory extends gen_class {
 		$this->_config['staticimageURL']		= str_replace('{region}', $serverloc, self::staticimages);
 		$this->_config['apiTabardRenderUrl']	= str_replace('{region}', $serverloc, self::tabardrenderurl);
 		$this->_config['staticiconURL']			= str_replace('{region}', $serverloc, self::staticicons);
+		$this->_config['charImageURL']			= str_replace('{region}', $serverloc, self::charimageurl);
 	}
 
 	/**
