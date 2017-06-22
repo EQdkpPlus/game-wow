@@ -35,6 +35,7 @@ class bnet_armory extends gen_class {
 	const staticicons		= 'http://{region}.media.blizzard.com/wow/icons/';
 	const tabardrenderurl	= 'http://{region}.battle.net/wow/static/images/guild/tabards/';
 	const charimageurl		= 'https://render-{region}.worldofwarcraft.com/';
+	const profileurlChar		= 'https://worldofwarcraft.com/{locale}/';
 
 	private $_config		= array(
 		'serverloc'				=> 'us',
@@ -214,10 +215,14 @@ class bnet_armory extends gen_class {
 		return $this->version.((preg_match('/\d+/', $this->build, $match))? '#'.$match[0] : '');
 	}
 
-	public function apiURL2profileURL($sufix='wow'){
-		$linkprfx	= str_replace('https://', 'http://', $this->_config['apiUrl']);
-		$linkprfx	= str_replace('.api', '', $linkprfx);
-		return $linkprfx.$sufix.'/';
+	public function getProfileULR($type='char'){
+		if($type=='char'){
+			return str_replace('{locale}', $this->_config['locale'], self::profileurlChar);
+		}else{
+			$linkprfx	= str_replace('https://', 'http://', $this->_config['apiUrl']);
+			$linkprfx	= str_replace('.api', '', $linkprfx).$sufix.'/wow/{locale}';
+			return str_replace('{locale}', substr($this->_config['locale'],0,2), $linkprfx);
+		}
 	}
 
 	/**
@@ -230,30 +235,25 @@ class bnet_armory extends gen_class {
 	* @return string		output
 	*/
 	public function bnlink($user, $server, $mode='char', $guild='', $talents=array()){
-		$linkprfx	= $this->apiURL2profileURL();
 		switch ($mode) {
 			case 'char':
-				return $linkprfx.sprintf('character/%s/%s/simple', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
-			case 'talent':
-				return $linkprfx.sprintf('character/%s/%s/simple#talents', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
-			case 'statistics':
-				return $linkprfx.sprintf('character/%s/%s/statistic', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
-			case 'profession':
-				return $linkprfx.sprintf('character/%s/%s/profession/', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+				return $this->getProfileULR().sprintf('character/%s/%s', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'reputation':
-				return $linkprfx.sprintf('character/%s/%s/reputation', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+				return $this->getProfileULR().sprintf('character/%s/%s/reputation', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'pvp':
-				return $linkprfx.sprintf('character/%s/%s/pvp', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+				return $this->getProfileULR().sprintf('character/%s/%s/pvp', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+			case 'pve':
+				return $this->getProfileULR().sprintf('character/%s/%s/pve', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'achievements':
-				return $linkprfx.sprintf('character/%s/%s/achievement', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
-			case 'character-feed':
-				return $linkprfx.sprintf('character/%s/%s/feed', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+				return $this->getProfileULR().sprintf('character/%s/%s/achievement', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+				case 'collections':
+				return $this->getProfileULR().sprintf('character/%s/%s/collections', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'talent-calculator':
-				return $linkprfx.sprintf('tool/talent-calculator#d%s!%s!%s', $talents['calcSpec'], $talents['calcTalent'], $talents['calcGlyph']);break;
+				#return $linkprfx.sprintf('tool/talent-calculator#d%s!%s!%s', $talents['calcSpec'], $talents['calcTalent'], $talents['calcGlyph']);break;
 			case 'guild':
-				return $linkprfx.sprintf('guild/%s/%s/roster', $this->ConvertInput($server, true, true), $this->ConvertInput($guild));break;
+				return $this->getProfileULR('guild').sprintf('guild/%s/%s/', $this->ConvertInput($server, true, true), $this->ConvertInput($guild));break;
 			case 'guild-achievements':
-				return $linkprfx.sprintf('guild/%s/%s/achievement', $this->ConvertInput($server, true, true), $this->ConvertInput($guild));break;
+				return $this->getProfileULR('guild').sprintf('guild/%s/%s/achievement', $this->ConvertInput($server, true, true), $this->ConvertInput($guild));break;
 			case 'askmrrobot':
 			return sprintf('http://www.askmrrobot.com/wow/gear/%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 		}
@@ -269,13 +269,11 @@ class bnet_armory extends gen_class {
 	public function a_bnlinks($user, $server, $guild=false){
 		return array(
 			'profil'				=> $this->bnlink($user, $server, 'char'),
-			'talents'				=> $this->bnlink($user, $server, 'talent'),
-			'profession'			=> $this->bnlink($user, $server, 'profession'),
-			'reputation'			=> $this->bnlink($user, $server, 'reputation'),
 			'pvp'					=> $this->bnlink($user, $server, 'pvp'),
+			'pve'					=> $this->bnlink($user, $server, 'pve'),
+			'reputation'			=> $this->bnlink($user, $server, 'reputation'),
 			'achievements'			=> $this->bnlink($user, $server, 'achievements'),
-			'statistics'			=> $this->bnlink($user, $server, 'statistics'),
-			'character-feed'		=> $this->bnlink($user, $server, 'character-feed'),
+			'collections'			=> $this->bnlink($user, $server, 'collections'),
 			'guild'					=> $this->bnlink($user, $server, 'guild', $guild),
 
 			// external ones
@@ -329,11 +327,6 @@ class bnet_armory extends gen_class {
 			$this->set_CachedData($this->read_url($this->_config['charImageURL'].'character/'.$chardata['thumbnail']), $cached_img, true);
 			$img_charicon	= $this->get_CachedData($cached_img, false, true);
 			$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
-			// this is due to an api bug and may be removed some day, thumbs are always set and could be 404!
-			if(filesize($img_charicon) < 400){
-				$linkprfx	= $this->apiURL2profileURL('wow/static/images/2d/avatar/');
-				$this->set_CachedData($this->read_url($linkprfx.sprintf('%s-%s.jpg', $chardata['race'], $chardata['gender'])), $cached_img, true);
-			}
 			$this->chariconUpdates++;
 		}
 
