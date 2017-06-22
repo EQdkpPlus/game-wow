@@ -1148,20 +1148,6 @@ if(!class_exists('wow')) {
 						}
 					}
 
-					// glyphs
-					$glyphs = array();
-					if(isset($v_talents['glyphs']) && is_array($v_talents['glyphs'])){
-						foreach($v_talents['glyphs'] as $id_glyphs => $v_glyphs){
-							foreach($v_glyphs as $v_glyph){
-								$glyphs[$id_glyphs][] = array(
-									'name'		=> $v_glyph['name'],
-									'item'		=> $v_glyph['item'],
-									'icon'		=> sprintf($this->strStaticIconUrl, $v_glyph['icon'])
-								);
-							}
-						}
-					}
-
 					$talents[] = array(
 						'selected'		=> (isset($v_talents['selected']) && $v_talents['selected'] == '1') ? '1' : '0',
 						'name'			=> (isset($v_talents['spec']['name']) && $v_talents['spec']['name']) ? $v_talents['spec']['name'] : $this->game->glang('not_assigned'),
@@ -1171,8 +1157,7 @@ if(!class_exists('wow')) {
 						'calcTalent'	=> $v_talents['calcTalent'],
 						'calcSpec'		=> $v_talents['calcSpec'],
 						'calcGlyph'		=> $v_talents['calcGlyph'],
-						'talents'		=> $spezialisation,
-						'glyphs'		=> $glyphs
+						'talents'		=> $spezialisation
 					);
 				}
 			}

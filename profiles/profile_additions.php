@@ -354,7 +354,7 @@
 			1	=> array(
 				'icon'	=> $this->server_path.'games/wow/profiles/profilers/askmrrobot.png',
 				'name'	=> 'AskMrRobot.com',
-				'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($this->config->get('servername')), 'askmrrobot')
+				'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'askmrrobot')
 			)
 		);
 
@@ -377,7 +377,7 @@
 		$items = $this->game->callFunc('getItemArray', array($chardata['items'], unsanitize($member['name'])));
 
 		// talents & professions
-		$this->tpl->assign_array('bnetlinks',	$this->game->obj['armory']->a_bnlinks(unsanitize($member['name']),unsanitize($this->config->get('servername')), $chardata['guild']['name']));
+		$this->tpl->assign_array('bnetlinks',	$this->game->obj['armory']->a_bnlinks(unsanitize($member['name']),unsanitize($servername), $chardata['guild']['name']));
 		$this->tpl->assign_array('items',		$items);
 
 		// talents
@@ -393,27 +393,13 @@
 			));
 
 			// talent specialization
-			for ($i_ts = 0; $i_ts < 6; $i_ts ++) {
+			for ($i_ts = 0; $i_ts < 7; $i_ts ++) {
 				$this->tpl->assign_block_vars('talents.special', array(
 					'NAME'			=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['name']) ? $v_talents['talents'][$i_ts]['name'] : $this->game->glang('empty'),
 					'ICON'			=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['icon']) ? '<div class="icon-frame frame-18" style="background-image: url('.$v_talents['talents'][$i_ts]['icon'].');"></div>' : '<div class="icon-frame frame-18 empty"></div>',
 					'DESCRIPTION'	=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['description']) ? $v_talents['talents'][$i_ts]['description'] : false,
 				));
 			}
-
-			// talent glyphs
-			for ($i_tgs = 0; $i_tgs < 3; $i_tgs ++) {
-				$this->tpl->assign_block_vars('talents.glyphs_major', array(
-					'NAME'			=> (isset($v_talents['glyphs']['minor'][$i_tgs]) && $v_talents['glyphs']['major'][$i_tgs]['name']) ? $v_talents['glyphs']['major'][$i_tgs]['name'] : false,
-					'ICON'			=> (isset($v_talents['glyphs']['minor'][$i_tgs]) && $v_talents['glyphs']['major'][$i_tgs]['icon']) ? '<div class="icon-frame frame-18" style="background-image: url('.$v_talents['glyphs']['major'][$i_tgs]['icon'].');"></div>' : '<div class="icon-frame frame-18 empty"></div>',
-				));
-
-				$this->tpl->assign_block_vars('talents.glyphs_minor', array(
-					'NAME'			=> (isset($v_talents['glyphs']['minor'][$i_tgs]) && $v_talents['glyphs']['minor'][$i_tgs]['name']) ? $v_talents['glyphs']['minor'][$i_tgs]['name'] : false,
-					'ICON'			=> (isset($v_talents['glyphs']['minor'][$i_tgs]) && $v_talents['glyphs']['minor'][$i_tgs]['icon']) ? '<div class="icon-frame frame-18" style="background-image: url('.$v_talents['glyphs']['minor'][$i_tgs]['icon'].');"></div>' : '<div class="icon-frame frame-18 empty"></div>',
-				));
-			}
-
 		}
 
 		// professions
@@ -438,24 +424,16 @@
 			'melee' => array(
 				$this->game->glang('mainHandDamage')=> $chardata['stats']['mainHandDmgMin']." - ".$chardata['stats']['mainHandDmgMax'],
 				$this->game->glang('mainHandDps')	=> round($chardata['stats']['mainHandDps'], 1),
-				//$this->game->glang('power')			=> $chardata['stats']['attackPower'],
 				$this->game->glang('hasteRating')	=> $chardata['stats']['hasteRating'],
 				$this->game->glang('mainHandSpeed')	=> round($chardata['stats']['mainHandSpeed'], 2),
-				//$this->game->glang('hitPercent')	=> '+'.round($chardata['stats']['hitPercent'], 2).'%',
 				$this->game->glang('critChance')	=> round($chardata['stats']['crit'], 2).'%',
-				//$this->game->glang('expertise')		=> round($chardata['stats']['mainHandExpertise'], 2).'%',
 			),
 			'range' => array(
 				$this->game->glang('damage')		=> (($chardata['stats']['rangedDmgMin'] > 0) ? $chardata['stats']['rangedDmgMin'] : '')." - ". (($chardata['stats']['rangedDmgMax'] > 0) ? $chardata['stats']['rangedDmgMax'] : ''),
 				$this->game->glang('rangedDps')		=> ($chardata['stats']['rangedDps'] > 0) ? $chardata['stats']['rangedDps'] : '-',
-				#$this->game->glang('power')			=> $chardata['stats']['rangedAttackPower'],
 				$this->game->glang('rangedSpeed')	=> ($chardata['stats']['rangedSpeed'] > 0) ? $chardata['stats']['rangedSpeed'] : '-',
-				#$this->game->glang('hitPercent')	=> '+'.round($chardata['stats']['hitPercent'], 2).'%',
-				#$this->game->glang('critChance')	=> round($chardata['stats']['rangedCrit'], 2).'%',
 			),
 			'spell' => array(
-				#$this->game->glang('spellpower')	=> $chardata['stats']['spellPower'],
-				#$this->game->glang('spellHit')		=> round($chardata['stats']['spellHitPercent'], 2).'%',
 				$this->game->glang('spellCrit')		=> round($chardata['stats']['spellCrit'], 2).'%',
 				$this->game->glang('spellPen')		=> $chardata['stats']['spellPen'],
 				$this->game->glang('manaRegen')		=> $chardata['stats']['mana5'],
@@ -502,7 +480,7 @@
 				switch ($v_charfeed['type']){
 						case 'achievement':
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$v_charfeed['achievementID'], $arrCharacterAchievements);
-							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($this->config->get('servername')), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
+							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($servername), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
 							$class='';
 							if ($v_charfeed['accountWide']) $class = 'accountwide';
 
@@ -514,13 +492,13 @@
 						break;
 						case 'criteria':
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$v_charfeed['achievementID'], $arrCharacterAchievements);
-							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($this->config->get('servername')), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
+							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($servername), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
 
 							$cnf_output = sprintf($this->game->glang('charnf_criteria'), '<b>'.$v_charfeed['criteria'].'</b>', '<a href="'.$bnetLink.'">'.$v_charfeed['title'].'</a>');
 						break;
 						case 'item':
 							$itemData = $this->game->obj['armory']->item($v_charfeed['itemid']);
-							$item = infotooltip($itemData['name'], $v_charfeed['itemid'], false, false, false, true, array(unsanitize($this->config->get('servername')), $chardata['name']));
+							$item = infotooltip($itemData['name'], $v_charfeed['itemid'], false, false, false, true, array(unsanitize($servername), $chardata['name']));
 							$cnf_output = sprintf($this->game->glang('charnf_item'), $item);
 							$v_charfeed['icon'] = sprintf($strStaticIconUrl, $itemData['icon']);
 						break;
@@ -660,7 +638,7 @@
 
 		$this->tpl->assign_vars(array(
 			'ARMORY'				=> 0,
-			'CHARDATA_GUILDREALM'	=> ($member['servername'] && $member['servername'] != $this->config->get('servername')) ? $member['servername'] : $this->config->get('servername'),
+			'CHARDATA_GUILDREALM'	=> $servername,
 			'NO_SERVER_SET'			=> ($this->config->get('servername') != '') ? false : true,
 			'CHARACTER_IMG'			=> $this->game->obj['armory']->characterIconSimple($this->game->obj['armory']->ConvertID($member['race'], 'int', 'races', true), ((strtolower($member['gender']) == 'female') ? '1' : '0')),
 			'POWER_BAR_NAME'		=> ($this->game->glang('uc_bar_'.$member['second_name'])) ? $this->game->glang('uc_bar_'.$member['second_name']) : $member['second_name'],

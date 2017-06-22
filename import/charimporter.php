@@ -225,14 +225,14 @@ class charImporter extends page_generic {
 		$hmtlout = '<fieldset class="settings mediumsettings">
 			<dl>
 				<dt><label>'.$this->game->glang('uc_charname').'</label></dt>
-				<dd>'.new htext('charname', array('value' => (($tmpmemname) ? $tmpmemname : ''), 'size' => '25')).'</dd>
+				<dd>'.(new htext('charname', array('value' => (($tmpmemname) ? $tmpmemname : ''), 'size' => '25')))->output().'</dd>
 			</dl>';
 
 		// Server Name
 		$hmtlout .= '<dl>
 				<dt><label>'.$this->game->glang('servername').'</label></dt>
 				<dd>';
-		$hmtlout .= new htext('servername', array('value' => (($this->config->get('servername')) ? stripslashes($this->config->get('servername')) : ''), 'size' => '25', 'autocomplete' => $this->game->get('realmlist')));
+		$hmtlout .= (new htext('servername', array('value' => (($this->config->get('servername')) ? stripslashes($this->config->get('servername')) : ''), 'size' => '25', 'autocomplete' => $this->game->get('realmlist'))))->output();
 
 		$hmtlout .= '</dd>
 			</dl>
@@ -242,9 +242,9 @@ class charImporter extends page_generic {
 		if($this->config->get('uc_server_loc')){
 			$hmtlout .= $this->config->get('uc_server_loc');
 
-			$hmtlout .= new hhidden('server_loc', array('value' => $this->config->get('uc_server_loc')));
+			$hmtlout .= (new hhidden('server_loc', array('value' => $this->config->get('uc_server_loc'))))->output();
 		}else{
-			$hmtlout .= new hdropdown('server_loc', array('options' => $this->game->obj['armory']->getServerLoc()));
+			$hmtlout .= (new hdropdown('server_loc', array('options' => $this->game->obj['armory']->getServerLoc())))->output();
 		}
 		$hmtlout .= '</dd>
 			</dl>';
@@ -285,31 +285,31 @@ class charImporter extends page_generic {
 			$chardata	= $this->game->obj['armory']->character(unsanitize($isMemberName), unsanitize($isServerName), true);
 			//new hhidden('server_loc', array('value' => $this->config->get('uc_server_loc')))
 			// Basics
-			$hmtlout	.= new hhidden('member_id', array('value' => $isindatabase));
-			$hmtlout	.= new hhidden('member_name', array('value' => $isMemberName));
-			$hmtlout	.= new hhidden('member_level', array('value' => $chardata['level']));
-			$hmtlout	.= new hhidden('gender', array('value' => $this->game->obj['armory']->ConvertID($chardata['gender'], 'int', 'gender')));
-			$hmtlout	.= new hhidden('member_race_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['race'], 'int', 'races')));
-			$hmtlout	.= new hhidden('member_class_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['class'], 'int', 'classes')));
-			$hmtlout	.= new hhidden('guild', array('value' => $chardata['guild']['name']));
-			$hmtlout	.= new hhidden('servername', array('value' => $chardata['realm']));
-			$hmtlout	.= new hhidden('last_update', array('value' => ($chardata['lastModified']/1000)));
+			$hmtlout	.= (new hhidden('member_id', array('value' => $isindatabase)))->output();
+			$hmtlout	.= (new hhidden('member_name', array('value' => $isMemberName)))->output();
+			$hmtlout	.= (new hhidden('member_level', array('value' => $chardata['level'])))->output();
+			$hmtlout	.= (new hhidden('gender', array('value' => $this->game->obj['armory']->ConvertID($chardata['gender'], 'int', 'gender'))))->output();
+			$hmtlout	.= (new hhidden('member_race_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['race'], 'int', 'races'))))->output();
+			$hmtlout	.= (new hhidden('member_class_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['class'], 'int', 'classes'))))->output();
+			$hmtlout	.= (new hhidden('guild', array('value' => $chardata['guild']['name'])))->output();
+			$hmtlout	.= (new hhidden('servername', array('value' => $chardata['realm'])))->output();
+			$hmtlout	.= (new hhidden('last_update', array('value' => ($chardata['lastModified']/1000))))->output();
 
 			// primary professions
-			$hmtlout	.= new hhidden('prof1_name', array('value' => $chardata['professions']['primary'][0]['name']));
-			$hmtlout	.= new hhidden('prof1_value', array('value' => $chardata['professions']['primary'][0]['rank']));
-			$hmtlout	.= new hhidden('prof2_name', array('value' => $chardata['professions']['primary'][1]['name']));
-			$hmtlout	.= new hhidden('prof2_value', array('value' => $chardata['professions']['primary'][1]['rank']));
+			$hmtlout	.= (new hhidden('prof1_name', array('value' => $chardata['professions']['primary'][0]['name'])))->output();
+			$hmtlout	.= (new hhidden('prof1_value', array('value' => $chardata['professions']['primary'][0]['rank'])))->output();
+			$hmtlout	.= (new hhidden('prof2_name', array('value' => $chardata['professions']['primary'][1]['name'])))->output();
+			$hmtlout	.= (new hhidden('prof2_value', array('value' => $chardata['professions']['primary'][1]['rank'])))->output();
 
 			// talents
-			$hmtlout	.= new hhidden('talent1', array('value' => $this->game->obj['armory']->ConvertTalent($chardata['talents'][0]['spec']['icon'])));
-			$hmtlout	.= new hhidden('talent2', array('value' => $this->game->obj['armory']->ConvertTalent($chardata['talents'][1]['spec']['icon'])));
+			$hmtlout	.= (new hhidden('talent1', array('value' => $this->game->obj['armory']->ConvertTalent($chardata['talents'][0]['spec']['icon']))))->output();
+			$hmtlout	.= (new hhidden('talent2', array('value' => $this->game->obj['armory']->ConvertTalent($chardata['talents'][1]['spec']['icon']))))->output();
 
 
 			// health/power bar
-			$hmtlout	.= new hhidden('health_bar', array('value' => $chardata['stats']['health']));
-			$hmtlout	.= new hhidden('second_bar', array('value' => $chardata['stats']['power']));
-			$hmtlout	.= new hhidden('second_name', array('value' => $chardata['stats']['powerType']));
+			$hmtlout	.= (new hhidden('health_bar', array('value' => $chardata['stats']['health'])))->output();
+			$hmtlout	.= (new hhidden('second_bar', array('value' => $chardata['stats']['power'])))->output();
+			$hmtlout	.= (new hhidden('second_name', array('value' => $chardata['stats']['powerType'])))->output();
 
 			// viewable Output
 			if(!isset($chardata['status'])){
@@ -329,10 +329,10 @@ class charImporter extends page_generic {
 					<dl>';
 				if(!$isindatabase){
 					if($this->user->check_auth('u_member_conn', false)){
-						$hmtlout	.= '<dt>'.$this->user->lang('overtake_char').'</dt><dd>'.new hradio('overtakeuser', array('value' => 1)).'</dd>';
+						$hmtlout	.= '<dt>'.$this->user->lang('overtake_char').'</dt><dd>'.(new hradio('overtakeuser', array('value' => 1)))->output().'</dd>';
 					}else{
-						$hmtlout	.= '<dt>'.$this->user->lang('overtake_char').'</dt><dd>'.new hradio('overtakeuser', array('value' => 1, 'disabled' => true)).'</dd>';
-						$hmtlout	.= new hhidden('overtakeuser', array('value' => '1'));
+						$hmtlout	.= '<dt>'.$this->user->lang('overtake_char').'</dt><dd>'.(new hradio('overtakeuser', array('value' => 1, 'disabled' => true)))->output().'</dd>';
+						$hmtlout	.= (new hhidden('overtakeuser', array('value' => '1')))->output();
 					}
 				}
 				$hmtlout	.= '
