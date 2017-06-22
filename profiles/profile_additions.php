@@ -380,6 +380,7 @@
 		$this->tpl->assign_array('bnetlinks',	$this->game->obj['armory']->a_bnlinks(unsanitize($member['name']),unsanitize($servername), $chardata['guild']['name']));
 		$this->tpl->assign_array('items',		$items);
 
+
 		// talents
 		$a_talents = $this->game->callFunc('talents', array($chardata));
 		foreach ($a_talents as $id_talents => $v_talents){
