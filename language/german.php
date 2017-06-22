@@ -366,6 +366,9 @@ $german_array = array(
 		'leg_tov_normal'					=> 'Die Prüfung der Tapferkeit Normal',
 		'leg_tov_heroic'					=> 'Die Prüfung der Tapferkeit Heroisch',
 		'leg_tov_mythic'					=> 'Die Prüfung der Tapferkeit Mythisch (20)',
+		'leg_tos_normal'					=> 'Grabmal des Sargeras Normal',
+		'leg_tos_heroic'					=> 'Grabmal des Sargeras Heroisch',
+		'leg_tos_mythic'					=> 'Grabmal des Sargeras Mythisch (20)',
 
 		'char_news'						=> 'Char News',
 		'no_armory'						=> 'Es konnten keine gültigen Daten für diesen Charakter geladen werden. Die battle.net API meldet folgenden Fehler: "%s".',
