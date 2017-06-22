@@ -214,6 +214,7 @@
 		.raideventicon.id8026 { background-position:  -2196px 0; }
 		.raideventicon.id8025 { background-position:  -2257px 0; }
 		.raideventicon.id8440 { background-position:  -2318px 0; }
+		.raideventicon.id8524 { background-position:  -2379px 0; }
 
 		#wow_icons_left .q img, #wow_icons_right .q img, #wow_icons_bottom .q img {
 			border: 1px solid #ffd100;
@@ -378,6 +379,7 @@
 		// talents & professions
 		$this->tpl->assign_array('bnetlinks',	$this->game->obj['armory']->a_bnlinks(unsanitize($member['name']),unsanitize($servername), $chardata['guild']['name']));
 		$this->tpl->assign_array('items',		$items);
+
 
 		// talents
 		$a_talents = $this->game->callFunc('talents', array($chardata));
