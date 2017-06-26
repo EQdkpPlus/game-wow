@@ -420,6 +420,15 @@ class bnet_armory extends gen_class {
 		$this->_debug('Guild: '.$wowurl);
 		if(!$json	= $this->get_CachedData('guilddata_'.$guild.$realm, $force)){
 			$json	= $this->read_url($wowurl);
+
+			// this is the fallback for a battle.net issue, where if the news are empty the whole
+			// json is invalid
+			if(!$this->has_json_data($json)){
+				$wowurl	= $this->_config['apiUrl'].sprintf('wow/guild/%s/%s?locale=%s&fields=members,achievements,challenge&apikey=%s', $realm, $guild, $this->_config['locale'], $this->_config['apiKey']);
+				$json	= $this->read_url($wowurl);
+			}
+			// End of fix
+
 			$this->set_CachedData($json, 'guilddata_'.$guild.$realm);
 		}
 		//get old data
@@ -1119,6 +1128,11 @@ class bnet_armory extends gen_class {
 	*/
 	public function CheckError(){
 		return ($this->error) ? $this->error : false;
+	}
+
+	private function has_json_data($string) {
+		$array = json_decode($string, true);
+		return !empty($string) && is_string($string) && is_array($array) && !empty($array) && json_last_error() == 0;
 	}
 
 	/**
