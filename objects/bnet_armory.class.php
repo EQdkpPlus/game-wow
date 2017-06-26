@@ -220,7 +220,7 @@ class bnet_armory extends gen_class {
 			return str_replace('{locale}', $this->_config['locale'], self::profileurlChar);
 		}else{
 			$linkprfx	= str_replace('https://', 'http://', $this->_config['apiUrl']);
-			$linkprfx	= str_replace('.api', '', $linkprfx).$sufix.'/wow/{locale}';
+			$linkprfx	= str_replace('.api', '', $linkprfx).$sufix.'/wow/{locale}/';
 			return str_replace('{locale}', substr($this->_config['locale'],0,2), $linkprfx);
 		}
 	}
