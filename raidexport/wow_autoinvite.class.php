@@ -117,7 +117,7 @@ if(!function_exists('wowautoinviteexport')){
 			if(is_array($raid_groups)){
 				$text  = "<dt><label>".registry::fetch('user')->lang('raidevent_export_raidgroup')."</label></dt>
 								<dd>
-									".(new hdropdown('raidgroup', array('options' => $raid_groups, 'value' => 0, 'id' => 'raidgroup')))->output()."
+									".new hdropdown('raidgroup', array('options' => $raid_groups, 'value' => 0, 'id' => 'raidgroup'))."
 								</dd>
 							</dl><dl>";
 			}
