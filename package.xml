@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="game" version="2.2.0.0">
+	<folder>wow</folder>
+	<name>World of Warcraft</name>
+	<author>wallenium</author>
+	<authorEmail>s.wallmann@kompsoft.de</authorEmail>
+	<creationDate>1498927280</creationDate>
+	<copyright>(C)2016 wallenium</copyright>
+	<version>99.99.99.99</version>
+	<level>stable</level>
+</install>
