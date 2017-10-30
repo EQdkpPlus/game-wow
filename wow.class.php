@@ -77,14 +77,14 @@ if(!class_exists('wow')) {
 				'parent'	=> array(
 					'race' => array(
 						0 	=> 'all',							// Unknown
-						1 	=> array(1,3,4,6,7,9,10,11),		// Gnome
-						2 	=> array(1,3,4,5,6,7,9,10,11),		// Human
-						3 	=> array(1,3,4,5,6,7,8,9,10,11),	// Dwarf
-						4 	=> array(1,2,3,4,6,7,10,11,12),		// Night Elf
-						5 	=> array(1,2,3,4,6,7,8,9,10,11),	// Troll
-						6 	=> array(1,3,4,6,7,9,10,11),		// Undead
-						7 	=> array(1,3,4,7,8,9,10,11),		// Orc
-						8 	=> array(1,2,3,5,6,8,10,11),		// Tauren
+						1 	=> array(3,4,6,7,9,10),		// Gnome
+						2 	=> array(3,4,5,6,7,9,10),		// Human
+						3 	=> array(3,4,5,6,7,8,9,10),	// Dwarf
+						4 	=> array(2,3,4,6,7,10),		// Night Elf
+						5 	=> array(2,3,4,6,7,8,9,10),	// Troll
+						6 	=> array(3,4,6,7,9,10),		// Undead
+						7 	=> array(3,4,7,8,9,10),		// Orc
+						8 	=> array(2,3,5,6,8,10),		// Tauren
 					),
 				),
 			),
@@ -212,7 +212,6 @@ if(!class_exists('wow')) {
 				$this->filters[$lang] = array(
 					array('name' => '-----------', 'value' => false),
 					array('name' => $names[0], 'value' => 'class:0'),
-					array('name' => $names[1], 'value' => 'class:1'),
 					array('name' => $names[2], 'value' => 'class:2'),
 					array('name' => $names[3], 'value' => 'class:3'),
 					array('name' => $names[4], 'value' => 'class:4'),
@@ -222,15 +221,13 @@ if(!class_exists('wow')) {
 					array('name' => $names[8], 'value' => 'class:8'),
 					array('name' => $names[9], 'value' => 'class:9'),
 					array('name' => $names[10], 'value' => 'class:10'),
-					array('name' => $names[11], 'value' => 'class:11'),
-					array('name' => $names[12], 'value' => 'class:12'),
 					array('name' => '-----------', 'value' => false),
 					array('name' => $this->glang('plate', true, $lang), 'value' => 'class:1,5,10'),
 					array('name' => $this->glang('mail', true, $lang), 'value' => 'class:3,8'),
-					array('name' => $this->glang('leather', true, $lang), 'value' => 'class:2,7,11,12'),
+					array('name' => $this->glang('leather', true, $lang), 'value' => 'class:2,7'),
 					array('name' => $this->glang('cloth', true, $lang), 'value' => 'class:4,6,9'),
 					array('name' => '-----------', 'value' => false),
-					array('name' => $this->glang('tier_token', true, $lang).$names[3].', '.$names[10].', '.$names[8].', '.$names[11].', '.$names[12], 'value' => 'class:3,8,10,11,12'),
+					array('name' => $this->glang('tier_token', true, $lang).$names[3].', '.$names[10].', '.$names[8], 'value' => 'class:3,8,10'),
 					array('name' => $this->glang('tier_token', true, $lang).$names[5].', '.$names[6].', '.$names[9], 'value' => 'class:5,6,9'),
 					array('name' => $this->glang('tier_token', true, $lang).$names[1].', '.$names[2].', '.$names[4].', '.$names[7], 'value' => 'class:1,2,4,7'),
 				);

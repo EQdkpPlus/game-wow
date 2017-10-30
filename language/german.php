@@ -40,7 +40,6 @@ $german_array = array(
 	),
 	'classes' => array(
 		0	=> 'Unbekannt',
-		1	=> 'Todesritter',
 		2	=> 'Druide',
 		3	=> 'Jäger',
 		4	=> 'Magier',

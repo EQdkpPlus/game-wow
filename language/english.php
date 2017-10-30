@@ -46,7 +46,6 @@ $english_array = array(
 	),
 	"classes" => array(
 	0 => 'Unknown',
-	1 => 'Death Knight',
 	2 => 'Druid',
 	3 => 'Hunter',
 	4 => 'Mage',
