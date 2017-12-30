@@ -81,11 +81,17 @@
 			display: inline;
 			padding: 1; margin-left: 3px;
 		}
-		#bar_92, #bar_96, #bar_97, #bar_95, #bar_168, #bar_169, #bar_15165, #bar_201, #bar_155, #bar_15117, #bar_81{
-			width: 31%;
+
+		.wow_achiev_bar{
+			width: 32%;
 			float: left;
 			padding: 5px;
 			cursor: pointer;
+		}
+
+		#bar_total {
+			display: block;
+			width: 98%
 		}
 
 		#profile {
@@ -340,6 +346,40 @@
 			background-color: #00ACCB;
 			background-position: 0 -92px;
 		}
+
+		.wowsvg {
+			fill: currentColor;
+		}
+
+		@media all and (max-width: 1100px) {
+			.responsive .profile_itemlevel {
+				position: relative;
+				clear: both;
+				float: none;
+			}
+
+			.wow-char-left, .wow-char-right {
+				float: none;
+			}
+
+			.wow-char-left > div, .wow-char-right {
+				float: none;
+				width: 100% !important;
+			}
+
+			.wow-char-right {
+				max-width: max-content !important;
+			}
+
+			.wow_achiev_bar {
+				float: none;
+				width: 98%;
+			}
+
+			.healthpowerbar {
+				margin-top: 6px;
+			}
+		}
 	");
 
 	// Armory based information
@@ -348,6 +388,7 @@
 	$servername			= ($member_servername != '') ? $member_servername : unsanitize($this->config->get('servername'));
 
 	$chardata			= $this->game->obj['armory']->character(unsanitize($member['name']), $servername);
+
 	if($this->config->get('game_importer_apikey') != '' && $this->config->get('servername') != '' && !isset($chardata['status'])){
 
 		// profilers
@@ -385,6 +426,9 @@
 		// talents
 		$a_talents = $this->game->callFunc('talents', array($chardata));
 		foreach ($a_talents as $id_talents => $v_talents){
+			if(count($v_talents['talents']) === 0) continue;
+			
+			
 			$this->tpl->assign_block_vars('talents', array(
 				'ID'			=> $id_talents,
 				'SELECTED'		=> ($v_talents['selected'] == '1') ? true : false,

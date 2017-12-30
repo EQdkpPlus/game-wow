@@ -1,6 +1,6 @@
 <!-- IF ARMORY == 1 -->
 	<div>
-		<div style="max-width:1140px;">
+		<div style="max-width:1140px;" class="wow-char-container">
 		<div id="profile">
 			<div id="profile_charicon">
 				<img border='0' src="{CHARDATA_ICON}" alt="" />
@@ -12,7 +12,7 @@
 				<div id="profile_titel_guild">
 					{CHARDATA_TITLE}
 					<br />
-					<span class="profile_guild"><a target="_blank" href="{bnetlinks:guild}">{CHARDATA_GUILDNAME}</a> @ {CHARDATA_GUILDREALM}</span>
+					<span class="profile_guild"><a target="_blank" href="{bnetlinks:guild}">{CHARDATA_GUILDNAME}</a> ❮{CHARDATA_GUILDREALM}❯</span>
 				</div>
 				<div class="clear"></div>
 				<div id="profile_charinfos">
@@ -21,9 +21,9 @@
 			</div>
 			<div>
 				<div class="profile_itemlevel">
-					<div class="profile_itemlevel_avg">{itemlevel:averageItemLevel}</div>
+					<div class="profile_itemlevel_avg"><img src="{EQDKP_ROOT_PATH}games/wow/profiles/swords.svg" style="height:24px;" class="gameicon"/> {itemlevel:averageItemLevel}</div>
 					<div class="profile_itemlevel_txt">
-						<div class="profile_itemlevel_avgtxt">{GL_avg_itemlevel}</div>
+						<div class="profile_itemlevel_avgtxt"> {GL_avg_itemlevel}</div>
 						<div class="profile_itemlevel_eq">({itemlevel:averageItemLevelEquipped} {GL_avg_itemlevel_equiped})</div>
 					</div>
 				</div>
@@ -32,7 +32,7 @@
 		</div>
 		
 		
-		<div>
+		<div class="wow-char-left">
 			<div class="floatLeft" style="background: #1e130d url({CHARACTER_IMG}) center top no-repeat; height:550px; max-width:740px; width: 60%;">
 				<div>
 					<div class="floatLeft"><ul id="wow_icons_left">
@@ -54,7 +54,7 @@
 				</div>
 			</div>
 		
-			<div class="floatRight" style="max-width:395px; width: 40%;">
+			<div class="wow-char-right floatRight" style="max-width:395px; width: 40%;">
 									<div class="healthpowerbar">
 										<ul>
 											<li class="health"><span class="name">{GL_health}</span><span class="value">{HEALTH_VALUE}</span></li>
@@ -75,8 +75,7 @@
 																	<!-- BEGIN talents -->
 																	<li>
 																		<a href='#talenttab-{talents.ID}'>
-																			<span class="talenttab_icon"><img class="icon-frame gameicon" src="{talents.ICON}" alt="" /></span>
-																			<span class="talenttab_name">{talents.NAME}</span>
+																			<span class="talenttab_icon" title="{talents.NAME}"><img class="icon-frame gameicon" src="{talents.ICON}" alt="" /></span>
 																			<!-- IF talents.SELECTED --><span class="talenttab_select"><i class="fa fa-check-square fa-fw fa-lg" style="color:green;"></i></span><!-- ENDIF -->
 																		</a>
 																	</li>
@@ -86,7 +85,7 @@
 																<div id="talenttab-{talents.ID}">
 																	<table id="talents_{talents.ID}" class="table fullwidth">
 																		<tr>
-																			<td width="70%">
+																			<td>
 																				<table class="table fullwidth">
 																					<!-- BEGIN special -->
 																					<tr <!-- IF talents.special.DESCRIPTION --> class="coretip" data-coretip="{talents.special.DESCRIPTION}" <!-- ENDIF -->>
@@ -96,7 +95,6 @@
 																					<!-- END special -->
 																				</table>
 																			</td>
-																			<td width="30%"></td>
 																		</tr>
 																	</table>
 																</div>
@@ -241,7 +239,7 @@
 					<div id="char1tabs-2">
 						<div class="tab-content">
 							<!-- BEGIN achievements -->
-							<div id="bar_{achievements.ID}" onclick="window.open('{achievements.LINK}', '_blank')">
+							<div id="bar_{achievements.ID}" class="wow_achiev_bar" onclick="window.open('{achievements.LINK}', '_blank')">
 								{achievements.NAME}
 								{achievements.BAR}
 							</div>

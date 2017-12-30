@@ -29,11 +29,11 @@ if(!class_exists('armory')) {
 		public $settings = array(
 			'itt_icon_loc' => array(
 				'type' => 'text',
-				'default' => 'http://eu.media.blizzard.com/wow/icons/56/'
+				'default' => 'https://render-eu.worldofwarcraft.com/icons/56/'
 			),
 			'itt_icon_small_loc' => array(
 				'type' => 'text',
-				'default' => 'http://eu.media.blizzard.com/wow/icons/18/'
+				'default' => 'https://render-eu.worldofwarcraft.com/icons/18/'
 			),
 			'itt_icon_ext' => array(
 				'type' => 'text',
@@ -127,15 +127,27 @@ if(!class_exists('armory')) {
 			//$itemname ='Obsidiangroßhelm';$lang='de';
 			//encode itemname for usage in url
 			$encoded_name = str_replace(' ', '%20', str_replace('+', '%20', urlencode($itemname)));
-			$url = 'http://'.$this->url_prefix.'.battle.net/wow/'.$lang.'/search?f=wowitem&q='.$encoded_name;
+			
+			//http://eu.battle.net/wow/de/search/ta?term=Kugel+der+Le&locale=de_DE&community=wow
+			$url = 'http://'.$this->url_prefix.'.battle.net/wow/'.$lang.'/search/ta?term='.$encoded_name.'&community=wow';
 			$this->pdl->log('infotooltip', 'Search for ItemID at '.$url);
 			$data = $this->puf->fetch($url);
-
-
-			if(preg_match_all('#<a href=\"\/wow\/([a-z]{2})\/item\/(.*?)\" class=\"(.*?)\">#', $data, $matches)){
-				if((int)$matches[2] > 0){
-					$item_id = $matches[2][0];
-					$this->pdl->log('infotooltip', 'Item-ID found for '.$lang);
+			
+			if($data){
+				$jsonArray = json_decode($data, true);
+				if($jsonArray && $jsonArray['results']){
+					foreach($jsonArray['results'] as $arrResult){
+						if($arrResult['type'] == 'wowitem'){
+							$myitemname = $arrResult['term'];
+							if($itemname == $myitemname){
+								$item_id = $arrResult['id'];
+								$this->pdl->log('infotooltip', 'Item-ID found for '.$lang);
+								break;
+							}
+						}
+						
+					}
+					
 				}
 			}
 
@@ -150,10 +162,7 @@ if(!class_exists('armory')) {
 						}
 					}
 				}
-			}
-
-			#var_dump($matches);
-			#var_dump($item_id);
+			};
 
 			$debug_out = ($item_id > 0) ? 'Item-ID found: '.$item_id : 'No Item-ID found';
 			$this->pdl->log('infotooltip', $debug_out);

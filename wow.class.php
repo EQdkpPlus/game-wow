@@ -1263,7 +1263,7 @@ if(!class_exists('wow')) {
 			// fill the item slots with data
 			foreach ($d_itemoptions as $slot=>$options){
 				$item_id_full	= (isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? $this->game->obj['armory']->armory2itemid($data[$slot]['id'], $data[$slot]['context'], $data[$slot]['bonusLists'], $data[$slot]['itemLevel']) : 0 ;
-				$a_items[$options['position']][] = (isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? infotooltip($data[$slot]['name'], $item_id_full, false, 0, $icons_size, false, array(false, $member_name, $slot)) : "<img src='".$this->server_path."games/wow/profiles/slots/".$options['bnetid'].".png' height='$icons_size' width='$icons_size' alt='' />";
+				$a_items[$options['position']][] = (isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? infotooltip($data[$slot]['name'], $item_id_full, false, 0, $icons_size, false, array(false, $member_name, $slot)) : "<img src='".$this->server_path."games/wow/profiles/slots/".$options['bnetid'].".png' height='$icons_size' width='$icons_size' alt='' class='itt-icon' />";
 			}
 			return $a_items;
 		}

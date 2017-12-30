@@ -319,6 +319,11 @@ class bnet_armory extends gen_class {
 	* @return string
 	*/
 	public function characterIcon($chardata, $forceUpdateAll = false){
+		//Default icon for unknown chars
+		if(!$chardata){
+			return $this->cacheIcon('https://eu.battle.net/wow/static/images/2d/avatar/0-0.jpg', false);
+		}
+		
 		$cached_img		= str_replace(array('/', '-'), '_', 'image_characterIcon_'.$this->_config['serverloc'].'_'.$chardata['thumbnail']);
 		$img_charicon	= $this->get_CachedData($cached_img, false, true);
 		$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
@@ -334,10 +339,12 @@ class bnet_armory extends gen_class {
 			//Try to get old data
 			$img_charicon	= $this->get_CachedData($cached_img, false, true, true);
 			$img_charicon_sp= $this->get_CachedData($cached_img, false, true, true, true);
-			if(filesize($img_charicon) < 400){
-				$img_charicon = $img_charicon_sp = "";
-			}
 		}
+		
+		if(filesize($img_charicon) < 400){
+			$img_charicon = $img_charicon_sp = "";
+		}
+
 		return $img_charicon_sp;
 	}
 
@@ -620,13 +627,17 @@ class bnet_armory extends gen_class {
 	public function item($itemid, $force=false){
 		$tmp_itemid		= explode(':', $itemid);
 		$wowurl = $this->_config['apiUrl'].sprintf('wow/item/%s?locale=%s&apikey=%s', $tmp_itemid[0], $this->_config['locale'], $this->_config['apiKey']);
+
 		$this->_debug('Item: '.$wowurl);
 		if(!$json		= $this->get_CachedData('itemdata_'.$itemid, $force)){
 			$json		= $this->read_url($wowurl);
 			$metadata	= $this->eqdkpitemid_meta($itemid);
 			$json		= $this->item_context($json, $metadata);
+			if(is_array($json)) $json = json_encode($json);
+			
 			$this->set_CachedData($json, 'itemdata_'.$itemid);
 		}
+
 		$itemdata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($itemdata);
 		return (!$errorchk) ? $itemdata: $errorchk;
@@ -1066,7 +1077,7 @@ class bnet_armory extends gen_class {
 	* @return --
 	*/
 	protected function clean_name($name){
-		return preg_replace('/[^a-zA-Z0-9_ \.]/s', '_', $name);
+		return preg_replace('/[^a-zA-Z0-9_ \.\-]/s', '_', $name);
 	}
 
 	/**
