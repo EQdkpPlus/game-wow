@@ -288,7 +288,9 @@ $german_array = array(
 		'mainHandSpeed'					=> 'Geschwindigkeit',
 		'power'							=> 'Angriffskraft',
 		'hasteRating'					=> 'Tempowertung',
+		'haste'							=> 'Tempo',
 		'mastery'						=> 'Meisterschaftswertung',
+		'versatility'					=> 'Vielseitigkeit',
 
 		'range'							=> 'Distanzkampf',
 		'damage'						=> 'Schaden',

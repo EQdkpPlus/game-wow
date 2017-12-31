@@ -64,22 +64,25 @@
 		}
 		ul#wow_icons_left li {
 			list-style: none;
-			padding: 1; margin-bottom: 3px;
+			padding: 3px; margin-bottom: 3px;
+			padding-top: 10px;
 		}
 		ul#wow_icons_right {
 			margin: 5px; padding: 0;
 		}
 		ul#wow_icons_right li {
 			list-style: none;
-			padding: 1; margin-bottom: 3px;
+			padding: 3px; margin-bottom: 3px;
+			padding-top: 10px;
 		}
 		ul#wow_icons_bottom {
 			margin: 0; padding: 0;
+			padding-top: 50px;
 		}
 		ul#wow_icons_bottom li {
 			list-style: none;
 			display: inline;
-			padding: 1; margin-left: 3px;
+			padding: 3px; margin-left: 3px;
 		}
 
 		.wow_achiev_bar{
@@ -294,62 +297,108 @@
 		.profession-icon { margin-left: 4px; }
 		.profession-row { height: 30px; }
 
-		.healthpowerbar {
-			color: white;
-			float: left;
-			margin: 0 0 0px;
-		}
-		.healthpowerbar li {
-			background: url('".$this->server_path."games/wow/profiles/bars/health_power_bars.png') repeat-x scroll 0 0 transparent;
-			border-radius: 3px 3px 3px 3px;
-			display: inline-block;
-			margin-right: 11px;
-			padding-left: 11px;
-			text-shadow: 1px 1px 1px #000000;
-			width: 140px;
-		}
-		.healthpowerbar li, .healthpowerbar span {
-			height: 23px;
-			line-height: 23px;
-		}
-		.healthpowerbar .name {
-			font-size: 11px;
-		}
-		.healthpowerbar .value {
-			font-family: 'Arial Black',Arial,sans-serif;
-			font-size: 12px;
-			font-weight: 900;
-			padding-left: 5px;
-		}
-		.healthpowerbar .health {
-			background-color: #248000;
-			background-position: 0 0;
-			margin-bottom: 7px;
-		}
-		.healthpowerbar .mana {
-			background-color: #1C8AFF;
-			background-position: 0 -23px;
-		}
-		.healthpowerbar .rage {
-			background-color: #AB0000;
-			background-position: 0 -69px;
-		}
-		.healthpowerbar .focus {
-			background-color: #964414;
-			background-position: 0 -115px;
-		}
-		.healthpowerbar .energy {
-			background-color: #CB9501;
-			background-position: 0 -46px;
-		}
-		.healthpowerbar .runic-power {
-			background-color: #00ACCB;
-			background-position: 0 -92px;
-		}
-
 		.wowsvg {
 			fill: currentColor;
 		}
+
+		.wow-char-left, .icon-health {
+			color: #fff;
+		}
+
+
+.Media-icon {
+    width: 48px;
+    height: 48px;
+}
+
+.Media-icon {
+    display: inline-block;
+}
+	
+.wow-health-value {
+	text-transform: uppercase;
+	padding: 3px;
+}
+
+.wow-health-name {
+	font-weight: bold;
+	padding: 3px;
+	padding-bottom: 6px;
+}
+
+
+.wow-profilers-container {
+	float: right;
+}
+
+.wow-profilers-container li {
+	list-style: none;
+	float: left;
+}
+
+.wow-profilers-container img {
+	max-height: 40px;
+}
+
+.wow-char-container {
+	max-width:1140px;
+}
+
+#talent_tabs .icon-frame {
+	display: inline-block;
+}
+
+.wow-char-talents-spec {
+	padding: 3px;
+}
+
+.wow-char-talents-spec-value {
+	font-weight: bold;
+	min-width: 30px;
+	display: inline-block;
+}
+
+.wow-char-talents-spec-desc {
+	font-style: italic;
+	margin-bottom: 4px;
+}
+
+.wowsvg.icon-health {
+	color: #27cc4e;
+}
+
+.wowsvg.icon-mana {
+	color: #1c8aff;
+}
+
+.wowsvg.icon-intellect {
+color: #d26cd1;
+}
+
+.wowsvg.icon-stamina {
+color: #ff8b2d;
+}
+
+.wowsvg.icon-crit {
+color: #e01c1c;
+}
+
+.wowsvg.icon-haste {
+color: #0ed59b;
+}
+
+.wowsvg.icon-mastery {
+color: #9256ff;
+}
+
+.wowsvg.icon-versatibility {
+color: #bfbfbf;
+}
+
+.wowsvg.icon-sword {
+width:24px;
+}
+
 
 		@media all and (max-width: 1100px) {
 			.responsive .profile_itemlevel {
@@ -375,10 +424,6 @@
 				float: none;
 				width: 98%;
 			}
-
-			.healthpowerbar {
-				margin-top: 6px;
-			}
 		}
 	");
 
@@ -394,10 +439,15 @@
 		// profilers
 		$a_profilers	= array(
 			1	=> array(
-				'icon'	=> $this->server_path.'games/wow/profiles/profilers/askmrrobot.png',
-				'name'	=> 'AskMrRobot.com',
-				'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'askmrrobot')
-			)
+					'icon'	=> $this->server_path.'games/wow/profiles/profilers/wowicon.png',
+					'name'	=> 'worldofwarcraft.com',
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'char')
+			),
+			2	=> array(
+					'icon'	=> $this->server_path.'games/wow/profiles/profilers/askmrrobot.png',
+					'name'	=> 'AskMrRobot.com',
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'askmrrobot')
+			),
 		);
 
 		$this->jquery->Tab_header('talent_tabs');
@@ -416,18 +466,20 @@
 			});
 			$('#char_infos').change();
 		", 'docready');
+
 		$items = $this->game->callFunc('getItemArray', array($chardata['items'], unsanitize($member['name'])));
-
-		// talents & professions
-		$this->tpl->assign_array('bnetlinks',	$this->game->obj['armory']->a_bnlinks(unsanitize($member['name']),unsanitize($servername), $chardata['guild']['name']));
-		$this->tpl->assign_array('items',		$items);
-
 
 		// talents
 		$a_talents = $this->game->callFunc('talents', array($chardata));
+		
+		$arrSelectedTalents = array();
+
 		foreach ($a_talents as $id_talents => $v_talents){
 			if(count($v_talents['talents']) === 0) continue;
 			
+			if(($v_talents['selected'] == '1')){
+				$arrSelectedTalents = $v_talents;
+			}
 			
 			$this->tpl->assign_block_vars('talents', array(
 				'ID'			=> $id_talents,
@@ -442,11 +494,34 @@
 			for ($i_ts = 0; $i_ts < 7; $i_ts ++) {
 				$this->tpl->assign_block_vars('talents.special', array(
 					'NAME'			=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['name']) ? $v_talents['talents'][$i_ts]['name'] : $this->game->glang('empty'),
-					'ICON'			=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['icon']) ? '<div class="icon-frame frame-18" style="background-image: url('.$v_talents['talents'][$i_ts]['icon'].');"></div>' : '<div class="icon-frame frame-18 empty"></div>',
+					'ICON'			=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['icon']) ? '<img src="'.$v_talents['talents'][$i_ts]['icon'].'" class="gameicon" />' : '<div class="icon-frame frame-18 empty"></div>',
 					'DESCRIPTION'	=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['description']) ? $v_talents['talents'][$i_ts]['description'] : false,
+					'VALUE'			=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['value']) ? $v_talents['talents'][$i_ts]['value'] : '  ',
 				));
 			}
 		}
+		
+		//Calculate Infos to talents link
+		//numbers
+		$numbers = $arrSelectedTalents['calcTalent'];
+		$newNumbers = "";
+		$strlen = strlen( $numbers );
+		for( $i = 0; $i < $strlen; $i++ ) {
+			$char = (int)$numbers[$i];
+			$newNumbers .= (string)$char+1;
+		}
+		
+		$arrSelectedTalents['calcTalent'] = $newNumbers;
+		$strFirstTalentIcon = $arrSelectedTalents['background'];
+		$strFilename = pathinfo($strFirstTalentIcon, PATHINFO_FILENAME);
+		$arrParts = explode('-', $strFilename);
+		$arrSelectedTalents['class'] = $arrParts[1];
+		$arrSelectedTalents['type'] = $arrParts[2];
+		
+		// talents & professions
+		$this->tpl->assign_array('bnetlinks',	$this->game->obj['armory']->a_bnlinks(unsanitize($member['name']),unsanitize($servername), $chardata['guild']['name'], $arrSelectedTalents));
+		$this->tpl->assign_array('items',		$items);
+		
 
 		// professions
 		$a_professions = $this->game->callFunc('professions', array($chardata));
@@ -458,40 +533,6 @@
 			));
 		}
 
-		// RIGHT SIDE PANEL - Char attributes
-		$charattributes = array(
-			'base' => array(
-				$this->game->glang('strength')		=> $chardata['stats']['str'],
-				$this->game->glang('agility')		=> $chardata['stats']['agi'],
-				$this->game->glang('stamina')		=> $chardata['stats']['sta'],
-				$this->game->glang('intellect')		=> $chardata['stats']['int'],
-				$this->game->glang('mastery')		=> round($chardata['stats']['mastery'], 2).'%',
-			),
-			'melee' => array(
-				$this->game->glang('mainHandDamage')=> $chardata['stats']['mainHandDmgMin']." - ".$chardata['stats']['mainHandDmgMax'],
-				$this->game->glang('mainHandDps')	=> round($chardata['stats']['mainHandDps'], 1),
-				$this->game->glang('hasteRating')	=> $chardata['stats']['hasteRating'],
-				$this->game->glang('mainHandSpeed')	=> round($chardata['stats']['mainHandSpeed'], 2),
-				$this->game->glang('critChance')	=> round($chardata['stats']['crit'], 2).'%',
-			),
-			'range' => array(
-				$this->game->glang('damage')		=> (($chardata['stats']['rangedDmgMin'] > 0) ? $chardata['stats']['rangedDmgMin'] : '')." - ". (($chardata['stats']['rangedDmgMax'] > 0) ? $chardata['stats']['rangedDmgMax'] : ''),
-				$this->game->glang('rangedDps')		=> ($chardata['stats']['rangedDps'] > 0) ? $chardata['stats']['rangedDps'] : '-',
-				$this->game->glang('rangedSpeed')	=> ($chardata['stats']['rangedSpeed'] > 0) ? $chardata['stats']['rangedSpeed'] : '-',
-			),
-			'spell' => array(
-				$this->game->glang('spellCrit')		=> round($chardata['stats']['spellCrit'], 2).'%',
-				$this->game->glang('spellPen')		=> $chardata['stats']['spellPen'],
-				$this->game->glang('manaRegen')		=> $chardata['stats']['mana5'],
-				$this->game->glang('combatRegen')	=> $chardata['stats']['mana5Combat']
-			),
-			'defenses' => array(
-				$this->game->glang('armor')			=> $chardata['stats']['armor'],
-				$this->game->glang('dodge')			=> round($chardata['stats']['dodge'], 2).'%',
-				$this->game->glang('parry')			=> round($chardata['stats']['parry'], 2).'%',
-				$this->game->glang('block')			=> round($chardata['stats']['block'], 2).'%',
-			)
-		);
 
 		// the profilers
 		foreach ($a_profilers as $v_profilers){
@@ -500,20 +541,6 @@
 				'ALT'			=> $v_profilers['name'],
 				'URL'			=> $v_profilers['url'],
 			));
-		}
-
-		// character attributes
-		foreach ($charattributes as $info_grp_name => $info_grp){
-			$this->tpl->assign_block_vars('charattribute_group', array(
-					'ID'	=> $info_grp_name,
-					'NAME'	=> $this->game->glang($info_grp_name)
-				));
-			foreach ($info_grp as $info_name => $info){
-				$this->tpl->assign_block_vars('charattribute_group.charattributes', array(
-					'NAME'		=> $info_name,
-					'VALUE'		=> $info,
-				));
-			}
 		}
 
 		// Character News Feed
@@ -558,9 +585,15 @@
 		}
 
 		// item icons
+		
 		foreach ($items as $items_pos=>$v_items){
 			foreach ($v_items as $slots){
-				$this->tpl->assign_block_vars('itemicons_'.$items_pos, array('SLOTS'	=> $slots));
+				$this->tpl->assign_block_vars('itemicons_'.$items_pos, array(
+						'ICON'	=> $slots['icon'],
+						'LEVEL' => $slots['level'],
+						'NAME'	 => $slots['name_tt'],
+						'QUALITY' => (int)$slots['quality'],
+				));
 			}
 		}
 		$this->tpl->assign_array('itemlevel',		$items['itemlevel']);
@@ -657,6 +690,18 @@
 			'POWER_VALUE'			=> $chardata['stats']['power'],
 			'POWER_TYPE'			=> $chardata['stats']['powerType'],
 			'POWER_NAME'			=> $this->game->glang('uc_bar_'.$chardata['stats']['powerType']),
+				
+			'INTELLECT_VALUE'		=> $chardata['stats']['int'],
+			'STAMINA_VALUE'			=> $chardata['stats']['sta'],
+			'SPELCRIT_VALUE'		=> round($chardata['stats']['spellCrit'], 0).'%',
+			'HASTE_VALUE'			=> round($chardata['stats']['hasteRatingPercent'], 0).'%',
+			'MASTERY_VALUE'			=> round($chardata['stats']['mastery'], 0). '%',
+			'VERSATILITY_VALUE'		=> round($chardata['stats']['versatilityDamageDoneBonus'], 0).'%',
+			
+			'CRIT_RATING'			=> $chardata['stats']['critRating'],
+			'HASTE_RATING'			=> $chardata['stats']['hasteRating'],
+			'MASTERY_RATING'		=> $chardata['stats']['masteryRating'],
+			'VERSATILITY_RATING'	=> $chardata['stats']['versatility'],
 		));
 
 	// the non armory charview
@@ -681,7 +726,7 @@
 				'BAR'			=> $v_professions['progressbar'],
 			));
 		}
-
+		
 		$this->tpl->assign_vars(array(
 			'ARMORY'				=> 0,
 			'CHARDATA_GUILDREALM'	=> $servername,

@@ -1135,6 +1135,8 @@ if(!class_exists('wow')) {
 		 */
 		public function talents($chardata){
 			$talents = array();
+			$arrValues = array(15, 30, 45, 60, 75, 90, 100);
+			
 			if (is_array($chardata['talents'])){
 				$talents = array();
 				foreach ($chardata['talents'] as $v_talents){
@@ -1142,11 +1144,13 @@ if(!class_exists('wow')) {
 					// fetch the specialization and put it in an array
 					$spezialisation = array();
 					if(isset($v_talents['talents']) && is_array($v_talents['talents'])){
-						foreach($v_talents['talents'] as $v_spezialisation){
+						foreach($v_talents['talents'] as $key => $v_spezialisation){
+		
 							$spezialisation[$v_spezialisation['tier']] = array(
 								'name'			=> $v_spezialisation['spell']['name'],
 								'description'	=> $v_spezialisation['spell']['description'],
-								'icon'			=> sprintf($this->strStaticIconUrl, $v_spezialisation['spell']['icon'])
+								'icon'			=> sprintf($this->strStaticIconUrl, $v_spezialisation['spell']['icon']),
+								'value'			=> $arrValues[$v_spezialisation['tier']],
 							);
 						}
 					}
@@ -1155,6 +1159,7 @@ if(!class_exists('wow')) {
 						'selected'		=> (isset($v_talents['selected']) && $v_talents['selected'] == '1') ? '1' : '0',
 						'name'			=> (isset($v_talents['spec']['name']) && $v_talents['spec']['name']) ? $v_talents['spec']['name'] : $this->game->glang('not_assigned'),
 						'icon'			=> $this->game->obj['armory']->talentIcon(((isset($v_talents['spec']['icon']) && $v_talents['spec']['icon']) ? $v_talents['spec']['icon'] : 'inv_misc_questionmark')),
+						'background'	=> sprintf($this->strStaticIconUrl, $v_talents['spec']['backgroundImage']),
 						'role'			=> $v_talents['spec']['role'],
 						'desc'			=> $v_talents['spec']['description'],
 						'calcTalent'	=> $v_talents['calcTalent'],
@@ -1247,8 +1252,8 @@ if(!class_exists('wow')) {
 				'trinket1'	=> array('position' => 'right',		'bnetid' => '12'),
 				'trinket2'	=> array('position' => 'right',		'bnetid' => '13'),
 
-				'mainHand'	=> array('position' => 'bottom',	'bnetid' => '15'),
-				'offHand'	=> array('position' => 'bottom',	'bnetid' => '16')
+				'mainHand'	=> array('position' => 'bottom_left',	'bnetid' => '15'),
+				'offHand'	=> array('position' => 'bottom_right',	'bnetid' => '16')
 			);
 
 			// reset the array
@@ -1263,7 +1268,13 @@ if(!class_exists('wow')) {
 			// fill the item slots with data
 			foreach ($d_itemoptions as $slot=>$options){
 				$item_id_full	= (isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? $this->game->obj['armory']->armory2itemid($data[$slot]['id'], $data[$slot]['context'], $data[$slot]['bonusLists'], $data[$slot]['itemLevel']) : 0 ;
-				$a_items[$options['position']][] = (isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? infotooltip($data[$slot]['name'], $item_id_full, false, 0, $icons_size, false, array(false, $member_name, $slot)) : "<img src='".$this->server_path."games/wow/profiles/slots/".$options['bnetid'].".png' height='$icons_size' width='$icons_size' alt='' class='itt-icon' />";
+				$a_items[$options['position']][] = 
+				array( 'icon' => 
+				(isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? infotooltip($data[$slot]['name'], $item_id_full, false, 0, $icons_size, false, array(false, $member_name, $slot), " ") : "<img src='".$this->server_path."games/wow/profiles/slots/".$options['bnetid'].".png' height='$icons_size' width='$icons_size' alt='' class='itt-icon' />"
+						,'level' => $data[$slot]['itemLevel'], 'name' => $data[$slot]['name'], 'quality' => $data[$slot]['quality'], 'name_tt' =>
+						(isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? infotooltip($data[$slot]['name'], $item_id_full, false, 0, false, true, array(false, $member_name, $slot)) : ""
+						
+				);
 			}
 			return $a_items;
 		}

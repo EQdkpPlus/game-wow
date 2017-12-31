@@ -1,8 +1,8 @@
 <!-- IF ARMORY == 1 -->
 	<div>
-		<div style="max-width:1140px;" class="wow-char-container">
+		<div class="wow-char-container">
 		<div id="profile">
-			<div id="profile_charicon">
+			<div id="profile_charicon" class="hiddenSmartphone">
 				<img border='0' src="{CHARDATA_ICON}" alt="" />
 			</div>
 			<div class="floatLeft">
@@ -21,7 +21,13 @@
 			</div>
 			<div>
 				<div class="profile_itemlevel">
-					<div class="profile_itemlevel_avg"><img src="{EQDKP_ROOT_PATH}games/wow/profiles/swords.svg" style="height:24px;" class="gameicon"/> {itemlevel:averageItemLevel}</div>
+					<div class="profile_itemlevel_avg">
+						<span class="Media-icon wowsvg icon-sword">
+							<svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><use xlink:href="{EQDKP_ROOT_PATH}games/wow/profiles/icons.svg#swords"></use></svg>
+						</span>
+					
+					
+					{itemlevel:averageItemLevel}</div>
 					<div class="profile_itemlevel_txt">
 						<div class="profile_itemlevel_avgtxt"> {GL_avg_itemlevel}</div>
 						<div class="profile_itemlevel_eq">({itemlevel:averageItemLevelEquipped} {GL_avg_itemlevel_equiped})</div>
@@ -33,165 +39,183 @@
 		
 		
 		<div class="wow-char-left">
-			<div class="floatLeft" style="background: #1e130d url({CHARACTER_IMG}) center top no-repeat; height:550px; max-width:740px; width: 60%;">
+			<div class="" style="background: #1e130d url({CHARACTER_IMG}) center center no-repeat; height:700px;">
 				<div>
 					<div class="floatLeft"><ul id="wow_icons_left">
 													<!-- BEGIN itemicons_left -->
-													<li>{itemicons_left.SLOTS}</li>
+													<li style="clear:both;"><div class="floatLeft">{itemicons_left.ICON}</div> <div class="floatLeft hiddenSmartphone" style="margin-left: 10px;"><span class="q{itemicons_left.QUALITY}">{itemicons_left.NAME}</span><br/>{itemicons_left.LEVEL}</div></li>
 													<!-- END itemicons_left -->
 												</ul></div>
 					<div class="floatRight"><ul id="wow_icons_right">
 													<!-- BEGIN itemicons_right -->
-													<li>{itemicons_right.SLOTS}</li>
+													<li style="clear:both;"><div class="floatRight">{itemicons_right.ICON}</div> <div class="floatRight hiddenSmartphone" style="text-align: right; margin-right: 10px;"><span class="q{itemicons_right.QUALITY}">{itemicons_right.NAME}</span><br/>{itemicons_right.LEVEL}</div></li>
 													<!-- END itemicons_right -->
 												</ul></div>
 					<div class="clear center"><ul id='wow_icons_bottom'>
-													<!-- BEGIN itemicons_bottom -->
-													<li>{itemicons_bottom.SLOTS}</li>
-													<!-- END itemicons_bottom -->
+													<!-- BEGIN itemicons_bottom_left -->
+		
+													<li> <span class="hiddenSmartphone">{itemicons_bottom_left.LEVEL}</span> <span class="q{itemicons_bottom_left.QUALITY} hiddenSmartphone">{itemicons_bottom_left.NAME}</span> {itemicons_bottom_left.ICON}</li>
+													
+													<!-- END itemicons_bottom_left -->
+													
+													<!-- BEGIN itemicons_bottom_right -->
+													<li>{itemicons_bottom_right.ICON} <span class="q{itemicons_bottom_right.QUALITY} hiddenSmartphone">{itemicons_bottom_right.NAME}</span> <span class="hiddenSmartphone">{itemicons_bottom_right.LEVEL}</span></li>
+													<!-- END itemicons_bottom_right -->
 												</ul>
 												{itemicons:bottom}</div>
 				</div>
+				
+				<div class="wow-profilers-container">
+					<ul>
+					<!-- BEGIN profilers -->
+					<li><a href="{profilers.URL}"><img src="{profilers.IMG}" title="{profilers.ALT}" alt="{profilers.ALT}" class="gameicon" /></a></li>
+					<!-- END profilers -->
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<div class="wow-char-statsbar" style="padding-top:20px;">
+			<div class="grid">
+				<div class="col3">
+					<div class="floatLeft">
+						<span class="Media-icon wowsvg icon-health">
+							<svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><use xlink:href="{EQDKP_ROOT_PATH}games/wow/profiles/icons.svg#health"></use></svg>
+						</span>
+					</div>
+					<div class="floatLeft"><div class="wow-health-name">{HEALTH_VALUE}</div><span class="wow-health-value">{GL_health}</span> </div>
+					<div class="clear"></div>
+				</div>
+				<div class="col3">
+					<div class="floatLeft">
+					<span class="Media-icon wowsvg icon-mana">
+						<svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><use xlink:href="{EQDKP_ROOT_PATH}games/wow/profiles/icons.svg#mana"></use></svg>
+					</span>
+					
+					</div>
+					<div class="floatLeft"><div class="wow-health-name">{POWER_VALUE}</div><span class="wow-health-value">{POWER_NAME}</span> </div>
+					<div class="clear"></div>
+				</div>
+				<div class="col3">
+					<div class="floatLeft">
+					<span class="Media-icon wowsvg icon-intellect">
+						<svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><use xlink:href="{EQDKP_ROOT_PATH}games/wow/profiles/icons.svg#intellect"></use></svg>
+					</span>
+					
+					</div>
+					<div class="floatLeft"><div class="wow-health-name">{INTELLECT_VALUE}</div><span class="wow-health-value">{GL_intellect}</span> </div>
+					<div class="clear"></div>
+				</div>
+				<div class="col3 last">
+
+					<div class="floatLeft">
+					<span class="Media-icon wowsvg icon-stamina">
+						<svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><use xlink:href="{EQDKP_ROOT_PATH}games/wow/profiles/icons.svg#stamina"></use></svg>
+					</span>
+					
+					</div>
+					<div class="floatLeft"><div class="wow-health-name">{STAMINA_VALUE}</div><span class="wow-health-value">{GL_stamina}</span> </div>
+					<div class="clear"></div>
+				
+				</div>
+				<div class="col3">
+					<div class="floatLeft">
+					<span class="Media-icon wowsvg icon-crit">
+						<svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><use xlink:href="{EQDKP_ROOT_PATH}games/wow/profiles/icons.svg#critical-strike"></use></svg>
+					</span>
+					
+					</div>
+					<div class="floatLeft"><div class="wow-health-name">{SPELCRIT_VALUE} ({CRIT_RATING})</div><span class="wow-health-value">{GL_spellCrit}</span> </div>
+					<div class="clear"></div>
+				
+				</div>
+				<div class="col3">
+					<div class="floatLeft">
+					<span class="Media-icon wowsvg icon-haste">
+						<svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><use xlink:href="{EQDKP_ROOT_PATH}games/wow/profiles/icons.svg#haste"></use></svg>
+					</span>
+					
+					</div>
+					<div class="floatLeft"><div class="wow-health-name">{HASTE_VALUE} ({HASTE_RATING})</div><span class="wow-health-value">{GL_haste}</span> </div>
+					<div class="clear"></div>
+				</div>
+				<div class="col3">
+					<div class="floatLeft">
+					<span class="Media-icon wowsvg icon-mastery">
+						<svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><use xlink:href="{EQDKP_ROOT_PATH}games/wow/profiles/icons.svg#mastery"></use></svg>
+					</span>
+					
+					</div>
+					<div class="floatLeft"><div class="wow-health-name">{MASTERY_VALUE} ({MASTERY_RATING})</div><span class="wow-health-value">{GL_mastery}</span> </div>
+					<div class="clear"></div>
+				
+				</div>
+				<div class="col3 last">
+					<div class="floatLeft">
+					<span class="Media-icon wowsvg icon-versatibility">
+						<svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><use xlink:href="{EQDKP_ROOT_PATH}games/wow/profiles/icons.svg#versatility"></use></svg>
+					</span>
+					
+					</div>
+					<div class="floatLeft"><div class="wow-health-name">{VERSATILITY_VALUE} ({VERSATILITY_RATING})</div><span class="wow-health-value">{GL_versatility}</span> </div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		
+			
+		<div class="wow-char-talents" style="padding-top:20px;">
+			<h2>{GL_skills}<a target="_blank" href="{bnetlinks:talents}"> <i class="fa fa-external-link"></i></a></h2>
+		
+			<div id='talent_tabs'>
+				<ul>
+					<!-- BEGIN talents -->
+					<li>
+						<a href='#talenttab-{talents.ID}'>
+							<span class="talenttab_icon" title="{talents.NAME}"><img class="icon-frame gameicon" src="{talents.ICON}" alt="" /></span>
+							<!-- IF talents.SELECTED -->{talents.NAME} <span class="talenttab_select"><i class="fa fa-check-square fa-fw fa-lg" style="color:green;"></i></span><!-- ENDIF -->
+						</a>
+					</li>
+					<!-- END talents -->
+				</ul>
+				<!-- BEGIN talents -->
+				<div id="talenttab-{talents.ID}">
+					<div class="wow-char-talents-spec-desc">{talents.DESCRIPTION}</div>
+					
+					<div class="grid">
+						<!-- BEGIN special -->
+						<div class="col4 last">
+							<div class="wow-char-talents-spec"><span class="wow-char-talents-spec-value">{talents.special.VALUE}</span> <span class="coretip" <!-- IF talents.special.DESCRIPTION --> data-coretip="{talents.special.DESCRIPTION}" <!-- ENDIF -->>{talents.special.ICON} {talents.special.NAME}</span></div>
+						</div>
+						<!-- END special -->
+					</div>
+				</div>
+				<!-- END talents -->
 			</div>
 		
-			<div class="wow-char-right floatRight" style="max-width:395px; width: 40%;">
-									<div class="healthpowerbar">
-										<ul>
-											<li class="health"><span class="name">{GL_health}</span><span class="value">{HEALTH_VALUE}</span></li>
-											<li class="{POWER_TYPE}"><span class="name">{POWER_NAME}</span><span class="value">{POWER_VALUE}</span></li>
-										</ul>
-									</div>
-									<table width="100%" border="0">
-										<tr valign="top" >
-											<td width="100%">
-												<table class="table fullwidth">
-													<tr>
-														<th align="center" ><a target="_blank" href="{bnetlinks:talents}">{GL_skills}</a></th>
-													</tr>
-													<tr class="row2">
-														<td>
-															<div id='talent_tabs'>
-																<ul>
-																	<!-- BEGIN talents -->
-																	<li>
-																		<a href='#talenttab-{talents.ID}'>
-																			<span class="talenttab_icon" title="{talents.NAME}"><img class="icon-frame gameicon" src="{talents.ICON}" alt="" /></span>
-																			<!-- IF talents.SELECTED --><span class="talenttab_select"><i class="fa fa-check-square fa-fw fa-lg" style="color:green;"></i></span><!-- ENDIF -->
-																		</a>
-																	</li>
-																	<!-- END talents -->
-																</ul>
-																<!-- BEGIN talents -->
-																<div id="talenttab-{talents.ID}">
-																	<table id="talents_{talents.ID}" class="table fullwidth">
-																		<tr>
-																			<td>
-																				<table class="table fullwidth">
-																					<!-- BEGIN special -->
-																					<tr <!-- IF talents.special.DESCRIPTION --> class="coretip" data-coretip="{talents.special.DESCRIPTION}" <!-- ENDIF -->>
-																						<td class="absmiddle" width="34" align="center">{talents.special.ICON}</td>
-																						<td class="absmiddle">{talents.special.NAME}</td>
-																					</tr>
-																					<!-- END special -->
-																				</table>
-																			</td>
-																		</tr>
-																	</table>
-																</div>
-																<!-- END talents -->
-															</div>
-														</td>
-													</tr>
-												</table>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<table class="table fullwidth">
-													<tr>
-														<th colspan="2" align="center" ><a target="_blank" href="{bnetlinks:profession}">{GL_uc_prof_professions}</a></th>
-													</tr>
-													<!-- BEGIN professions -->
-													<tr class="row2 profession-row">
-														<td>
-															<span class="profession-icon icon-frame frame-14"><img src="{professions.ICON}" alt="" class="gameicon" /></span><span class="profession-name">{professions.NAME}</span>
-														</td>
-														<td width="60%">
-															{professions.BAR}
-														</td>
-													</tr>
-													<!-- END professions -->
-												</table>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<table class="table fullwidth">
-													<tr>
-														<th>
-															<div class="floatLeft" style="line-height: 25px;">
-																<a target="_blank" href="{bnetlinks:profil}">{GL_values}</a>
-															</div>
-															<div class="floatRight" style="width: 70%">
-																<select id="char_infos" style="width: 100%; ">
-																	<!-- BEGIN charattribute_group -->
-																	<option value="{charattribute_group.ID}">{charattribute_group.NAME}</option>
-																	<!-- END charattribute_group -->
-																	<option value="all">{GL_all}</option>
-																</select>
-															</div>
-														</th>
-													</tr>
-													<tr class="row2" valign="top" >
-														<td width="100%">
-															
-															<div id="boxes">
-																<!-- BEGIN charattribute_group -->
-																<div id='{charattribute_group.ID}'>
-																	<table class='table fullwidth colorswitch hoverrows'>
-																	<!-- BEGIN charattributes -->
-																		<tr>
-																			<td width='170'>{charattribute_group.charattributes.NAME}</td>
-																			<td>{charattribute_group.charattributes.VALUE}</td>
-																		</tr>
-																	<!-- END charattributes -->
-																	</table>
-																</div>
-																<!-- END charattribute_group -->
-															</div>
-														</td>
-													</tr>
-												</table>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<table class="table fullwidth">
-													<tr>
-														<th>
-															<div class="floatLeft" style="line-height: 25px;">{GL_profilers}</div>
-														</th>
-													</tr>
-													<tr class="row2" valign="top" >
-														<td width="100%">
-															<div id="boxes">
-																<!-- BEGIN profilers -->
-																<a href="{profilers.URL}"><img src="{profilers.IMG}" alt="{profilers.ALT}" class="gameicon" /></a>
-																<!-- END profilers -->
-															</div>
-														</td>
-													</tr>
-												</table>
-											</td>
-										</tr>
-									</table>
-			</div>
+		</div>
+		
+		<div class="wow-char-professions">
+			<h2>{GL_uc_prof_professions}</h2>
+		
+			<table class="table fullwidth">
+				<!-- BEGIN professions -->
+				<tr class="row2 profession-row">
+					<td>
+						<span class="profession-icon icon-frame frame-14"><img src="{professions.ICON}" alt="" class="gameicon" /></span><span class="profession-name">{professions.NAME}</span>
+					</td>
+					<td width="60%">
+						{professions.BAR}
+					</td>
+				</tr>
+				<!-- END professions -->
+			</table>
+
 			<div class="clear"></div>
 		</div>
 		
 
 		</div>
-	</div>
 	<br />
 
 	<table class="table fullwidth borderless">
@@ -318,7 +342,7 @@
 	<div class="onerow">
 		<div class="col12 last">
 			<div id="profile">
-					<div id="profile_charicon">
+					<div id="profile_charicon" class="hiddenSmartphone">
 						<img border='0' src="{CHARDATA_ICON}" alt="" />
 					</div>
 					<div class="floatLeft">
@@ -328,7 +352,7 @@
 						<div id="profile_titel_guild">
 							{CHARDATA_TITLE}
 							<br />
-							<span class="profile_guild"><a target="_blank" href="{bnetlinks:guild}">{DATA_GUILDTAG}</a> @ {CHARDATA_GUILDREALM}</span>
+							<span class="profile_guild"><a target="_blank" href="{bnetlinks:guild}">{DATA_GUILDTAG}</a> ❮{CHARDATA_GUILDREALM}❯</span>
 						</div>
 						<div class="clear"></div>
 						<div id="profile_charinfos">
@@ -351,35 +375,65 @@
 		 	</table>
 		
 		</div>
-		<div class="col4">
-			<div class="healthpowerbar">
-				<ul>
-					<li class="health"><span class="name">{GL_health}</span><span class="value">{DATA_HEALTH_BAR}</span></li>
-					<li class="{DATA_SECOND_NAME}"><span class="name">{POWER_BAR_NAME}</span><span class="value">{DATA_SECOND_BAR}</span></li>
-				</ul>
-			</div>
-			
-			<table class="table fullwidth">
-				<tr>
-					<th colspan="2" align="center" >{GL_uc_prof_professions}</th>
-				</tr>
-				<!-- BEGIN professions -->
-				<tr class="row2 profession-row">
-					<td>
-						<span class="profession-icon icon-frame frame-14"><img src="{professions.ICON}" alt="" class="gameicon"/></span><span class="profession-name">{professions.NAME}</span>
-					</td>
-					<td width="200px">
-						{professions.BAR}
-					</td>
-				</tr>
-				<!-- END professions -->
-			</table>
-		</div>
-		<div class="col2 last">
-		</div>
 	</div>
 </div>
 <br />
+
+<div class="wow-char-statsbar" style="padding-top:20px;">
+			<div class="grid">
+				<div class="col3">
+					<div class="floatLeft">
+						<span class="Media-icon wowsvg icon-health">
+							<svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><use xlink:href="{EQDKP_ROOT_PATH}games/wow/profiles/icons.svg#health"></use></svg>
+						</span>
+					</div>
+					<div class="floatLeft"><div class="wow-health-name">{DATA_HEALTH_BAR}</div><span class="wow-health-value">{GL_health}</span> </div>
+					<div class="clear"></div>
+				</div>
+				<div class="col3 last">
+					<div class="floatLeft">
+					<span class="Media-icon wowsvg icon-mana">
+						<svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><use xlink:href="{EQDKP_ROOT_PATH}games/wow/profiles/icons.svg#mana"></use></svg>
+					</span>
+					
+					</div>
+					<div class="floatLeft"><div class="wow-health-name">{DATA_SECOND_BAR}</div><span class="wow-health-value">{POWER_BAR_NAME}</span> </div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+
+<h2>{GL_uc_prof_professions}</h2>
+<table class="table fullwidth">
+	<!-- BEGIN professions -->
+	<tr class="row2 profession-row">
+		<td>
+			<span class="profession-icon icon-frame frame-14"><img src="{professions.ICON}" alt="" class="gameicon"/></span><span class="profession-name">{professions.NAME}</span>
+		</td>
+		<td width="200px">
+			{professions.BAR}
+		</td>
+	</tr>
+	<!-- END professions -->
+</table>
+
+<!-- IF S_ADMIN -->
+<br />
+<div id="char1tabs-4">
+	<h2><span class="adminicon"> {L_tab_notes}</span></h2>
+	<div class="tab-content">
+		<table class="table fullwidth">
+			<tr class="row1" >
+				<td align="left" width="40%" class="nowrap">
+					{NOTES}
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<br />
+<!-- ENDIF -->
+
 <!-- ENDIF -->
 
 <div class="tableHeader">

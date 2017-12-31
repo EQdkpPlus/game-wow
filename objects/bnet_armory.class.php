@@ -246,16 +246,16 @@ class bnet_armory extends gen_class {
 				return $this->getProfileULR().sprintf('character/%s/%s/pve', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'achievements':
 				return $this->getProfileULR().sprintf('character/%s/%s/achievement', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
-				case 'collections':
+			case 'collections':
 				return $this->getProfileULR().sprintf('character/%s/%s/collections', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'talent-calculator':
-				#return $linkprfx.sprintf('tool/talent-calculator#d%s!%s!%s', $talents['calcSpec'], $talents['calcTalent'], $talents['calcGlyph']);break;
+				return $this->getProfileULR().sprintf('game/talent-calculator#%s/%s/talents=%s', $talents['class'], $talents['type'], $talents['calcTalent']);break;
 			case 'guild':
 				return $this->getProfileULR('guild').sprintf('guild/%s/%s/', $this->ConvertInput($server, true, true), $this->ConvertInput($guild));break;
 			case 'guild-achievements':
 				return $this->getProfileULR('guild').sprintf('guild/%s/%s/achievement', $this->ConvertInput($server, true, true), $this->ConvertInput($guild));break;
 			case 'askmrrobot':
-			return sprintf('http://www.askmrrobot.com/wow/gear/%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+				return sprintf('http://www.askmrrobot.com/wow/gear/%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 		}
 	}
 
@@ -266,7 +266,7 @@ class bnet_armory extends gen_class {
 	* @param $server		Name of the WoW Server
 	* @return string		output
 	*/
-	public function a_bnlinks($user, $server, $guild=false){
+	public function a_bnlinks($user, $server, $guild=false, $talents=array()){
 		return array(
 			'profil'				=> $this->bnlink($user, $server, 'char'),
 			'pvp'					=> $this->bnlink($user, $server, 'pvp'),
@@ -275,6 +275,7 @@ class bnet_armory extends gen_class {
 			'achievements'			=> $this->bnlink($user, $server, 'achievements'),
 			'collections'			=> $this->bnlink($user, $server, 'collections'),
 			'guild'					=> $this->bnlink($user, $server, 'guild', $guild),
+			'talents'				=> $this->bnlink($user, $server, 'talent-calculator', $guild, $talents),
 
 			// external ones
 			'askmrrobot'			=> $this->bnlink($user, $server, 'askmrrobot'),
@@ -361,7 +362,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function characterImage($chardata, $type='big', $forceUpdateAll = false){
 		switch($type){
-			case 'big':		$dtype_ending = 'profilemain'; break;
+			case 'big':		$dtype_ending = 'main'; break;
 			case 'inset':	$dtype_ending = 'inset'; break;
 			default: $dtype_ending = 'profilemain';
 		}
