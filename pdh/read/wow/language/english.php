@@ -33,12 +33,16 @@ $module_lang = array(
 	"achievementpoints" => 'Achievement Points',
 	"averageItemLevelEquipped" => 'Itemlevel (eqipped)',
 	"profilers" => 'Externe Profilseiten',
+		'talents'				=> 'Talents',
+		'professions'			=> 'Professions',
 	);
 	$preset_lang = array(
 	"wow_charicon" => 'WoW Charicon',
 	"wow_achievementpoints" => 'WoW Achievement Points',
 	"wow_gearlevel" => 'WoW Itemlevel (eqipped)',
 	"wow_profiler" => 'WoW external profile pages',
+	'wow_talents'				=> 'WoW Talents',
+	'wow_professions'			=> 'WoW Professions',
 	);
 	
 

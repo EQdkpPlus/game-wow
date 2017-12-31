@@ -50,6 +50,8 @@ if (!class_exists('pdh_r_wow')) {
 			'wow_achievementpoints'	=> array('achievementpoints',array('%member_id%'),	array()),
 			'wow_gearlevel'			=> array('averageItemLevelEquipped',array('%member_id%'),	array()),
 			'wow_profiler'			=> array('profilers', array('%member_id%'),			array()),
+			'wow_professions'		=> array('professions', array('%member_id%'),			array()),
+			'wow_talents'			=> array('talents', array('%member_id%'),			array()),
 		);
 
 		/**
@@ -148,7 +150,12 @@ if (!class_exists('pdh_r_wow')) {
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/askmrrobot.png',
 					'name'	=> 'AskMrRobot.com',
 					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($membername), unsanitize($servername), 'askmrrobot')
-				)
+				),
+				2	=> array(
+						'icon'	=> $this->server_path.'games/wow/profiles/profilers/wowicon.png',
+						'name'	=> 'worldofwarcraft.com',
+						'url'	=> $this->game->obj['armory']->bnlink(unsanitize($membername), unsanitize($servername), 'char')
+				),
 			);
 			
 			
@@ -158,7 +165,59 @@ if (!class_exists('pdh_r_wow')) {
 				}
 			}
 			return $output;
+		}
+		
+		public function get_professions($member_id){
+			$membername = $this->pdh->get('member', 'name', array($member_id));
+			$char_server	= $this->pdh->get('member', 'profile_field', array($member_id, 'servername'));
+			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 			
+			$charinfo = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($servername));
+			
+			$a_professions = $this->game->callFunc('professions', array($charinfo));
+			$out = "";
+			foreach ($a_professions as $v_professions){
+				$out .= '<img src="'.$v_professions['icon'].'" alt="" title="'.$v_professions['name'].'" class="gameicon" /> ';
+			}
+			
+			return $out;
+		}
+		
+		public function get_talents($member_id){
+			$membername = $this->pdh->get('member', 'name', array($member_id));
+			$char_server	= $this->pdh->get('member', 'profile_field', array($member_id, 'servername'));
+			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
+			
+			$chardata = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($servername));
+
+			
+			$a_talents = $this->game->callFunc('talents', array($chardata));
+			
+			foreach ($a_talents as $id_talents => $v_talents){
+				if(($v_talents['selected'] == '1')){
+					/*
+					$this->tpl->assign_block_vars('talents', array(
+							'ID'			=> $id_talents,
+							'SELECTED'		=> ($v_talents['selected'] == '1') ? true : false,
+							'ICON'			=> $v_talents['icon'],
+							'NAME'			=> $v_talents['name'],
+							'ROLE'			=> strtolower($v_talents['role']),
+							'DESCRIPTION'	=> $v_talents['desc'],
+					));
+					*/
+					
+					// talent specialization
+					$spec = "";
+					for ($i_ts = 0; $i_ts < 7; $i_ts ++) {
+						$spec .= '<img src="'.$v_talents['talents'][$i_ts]['icon'].'" class="gameicon" title="'.$v_talents['talents'][$i_ts]['name'].'"/> ';
+						
+					}
+					
+					return $v_talents['name'].': '.$spec;
+				}
+			}
+			
+			return "";
 		}
 
 	} //end class

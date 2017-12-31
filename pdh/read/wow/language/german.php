@@ -28,7 +28,9 @@ $module_lang = array(
 	'charicon'           	=> '',
 	'achievementpoints' 	=> 'Erfolgspunkte',
 	'averageItemLevelEquipped' => 'ausger. Gegenstandst.',
-	'profilers'				=> 'Externe Profilseiten'
+	'profilers'				=> 'Externe Profilseiten',
+	'talents'				=> 'Talente',
+	'professions'			=> 'Berufe',
 );
 
 $preset_lang = array(
@@ -36,6 +38,8 @@ $preset_lang = array(
   'wow_achievementpoints'	=> 'WoW Erfolgspunkte',
   'wow_gearlevel' 			=> 'WoW ausger. Gegenstandsstufe',
   'wow_profiler' 			=> 'WoW externe Profilseiten',
+  'wow_talents'				=> 'WoW Talente',
+  'wow_professions'			=> 'WoW Berufe',
 );
 
 ?>
