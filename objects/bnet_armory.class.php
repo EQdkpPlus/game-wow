@@ -245,7 +245,7 @@ class bnet_armory extends gen_class {
 			case 'pve':
 				return $this->getProfileULR().sprintf('character/%s/%s/pve', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'achievements':
-				return $this->getProfileULR().sprintf('character/%s/%s/achievement', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+				return $this->getProfileULR().sprintf('character/%s/%s/achievements', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'collections':
 				return $this->getProfileULR().sprintf('character/%s/%s/collections', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'talent-calculator':
@@ -957,7 +957,7 @@ class bnet_armory extends gen_class {
 
 			if (isset($arrAchievs['categories'])){
 				foreach ($arrAchievs['categories'] as $arrCatAchievs2){
-					$intNewCatID = $intCatID . ':'. $arrCatAchievs2['id'];
+					$intNewCatID = $intCatID;
 					foreach ($arrCatAchievs2['achievements'] as $arrCatAchievs3){
 						if ((int)$arrCatAchievs3['id'] == $intAchievID) return $intNewCatID;
 					}
@@ -965,6 +965,39 @@ class bnet_armory extends gen_class {
 			}
 		}
 	}
+	
+	/**
+	 * Mapping from integer AchievementCategoryID to String
+	 * 
+	 * PvP: 95 -> player-vs-player
+	 * 
+	 * @param int $intCategoryID
+	 * @return string
+	 */
+	function achievementIDMapping($intCategoryID){
+		$arrMapping = array(
+			92 => 'general',
+			96 => 'quests',
+			97 => 'exploration',
+			95 => 'player-vs-player',
+			168 => 'dungeons-raids',
+			169 => 'professions',
+			201 => 'reputation',
+			155 => 'world-events',
+			15117 => 'pet-battles',
+			15246 => 'collections',
+			15275 => 'class-hall',
+			15237 => 'draenor-garrison',
+			15165 => 'scenarios',
+			15234 => 'legacy',
+			81 => 'feats-of-strength',
+		);
+		
+		if(isset($arrMapping[$intCategoryID])) return $arrMapping[$intCategoryID];
+		
+		return "";
+	}
+	
 
 	/**
 	* Check if the JSON is an error result

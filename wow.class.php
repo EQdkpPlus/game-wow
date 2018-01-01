@@ -824,7 +824,8 @@ if(!class_exists('wow')) {
 						case 'guildAchievement':{
 							if (is_array($arrTypes) && !in_array('guildAchievement', $arrTypes)) continue;
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$val['achievement']['id'], $arrGuildAchievementsData);
-							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'#'.$achievCat.':a'.$val['achievement']['id'];
+							$achievCatName =  $this->game->obj['armory']->achievementIDMapping($achievCat);
+							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'/'.$achievCatName;
 						$arrOut[] = array(
 							'text' => sprintf($this->glang('news_guildAchievement'), '<a href="'.$bnetLink.'">'.$val['achievement']['title'].'</a>', $val['achievement']['points']),
 							'icon' => sprintf($this->strStaticIconUrl, $val['achievement']['icon']),
@@ -842,7 +843,9 @@ if(!class_exists('wow')) {
 								$charLink = $val['character'];
 							}
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$val['achievement']['id'], $arrAchievementsData);
-							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'achievements').'#'.$achievCat.':a'.$val['achievement']['id'];
+							$achievCatName =  $this->game->obj['armory']->achievementIDMapping($achievCat);
+							
+							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'achievements').'/'.$achievCatName;
 							$arrOut[] = array(
 								'text' => sprintf($this->glang('news_playerAchievement'), $charLink, '<a href="'.$bnetLink.'">'.$val['achievement']['title'].'</a>', $val['achievement']['points']),
 								'icon' => sprintf($this->strStaticIconUrl, $val['achievement']['icon']),
@@ -1015,8 +1018,11 @@ if(!class_exists('wow')) {
 				$count++;
 				$achievData = $this->game->obj['armory']->achievement($achievID);
 				if ($achievData){
+					$intCategory = $this->game->obj['armory']->getCategoryForAchievement($achievID, $arrGuildAchievementsData);
+					$strCategory = $this->game->obj['armory']->achievementIDMapping($intCategory);
+
 					$arrAchievsOut[] = array(
-						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink('', $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrGuildAchievementsData).':a'.$achievID.'">'.$achievData['title'].'</a>',
+						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink('', $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'/'.$strCategory.'">'.$achievData['title'].'</a>',
 						'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" />',
 						'desc'	=> $achievData['description'],
 						'points'=> $achievData['points'],
@@ -1050,8 +1056,12 @@ if(!class_exists('wow')) {
 					$achievData = $this->game->obj['armory']->achievement($achievID);
 					if ($achievData){
 						$class = ($achievData['accountWide'] == 1) ? 'accountwide' : '';
+						
+						$intCategory = $this->game->obj['armory']->getCategoryForAchievement($achievID, $arrCharAchievementsData);
+						$strCategory = $this->game->obj['armory']->achievementIDMapping($intCategory);
+						
 						$arrAchievsOut[] = array(
-							'name'	=> '<a href="'.$this->game->obj['armory']->bnlink($charname, $this->config->get('servername'), 'achievements').'#'.$this->game->obj['armory']->getCategoryForAchievement($achievID, $arrCharAchievementsData).':a'.$achievID.'" class="'.$class.'">'.$achievData['title'].'</a>',
+							'name'	=> '<a href="'.$this->game->obj['armory']->bnlink($charname, $this->config->get('servername'), 'achievements').'/'.$strCategory.'" class="'.$class.'">'.$achievData['title'].'</a>',
 							'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" />',
 							'desc'	=> $achievData['description'],
 							'points'=> $achievData['points'],

@@ -51,7 +51,7 @@
 			z-index: 10;
 		}
 
-		ul#wow_icons_left img, ul#wow_icons_right img, ul#wow_icons_bottom img{
+		ul#wow_icons_left img, ul#wow_icons_right img, ul#wow_icons_bottom_right img,  ul#wow_icons_bottom_left img{
 			box-shadow: 0 0 8px black;
 			border-radius: 4px;
 		}
@@ -75,11 +75,11 @@
 			padding: 3px; margin-bottom: 3px;
 			padding-top: 10px;
 		}
-		ul#wow_icons_bottom {
+		ul#wow_icons_bottom_left, ul#wow_icons_bottom_right {
 			margin: 0; padding: 0;
 			padding-top: 50px;
 		}
-		ul#wow_icons_bottom li {
+		ul#wow_icons_bottom_left li, ul#wow_icons_bottom_right li {
 			list-style: none;
 			display: inline;
 			padding: 3px; margin-left: 3px;
@@ -226,34 +226,34 @@
 		.raideventicon.id8524 { background-position:  -2379px 0; }
 		.raideventicon.id8638 { background-position:  -2440px 0; }
 
-		#wow_icons_left .q img, #wow_icons_right .q img, #wow_icons_bottom .q img {
+		#wow_icons_left .q img, #wow_icons_right .q img, #wow_icons_bottom_right .q img, #wow_icons_bottom_left .q img {
 			border: 1px solid #ffd100;
 		}
-		#wow_icons_left .q0 img, #wow_icons_right .q0 img, #wow_icons_bottom .q0 img {
+		#wow_icons_left .q0 img, #wow_icons_right .q0 img, #wow_icons_bottom_right .q0 img, #wow_icons_bottom_left .q0 img {
 			border: 1px solid #9d9d9d;
 		}
-		#wow_icons_left .q1 img, #wow_icons_right .q1 img, #wow_icons_bottom .q1 img {
+		#wow_icons_left .q1 img, #wow_icons_right .q1 img, #wow_icons_bottom_right .q1 img, #wow_icons_bottom_left .q1 img {
 			border: 1px solid #ffffff;
 		}
-		#wow_icons_left .q2 img, #wow_icons_right .q2 img, #wow_icons_bottom .q2 img {
+		#wow_icons_left .q2 img, #wow_icons_right .q2 img, #wow_icons_bottom_right .q2 img, #wow_icons_bottom_left .q2 img {
 			border: 1px solid #1eff00;
 		}
-		#wow_icons_left .q3 img, #wow_icons_right .q3 img, #wow_icons_bottom .q3 img {
+		#wow_icons_left .q3 img, #wow_icons_right .q3 img, #wow_icons_bottom_right .q3 img, #wow_icons_bottom_left .q3 img {
 			border: 1px solid #0070dd;
 		}
-		#wow_icons_left .q4 img, #wow_icons_right .q4 img, #wow_icons_bottom .q4 img {
+		#wow_icons_left .q4 img, #wow_icons_right .q4 img, #wow_icons_bottom_right .q4 img, #wow_icons_bottom_left .q4 img {
 			border: 1px solid #a335ee;
 		}
-		#wow_icons_left .q5 img, #wow_icons_right .q5 img, #wow_icons_bottom .q5 img {
+		#wow_icons_left .q5 img, #wow_icons_right .q5 img, #wow_icons_bottom_right .q5 img, #wow_icons_bottom_left .q5 img {
 			border: 1px solid #ff8000;
 		}
-		#wow_icons_left .q6 img, #wow_icons_right .q6 img, #wow_icons_bottom .q6 img {
+		#wow_icons_left .q6 img, #wow_icons_right .q6 img, #wow_icons_bottom_right .q6 img, #wow_icons_bottom_left .q6 img {
 			border: 1px solid #ff0000;
 		}
-		#wow_icons_left .q7 img, #wow_icons_right .q7 img, #wow_icons_bottom .q7 img {
+		#wow_icons_left .q7 img, #wow_icons_right .q7 img, #wow_icons_bottom_right .q7 img, #wow_icons_bottom_left .q7 img {
 			border: 1px solid #E5CC80;
 		}
-		#wow_icons_left .q8 img, #wow_icons_right .q8 img, #wow_icons_bottom .q8 img {
+		#wow_icons_left .q8 img, #wow_icons_right .q8 img, #wow_icons_bottom_right .q8 img, #wow_icons_bottom_left .q8 img {
 			border: 1px solid #ffff98;
 		}
 
@@ -424,6 +424,10 @@ width:24px;
 				float: none;
 				width: 98%;
 			}
+
+			#wow_icons_bottom_left .floatRight  {
+				float: left;
+			}
 		}
 	");
 
@@ -553,7 +557,8 @@ width:24px;
 				switch ($v_charfeed['type']){
 						case 'achievement':
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$v_charfeed['achievementID'], $arrCharacterAchievements);
-							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($servername), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
+							$achievCatName =  $this->game->obj['armory']->achievementIDMapping($achievCat);
+							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($servername), 'achievements', unsanitize($this->config->get('guildtag'))).'/'.$achievCatName;
 							$class='';
 							if ($v_charfeed['accountWide']) $class = 'accountwide';
 
@@ -565,7 +570,8 @@ width:24px;
 						break;
 						case 'criteria':
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$v_charfeed['achievementID'], $arrCharacterAchievements);
-							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($servername), 'achievements', unsanitize($this->config->get('guildtag'))).'#'.$achievCat.':a'.$v_charfeed['achievementID'];
+							$achievCatName =  $this->game->obj['armory']->achievementIDMapping($achievCat);
+							$bnetLink = $this->game->obj['armory']->bnlink($chardata['name'], unsanitize($servername), 'achievements', unsanitize($this->config->get('guildtag'))).'/'.$achievCatName;
 
 							$cnf_output = sprintf($this->game->glang('charnf_criteria'), '<b>'.$v_charfeed['criteria'].'</b>', '<a href="'.$bnetLink.'">'.$v_charfeed['title'].'</a>');
 						break;
@@ -655,11 +661,14 @@ width:24px;
 		// achievements
 		$a_achievements = $this->game->callFunc('parseCharAchievementOverview', array($chardata));
 		foreach ($a_achievements as $id_achievements => $v_achievements){
+			
+			$strCategory = $this->game->obj['armory']->achievementIDMapping($id_achievements);
+			
 			$this->tpl->assign_block_vars('achievements', array(
 				'NAME'	=> $v_achievements['name'],
 				'BAR'	=> $this->jquery->progressbar('guildachievs_'.$id_achievements, 0, array('completed' => $v_achievements['completed'], 'total' => $v_achievements['total'], 'text' => '%progress% (%percentage%)')),
 				'ID'	=> $id_achievements,
-				'LINK'	=> ($id_achievements != 'total') ? $this->game->obj['armory']->bnlink($chardata['name'], register('config')->get('servername'), 'achievements').'#achievement#'.$id_achievements : '',
+					'LINK'	=> ($id_achievements != 'total') ? $this->game->obj['armory']->bnlink($chardata['name'], register('config')->get('servername'), 'achievements').'/'.$strCategory : $this->game->obj['armory']->bnlink($chardata['name'], register('config')->get('servername'), 'achievements'),
 			));
 		}
 
