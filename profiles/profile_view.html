@@ -51,18 +51,25 @@
 													<li style="clear:both;"><div class="floatRight">{itemicons_right.ICON}</div> <div class="floatRight hiddenSmartphone" style="text-align: right; margin-right: 10px;"><span class="q{itemicons_right.QUALITY}">{itemicons_right.NAME}</span><br/>{itemicons_right.LEVEL}</div></li>
 													<!-- END itemicons_right -->
 												</ul></div>
-					<div class="clear center"><ul id='wow_icons_bottom'>
-													<!-- BEGIN itemicons_bottom_left -->
-		
-													<li> <span class="hiddenSmartphone">{itemicons_bottom_left.LEVEL}</span> <span class="q{itemicons_bottom_left.QUALITY} hiddenSmartphone">{itemicons_bottom_left.NAME}</span> {itemicons_bottom_left.ICON}</li>
-													
-													<!-- END itemicons_bottom_left -->
-													
-													<!-- BEGIN itemicons_bottom_right -->
-													<li>{itemicons_bottom_right.ICON} <span class="q{itemicons_bottom_right.QUALITY} hiddenSmartphone">{itemicons_bottom_right.NAME}</span> <span class="hiddenSmartphone">{itemicons_bottom_right.LEVEL}</span></li>
-													<!-- END itemicons_bottom_right -->
-												</ul>
-												{itemicons:bottom}</div>
+					<div class="clear">
+						<div class="grid">
+							<div class="col6">
+								<ul id='wow_icons_bottom'>
+									<!-- BEGIN itemicons_bottom_left -->
+									<li style="clear:both;"><div class="floatRight">{itemicons_bottom_left.ICON}</div> <div class="floatRight hiddenSmartphone" style="text-align: right; margin-right: 10px;"><span class="q{itemicons_bottom_left.QUALITY}">{itemicons_bottom_left.NAME}</span><br/>{itemicons_bottom_left.LEVEL}</div></li>
+									<!-- END itemicons_bottom_left -->
+								</ul>
+							</div>
+							<div class="col6 last">
+								<ul id='wow_icons_bottom'>
+								
+								<!-- BEGIN itemicons_bottom_right -->
+								<li style="clear:both;"><div class="floatLeft">{itemicons_bottom_right.ICON}</div> <div class="floatLeft hiddenSmartphone" style="margin-left: 10px;"><span class="q{itemicons_bottom_right.QUALITY}">{itemicons_bottom_right.NAME}</span><br/>{itemicons_bottom_right.LEVEL}</div></li>
+								<!-- END itemicons_bottom_right -->					
+								</ul>
+							</div>
+						</div>					
+					</div>
 				</div>
 				
 				<div class="wow-profilers-container">

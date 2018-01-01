@@ -184,7 +184,7 @@ if(!class_exists('wowhead')) {
 			}
 
 
-			$item = array('id' => $item_id);
+			$item = array('id' => $item_id, 'origid' => $orig_id);
 			$url = ($lang == 'en') ? 'www' : $lang;
 
 			$item['link'] = 'http://'.$url.'.wowhead.com/item='.$item['id'].'&power&bonus='.implode(':', $myItemData['bonus']).'&upgd='.$myItemData['upgd_id'].'&lvl='.$myItemData['lvl'].'&ench='.$myItemData['ench'].'&gems='.implode(',',$myItemData['gems']);

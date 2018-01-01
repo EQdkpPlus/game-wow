@@ -199,6 +199,7 @@ if(!class_exists('armory')) {
 
 			$item['name'] = $item_data['name'];
 			$item['id'] = $item_data['id'];
+			$item['origid'] = $item_id;
 			$item['lang'] = $lang;
 			$item['icon'] = $item_data['icon'];
 			$item['color'] = 'q'.$item_data['quality'];
