@@ -635,7 +635,6 @@ class bnet_armory extends gen_class {
 			$metadata	= $this->eqdkpitemid_meta($itemid);
 			$json		= $this->item_context($json, $metadata);
 			if(is_array($json)) $json = json_encode($json);
-			
 			$this->set_CachedData($json, 'itemdata_'.$itemid);
 		}
 
@@ -719,6 +718,9 @@ class bnet_armory extends gen_class {
 		if(isset($availContexts) && is_array($availContexts) && count($availContexts) > 0 && isset($contextname)){
 
 			$wowurl		= $this->_config['apiUrl'].sprintf('wow/item/%s/%s?locale=%s&apikey=%s%s', $itemid, $contextname, $this->_config['locale'], $this->_config['apiKey'],$bonuslist);
+			return $this->read_url($wowurl);
+		} elseif($bonuslist != ""){
+			$wowurl		= $this->_config['apiUrl'].sprintf('wow/item/%s?locale=%s&apikey=%s%s', $itemid, $this->_config['locale'], $this->_config['apiKey'],$bonuslist);
 			return $this->read_url($wowurl);
 		}
 		return $itemdata;
