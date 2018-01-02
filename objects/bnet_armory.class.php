@@ -653,13 +653,11 @@ class bnet_armory extends gen_class {
 			default:				$item_difficulty = '1'; break;
 		}
 
-		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
-		return $itemid.':0:0:0:0:0:0:0:'.$itemlevel.':0:'.$item_difficulty.':'.count($bonuslist).':'.implode(':',$bonuslist);
+		//itemID:enchantID:gemID1:gemID2:gemID3:gemID4:suffixID:uniqueID:linkLevel:specializationID:upgradeTypeID:instanceDifficultyID:numBonusIDs[:bonusID1:bonusID2:...]
+		return $itemid.':0:0:0:0:0:0:0:'.$itemlevel.':0:0:'.$item_difficulty.':'.count($bonuslist).':'.implode(':',$bonuslist);
 	}
 
 	public function eqdkpitemid_meta($item_id){
-		//112417:0:0:0:0:0:0:0:lvl90:upg 491:dif 5:2:448:449
-		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:11numBonusIDs:bonusID1:bonusID2...
 		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:specializationID:upgradeType:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...:upgradeId
 		$arrItemData = explode(':', $item_id);
 		if(!is_array($arrItemData) || (is_array($arrItemData) && count($arrItemData)<5)) { return false; }
