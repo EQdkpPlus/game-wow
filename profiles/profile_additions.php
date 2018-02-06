@@ -438,7 +438,7 @@ width:24px;
 
 	$chardata			= $this->game->obj['armory']->character(unsanitize($member['name']), $servername);
 
-	if($this->config->get('game_importer_apikey') != '' && $this->config->get('servername') != '' && !isset($chardata['status'])){
+	if($this->config->get('game_importer_apikey') != '' && $this->config->get('servername') != '' && $chardata && !isset($chardata['status'])){
 
 		// profilers
 		$a_profilers	= array(

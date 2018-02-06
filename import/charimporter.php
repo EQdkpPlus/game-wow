@@ -160,7 +160,7 @@ class charImporter extends page_generic {
 		$char_server	= $this->pdh->get('member', 'profile_field', array($this->in->get('charid', 0), 'servername'));
 		$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 		$chardata		= $this->game->obj['armory']->character(unsanitize($this->in->get('charname', '')), unsanitize($servername), true);
-
+				
 		if($chardata && !isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 			$errormsg	= '';
 			$charname	= $chardata['name'];
@@ -312,7 +312,7 @@ class charImporter extends page_generic {
 			$hmtlout	.= (new hhidden('second_name', array('value' => $chardata['stats']['powerType'])))->output();
 
 			// viewable Output
-			if(!isset($chardata['status'])){
+			if($chardata && !isset($chardata['status'])){
 				$hmtlout	.= '
 				<div class="infobox infobox-large infobox-red clearfix">
 					<i class="fa fa-exclamation-triangle fa-4x pull-left"></i> '.(($isindatabase) ? $this->game->glang('uc_charfound4') : $this->game->glang('uc_charfound3')).'
