@@ -399,6 +399,10 @@ color: #bfbfbf;
 width:24px;
 }
 
+.wow-char-statsbar .grid {
+	overflow: hidden;
+}
+
 
 		@media all and (max-width: 1100px) {
 			.responsive .profile_itemlevel {
