@@ -27,7 +27,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 
 		protected static $apiLevel	= 20;
-		public $version				= '7.3.23.1'; //Version for EQdkp Plus 2.3
+		public $version				= '7.4.23.1'; //Version for EQdkp Plus 2.3
 		protected $this_game		= 'wow';
 		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
@@ -74,8 +74,8 @@ if(!class_exists('wow')) {
 				'decorate'	=> true,
 				'parent'	=> array(
 					'faction' => array(
-						'alliance'	=> array(0,1,2,3,4,9,11,13),
-						'horde'		=> array(0,5,6,7,8,10,12,13),
+						'alliance'	=> array(0,1,2,3,4,9,11,13,16,17),
+						'horde'		=> array(0,5,6,7,8,10,12,13,14,15),
 					),
 				),
 			),
@@ -104,6 +104,10 @@ if(!class_exists('wow')) {
 						11 	=> array(1,2,3,4,6,7,9,10),			// Worgen
 						12 	=> array(1,3,4,6,7,8,9,10),			// Goblin
 						13 	=> array(3,4,6,7,8,10,11),			// Pandaren
+						14	=> array(3,4,11,6,7,9,10),			// Nightborne
+						15	=> array(2,3,11,8,10),				// Highmountain Tauren
+						16	=> array(3,4,11,6,7,9,10), 			// Void Elf
+						17	=> array(3,4,5,6,10), 				// Lightforged Draenei
 					),
 				),
 			),
@@ -1278,6 +1282,7 @@ if(!class_exists('wow')) {
 			// fill the item slots with data
 			foreach ($d_itemoptions as $slot=>$options){
 				$item_id_full	= (isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? $this->game->obj['armory']->armory2itemid($data[$slot]['id'], $data[$slot]['context'], $data[$slot]['bonusLists'], $data[$slot]['itemLevel']) : 0 ;
+				
 				$a_items[$options['position']][] = 
 				array( 'icon' => 
 				(isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? infotooltip($data[$slot]['name'], $item_id_full, false, 0, $icons_size, false, array(false, $member_name, $slot), " ", '', true) : "<img src='".$this->server_path."games/wow/profiles/slots/".$options['bnetid'].".png' height='$icons_size' width='$icons_size' alt='' class='itt-icon' />"
@@ -1286,6 +1291,7 @@ if(!class_exists('wow')) {
 						
 				);
 			}
+			
 			return $a_items;
 		}
 

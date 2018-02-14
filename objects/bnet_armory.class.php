@@ -83,6 +83,11 @@ class bnet_armory extends gen_class {
 			'24'	=> 13,		// Pandaren neutral
 			'25'	=> 13,		// Pandaren alliance
 			'26'	=> 13,		// Pandaren horde
+			'27'	=> 14,		// Nightborne (horde)
+			'28'	=> 15,		// Highmountain Tauren (horde)
+			'29'	=> 16,		// Void Elf (alliance)
+			'30'	=> 17,		// Lightforged Draenei (alliance)
+			
 		),
 		'gender' => array(
 			'0'		=> 'male',
@@ -643,7 +648,7 @@ class bnet_armory extends gen_class {
 		return (!$errorchk) ? $itemdata: $errorchk;
 	}
 
-	public function armory2itemid($itemid, $context, $bonuslist=array(), $itemlevel='0'){
+	public function armory2itemid($itemid, $context, $bonuslist=array(), $itemlevel='0', $relics=array()){
 		switch($context){
 			case 'raid-normal':		$item_difficulty = '1'; break;
 			case 'raid-heroic':		$item_difficulty = '15'; break;
