@@ -27,7 +27,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 
 		protected static $apiLevel	= 20;
-		public $version				= '7.4.23.1'; //Version for EQdkp Plus 2.3
+		public $version				= '7.3.23.2'; //Version for EQdkp Plus 2.3
 		protected $this_game		= 'wow';
 		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
@@ -848,7 +848,7 @@ if(!class_exists('wow')) {
 							}
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$val['achievement']['id'], $arrAchievementsData);
 							$achievCatName =  $this->game->obj['armory']->achievementIDMapping($achievCat);
-							
+
 							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'achievements').'/'.$achievCatName;
 							$arrOut[] = array(
 								'text' => sprintf($this->glang('news_playerAchievement'), $charLink, '<a href="'.$bnetLink.'">'.$val['achievement']['title'].'</a>', $val['achievement']['points']),
@@ -1060,10 +1060,10 @@ if(!class_exists('wow')) {
 					$achievData = $this->game->obj['armory']->achievement($achievID);
 					if ($achievData){
 						$class = ($achievData['accountWide'] == 1) ? 'accountwide' : '';
-						
+
 						$intCategory = $this->game->obj['armory']->getCategoryForAchievement($achievID, $arrCharAchievementsData);
 						$strCategory = $this->game->obj['armory']->achievementIDMapping($intCategory);
-						
+
 						$arrAchievsOut[] = array(
 							'name'	=> '<a href="'.$this->game->obj['armory']->bnlink($charname, $this->config->get('servername'), 'achievements').'/'.$strCategory.'" class="'.$class.'">'.$achievData['title'].'</a>',
 							'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" />',
@@ -1150,7 +1150,7 @@ if(!class_exists('wow')) {
 		public function talents($chardata){
 			$talents = array();
 			$arrValues = array(15, 30, 45, 60, 75, 90, 100);
-			
+
 			if (is_array($chardata['talents'])){
 				$talents = array();
 				foreach ($chardata['talents'] as $v_talents){
@@ -1159,7 +1159,7 @@ if(!class_exists('wow')) {
 					$spezialisation = array();
 					if(isset($v_talents['talents']) && is_array($v_talents['talents'])){
 						foreach($v_talents['talents'] as $key => $v_spezialisation){
-		
+
 							$spezialisation[$v_spezialisation['tier']] = array(
 								'name'			=> $v_spezialisation['spell']['name'],
 								'description'	=> $v_spezialisation['spell']['description'],
@@ -1282,16 +1282,16 @@ if(!class_exists('wow')) {
 			// fill the item slots with data
 			foreach ($d_itemoptions as $slot=>$options){
 				$item_id_full	= (isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? $this->game->obj['armory']->armory2itemid($data[$slot]['id'], $data[$slot]['context'], $data[$slot]['bonusLists'], $data[$slot]['itemLevel']) : 0 ;
-				
-				$a_items[$options['position']][] = 
-				array( 'icon' => 
+
+				$a_items[$options['position']][] =
+				array( 'icon' =>
 				(isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? infotooltip($data[$slot]['name'], $item_id_full, false, 0, $icons_size, false, array(false, $member_name, $slot), " ", '', true) : "<img src='".$this->server_path."games/wow/profiles/slots/".$options['bnetid'].".png' height='$icons_size' width='$icons_size' alt='' class='itt-icon' />"
 						,'level' => $data[$slot]['itemLevel'], 'name' => $data[$slot]['name'], 'quality' => $data[$slot]['quality'], 'name_tt' =>
 						(isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? infotooltip($data[$slot]['name'], $item_id_full, false, 0, false, true, array(false, $member_name, $slot), false, '', true) : ""
-						
+
 				);
 			}
-			
+
 			return $a_items;
 		}
 
