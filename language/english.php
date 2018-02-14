@@ -48,6 +48,10 @@ $english_array = array(
 	11 => 'Worgen',
 	12 => 'Goblin',
 	13 => 'Pandaren',
+	14 => 'Nightborne', // horde
+	15 => 'Highmountain Tauren', // horde
+	16 => 'Void Elf', //alliance
+	17 => 'Lightforged Draenei', //alliance
 	),
 	"classes" => array(
 	0 => 'Unknown',

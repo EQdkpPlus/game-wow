@@ -41,7 +41,12 @@ $german_array = array(
 		'Blutelf',
 		'Worg',
 		'Goblin',
-		'Pandaren'
+		'Pandaren',
+		'Pandaren', //13
+		'Nachtgeborener', // horde ,14
+		'Hochbergtauren', // horde, 15
+		'Leerenelf', //alliance, 16
+		'Lichtgeschmiedeter Draenei', //alliance, 17
 	),
 	'classes' => array(
 		0	=> 'Unbekannt',

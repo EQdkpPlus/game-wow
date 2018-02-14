@@ -83,6 +83,11 @@ class bnet_armory extends gen_class {
 			'24'	=> 13,		// Pandaren neutral
 			'25'	=> 13,		// Pandaren alliance
 			'26'	=> 13,		// Pandaren horde
+			'27'	=> 14,		// Nightborne (horde)
+			'28'	=> 15,		// Highmountain Tauren (horde)
+			'29'	=> 16,		// Void Elf (alliance)
+			'30'	=> 17,		// Lightforged Draenei (alliance)
+			
 		),
 		'gender' => array(
 			'0'		=> 'male',
@@ -245,17 +250,17 @@ class bnet_armory extends gen_class {
 			case 'pve':
 				return $this->getProfileULR().sprintf('character/%s/%s/pve', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'achievements':
-				return $this->getProfileULR().sprintf('character/%s/%s/achievement', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
-				case 'collections':
+				return $this->getProfileULR().sprintf('character/%s/%s/achievements', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+			case 'collections':
 				return $this->getProfileULR().sprintf('character/%s/%s/collections', $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'talent-calculator':
-				#return $linkprfx.sprintf('tool/talent-calculator#d%s!%s!%s', $talents['calcSpec'], $talents['calcTalent'], $talents['calcGlyph']);break;
+				return $this->getProfileULR().sprintf('game/talent-calculator#%s/%s/talents=%s', $talents['class'], $talents['type'], $talents['calcTalent']);break;
 			case 'guild':
 				return $this->getProfileULR('guild').sprintf('guild/%s/%s/', $this->ConvertInput($server, true, true), $this->ConvertInput($guild));break;
 			case 'guild-achievements':
 				return $this->getProfileULR('guild').sprintf('guild/%s/%s/achievement', $this->ConvertInput($server, true, true), $this->ConvertInput($guild));break;
 			case 'askmrrobot':
-			return sprintf('http://www.askmrrobot.com/wow/gear/%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+				return sprintf('http://www.askmrrobot.com/wow/gear/%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 		}
 	}
 
@@ -266,7 +271,7 @@ class bnet_armory extends gen_class {
 	* @param $server		Name of the WoW Server
 	* @return string		output
 	*/
-	public function a_bnlinks($user, $server, $guild=false){
+	public function a_bnlinks($user, $server, $guild=false, $talents=array()){
 		return array(
 			'profil'				=> $this->bnlink($user, $server, 'char'),
 			'pvp'					=> $this->bnlink($user, $server, 'pvp'),
@@ -275,6 +280,7 @@ class bnet_armory extends gen_class {
 			'achievements'			=> $this->bnlink($user, $server, 'achievements'),
 			'collections'			=> $this->bnlink($user, $server, 'collections'),
 			'guild'					=> $this->bnlink($user, $server, 'guild', $guild),
+			'talents'				=> $this->bnlink($user, $server, 'talent-calculator', $guild, $talents),
 
 			// external ones
 			'askmrrobot'			=> $this->bnlink($user, $server, 'askmrrobot'),
@@ -319,6 +325,11 @@ class bnet_armory extends gen_class {
 	* @return string
 	*/
 	public function characterIcon($chardata, $forceUpdateAll = false){
+		//Default icon for unknown chars
+		if(!$chardata){
+			return $this->cacheIcon('https://eu.battle.net/wow/static/images/2d/avatar/0-0.jpg', false);
+		}
+		
 		$cached_img		= str_replace(array('/', '-'), '_', 'image_characterIcon_'.$this->_config['serverloc'].'_'.$chardata['thumbnail']);
 		$img_charicon	= $this->get_CachedData($cached_img, false, true);
 		$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
@@ -334,10 +345,12 @@ class bnet_armory extends gen_class {
 			//Try to get old data
 			$img_charicon	= $this->get_CachedData($cached_img, false, true, true);
 			$img_charicon_sp= $this->get_CachedData($cached_img, false, true, true, true);
-			if(filesize($img_charicon) < 400){
-				$img_charicon = $img_charicon_sp = "";
-			}
 		}
+		
+		if(filesize($img_charicon) < 400){
+			$img_charicon = $img_charicon_sp = "";
+		}
+
 		return $img_charicon_sp;
 	}
 
@@ -354,7 +367,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function characterImage($chardata, $type='big', $forceUpdateAll = false){
 		switch($type){
-			case 'big':		$dtype_ending = 'profilemain'; break;
+			case 'big':		$dtype_ending = 'main'; break;
 			case 'inset':	$dtype_ending = 'inset'; break;
 			default: $dtype_ending = 'profilemain';
 		}
@@ -620,19 +633,22 @@ class bnet_armory extends gen_class {
 	public function item($itemid, $force=false){
 		$tmp_itemid		= explode(':', $itemid);
 		$wowurl = $this->_config['apiUrl'].sprintf('wow/item/%s?locale=%s&apikey=%s', $tmp_itemid[0], $this->_config['locale'], $this->_config['apiKey']);
+
 		$this->_debug('Item: '.$wowurl);
 		if(!$json		= $this->get_CachedData('itemdata_'.$itemid, $force)){
 			$json		= $this->read_url($wowurl);
 			$metadata	= $this->eqdkpitemid_meta($itemid);
 			$json		= $this->item_context($json, $metadata);
+			if(is_array($json)) $json = json_encode($json);
 			$this->set_CachedData($json, 'itemdata_'.$itemid);
 		}
+
 		$itemdata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($itemdata);
 		return (!$errorchk) ? $itemdata: $errorchk;
 	}
 
-	public function armory2itemid($itemid, $context, $bonuslist=array(), $itemlevel='0'){
+	public function armory2itemid($itemid, $context, $bonuslist=array(), $itemlevel='0', $relics=array()){
 		switch($context){
 			case 'raid-normal':		$item_difficulty = '1'; break;
 			case 'raid-heroic':		$item_difficulty = '15'; break;
@@ -642,13 +658,11 @@ class bnet_armory extends gen_class {
 			default:				$item_difficulty = '1'; break;
 		}
 
-		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...
-		return $itemid.':0:0:0:0:0:0:0:'.$itemlevel.':0:'.$item_difficulty.':'.count($bonuslist).':'.implode(':',$bonuslist);
+		//itemID:enchantID:gemID1:gemID2:gemID3:gemID4:suffixID:uniqueID:linkLevel:specializationID:upgradeTypeID:instanceDifficultyID:numBonusIDs[:bonusID1:bonusID2:...]
+		return $itemid.':0:0:0:0:0:0:0:'.$itemlevel.':0:0:'.$item_difficulty.':'.count($bonuslist).':'.implode(':',$bonuslist);
 	}
 
 	public function eqdkpitemid_meta($item_id){
-		//112417:0:0:0:0:0:0:0:lvl90:upg 491:dif 5:2:448:449
-		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:upgradeId:instanceDifficultyID:11numBonusIDs:bonusID1:bonusID2...
 		//itemID:enchant:gem1:gem2:gem3:gem4:suffixID:uniqueID:level:specializationID:upgradeType:instanceDifficultyID:numBonusIDs:bonusID1:bonusID2...:upgradeId
 		$arrItemData = explode(':', $item_id);
 		if(!is_array($arrItemData) || (is_array($arrItemData) && count($arrItemData)<5)) { return false; }
@@ -707,6 +721,9 @@ class bnet_armory extends gen_class {
 		if(isset($availContexts) && is_array($availContexts) && count($availContexts) > 0 && isset($contextname)){
 
 			$wowurl		= $this->_config['apiUrl'].sprintf('wow/item/%s/%s?locale=%s&apikey=%s%s', $itemid, $contextname, $this->_config['locale'], $this->_config['apiKey'],$bonuslist);
+			return $this->read_url($wowurl);
+		} elseif($bonuslist != ""){
+			$wowurl		= $this->_config['apiUrl'].sprintf('wow/item/%s?locale=%s&apikey=%s%s', $itemid, $this->_config['locale'], $this->_config['apiKey'],$bonuslist);
 			return $this->read_url($wowurl);
 		}
 		return $itemdata;
@@ -945,7 +962,7 @@ class bnet_armory extends gen_class {
 
 			if (isset($arrAchievs['categories'])){
 				foreach ($arrAchievs['categories'] as $arrCatAchievs2){
-					$intNewCatID = $intCatID . ':'. $arrCatAchievs2['id'];
+					$intNewCatID = $intCatID;
 					foreach ($arrCatAchievs2['achievements'] as $arrCatAchievs3){
 						if ((int)$arrCatAchievs3['id'] == $intAchievID) return $intNewCatID;
 					}
@@ -953,6 +970,39 @@ class bnet_armory extends gen_class {
 			}
 		}
 	}
+	
+	/**
+	 * Mapping from integer AchievementCategoryID to String
+	 * 
+	 * PvP: 95 -> player-vs-player
+	 * 
+	 * @param int $intCategoryID
+	 * @return string
+	 */
+	function achievementIDMapping($intCategoryID){
+		$arrMapping = array(
+			92 => 'general',
+			96 => 'quests',
+			97 => 'exploration',
+			95 => 'player-vs-player',
+			168 => 'dungeons-raids',
+			169 => 'professions',
+			201 => 'reputation',
+			155 => 'world-events',
+			15117 => 'pet-battles',
+			15246 => 'collections',
+			15275 => 'class-hall',
+			15237 => 'draenor-garrison',
+			15165 => 'scenarios',
+			15234 => 'legacy',
+			81 => 'feats-of-strength',
+		);
+		
+		if(isset($arrMapping[$intCategoryID])) return $arrMapping[$intCategoryID];
+		
+		return "";
+	}
+	
 
 	/**
 	* Check if the JSON is an error result
@@ -1066,7 +1116,7 @@ class bnet_armory extends gen_class {
 	* @return --
 	*/
 	protected function clean_name($name){
-		return preg_replace('/[^a-zA-Z0-9_ \.]/s', '_', $name);
+		return preg_replace('/[^a-zA-Z0-9_ \.\-]/s', '_', $name);
 	}
 
 	/**
