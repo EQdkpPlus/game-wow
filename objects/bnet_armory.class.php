@@ -87,7 +87,7 @@ class bnet_armory extends gen_class {
 			'28'	=> 15,		// Highmountain Tauren (horde)
 			'29'	=> 16,		// Void Elf (alliance)
 			'30'	=> 17,		// Lightforged Draenei (alliance)
-			
+
 		),
 		'gender' => array(
 			'0'		=> 'male',
@@ -329,7 +329,7 @@ class bnet_armory extends gen_class {
 		if(!$chardata){
 			return $this->cacheIcon('https://eu.battle.net/wow/static/images/2d/avatar/0-0.jpg', false);
 		}
-		
+
 		$cached_img		= str_replace(array('/', '-'), '_', 'image_characterIcon_'.$this->_config['serverloc'].'_'.$chardata['thumbnail']);
 		$img_charicon	= $this->get_CachedData($cached_img, false, true);
 		$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
@@ -346,7 +346,7 @@ class bnet_armory extends gen_class {
 			$img_charicon	= $this->get_CachedData($cached_img, false, true, true);
 			$img_charicon_sp= $this->get_CachedData($cached_img, false, true, true, true);
 		}
-		
+
 		if(filesize($img_charicon) < 400){
 			$img_charicon = $img_charicon_sp = "";
 		}
@@ -724,7 +724,12 @@ class bnet_armory extends gen_class {
 			return $this->read_url($wowurl);
 		} elseif($bonuslist != ""){
 			$wowurl		= $this->_config['apiUrl'].sprintf('wow/item/%s?locale=%s&apikey=%s%s', $itemid, $this->_config['locale'], $this->_config['apiKey'],$bonuslist);
-			return $this->read_url($wowurl);
+			$tmpdata 	= $this->read_url($wowurl);
+			$tmpjson	= json_decode($tmpdata, true);
+			if($tmpjson['itemLevel'] != $itemmetadata['lvl']){
+				$tmpjson['itemLevel'] = $itemmetadata['lvl'];
+			}
+			return json_encode($tmpjson);
 		}
 		return $itemdata;
 	}
@@ -970,12 +975,12 @@ class bnet_armory extends gen_class {
 			}
 		}
 	}
-	
+
 	/**
 	 * Mapping from integer AchievementCategoryID to String
-	 * 
+	 *
 	 * PvP: 95 -> player-vs-player
-	 * 
+	 *
 	 * @param int $intCategoryID
 	 * @return string
 	 */
@@ -997,12 +1002,12 @@ class bnet_armory extends gen_class {
 			15234 => 'legacy',
 			81 => 'feats-of-strength',
 		);
-		
+
 		if(isset($arrMapping[$intCategoryID])) return $arrMapping[$intCategoryID];
-		
+
 		return "";
 	}
-	
+
 
 	/**
 	* Check if the JSON is an error result
