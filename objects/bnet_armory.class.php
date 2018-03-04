@@ -726,7 +726,7 @@ class bnet_armory extends gen_class {
 			$wowurl		= $this->_config['apiUrl'].sprintf('wow/item/%s?locale=%s&apikey=%s%s', $itemid, $this->_config['locale'], $this->_config['apiKey'],$bonuslist);
 			$tmpdata 	= $this->read_url($wowurl);
 			$tmpjson	= json_decode($tmpdata, true);
-			if($tmpjson['itemLevel'] != $itemmetadata['lvl']){
+			if($itemmetadata['lvl'] > 0 && $tmpjson['itemLevel'] != $itemmetadata['lvl']){
 				$tmpjson['itemLevel'] = $itemmetadata['lvl'];
 			}
 			return json_encode($tmpjson);
