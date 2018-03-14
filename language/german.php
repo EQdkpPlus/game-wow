@@ -41,7 +41,6 @@ $german_array = array(
 		'Blutelf',
 		'Worg',
 		'Goblin',
-		'Pandaren',
 		'Pandaren', //13
 		'Nachtgeborener', // horde ,14
 		'Hochbergtauren', // horde, 15
