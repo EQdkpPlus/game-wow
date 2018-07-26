@@ -52,7 +52,9 @@ $english_array = array(
 	15 => 'Highmountain Tauren', // horde
 	16 => 'Void Elf', //alliance
 	17 => 'Lightforged Draenei', //alliance
-	
+	18 => 'Dark Iron dwarf', // Alliance
+	19 => 'Zandalari Troll', // horde
+
 	),
 	"classes" => array(
 	0 => 'Unknown',

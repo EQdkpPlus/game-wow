@@ -28,24 +28,26 @@ $german_array = array(
 		'horde'		=> 'Horde'
 	),
 	'races' => array(
-		'Unbekannt',
-		'Gnom',
-		'Mensch',
-		'Zwerg',
-		'Nachtelf',
-		'Troll',
-		'Untoter',
-		'Ork',
-		'Taure',
-		'Draenei',
-		'Blutelf',
-		'Worg',
-		'Goblin',
-		'Pandaren', //13
-		'Nachtgeborener', // horde ,14
-		'Hochbergtauren', // horde, 15
-		'Leerenelf', //alliance, 16
-		'Lichtgeschmiedeter Draenei', //alliance, 17
+		0	=> 'Unbekannt',
+		1	=> 'Gnom',
+		2	=> 'Mensch',
+		3	=> 'Zwerg',
+		4	=> 'Nachtelf',
+		5	=> 'Troll',
+		6	=> 'Untoter',
+		7	=> 'Ork',
+		8	=> 'Taure',
+		9	=> 'Draenei',
+		10	=> 'Blutelf',
+		11	=> 'Worg',
+		12	=> 'Goblin',
+		13	=> 'Pandaren',
+		14	=> 'Nachtgeborener', // horde
+		15	=> 'Hochbergtauren', // horde
+		16	=> 'Leerenelf', // alliance
+		17	=> 'Lichtgeschmiedeter Draenei', // alliance
+		18	=> 'Dunkeleisen-Zwerg', // alliance
+		19	=> 'Zandalari Troll', // horde
 	),
 	'classes' => array(
 		0	=> 'Unbekannt',

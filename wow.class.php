@@ -27,7 +27,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 
 		protected static $apiLevel	= 20;
-		public $version				= '7.3.23.4'; //Version for EQdkp Plus 2.3
+		public $version				= '8.0.23.1'; //Version for EQdkp Plus 2.3
 		protected $this_game		= 'wow';
 		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
@@ -74,8 +74,8 @@ if(!class_exists('wow')) {
 				'decorate'	=> true,
 				'parent'	=> array(
 					'faction' => array(
-						'alliance'	=> array(0,1,2,3,4,9,11,13,16,17),
-						'horde'		=> array(0,5,6,7,8,10,12,13,14,15),
+						'alliance'	=> array(0,1,2,3,4,9,11,13,16,17,18),
+						'horde'		=> array(0,5,6,7,8,10,12,13,14,15,19),
 					),
 				),
 			),
@@ -108,6 +108,8 @@ if(!class_exists('wow')) {
 						15	=> array(2,3,11,8,10),				// Highmountain Tauren
 						16	=> array(3,4,11,6,7,9,10), 			// Void Elf
 						17	=> array(3,4,5,6,10), 				// Lightforged Draenei
+						18	=> array(3,5,6,7,8,9,10,11),		// Dark iron Dwarf
+						19	=> array(2,3,4,6,7,8,9,10),			// Zandalari Troll
 					),
 				),
 			),
