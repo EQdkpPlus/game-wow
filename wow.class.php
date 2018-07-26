@@ -427,7 +427,7 @@ if(!class_exists('wow')) {
 					'type'			=> 'dropdown',
 					'category'		=> 'character',
 					'lang'			=> 'uc_bar_2name',
-					'options'		=> array('rage' => 'uc_bar_rage', 'energy' => 'uc_bar_energy', 'mana' => 'uc_bar_mana', 'focus' => 'uc_bar_focus', 'runic-power' => 'uc_bar_runic-power'),
+					'options'		=> array('rage' => 'uc_bar_rage', 'energy' => 'uc_bar_energy', 'mana' => 'uc_bar_mana', 'focus' => 'uc_bar_focus', 'runic-power' => 'uc_bar_runic-power', 'maelstrom' => 'uc_bar_maelstrom'),
 					'tolang'		=> true,
 					'size'			=> 32,
 					'undeletable'	=> true,

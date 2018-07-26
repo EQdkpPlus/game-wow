@@ -149,6 +149,7 @@ $english_array = array(
 	"uc_bar_mana" => 'Mana',
 	"uc_bar_focus" => 'Focus',
 	"uc_bar_runic-power" => 'Runic Power',
+	"uc_bar_maelstrom" => "Mahlstrom",
 	"uc_skill1" => 'Talents 1',
 	"uc_skill2" => 'Talents 2',
 	"pv_tab_profiles" => 'External Profiles',

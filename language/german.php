@@ -158,6 +158,7 @@ $german_array = array(
 		'uc_bar_mana'					=> 'Mana',
 		'uc_bar_focus'					=> 'Fokus',
 		'uc_bar_runic-power'			=> 'Runenmacht',
+		'uc_bar_maelstrom'			=> 'Mahlstrom',
 
 		'uc_skill1'						=> 'Talente 1',
 		'uc_skill2'						=> 'Talente 2',
