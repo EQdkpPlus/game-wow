@@ -196,6 +196,7 @@ $german_array = array(
 		'uc_achievement_tab_mop'		=> 'Mists of Pandaria',
 		'uc_achievement_tab_wod'		=> 'Warlords of Draenor',
 		'uc_achievement_tab_leg'		=> 'Legion',
+		"uc_achievement_tab_bfa"		=> 'Battle for Azeroth',
 
 		'challenge'						=> 'Herausforderungsmodus',
 		'challenge_title'				=> 'Herausforderungsmodus: Ranglisten',
@@ -380,6 +381,10 @@ $german_array = array(
 		'leg_atbt_normal'				=> 'Antorus, der Brennende Thron Normal',
 		'leg_atbt_heroic'				=> 'Antorus, der Brennende Thron Heroisch',
 		'leg_atbt_mythic'				=> 'Antorus, der Brennende Thron Mythisch (20)',
+
+		'bfa_uldir_normal'				=> 'Uldir Normal',
+		'bfa_uldir_heroic'				=> 'Uldir Heroisch',
+		'bfa_uldir_mythic'				=> 'Uldir Mythisch (20)',
 
 		'char_news'						=> 'Char News',
 		'no_armory'						=> 'Es konnten keine gültigen Daten für diesen Charakter geladen werden. Die battle.net API meldet folgenden Fehler: "%s".',

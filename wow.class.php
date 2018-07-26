@@ -57,6 +57,7 @@ if(!class_exists('wow')) {
 			'mop'		=> array(6125, 6297, 6067, 6622, 6738),
 			'wod'		=> array(6967, 6996, 7545),
 			'leg'		=> array(8026, 8440, 8025, 8524, 8638),
+			'bfa'		=> array(9389),
 		);
 
 		protected $class_dependencies = array(
@@ -166,7 +167,7 @@ if(!class_exists('wow')) {
 			1	=> array(2, 5, 6, 8, 11),				// healer
 			2	=> array(1, 2, 5, 10, 11, 12),			// tank
 			3	=> array(2, 3, 4, 6, 8, 9),				// dd distance
-			4	=> array(1, 2, 3, 5, 7, 8, 10, 11, 12)		// dd near
+			4	=> array(1, 2, 3, 5, 7, 8, 10, 11, 12)	// dd near
 		);
 
 		public $default_classrole = array(
@@ -233,6 +234,11 @@ if(!class_exists('wow')) {
 		public function install($blnEQdkpInstall=false){
 
 			$arrEventIDs = array();
+
+			// Battle for Azeroth
+			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_uldir_normal'), 0, "uldir.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_uldir_heroic'), 0, "uldir.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_uldir_mythic'), 0, "uldir.png");
 
 			// Legion events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_en_normal'), 0, "en.png");
