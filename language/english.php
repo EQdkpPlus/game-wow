@@ -52,7 +52,7 @@ $english_array = array(
 	15 => 'Highmountain Tauren', // horde
 	16 => 'Void Elf', //alliance
 	17 => 'Lightforged Draenei', //alliance
-	18 => 'Dark Iron dwarf', // Alliance
+	18 => 'Dark Iron Dwarf', // Alliance
 	19 => 'Zandalari Troll', // horde
 
 	),
@@ -69,7 +69,7 @@ $english_array = array(
 	9 => 'Warlock',
 	10 => 'Warrior',
 	11 => 'Monk',
-	12	=> 'Demon Hunter',
+	12 => 'Demon Hunter',
 	),
 	"talents" => array(
 	0 => 'Blood',
@@ -149,7 +149,7 @@ $english_array = array(
 	"uc_bar_mana" => 'Mana',
 	"uc_bar_focus" => 'Focus',
 	"uc_bar_runic-power" => 'Runic Power',
-	"uc_bar_maelstrom" => "Mahlstrom",
+	"uc_bar_maelstrom" => "Maelstrom",
 	"uc_skill1" => 'Talents 1',
 	"uc_skill2" => 'Talents 2',
 	"pv_tab_profiles" => 'External Profiles',
