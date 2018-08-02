@@ -29,11 +29,11 @@ if(!class_exists('armory')) {
 		public $settings = array(
 			'itt_icon_loc' => array(
 				'type' => 'text',
-				'default' => 'http://eu.media.blizzard.com/wow/icons/56/'
+				'default' => 'https://render-eu.worldofwarcraft.com/icons/56/'
 			),
 			'itt_icon_small_loc' => array(
 				'type' => 'text',
-				'default' => 'http://eu.media.blizzard.com/wow/icons/18/'
+				'default' => 'https://render-eu.worldofwarcraft.com/icons/18/'
 			),
 			'itt_icon_ext' => array(
 				'type' => 'text',
