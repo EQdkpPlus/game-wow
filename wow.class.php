@@ -27,7 +27,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 
 		protected static $apiLevel	= 20;
-		public $version				= '7.3.22.4'; //Version  for EQdkp Plus 2.2
+		public $version				= '8.0.23.1'; //Version for EQdkp Plus 2.3
 		protected $this_game		= 'wow';
 		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
@@ -57,6 +57,7 @@ if(!class_exists('wow')) {
 			'mop'		=> array(6125, 6297, 6067, 6622, 6738),
 			'wod'		=> array(6967, 6996, 7545),
 			'leg'		=> array(8026, 8440, 8025, 8524, 8638),
+			'bfa'		=> array(9389),
 		);
 
 		protected $class_dependencies = array(
@@ -74,8 +75,8 @@ if(!class_exists('wow')) {
 				'decorate'	=> true,
 				'parent'	=> array(
 					'faction' => array(
-						'alliance'	=> array(0,1,2,3,4,9,11,13),
-						'horde'		=> array(0,5,6,7,8,10,12,13),
+						'alliance'	=> array(0,1,2,3,4,9,11,13,16,17,18),
+						'horde'		=> array(0,5,6,7,8,10,12,13,14,15,19),
 					),
 				),
 			),
@@ -104,6 +105,12 @@ if(!class_exists('wow')) {
 						11 	=> array(1,2,3,4,6,7,9,10),			// Worgen
 						12 	=> array(1,3,4,6,7,8,9,10),			// Goblin
 						13 	=> array(3,4,6,7,8,10,11),			// Pandaren
+						14	=> array(3,4,11,6,7,9,10),			// Nightborne
+						15	=> array(2,3,11,8,10),				// Highmountain Tauren
+						16	=> array(3,4,11,6,7,9,10), 			// Void Elf
+						17	=> array(3,4,5,6,10), 				// Lightforged Draenei
+						18	=> array(3,5,6,7,8,9,10,11),		// Dark iron Dwarf
+						19	=> array(2,3,4,6,7,8,9,10),			// Zandalari Troll
 					),
 				),
 			),
@@ -160,7 +167,7 @@ if(!class_exists('wow')) {
 			1	=> array(2, 5, 6, 8, 11),				// healer
 			2	=> array(1, 2, 5, 10, 11, 12),			// tank
 			3	=> array(2, 3, 4, 6, 8, 9),				// dd distance
-			4	=> array(1, 2, 3, 5, 7, 8, 10, 11, 12)		// dd near
+			4	=> array(1, 2, 3, 5, 7, 8, 10, 11, 12)	// dd near
 		);
 
 		public $default_classrole = array(
@@ -227,6 +234,11 @@ if(!class_exists('wow')) {
 		public function install($blnEQdkpInstall=false){
 
 			$arrEventIDs = array();
+
+			// Battle for Azeroth
+			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_uldir_normal'), 0, "uldir.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_uldir_heroic'), 0, "uldir.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_uldir_mythic'), 0, "uldir.png");
 
 			// Legion events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_en_normal'), 0, "en.png");

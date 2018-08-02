@@ -28,25 +28,26 @@ $german_array = array(
 		'horde'		=> 'Horde'
 	),
 	'races' => array(
-		'Unbekannt',
-		'Gnom',
-		'Mensch',
-		'Zwerg',
-		'Nachtelf',
-		'Troll',
-		'Untoter',
-		'Ork',
-		'Taure',
-		'Draenei',
-		'Blutelf',
-		'Worg',
-		'Goblin',
-		'Pandaren',
-		'Pandaren', //13
-		'Nachtgeborener', // horde ,14
-		'Hochbergtauren', // horde, 15
-		'Leerenelf', //alliance, 16
-		'Lichtgeschmiedeter Draenei', //alliance, 17
+		0	=> 'Unbekannt',
+		1	=> 'Gnom',
+		2	=> 'Mensch',
+		3	=> 'Zwerg',
+		4	=> 'Nachtelf',
+		5	=> 'Troll',
+		6	=> 'Untoter',
+		7	=> 'Ork',
+		8	=> 'Taure',
+		9	=> 'Draenei',
+		10	=> 'Blutelf',
+		11	=> 'Worg',
+		12	=> 'Goblin',
+		13	=> 'Pandaren',
+		14	=> 'Nachtgeborener', // horde
+		15	=> 'Hochbergtauren', // horde
+		16	=> 'Leerenelf', // alliance
+		17	=> 'Lichtgeschmiedeter Draenei', // alliance
+		18	=> 'Dunkeleisen-Zwerg', // alliance
+		19	=> 'Zandalari Troll', // horde
 	),
 	'classes' => array(
 		0	=> 'Unbekannt',
@@ -195,6 +196,7 @@ $german_array = array(
 		'uc_achievement_tab_mop'		=> 'Mists of Pandaria',
 		'uc_achievement_tab_wod'		=> 'Warlords of Draenor',
 		'uc_achievement_tab_leg'		=> 'Legion',
+		"uc_achievement_tab_bfa"		=> 'Battle for Azeroth',
 
 		'challenge'						=> 'Herausforderungsmodus',
 		'challenge_title'				=> 'Herausforderungsmodus: Ranglisten',
@@ -377,6 +379,10 @@ $german_array = array(
 		'leg_atbt_normal'				=> 'Antorus, der Brennende Thron Normal',
 		'leg_atbt_heroic'				=> 'Antorus, der Brennende Thron Heroisch',
 		'leg_atbt_mythic'				=> 'Antorus, der Brennende Thron Mythisch (20)',
+
+		'bfa_uldir_normal'				=> 'Uldir Normal',
+		'bfa_uldir_heroic'				=> 'Uldir Heroisch',
+		'bfa_uldir_mythic'				=> 'Uldir Mythisch (20)',
 
 		'char_news'						=> 'Char News',
 		'no_armory'						=> 'Es konnten keine gültigen Daten für diesen Charakter geladen werden. Die battle.net API meldet folgenden Fehler: "%s".',
