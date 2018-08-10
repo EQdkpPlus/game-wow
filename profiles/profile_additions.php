@@ -334,6 +334,7 @@
 .wow-profilers-container li {
 	list-style: none;
 	float: left;
+    margin-left: 5px;
 }
 
 .wow-profilers-container img {
@@ -456,6 +457,21 @@ width:24px;
 					'name'	=> 'AskMrRobot.com',
 					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'askmrrobot')
 			),
+			3	=> array(
+					'icon'	=> $this->server_path.'games/wow/profiles/profilers/wowprogress.png',
+					'name'	=> 'wowprogress.com',
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'wowprogress')
+			),
+			4	=> array(
+					'icon'	=> $this->server_path.'games/wow/profiles/profilers/raiderio.png',
+					'name'	=> 'Raider.io',
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'raiderio')
+			),
+			5	=> array(
+					'icon'	=> $this->server_path.'games/wow/profiles/profilers/warcraftlogs.png',
+					'name'	=> 'Warcraftlogs',
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'warcraftlogs')
+			),		
 		);
 
 		$this->jquery->Tab_header('talent_tabs');

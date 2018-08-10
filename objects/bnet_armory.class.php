@@ -261,6 +261,14 @@ class bnet_armory extends gen_class {
 				return $this->getProfileULR('guild').sprintf('guild/%s/%s/achievement', $this->ConvertInput($server, true, true), $this->ConvertInput($guild));break;
 			case 'askmrrobot':
 				return sprintf('https://www.askmrrobot.com/wow/gear/%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+			case 'raiderio':
+				return sprintf('http://raider.io/characters/%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+			case 'wowprogress':
+				return sprintf('http://www.wowprogress.com/character/%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+			case 'warcraftlogs':
+				return sprintf('https://www.warcraftlogs.com/character/%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+				
+				
 		}
 	}
 
