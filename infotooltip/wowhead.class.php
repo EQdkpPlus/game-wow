@@ -193,13 +193,15 @@ if(!class_exists('wowhead')) {
 			$someJS = $this->puf->fetch($item['link'], array('Cookie: cookieLangId="'.$lang.'";'));
 			if ($someJS){
 				$arrMatches = array();
-				$intCount = preg_match("/name_(.*): '(.*)',(\s*)quality: (.*),(\s*)icon: '(.*)',(\s*)tooltip_(.*): '(.*)'/", $someJS, $arrMatches);
+				$intCount = preg_match("/name_(.*):\"(.*)\",(\s*)\"quality\":(.*),(\s*)\"icon\":\"(.*)\",(\s*)\"tooltip_(.*)\":\"(.*)\"/", $someJS, $arrMatches);
 				if ($intCount){
 
-					$item['name'] = htmlentities(stripslashes($arrMatches[2]));
+					$item['name'] = htmlentities(stripslashes(json_decode('"'.$arrMatches[2].'"')));
 
 					$html = $arrMatches[9];
 					$template_html = trim(file_get_contents($this->root_path.'games/wow/infotooltip/templates/wow_popup.tpl'));
+					
+					$html = json_decode('"'.$html.'"');
 					$item['html'] = str_replace('{ITEM_HTML}', stripslashes($html), $template_html);
 					$item['lang'] = $lang;
 
@@ -208,6 +210,7 @@ if(!class_exists('wowhead')) {
 
 					//Reset Item ID, because the full name is the one we should store in DB
 					$item['id'] = $orig_id;
+					
 					return $item;
 
 				} else {
@@ -218,6 +221,7 @@ if(!class_exists('wowhead')) {
 			} else {
 				$this->pdl->log('infotooltip', 'no data from URL');
 				$item['baditem'] = true;
+
 				return $item;
 			}
 
