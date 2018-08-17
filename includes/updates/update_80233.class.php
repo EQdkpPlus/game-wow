@@ -31,6 +31,7 @@ class update_80233 extends sql_update_task {
 	public $ext_version		= '8.0.23.3';
 	public $name			= '8.0.23.3';
 	public $game_path		= 'wow';
+	public $type			= 'game_update';
 
 	public function __construct(){
 		parent::__construct();
