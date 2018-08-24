@@ -193,7 +193,7 @@ if(!class_exists('wowhead')) {
 			$someJS = $this->puf->fetch($item['link'], array('Cookie: cookieLangId="'.$lang.'";'));
 			if ($someJS){
 				$arrMatches = array();
-				$intCount = preg_match("/name_(.*):\"(.*)\",(\s*)\"quality\":(.*),(\s*)\"icon\":\"(.*)\",(\s*)\"tooltip_(.*)\":\"(.*)\"/", $someJS, $arrMatches);
+				$intCount = preg_match("/name_(.*):\"(.*)\",(\s*)\"quality\":\"(.*)\",(\s*)\"icon\":\"(.*)\",(\s*)\"tooltip_(.*)\":\"(.*)\"/", $someJS, $arrMatches);
 				if ($intCount){
 
 					$item['name'] = htmlentities(stripslashes(json_decode('"'.$arrMatches[2].'"')));
