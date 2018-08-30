@@ -146,22 +146,37 @@ if (!class_exists('pdh_r_wow')) {
 			
 			$output			= '';
 			$a_profilers	= array(
-				1	=> array(
-					'icon'	=> $this->server_path.'games/wow/profiles/profilers/askmrrobot.png',
-					'name'	=> 'AskMrRobot.com',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($membername), unsanitize($servername), 'askmrrobot')
-				),
-				2	=> array(
-						'icon'	=> $this->server_path.'games/wow/profiles/profilers/wowicon.png',
-						'name'	=> 'worldofwarcraft.com',
-						'url'	=> $this->game->obj['armory']->bnlink(unsanitize($membername), unsanitize($servername), 'char')
-				),
+					1	=> array(
+							'icon'	=> $this->server_path.'games/wow/profiles/profilers/wowicon.png',
+							'name'	=> 'worldofwarcraft.com',
+							'url'	=> $this->game->obj['armory']->bnlink(unsanitize($membername), unsanitize($servername), 'char')
+					),
+					2	=> array(
+							'icon'	=> $this->server_path.'games/wow/profiles/profilers/askmrrobot.png',
+							'name'	=> 'AskMrRobot.com',
+							'url'	=> $this->game->obj['armory']->bnlink(unsanitize($membername), unsanitize($servername), 'askmrrobot')
+					),
+					3	=> array(
+							'icon'	=> $this->server_path.'games/wow/profiles/profilers/wowprogress.png',
+							'name'	=> 'wowprogress.com',
+							'url'	=> $this->game->obj['armory']->bnlink(unsanitize($membername), unsanitize($servername), 'wowprogress')
+					),
+					4	=> array(
+							'icon'	=> $this->server_path.'games/wow/profiles/profilers/raiderio.png',
+							'name'	=> 'Raider.io',
+							'url'	=> $this->game->obj['armory']->bnlink(unsanitize($membername), unsanitize($servername), 'raiderio')
+					),
+					5	=> array(
+							'icon'	=> $this->server_path.'games/wow/profiles/profilers/warcraftlogs.png',
+							'name'	=> 'Warcraftlogs',
+							'url'	=> $this->game->obj['armory']->bnlink(unsanitize($membername), unsanitize($servername), 'warcraftlogs')
+					),		
 			);
 			
 			
 			if(is_array($a_profilers)){
 				foreach($a_profilers as $v_profiler){
-					$output	.= '<a href="'.$v_profiler['url'].'"><img src="'.$v_profiler['icon'].'" alt="'.$v_profiler['name'].'" width="20" class="gameicon"/></a> '; 
+					$output	.= '<a href="'.$v_profiler['url'].'"><img src="'.$v_profiler['icon'].'" alt="'.$v_profiler['name'].'" height="22" class="gameicon"/></a> '; 
 				}
 			}
 			return $output;
