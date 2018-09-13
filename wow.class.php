@@ -782,7 +782,7 @@ if(!class_exists('wow')) {
 
 					switch($val['type']){
 						case 'guildCreated':
-						if (is_array($arrTypes) && !in_array('guildCreated', $arrTypes)) continue;
+						if (is_array($arrTypes) && !in_array('guildCreated', $arrTypes)) continue 2;
 
 						$arrOut[] = array(
 							'text' => $this->glang('news_guildCreated'),
@@ -792,7 +792,7 @@ if(!class_exists('wow')) {
 						break;
 
 						case 'itemLoot':{
-							if (is_array($arrTypes) && !in_array('itemLoot', $arrTypes)) continue;
+							if (is_array($arrTypes) && !in_array('itemLoot', $arrTypes)) continue 2;
 						$itemData = $this->game->obj['armory']->item($val['itemId']);
 						$charID = register('pdh')->get('member', 'id', array(trim($val['character'])));
 						if ($charID) {
@@ -809,7 +809,7 @@ if(!class_exists('wow')) {
 						break;
 
 						case 'itemPurchase':
-						if (is_array($arrTypes) && !in_array('itemPurchase', $arrTypes)) continue;
+						if (is_array($arrTypes) && !in_array('itemPurchase', $arrTypes)) continue 2;
 						$itemData = $this->game->obj['armory']->item($val['itemId']);
 						$charID = register('pdh')->get('member', 'id', array(trim($val['character'])));
 						if ($charID) {
@@ -825,7 +825,7 @@ if(!class_exists('wow')) {
 						break;
 
 						case 'guildLevel':
-						if (is_array($arrTypes) && !in_array('guildLevel', $arrTypes)) continue;
+						if (is_array($arrTypes) && !in_array('guildLevel', $arrTypes)) continue 2;
 						$arrOut[] = array(
 							'text' => sprintf($this->glang('news_guildLevel'), $val['levelUp']),
 							'icon' => $this->server_path.'games/wow/roster/newsfeed_guild.png',
@@ -834,7 +834,7 @@ if(!class_exists('wow')) {
 						break;
 
 						case 'guildAchievement':{
-							if (is_array($arrTypes) && !in_array('guildAchievement', $arrTypes)) continue;
+							if (is_array($arrTypes) && !in_array('guildAchievement', $arrTypes)) continue 2;
 							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$val['achievement']['id'], $arrGuildAchievementsData);
 							$achievCatName =  $this->game->obj['armory']->achievementIDMapping($achievCat);
 							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'/'.$achievCatName;
@@ -846,7 +846,7 @@ if(!class_exists('wow')) {
 						}
 						break;
 						case 'playerAchievement':{
-							if (is_array($arrTypes) && !in_array('playerAchievement', $arrTypes)) continue;
+							if (is_array($arrTypes) && !in_array('playerAchievement', $arrTypes)) continue 2;
 
 							$charID = register('pdh')->get('member', 'id', array(trim($val['character'])));
 							if ($charID) {
