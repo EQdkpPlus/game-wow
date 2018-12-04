@@ -217,7 +217,14 @@ if(!class_exists('wow')) {
 				'guild_imp_rsn'		=> true,									// Guild import & Mass update requires server name
 				'import_data_cache'	=> true,									// Is the data cached and requires a reset call?
 				'apikey'			=> array(
+					'version'	=> 2,
 					'status'	=> 'required',
+					'form'		=> array(
+						'game_importer_apikey'	=> array(
+							'type'			=> 'text',
+							'size'			=> 30,
+						)
+					),
 					'steps'		=> array(
 						'apikey_title_step1'	=> 'apikey_content_step1',
 						'apikey_title_step2'	=> 'apikey_content_step2',
