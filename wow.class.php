@@ -220,7 +220,11 @@ if(!class_exists('wow')) {
 					'version'	=> 2,
 					'status'	=> 'required',
 					'form'		=> array(
-						'game_importer_apikey'	=> array(
+						'game_importer_clientid' => array(
+							'type'			=> 'text',
+							'size'			=> 30,
+						),
+						'game_importer_clientsecret' => array(
 							'type'			=> 'text',
 							'size'			=> 30,
 						)
