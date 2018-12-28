@@ -27,26 +27,29 @@
 		#guild_header_banner_alliance{
 			width:100%;
 			height:106px;
-			background: url('".$this->server_path."games/wow/profiles/factions/banner_alliance.jpg') no-repeat scroll 0px 0px transparent;
+			background: url('".$this->server_path."games/wow/profiles/factions/banner_alliance.jpg') repeat-x scroll 0px 0px transparent;
 			margin-top:30px;
 		}
 		#guild_header_banner_horde{
 			width:100%;
 			height:106px;
-			background: url('".$this->server_path."games/wow/profiles/factions/banner_horde.jpg') no-repeat scroll 0px 0px transparent;
+			background: url('".$this->server_path."games/wow/profiles/factions/banner_horde.jpg') repeat-x scroll 0px 0px transparent;
 			margin-top:30px;
 		}		
 		#guild_emblem { 
-			height:200px;
-			width:230px;
-			margin:-30px 0 0 5px;
+			height:180px;
+			margin:-20px 0 0 5px;
 			float:left;
-		}		
+		}
+		#guild_emblem img{
+			height:150px;
+		} 
+		
 		#guild_name {
 			font-size: 30px; 
 			color: #fff;
 			position:relative; 
-			top:10px; 
+			top:20px; 
 			left:15px;
 			font-weight:bold;
 		}
@@ -54,7 +57,7 @@
 			font-size: 20px; 
 			color: #FFCC33 ;
 			position:relative; 
-			top:30px; 
+			top:50px; 
 			left:15px;
 		}
 		
