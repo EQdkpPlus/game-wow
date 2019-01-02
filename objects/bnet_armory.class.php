@@ -33,7 +33,7 @@ class bnet_armory extends gen_class {
 	// new URL
 	const apiurl			= 'https://{region}.api.blizzard.com/';
 	const oauthurl			= 'https://{region}.battle.net/oauth/';
-	const charimageurl		= 'https://render-{region}.worldofwarcraft.com/';
+	const charimageurl		= 'http://render-{region}.worldofwarcraft.com/character/';
 
 	// old URL to be checked
 	const staticrenderurl	= 'http://{region}.battle.net/static-render/';		// http://us.battle.net/forums/en/bnet/topic/20748205383
@@ -54,7 +54,6 @@ class bnet_armory extends gen_class {
 		'maxChariconUpdates'	=> 1,
 		'maxChardataUpdates'	=> 1,
 		'access_token'			=> false,
-		'access_token_ts'		=> '',
 	);
 
 	protected $convert		= array(
@@ -167,10 +166,13 @@ class bnet_armory extends gen_class {
 	* @return bool
 	*/
 	public function __construct($serverloc='us', $locale='en_EN'){
+		// set the correct server location & locale
 		$this->_config['serverloc']	= ($serverloc != '') ? $serverloc : 'en_EN';
 		$this->_config['locale']	= $locale;
 		$this->setApiUrl($this->_config['serverloc']);
-		$this->_config['client_id']		= (defined('GAME_IMPORTER_CLIENTID')) ? GAME_IMPORTER_CLIENTID : ((class_exists('registry')) ? registry::register('game')->get_import_apikey('game_importer_client_id') : '');
+
+		// the client id & secret
+		$this->_config['client_id']		= (defined('GAME_IMPORTER_CLIENTID')) ? GAME_IMPORTER_CLIENTID : ((class_exists('registry')) ? registry::register('game')->get_import_apikey('game_importer_clientid') : '');
 		$this->_config['client_secret']	= (defined('GAME_IMPORTER_CLIENTSECRET')) ? GAME_IMPORTER_CLIENTSECRET : ((class_exists('registry')) ? registry::register('game')->get_import_apikey('game_importer_clientsecret') : '');
 	}
 
@@ -183,6 +185,12 @@ class bnet_armory extends gen_class {
 		return null;
 	}
 
+	/**
+	* Debug function
+	*
+	* @param $strValue		String Value
+	* @return none
+	*/
 	private function _debug($strValue){
 		if(class_exists('plus_debug_logger')){
 			if(!$this->pdl->type_known('bnet_armory')) $this->pdl->register_type('bnet_armory', null, null, array(2,3,4));
@@ -221,35 +229,72 @@ class bnet_armory extends gen_class {
 		}
 	}
 
+	/**
+	* Fetch the token data with client credentials from API via OAUTH
+	*
+	* @return string json token data
+	*/
 	private function get_access_token(){
-		$tokenurl 	= $this->_config['oauthurl'].'token?grant_type=client_credentials&client_id='.$this->_config['client_id'].'&client_secret='.$this->_config['client_secret'];
-		#$json		= $this->get_CachedData('client_token', $force);
-		$json		= $this->read_url($tokenurl);
-		$this->set_CachedData($json, 'client_token');
+		$json		= $this->get_CachedData('client_token_'.$this->_config['client_id'], $force);
+		if(!$json && ($force)){
+			// the OAUTH URL to receive the token, read the data
+			$tokenurl 	= $this->_config['oauthurl'].'token?grant_type=client_credentials&client_id='.$this->_config['client_id'].'&client_secret='.$this->_config['client_secret'];
+			$json		= $this->read_url($tokenurl);
+			$this->set_CachedData($json, 'client_token_'.$this->_config['client_id']);
+		}
+
+		// decode & check for errors
 		$tokendata	= json_decode($json, true);
-		$errorchk	= $this->CheckIfError($chardata);
+		$errorchk	= $this->CheckIfError($tokendata);
 		return (!$errorchk) ? $tokendata: $errorchk;
 	}
 
+	/**
+	* Check if the token is still valid and set it to config var
+	*
+	* @return string token data
+	*/
 	public function check_access_tocken(){
-		if(!$this->_config['access_token_ts'] || ($this->_config['access_token_ts'] < time()) || !$this->_config['access_token']){
+		// load the cached data
+		$client_token_ts				= $this->get_CachedData('client_token_ts_'.$this->_config['client_id']);
+		$this->_config['access_token']	= $this->get_CachedData('client_token_id_'.$this->_config['client_id']);
+
+		// check if the token is available and still valid
+		if(!isset($client_token_ts) || $client_token_ts < 1 || ($client_token_ts > 0 && $client_token_ts < time()) || !$this->_config['access_token']){
+			// fetch the token data from API
 			$tokendata = $this->get_access_token();
+
+			// Save the tokens to cache & _config array
 			$this->_config['access_token']		= isset($tokendata['access_token']) ? $tokendata['access_token'] : false;
-			$this->_config['access_token_ts']	= isset($tokendata['expires_in']) ? time() + $tokendata['expires_in'] : time();
+			$this->set_CachedData((isset($tokendata['access_token']) ? $tokendata['access_token'] : false), 'client_token_id_'.$this->_config['client_id']);
+			$this->set_CachedData((isset($tokendata['expires_in']) ? time() + $tokendata['expires_in'] : time()), 'client_token_ts_'.$this->_config['client_id']);
 		}
-		#d($tokendata);
-		//d($this->_config);
 		return $tokendata;
 	}
 
+	/**
+	* Get the server location
+	*
+	* @return string server location
+	*/
 	public function getServerLoc(){
 		return $this->serverlocs;
 	}
 
+	/**
+	* Get the bnet armory class loader version
+	*
+	* @return string version
+	*/
 	public function getVersion(){
 		return $this->version.((preg_match('/\d+/', $this->build, $match))? '#'.$match[0] : '');
 	}
 
+	/**
+	* GEt the profile URL
+	*
+	* @return string URL
+	*/
 	public function getProfileULR($type='char'){
 		if($type=='char'){
 			return str_replace('{locale}', $this->_config['locale'], self::profileurlChar);
@@ -375,7 +420,7 @@ class bnet_armory extends gen_class {
 		$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
 
 		if(!$img_charicon && ($forceUpdateAll || ($this->chariconUpdates < $this->_config['maxChariconUpdates']))){
-			$this->set_CachedData($this->read_url($this->_config['charImageURL'].'character/'.$chardata['thumbnail']), $cached_img, true);
+			$this->set_CachedData($this->read_url($this->_config['charImageURL'].$chardata['thumbnail']), $cached_img, true);
 			$img_charicon	= $this->get_CachedData($cached_img, false, true);
 			$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
 			$this->chariconUpdates++;
@@ -415,7 +460,7 @@ class bnet_armory extends gen_class {
 		$cached_img	= str_replace(array('/', '-'), '_', 'image_characterImage_'.$this->_config['serverloc'].'_'.$imgfile);
 		$img_charicon	= $this->get_CachedData($cached_img, false, true, false, true);
 		if(!$img_charicon || $forceUpdateAll){
-			$this->set_CachedData(   $this->read_url($this->_config['charImageURL'].'character/'.$imgfile), $cached_img, true);
+			$this->set_CachedData(   $this->read_url($this->_config['charImageURL'].$imgfile), $cached_img, true);
 			$img_charicon	= $this->get_CachedData($cached_img, false, true, false,true);
 		}
 
