@@ -225,6 +225,8 @@
 		.raideventicon.id8440 { background-position:  -2318px 0; }
 		.raideventicon.id8524 { background-position:  -2379px 0; }
 		.raideventicon.id8638 { background-position:  -2440px 0; }
+		.raideventicon.id9389 { background-position:  -2501px 0; }
+		.raideventicon.id10076 { background-position:  -2562px 0; }
 
 		#wow_icons_left .q img, #wow_icons_right .q img, #wow_icons_bottom_right .q img, #wow_icons_bottom_left .q img {
 			border: 1px solid #ffd100;
@@ -314,7 +316,7 @@
 .Media-icon {
     display: inline-block;
 }
-	
+
 .wow-health-value {
 	text-transform: uppercase;
 	padding: 3px;
@@ -471,7 +473,7 @@ width:24px;
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/warcraftlogs.png',
 					'name'	=> 'Warcraftlogs',
 					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'warcraftlogs')
-			),		
+			),
 		);
 
 		$this->jquery->Tab_header('talent_tabs');
@@ -495,16 +497,16 @@ width:24px;
 
 		// talents
 		$a_talents = $this->game->callFunc('talents', array($chardata));
-		
+
 		$arrSelectedTalents = array();
 
 		foreach ($a_talents as $id_talents => $v_talents){
 			if(count($v_talents['talents']) === 0) continue;
-			
+
 			if(($v_talents['selected'] == '1')){
 				$arrSelectedTalents = $v_talents;
 			}
-			
+
 			$this->tpl->assign_block_vars('talents', array(
 				'ID'			=> $id_talents,
 				'SELECTED'		=> ($v_talents['selected'] == '1') ? true : false,
@@ -524,7 +526,7 @@ width:24px;
 				));
 			}
 		}
-		
+
 		//Calculate Infos to talents link
 		//numbers
 		$numbers = $arrSelectedTalents['calcTalent'];
@@ -534,18 +536,18 @@ width:24px;
 			$char = (int)$numbers[$i];
 			$newNumbers .= (string)$char+1;
 		}
-		
+
 		$arrSelectedTalents['calcTalent'] = $newNumbers;
 		$strFirstTalentIcon = $arrSelectedTalents['background'];
 		$strFilename = pathinfo($strFirstTalentIcon, PATHINFO_FILENAME);
 		$arrParts = explode('-', $strFilename);
 		$arrSelectedTalents['class'] = $arrParts[1];
 		$arrSelectedTalents['type'] = $arrParts[2];
-		
+
 		// talents & professions
 		$this->tpl->assign_array('bnetlinks',	$this->game->obj['armory']->a_bnlinks(unsanitize($member['name']),unsanitize($servername), $chardata['guild']['name'], $arrSelectedTalents));
 		$this->tpl->assign_array('items',		$items);
-		
+
 
 		// professions
 		$a_professions = $this->game->callFunc('professions', array($chardata));
@@ -611,7 +613,7 @@ width:24px;
 		}
 
 		// item icons
-		
+
 		foreach ($items as $items_pos=>$v_items){
 			foreach ($v_items as $slots){
 				$this->tpl->assign_block_vars('itemicons_'.$items_pos, array(
@@ -681,9 +683,9 @@ width:24px;
 		// achievements
 		$a_achievements = $this->game->callFunc('parseCharAchievementOverview', array($chardata));
 		foreach ($a_achievements as $id_achievements => $v_achievements){
-			
+
 			$strCategory = $this->game->obj['armory']->achievementIDMapping($id_achievements);
-			
+
 			$this->tpl->assign_block_vars('achievements', array(
 				'NAME'	=> $v_achievements['name'],
 				'BAR'	=> $this->jquery->progressbar('guildachievs_'.$id_achievements, 0, array('completed' => $v_achievements['completed'], 'total' => $v_achievements['total'], 'text' => '%progress% (%percentage%)')),
@@ -719,14 +721,14 @@ width:24px;
 			'POWER_VALUE'			=> $chardata['stats']['power'],
 			'POWER_TYPE'			=> $chardata['stats']['powerType'],
 			'POWER_NAME'			=> $this->game->glang('uc_bar_'.$chardata['stats']['powerType']),
-				
+
 			'INTELLECT_VALUE'		=> $chardata['stats']['int'],
 			'STAMINA_VALUE'			=> $chardata['stats']['sta'],
 			'SPELCRIT_VALUE'		=> round($chardata['stats']['spellCrit'], 0).'%',
 			'HASTE_VALUE'			=> round($chardata['stats']['hasteRatingPercent'], 0).'%',
 			'MASTERY_VALUE'			=> round($chardata['stats']['mastery'], 0). '%',
 			'VERSATILITY_VALUE'		=> round($chardata['stats']['versatilityDamageDoneBonus'], 0).'%',
-			
+
 			'CRIT_RATING'			=> $chardata['stats']['critRating'],
 			'HASTE_RATING'			=> $chardata['stats']['hasteRating'],
 			'MASTERY_RATING'		=> $chardata['stats']['masteryRating'],
@@ -755,7 +757,7 @@ width:24px;
 				'BAR'			=> $v_professions['progressbar'],
 			));
 		}
-		
+
 		$this->tpl->assign_vars(array(
 			'ARMORY'				=> 0,
 			'CHARDATA_GUILDREALM'	=> $servername,

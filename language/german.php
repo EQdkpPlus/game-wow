@@ -388,6 +388,9 @@ $german_array = array(
 		'bfa_uldir_normal'				=> 'Uldir Normal',
 		'bfa_uldir_heroic'				=> 'Uldir Heroisch',
 		'bfa_uldir_mythic'				=> 'Uldir Mythisch (20)',
+		'bfa_bod_normal'				=> 'Schlacht um Dazar\'alor Normal',
+		'bfa_bod_heroic'				=> 'Schlacht um Dazar\'alor Heroisch',
+		'bfa_bod_mythic'				=> 'Schlacht um Dazar\'alor Mythisch (20)',
 
 		'char_news'						=> 'Char News',
 		'no_armory'						=> 'Es konnten keine gültigen Daten für diesen Charakter geladen werden. Die battle.net API meldet folgenden Fehler: "%s".',
