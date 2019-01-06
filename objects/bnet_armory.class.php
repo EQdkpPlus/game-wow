@@ -236,7 +236,7 @@ class bnet_armory extends gen_class {
 	*/
 	private function get_access_token(){
 		$json		= $this->get_CachedData('client_token_'.$this->_config['client_id'], $force);
-		if(!$json && ($force)){
+		if(!$json || ($force)){
 			// the OAUTH URL to receive the token, read the data
 			$tokenurl 	= $this->_config['oauthurl'].'token?grant_type=client_credentials&client_id='.$this->_config['client_id'].'&client_secret='.$this->_config['client_secret'];
 			$json		= $this->read_url($tokenurl);
