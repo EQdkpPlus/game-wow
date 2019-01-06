@@ -206,7 +206,7 @@ class charImporter extends page_generic {
 		}
 
 		die(json_encode(array(
-			'image'		=> $charicon,
+			'image'		=> ($charicon == "") ? $this->server_path.'images/global/avatar-default.svg' : $charicon,
 			'name'		=> $charname,
 			'realm'		=> $servername,
 			'success'	=> $successmsg,
