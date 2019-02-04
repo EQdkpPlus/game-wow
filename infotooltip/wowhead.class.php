@@ -68,7 +68,7 @@ if(!class_exists('wowhead')) {
 			$item_encoded_name = $encoded_name;
 			$item_encoded_name = str_replace("%C3%", "%C3%20%", $item_encoded_name);
 
-			$url = 'http://'.$lang_prefix.'.wowhead.com/item='.$item_encoded_name.'&xml';
+			$url = 'https://'.$lang_prefix.'.wowhead.com/item='.$item_encoded_name.'&xml';
 			$this->pdl->log('infotooltip', 'Search for ItemID at '.$url);
 			$item_data = $this->puf->fetch($url);
 
@@ -80,14 +80,17 @@ if(!class_exists('wowhead')) {
 			}
 
 			//Use normal search
-			$url = 'http://'.$lang_prefix.'.wowhead.com/search?q='.$encoded_name;
-			$search_data = $this->puf->fetch($url);
-			$arrSearchMatches = array();
-			preg_match_all("/\"id\":([0-9]*),\"level\":([0-9]*),\"name\":\"([0-9])".$itemname."\"/", $search_data, $arrSearchMatches);
-			if (isset($arrSearchMatches[1]) && count($arrSearchMatches[1])){
-				$arrUniqueIDs = array_unique($arrSearchMatches[1]);
-				//Take the first one
-				$item_id = $arrUniqueIDs[0];
+			if(!$item_id){
+			
+				$url = 'https://'.$lang_prefix.'.wowhead.com/search?q='.$encoded_name;
+				$search_data = $this->puf->fetch($url);
+				$arrSearchMatches = array();
+				preg_match_all("/\"id\":([0-9]*),\"level\":([0-9]*),\"name\":\"([0-9])".$itemname."\"/", $search_data, $arrSearchMatches);
+				if (isset($arrSearchMatches[1]) && count($arrSearchMatches[1])){
+					$arrUniqueIDs = array_unique($arrSearchMatches[1]);
+					//Take the first one
+					$item_id = $arrUniqueIDs[0];
+				}
 			}
 
 			//search in other languages
@@ -183,34 +186,47 @@ if(!class_exists('wowhead')) {
 				}
 			}
 
-
 			$item = array('id' => $item_id, 'origid' => $orig_id);
 			$url = ($lang == 'en') ? 'www' : $lang;
 
-			$item['link'] = 'http://'.$url.'.wowhead.com/item='.$item['id'].'&power&bonus='.implode(':', $myItemData['bonus']).'&upgd='.$myItemData['upgd_id'].'&lvl='.$myItemData['lvl'].'&ench='.$myItemData['ench'].'&gems='.implode(',',$myItemData['gems']);
-
+			$item['link'] = 'https://'.$url.'.wowhead.com/item='.$item['id'].'&power&bonus='.implode(':', $myItemData['bonus']).'&upgd='.$myItemData['upgd_id'].'&lvl='.$myItemData['lvl'].'&ench='.$myItemData['ench'].'&gems='.implode(',',$myItemData['gems']);
+			
 			$this->pdl->log('infotooltip', 'fetch item-data from: '.$item['link']);
 			$someJS = $this->puf->fetch($item['link'], array('Cookie: cookieLangId="'.$lang.'";'));
+
 			if ($someJS){
 				$arrMatches = array();
-				$intCount = preg_match("/name_(.*):\"(.*)\",(\s*)\"quality\":(.*),(\s*)\"icon\":\"(.*)\",(\s*)\"tooltip_(.*)\":\"(.*)\"/", $someJS, $arrMatches);
-				if ($intCount){
+				
+				//$intCount = preg_match("/name_(.*):\"(.*)\",(\s*)\"quality\":(.*),(\s*)\"icon\":\"(.*)\",(\s*)\"tooltip_(.*)\":\"(.*)\"/", $someJS, $arrMatches);
 
+				$intCount = preg_match('/name_(.*):"(.*)",/', $someJS, $arrMatches);
+				if ($intCount){
 					$item['name'] = htmlentities(stripslashes(json_decode('"'.$arrMatches[2].'"')));
 
-					$html = $arrMatches[9];
+					//Quality
+					$arrMatches = array();
+					preg_match('/quality":(.*),/U', $someJS, $arrMatches);
+					$item['color'] = 'q'.(int)$arrMatches[1];
+					
+					//Icon
+					$arrMatches = array();
+					preg_match('/icon":"(.*)",/U', $someJS, $arrMatches);
+					$item['icon'] = htmlentities($arrMatches[1]);
+					
+					//Tooltip
+					$arrMatches = array();
+					preg_match('/tooltip_(.*)":"(.*)"(,|})/', $someJS, $arrMatches);
+					$html = $arrMatches[2];
+					
 					$template_html = trim(file_get_contents($this->root_path.'games/wow/infotooltip/templates/wow_popup.tpl'));
 					
 					$html = json_decode('"'.$html.'"');
 					$item['html'] = str_replace('{ITEM_HTML}', stripslashes($html), $template_html);
 					$item['lang'] = $lang;
 
-					$item['icon'] = htmlentities($arrMatches[6]);
-					$item['color'] = 'q'.(int)$arrMatches[4];
-
 					//Reset Item ID, because the full name is the one we should store in DB
 					$item['id'] = $orig_id;
-					
+
 					return $item;
 
 				} else {
