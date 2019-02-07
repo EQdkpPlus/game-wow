@@ -29,6 +29,7 @@ class bnet_armory extends gen_class {
 	private $chariconUpdates = 0;
 	private $chardataUpdates = 0;
 	private $ratepersecond	= 100;
+	private $blnOauthChecked = false;
 
 	// new URL
 	const apiurl			= 'https://{region}.api.blizzard.com/';
@@ -243,11 +244,12 @@ class bnet_armory extends gen_class {
 		}
 
 		$json		= $this->get_CachedData('client_token_'.$this->_config['client_id'], $force);
-		if(!$json || ($force)){
+		if((!$json || ($force)) && !$this->blnOauthChecked){
 			// the OAUTH URL to receive the token, read the data
 			$tokenurl 	= $this->_config['oauthurl'].'token?grant_type=client_credentials&client_id='.$this->_config['client_id'].'&client_secret='.$this->_config['client_secret'];
-			$json		= $this->read_url($tokenurl);
+			$json		= $this->read_url($tokenurl, 5);
 			$this->set_CachedData($json, 'client_token_'.$this->_config['client_id']);
+			$this->blnOauthChecked = true;
 		}
 
 		// decode & check for errors
@@ -1280,13 +1282,13 @@ class bnet_armory extends gen_class {
 	* @param $url URL to Download
 	* @return json
 	*/
-	protected function read_url($url) {
+	protected function read_url($url, $intTimeout=false) {
 		if(!is_object($this->puf)) {
 			global $eqdkp_root_path;
 			include_once($eqdkp_root_path.'core/urlfetcher.class.php');
 			$this->puf = new urlfetcher();
 		}
-		return $this->puf->fetch($url);
+		return $this->puf->fetch($url, '', false, $intTimeout);
 	}
 
 	/**
