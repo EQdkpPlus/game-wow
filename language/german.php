@@ -47,7 +47,9 @@ $german_array = array(
 		16	=> 'Leerenelf', // alliance
 		17	=> 'Lichtgeschmiedeter Draenei', // alliance
 		18	=> 'Dunkeleisen-Zwerg', // alliance
-		19	=> 'Zandalari Troll', // horde
+		19	=> 'Orcs der Mag\'har', // horde
+		20 => 'Zandalari Troll', //horde
+		21 => 'Kul Tiran', //alliance
 	),
 	'classes' => array(
 		0	=> 'Unbekannt',

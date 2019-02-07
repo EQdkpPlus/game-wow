@@ -75,8 +75,8 @@ if(!class_exists('wow')) {
 				'decorate'	=> true,
 				'parent'	=> array(
 					'faction' => array(
-						'alliance'	=> array(0,1,2,3,4,9,11,13,16,17,18),
-						'horde'		=> array(0,5,6,7,8,10,12,13,14,15,19),
+						'alliance'	=> array(0,1,2,3,4,9,11,13,16,17,18,21),
+						'horde'		=> array(0,5,6,7,8,10,12,13,14,15,19,20),
 					),
 				),
 			),
@@ -110,7 +110,9 @@ if(!class_exists('wow')) {
 						16	=> array(3,4,11,6,7,9,10), 			// Void Elf
 						17	=> array(3,4,5,6,10), 				// Lightforged Draenei
 						18	=> array(3,5,6,7,8,9,10,11),		// Dark iron Dwarf
-						19	=> array(2,3,4,6,7,8,9,10),			// Zandalari Troll
+						19  => array(3,4,11,6,7,8,10), 			// Mag'har Orc
+						20	=> array(2,3,4,11,5,6,7,8,10),		// Zandalari Troll
+						21  => array(2,3,4,11,6,7,8,10), 		// Kul Tiran
 					),
 				),
 			),

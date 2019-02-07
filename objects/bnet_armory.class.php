@@ -94,7 +94,10 @@ class bnet_armory extends gen_class {
 			'28'	=> 15,		// Highmountain Tauren (horde)
 			'29'	=> 16,		// Void Elf (alliance)
 			'30'	=> 17,		// Lightforged Draenei (alliance)
-
+			'34'	=> 18, 		//Dark Iron Dwarf
+			'36'	=> 19, 		// Mag'har Orc
+			//Missing: Zandalari Troll => 20; race icon also missing
+			//Missing: Kul Tiran => 21; race icon also missing
 		),
 		'gender' => array(
 			'0'		=> 'male',
