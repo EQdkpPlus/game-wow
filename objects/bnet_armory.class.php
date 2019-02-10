@@ -25,7 +25,7 @@ if ( !defined('EQDKP_INC') ){
 
 class bnet_armory extends gen_class {
 
-	private $version		= '8.1.5';
+	private $version		= '8.1.6';
 	private $chariconUpdates = 0;
 	private $chardataUpdates = 0;
 	private $ratepersecond	= 100;
@@ -42,6 +42,7 @@ class bnet_armory extends gen_class {
 	const staticicons		= 'http://{region}.media.blizzard.com/wow/icons/';
 	const tabardrenderurl	= 'http://{region}.battle.net/wow/static/images/guild/tabards/';
 	const profileurlChar	= 'https://worldofwarcraft.com/{locale}/';
+	const profileurlGuild	= 'https://{region}.battle.net/';
 
 	private $_config		= array(
 		'serverloc'				=> 'us',
@@ -316,9 +317,8 @@ class bnet_armory extends gen_class {
 		if($type=='char'){
 			return str_replace('{locale}', $this->_config['locale'], self::profileurlChar);
 		}else{
-			$linkprfx	= str_replace('https://', 'http://', $this->_config['apiUrl']);
-			$linkprfx	= str_replace('.api', '', $linkprfx).$sufix.'/wow/{locale}/';
-			return str_replace('{locale}', substr($this->_config['locale'],0,2), $linkprfx);
+			$tmp_url	= str_replace('{region}', $this->_config['serverloc'], self::profileurlGuild);
+			return str_replace('{locale}', substr($this->_config['locale'],0,2), $tmp_url.'/wow/{locale}/');
 		}
 	}
 
@@ -352,7 +352,7 @@ class bnet_armory extends gen_class {
 			case 'guild-achievements':
 				return $this->getProfileULR('guild').sprintf('guild/%s/%s/achievement', $this->ConvertInput($server, true, true), $this->ConvertInput($guild));break;
 			case 'askmrrobot':
-				return sprintf('https://www.askmrrobot.com/wow/gear/%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
+				return sprintf('https://www.askmrrobot.com/optimizer#%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'raiderio':
 				return sprintf('http://raider.io/characters/%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'wowprogress':
