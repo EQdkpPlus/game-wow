@@ -91,28 +91,28 @@ if(!class_exists('wow')) {
 				'recruitment' => true,
 				'parent'	=> array(
 					'race' => array(
-						0 	=> 'all',							// Unknown
-						1 	=> array(1,3,4,6,7,9,10,11),		// Gnome
-						2 	=> array(1,3,4,5,6,7,9,10,11),		// Human
-						3 	=> array(1,3,4,5,6,7,8,9,10,11),	// Dwarf
-						4 	=> array(1,2,3,4,6,7,10,11,12),		// Night Elf
-						5 	=> array(1,2,3,4,6,7,8,9,10,11),	// Troll
-						6 	=> array(1,3,4,6,7,9,10,11),		// Undead
-						7 	=> array(1,3,4,7,8,9,10,11),		// Orc
-						8 	=> array(1,2,3,5,6,8,10,11),		// Tauren
-						9 	=> array(1,3,4,5,6,8,10,11),		// Draenai
-						10 	=> array(1,3,4,5,6,7,9,10,11,12),	// Blood Elf
-						11 	=> array(1,2,3,4,6,7,9,10),			// Worgen
-						12 	=> array(1,3,4,6,7,8,9,10),			// Goblin
-						13 	=> array(3,4,6,7,8,10,11),			// Pandaren
+						0	=> 'all',							// Unknown
+						1	=> array(1,3,4,6,7,9,10,11),		// Gnome
+						2	=> array(1,3,4,5,6,7,9,10,11),		// Human
+						3	=> array(1,3,4,5,6,7,8,9,10,11),	// Dwarf
+						4	=> array(1,2,3,4,6,7,10,11,12),		// Night Elf
+						5	=> array(1,2,3,4,6,7,8,9,10,11),	// Troll
+						6	=> array(1,3,4,6,7,9,10,11),		// Undead
+						7	=> array(1,3,4,7,8,9,10,11),		// Orc
+						8	=> array(1,2,3,5,6,8,10,11),		// Tauren
+						9	=> array(1,3,4,5,6,8,10,11),		// Draenai
+						10	=> array(1,3,4,5,6,7,9,10,11,12),	// Blood Elf
+						11	=> array(1,2,3,4,6,7,9,10),			// Worgen
+						12	=> array(1,3,4,6,7,8,9,10),			// Goblin
+						13	=> array(3,4,6,7,8,10,11),			// Pandaren
 						14	=> array(3,4,11,6,7,9,10),			// Nightborne
 						15	=> array(2,3,11,8,10),				// Highmountain Tauren
 						16	=> array(3,4,11,6,7,9,10), 			// Void Elf
 						17	=> array(3,4,5,6,10), 				// Lightforged Draenei
 						18	=> array(3,5,6,7,8,9,10,11),		// Dark iron Dwarf
-						19  => array(3,4,11,6,7,8,10), 			// Mag'har Orc
+						19	=> array(3,4,11,6,7,8,10), 			// Mag'har Orc
 						20	=> array(2,3,4,11,5,6,7,8,10),		// Zandalari Troll
-						21  => array(2,3,4,11,6,7,8,10), 		// Kul Tiran
+						21	=> array(2,3,4,11,6,7,8,10), 		// Kul Tiran
 					),
 				),
 			),
@@ -124,18 +124,18 @@ if(!class_exists('wow')) {
 				'recruitment' => true,
 				'parent'	=> array(
 					'class' => array(
-						0 	=> 'all',			// Unknown
-						1 	=> array(0,1,2),	// Death Knight
-						2 	=> array(3,4,5,6),	// Druid
-						3 	=> array(7,8,9),	// Hunter
-						4 	=> array(10,11,12),	// Mage
-						5 	=> array(13,14,15),	// Paladin
-						6 	=> array(16,17,18),	// Priest
-						7 	=> array(19,20,21),	// Rogue
-						8 	=> array(22,23,24),	// Shaman
-						9 	=> array(25,26,27),	// Warlock
-						10 	=> array(28,29,30),	// Warrior
-						11 	=> array(31,32,33),	// Monk
+						0	=> 'all',			// Unknown
+						1	=> array(0,1,2),	// Death Knight
+						2	=> array(3,4,5,6),	// Druid
+						3	=> array(7,8,9),	// Hunter
+						4	=> array(10,11,12),	// Mage
+						5	=> array(13,14,15),	// Paladin
+						6	=> array(16,17,18),	// Priest
+						7	=> array(19,20,21),	// Rogue
+						8	=> array(22,23,24),	// Shaman
+						9	=> array(25,26,27),	// Warlock
+						10	=> array(28,29,30),	// Warrior
+						11	=> array(31,32,33),	// Monk
 						12	=> array(34,35),	// demon hunter
 					),
 				),
@@ -147,18 +147,18 @@ if(!class_exists('wow')) {
 				'decorate'	=> false,
 				'parent'	=> array(
 					'class' => array(
-						0 	=> 'all',			// Unknown
-						1 	=> array(0,1,2),	// Death Knight
-						2 	=> array(3,4,5,6),	// Druid
-						3 	=> array(7,8,9),	// Hunter
-						4 	=> array(10,11,12),	// Mage
-						5 	=> array(13,14,15),	// Paladin
-						6 	=> array(16,17,18),	// Priest
-						7 	=> array(19,20,21),	// Rogue
-						8 	=> array(22,23,24),	// Shaman
-						9 	=> array(25,26,27),	// Warlock
-						10 	=> array(28,29,30),	// Warrior
-						11 	=> array(31,32,33),	// Monk
+						0	=> 'all',			// Unknown
+						1	=> array(0,1,2),	// Death Knight
+						2	=> array(3,4,5,6),	// Druid
+						3	=> array(7,8,9),	// Hunter
+						4	=> array(10,11,12),	// Mage
+						5	=> array(13,14,15),	// Paladin
+						6	=> array(16,17,18),	// Priest
+						7	=> array(19,20,21),	// Rogue
+						8	=> array(22,23,24),	// Shaman
+						9	=> array(25,26,27),	// Warlock
+						10	=> array(28,29,30),	// Warrior
+						11	=> array(31,32,33),	// Monk
 						12	=> array(34,35),	// demon hunter
 					),
 				),
