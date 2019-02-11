@@ -57,7 +57,7 @@ if(!class_exists('wow')) {
 			'mop'		=> array(6125, 6297, 6067, 6622, 6738),
 			'wod'		=> array(6967, 6996, 7545),
 			'leg'		=> array(8026, 8440, 8025, 8524, 8638),
-			'bfa'		=> array(9389, 10076),
+			'bfa'		=> array(9389, 8670),
 		);
 
 		protected $class_dependencies = array(
