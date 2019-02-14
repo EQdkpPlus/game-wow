@@ -418,7 +418,16 @@ class bnet_armory extends gen_class {
 
 		$chardata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($chardata);
-		return (!$errorchk) ? $chardata: $errorchk;
+		if(!$errorchk){
+			if(in_array($this->_config['locale'], array('ru_ru', 'zh_cn', 'zh_tw', 'zh_hk'))){
+				$thumbnaildata = explode("/", $chardata['thumbnail']);
+				if(!empty($thumbnaildata[0])) {
+					$chardata['realm']	= $thumbnaildata[0];
+				}
+			}
+			return $chardata;
+		}
+		return $errorchk;
 	}
 
 	/**

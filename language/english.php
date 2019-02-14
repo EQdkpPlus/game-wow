@@ -354,6 +354,10 @@ $english_array = array(
 	'bfa_bod_normal'	=> 'Battle of Dazar\'alor Normal',
 	'bfa_bod_heroic'	=> 'Battle of Dazar\'alor Heroic',
 	'bfa_bod_mythic'	=> 'Battle of Dazar\'alor Mythic (20)',
+	'bfa_cos_normal'	=> 'Crucible of Storms Normal',
+	'bfa_cos_heroic'	=> 'Crucible of Storms Heroic',
+	'bfa_cos_mythic'	=> 'Crucible of Storms Mythic (20)',
+
 	"char_news" => 'Char News',
 	"no_armory" => 'The data for this char could not be loaded. The battle.net API returned an error: "%s".',
 	"no_realm" => 'To use the whole functionality please enter a valid World of Warcraft game server name in administrator settings.',
