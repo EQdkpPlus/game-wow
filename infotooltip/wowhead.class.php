@@ -73,7 +73,7 @@ if(!class_exists('wowhead')) {
 			$item_data = $this->puf->fetch($url);
 
 			$xml = simplexml_load_string($item_data);
-			if(is_object($xml)) {
+			if(is_object($xml) && !isset($xml->error)) {
 				$item_id = (int)$xml->item->attributes()->id;
 			} else {
 				$this->pdl->log('infotooltip', 'Invalid XML');
