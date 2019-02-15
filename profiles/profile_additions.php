@@ -715,6 +715,7 @@ width:24px;
 			'CHARDATA_GUILDREALM'	=> ($member['servername'] && $member['servername'] != $chardata['guild']['realm']) ? $member['servername'] : $chardata['guild']['realm'],
 			'CHARDATA_POINTS'		=> $chardata['achievementPoints'],
 			'CHARDATA_TITLE'		=> $this->game->obj['armory']->selectedTitle($chardata['titles'], true),
+			'CHARDATA_PROFILEURL'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm_english']), 'char'),
 
 			// Bars
 			'HEALTH_VALUE'			=> $chardata['stats']['health'],
