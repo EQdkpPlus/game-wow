@@ -444,7 +444,7 @@ width:24px;
 	$servername			= ($member_servername != '') ? $member_servername : unsanitize($this->config->get('servername'));
 
 	$chardata			= $this->game->obj['armory']->character(unsanitize($member['name']), $servername);
-
+	
 	if($this->config->get('servername') != '' && $chardata && !isset($chardata['status'])){
 
 		// profilers
@@ -452,27 +452,27 @@ width:24px;
 			1	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/wowicon.png',
 					'name'	=> 'worldofwarcraft.com',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'char')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm_english']), 'char')
 			),
 			2	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/askmrrobot.png',
 					'name'	=> 'AskMrRobot.com',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'askmrrobot')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']), 'askmrrobot')
 			),
 			3	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/wowprogress.png',
 					'name'	=> 'wowprogress.com',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'wowprogress')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']), 'wowprogress')
 			),
 			4	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/raiderio.png',
 					'name'	=> 'Raider.io',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'raiderio')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']), 'raiderio')
 			),
 			5	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/warcraftlogs.png',
 					'name'	=> 'Warcraftlogs',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($servername), 'warcraftlogs')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']), 'warcraftlogs')
 			),
 		);
 
