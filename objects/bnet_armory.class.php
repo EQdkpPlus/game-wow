@@ -1308,7 +1308,7 @@ class bnet_armory extends gen_class {
 			if($arrResponseData['responseBody']){
 				return $arrResponseData['responseBody'];
 			} elseif($arrResponseData['responseCode'] > 400){
-				return '{"status":"nok", "reason": "#'.$arrResponseData['responseCode'].'"}';
+				return '{"status":"nok", "reason": "Error #'.$arrResponseData['responseCode'].'"}';
 			}
 		}
 		
