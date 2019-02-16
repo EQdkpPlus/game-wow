@@ -561,6 +561,7 @@ class bnet_armory extends gen_class {
 		}
 		$chardata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($chardata);
+		
 		return (!$errorchk) ? $chardata: $errorchk;
 	}
 
@@ -1299,7 +1300,19 @@ class bnet_armory extends gen_class {
 			include_once($eqdkp_root_path.'core/urlfetcher.class.php');
 			$this->puf = new urlfetcher();
 		}
-		return $this->puf->fetch($url, '', false, $intTimeout);
+		
+		$mixResponse = $this->puf->fetch($url, '', false, $intTimeout);
+		
+		if($mixResponse === false && method_exists($this->puf, 'fetch_last_response')){
+			$arrResponseData = $this->puf->fetch_last_response();
+			if($arrResponseData['responseBody']){
+				return $arrResponseData['responseBody'];
+			} elseif($arrResponseData['responseCode'] > 400){
+				return '{"status":"nok", "reason": "#'.$arrResponseData['responseCode'].'"}';
+			}
+		}
+		
+		return $mixResponse;
 	}
 
 	/**
