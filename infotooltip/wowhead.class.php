@@ -199,9 +199,9 @@ if(!class_exists('wowhead')) {
 				
 				//$intCount = preg_match("/name_(.*):\"(.*)\",(\s*)\"quality\":(.*),(\s*)\"icon\":\"(.*)\",(\s*)\"tooltip_(.*)\":\"(.*)\"/", $someJS, $arrMatches);
 
-				$intCount = preg_match('/name_(.*):"(.*)",/', $someJS, $arrMatches);
+				$intCount = preg_match('/name":"(.*)",/U', $someJS, $arrMatches);
 				if ($intCount){
-					$item['name'] = htmlentities(stripslashes(json_decode('"'.$arrMatches[2].'"')));
+					$item['name'] = htmlentities(stripslashes(json_decode('"'.$arrMatches[1].'"')));
 
 					//Quality
 					$arrMatches = array();
@@ -215,8 +215,8 @@ if(!class_exists('wowhead')) {
 					
 					//Tooltip
 					$arrMatches = array();
-					preg_match('/tooltip_(.*)":"(.*)"(,|})/', $someJS, $arrMatches);
-					$html = $arrMatches[2];
+					preg_match('/tooltip":"(.*)"(,|})/', $someJS, $arrMatches);
+					$html = $arrMatches[1];
 					
 					$template_html = trim(file_get_contents($this->root_path.'games/wow/infotooltip/templates/wow_popup.tpl'));
 					
@@ -226,7 +226,7 @@ if(!class_exists('wowhead')) {
 
 					//Reset Item ID, because the full name is the one we should store in DB
 					$item['id'] = $orig_id;
-
+					
 					return $item;
 
 				} else {
