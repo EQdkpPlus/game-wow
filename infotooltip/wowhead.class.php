@@ -189,8 +189,8 @@ if(!class_exists('wowhead')) {
 			$item = array('id' => $item_id, 'origid' => $orig_id);
 			$url = ($lang == 'en') ? 'www' : $lang;
 
-			$item['link'] = 'https://'.$url.'.wowhead.com/item='.$item['id'].'&power&bonus='.implode(':', $myItemData['bonus']).'&upgd='.$myItemData['upgd_id'].'&lvl='.$myItemData['lvl'].'&ench='.$myItemData['ench'].'&gems='.implode(',',$myItemData['gems']);
-			
+			$item['link'] = 'https://'.$url.'.wowhead.com/tooltip/item/'.$item['id'].'&json&power&bonus='.implode(':', $myItemData['bonus']).'&upgd='.$myItemData['upgd_id'].'&lvl='.$myItemData['lvl'].'&ench='.$myItemData['ench'].'&gems='.implode(',',$myItemData['gems']);
+						
 			$this->pdl->log('infotooltip', 'fetch item-data from: '.$item['link']);
 			$someJS = $this->puf->fetch($item['link'], array('Cookie: cookieLangId="'.$lang.'";'));
 
@@ -198,7 +198,7 @@ if(!class_exists('wowhead')) {
 				$arrMatches = array();
 				
 				//$intCount = preg_match("/name_(.*):\"(.*)\",(\s*)\"quality\":(.*),(\s*)\"icon\":\"(.*)\",(\s*)\"tooltip_(.*)\":\"(.*)\"/", $someJS, $arrMatches);
-
+				
 				$intCount = preg_match('/name":"(.*)",/U', $someJS, $arrMatches);
 				if ($intCount){
 					$item['name'] = htmlentities(stripslashes(json_decode('"'.$arrMatches[1].'"')));
@@ -229,6 +229,7 @@ if(!class_exists('wowhead')) {
 					
 					return $item;
 
+					
 				} else {
 					$this->pdl->log('infotooltip', 'no match found');
 					$item['baditem'] = true;
