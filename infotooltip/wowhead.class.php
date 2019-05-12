@@ -190,7 +190,7 @@ if(!class_exists('wowhead')) {
 			$url = ($lang == 'en') ? 'www' : $lang;
 
 			$item['link'] = 'https://'.$url.'.wowhead.com/tooltip/item/'.$item['id'].'&json&power&bonus='.implode(':', $myItemData['bonus']).'&upgd='.$myItemData['upgd_id'].'&lvl='.$myItemData['lvl'].'&ench='.$myItemData['ench'].'&gems='.implode(',',$myItemData['gems']);
-						
+			
 			$this->pdl->log('infotooltip', 'fetch item-data from: '.$item['link']);
 			$someJS = $this->puf->fetch($item['link'], array('Cookie: cookieLangId="'.$lang.'";'));
 
@@ -215,12 +215,17 @@ if(!class_exists('wowhead')) {
 					
 					//Tooltip
 					$arrMatches = array();
-					preg_match('/tooltip":"(.*)"(,|})/', $someJS, $arrMatches);
-					$html = $arrMatches[1];
+					preg_match('/tooltip":"(.*)"(,"|})/', $someJS, $arrMatches);
+					$ahtml = $arrMatches[1];
 					
 					$template_html = trim(file_get_contents($this->root_path.'games/wow/infotooltip/templates/wow_popup.tpl'));
 					
-					$html = json_decode('"'.$html.'"');
+					$html = json_decode('"'.$ahtml.'"');
+					if($html == NULL){
+						$html = preg_replace('/","(.*)/', "", $ahtml);
+						$html = json_decode('"'.$html.'"');
+					}
+					
 					$item['html'] = str_replace('{ITEM_HTML}', stripslashes($html), $template_html);
 					$item['lang'] = $lang;
 
