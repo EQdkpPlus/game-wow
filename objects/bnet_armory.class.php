@@ -25,42 +25,42 @@ if ( !defined('EQDKP_INC') ){
 
 class bnet_armory extends gen_class {
 
-	private $version		= '8.1.6';
-	private $chariconUpdates = 0;
-	private $chardataUpdates = 0;
-	private $ratepersecond	= 100;
-	private $blnOauthChecked = false;
+	private $version			= '20190520-1';
+	private $chariconUpdates	= 0;
+	private $chardataUpdates	= 0;
+	private $ratepersecond		= 100;
+	private $blnOauthChecked	= false;
 
 	// new URL
-	const apiurl			= 'https://{region}.api.blizzard.com/';
-	const oauthurl			= 'https://{region}.battle.net/oauth/';
-	const charimageurl		= 'http://render-{region}.worldofwarcraft.com/character/';
+	const apiurl				= 'https://{region}.api.blizzard.com/';
+	const oauthurl				= 'https://{region}.battle.net/oauth/';
+	const charimageurl			= 'http://render-{region}.worldofwarcraft.com/character/';
 
 	// old URL to be checked
-	const staticrenderurl	= 'http://{region}.battle.net/static-render/';		// http://us.battle.net/forums/en/bnet/topic/20748205383
-	const staticimages		= 'http://{region}.battle.net/wow/static/images/';
-	const staticicons		= 'http://{region}.media.blizzard.com/wow/icons/';
-	const tabardrenderurl	= 'http://{region}.battle.net/wow/static/images/guild/tabards/';
-	const profileurlChar	= 'https://worldofwarcraft.com/{locale}/';
-	const profileurlGuild	= 'https://{region}.battle.net/';
+	const staticrenderurl		= 'http://{region}.battle.net/static-render/';		// http://us.battle.net/forums/en/bnet/topic/20748205383
+	const staticimages			= 'http://{region}.battle.net/wow/static/images/';
+	const staticicons			= 'http://{region}.media.blizzard.com/wow/icons/';
+	const tabardrenderurl		= 'http://{region}.battle.net/wow/static/images/guild/tabards/';
+	const profileurlChar		= 'https://worldofwarcraft.com/{locale}/';
+	const profileurlGuild		= 'https://{region}.battle.net/';
 
-	private $_config		= array(
-		'serverloc'				=> 'us',
-		'locale'				=> 'en',
-		'caching'				=> true,
-		'image-caching'			=> true,
-		'caching_time'			=> 24,
-		'apiUrl'				=> '',
-		'apiRenderUrl'			=> '',
-		'apiTabardRenderUrl'	=> '',
-		'maxChariconUpdates'	=> 1,
-		'maxChardataUpdates'	=> 1,
-		'client_id'				=> '',
-		'client_secret'			=> '',
-		'access_token'			=> false,
+	private $_config			= array(
+		'serverloc'					=> 'us',
+		'locale'					=> 'en',
+		'caching'					=> true,
+		'image-caching'				=> true,
+		'caching_time'				=> 24,
+		'apiUrl'					=> '',
+		'apiRenderUrl'				=> '',
+		'apiTabardRenderUrl'		=> '',
+		'maxChariconUpdates'		=> 1,
+		'maxChardataUpdates'		=> 1,
+		'client_id'					=> '',
+		'client_secret'				=> '',
+		'access_token'				=> false,
 	);
 
-	protected $convert		= array(
+	protected $convert			= array(
 		'classes' => array(
 			1		=> '10',	// warrior
 			2		=> '5',		// paladin
@@ -157,14 +157,14 @@ class bnet_armory extends gen_class {
 		),
 	);
 
-	private $serverlocs		= array(
+	private $serverlocs			= array(
 		'eu'	=> 'EU',
 		'us'	=> 'US',
 		'kr'	=> 'KR',
 		'tw'	=> 'TW',
 		'sea'	=> 'SEA',
 	);
-	private $converts		= array();
+	private $converts			= array();
 
 	/**
 	* Initialize the Class
@@ -321,6 +321,10 @@ class bnet_armory extends gen_class {
 			$tmp_url	= str_replace('{region}', $this->_config['serverloc'], self::profileurlGuild);
 			return str_replace('{locale}', substr($this->_config['locale'],0,2), $tmp_url.'/wow/{locale}/');
 		}
+	}
+
+	public function getWoWNamespace($namespace="profile", $regionality=true){
+		return ($regionality) ? $namespace.'-'.$this->_config['serverloc'] : $namespace;
 	}
 
 	/**
