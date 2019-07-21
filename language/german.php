@@ -396,6 +396,9 @@ $german_array = array(
 		'bfa_cos_normal'				=> 'Tiegel der Stürme Normal',
 		'bfa_cos_heroic'				=> 'Tiegel der Stürme Heroisch',
 		'bfa_cos_mythic'				=> 'Tiegel der Stürme Mythisch (20)',
+		'bfa_tep_normal'				=> 'Der Ewige Palast Normal',
+		'bfa_tep_heroic'				=> 'Der Ewige Palast Heroisch',
+		'bfa_tep_mythic'				=> 'Der Ewige Palast Mythisch (20)',
 
 		'char_news'						=> 'Char News',
 		'no_armory'						=> 'Es konnten keine gültigen Daten für diesen Charakter geladen werden. Die battle.net API meldet folgenden Fehler: "%s".',

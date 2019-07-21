@@ -27,7 +27,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 
 		protected static $apiLevel	= 20;
-		public $version				= '8.1.23.7'; //Version for EQdkp Plus 2.3
+		public $version				= '8.2.23.1'; //Version for EQdkp Plus 2.3
 		protected $this_game		= 'wow';
 		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
@@ -57,7 +57,7 @@ if(!class_exists('wow')) {
 			'mop'		=> array(6125, 6297, 6067, 6622, 6738),
 			'wod'		=> array(6967, 6996, 7545),
 			'leg'		=> array(8026, 8440, 8025, 8524, 8638),
-			'bfa'		=> array(9389, 8670),
+			'bfa'		=> array(9389, 8670, 10057, 10425),
 		);
 
 		protected $class_dependencies = array(
@@ -258,6 +258,9 @@ if(!class_exists('wow')) {
 			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_cos_normal'), 0, "cos.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_cos_heroic'), 0, "cos.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_cos_mythic'), 0, "cos.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_tep_normal'), 0, "tep.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_tep_heroic'), 0, "tep.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_tep_mythic'), 0, "tep.png");
 
 			// Legion events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_en_normal'), 0, "en.png");
