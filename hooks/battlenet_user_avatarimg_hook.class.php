@@ -40,7 +40,6 @@ if (!class_exists('battlenet_user_avatarimg_hook')){
 			$avatarimg = $arrParams['avatarimg'];
 			$strAvatarType = $arrParams['avatartype'];
 			$blnDefault= $arrParams['default'];
-			if($strAvatarType != 'wow') return array('wow' => '');
 			
 			// get the main char of the user
 			$mainchar	= $this->pdh->get('member', 'mainchar', array($user_id));
