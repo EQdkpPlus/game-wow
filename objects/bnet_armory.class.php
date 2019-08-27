@@ -281,7 +281,7 @@ class bnet_armory extends gen_class {
 		// check if the token is available and still valid
 		if(!isset($client_token_ts) || $client_token_ts < 1 || ($client_token_ts > 0 && $client_token_ts < time()) || !$this->_config['access_token']){
 			// fetch the token data from API
-			$tokendata = $this->get_access_token();
+			$tokendata = $this->get_access_token(true);
 
 			// Save the tokens to cache & _config array
 			$this->_config['access_token']		= isset($tokendata['access_token']) ? $tokendata['access_token'] : false;
