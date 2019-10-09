@@ -55,9 +55,9 @@ $english_array = array(
 	18 => 'Dark Iron Dwarf', // Alliance
 	19 => 'Mag\'har Orc', // Horde
 	20 => 'Zandalari Troll', // Horde
-	21 => 'Kul Tiran' // Alliance
-	22 => 'Vulpera' // Horde
-	23 => 'Mechagnome' // Alliance
+	21 => 'Kul Tiran', // Alliance
+	22 => 'Vulpera', // Horde
+	23 => 'Mechagnome', // Alliance
 	),
 	"classes" => array(
 	0 => 'Unknown',
