@@ -24,7 +24,7 @@ if(!class_exists('wowhead')) {
 
 		public static $shortcuts = array('puf' => 'urlfetcher');
 
-		public $av_langs = array('en' => 'en_US', 'de' => 'de_DE', 'fr' => 'fr_FR', 'ru' => 'ru_RU', 'es' => 'es_ES');
+		public $av_langs = array('en' => 'en_US', 'de' => 'de_DE', 'fr' => 'fr_FR', 'ru' => 'ru_RU', 'es' => 'es_ES', 'it' => 'it_IT', 'pt' => 'pt_PT', 'ko' => 'KO', 'cn' => 'CN');
 
 		public $settings = array(
 			'itt_icon_loc' => array(
