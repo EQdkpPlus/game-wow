@@ -23,7 +23,17 @@
 	$this->tpl->add_css("
 		#guild_header_wrap {
 			width:100%;
+margin-top: 20px;
 		}
+		
+		#guild_emblem { 
+			height:120px;
+			margin:-20px 0 0 5px;
+			float:left;
+		}
+		#guild_emblem img{
+			height:100px;
+		} 
 		#guild_header_banner_alliance{
 			width:100%;
 			height:106px;
@@ -47,7 +57,6 @@
 		
 		#guild_name {
 			font-size: 30px; 
-			color: #fff;
 			position:relative; 
 			top:20px; 
 			left:15px;
@@ -172,6 +181,8 @@ if($this->config->get('servername') && $this->config->get('uc_server_loc')){
 
 $faction = ($this->config->get('faction')) ? $this->config->get('faction') : 'alliance';
 
+#$strTabard = $this->game->obj['armory']->guildTabard($guilddata['emblem'], $guilddata['side'], $guilddata['name'], 180);
+
 $this->tpl->assign_vars(array(
 		'FACTION'		=> $faction,
 		'REALM'			=> $this->config->get('servername'),
@@ -180,7 +191,7 @@ $this->tpl->assign_vars(array(
 		'ACHIEV_POINTS'	=> (isset($guilddata['achievementPoints'])) ? $guilddata['achievementPoints'] : 0,
 		'L_SKILLS'		=> $this->game->glang('skills'),
 		'L_ACHIEVEMENT_POINTS'	=> $this->game->glang('achievement_points'),
-		'TABARD'		=> ($guilddata) ? $this->game->obj['armory']->guildTabard($guilddata['emblem'], $guilddata['side'], $guilddata['name'], 180) : $this->server_path.'games/wow/guild/tabard_'.$faction.'.png',
+		'TABARD'		=> $this->server_path.'games/wow/guild/tabard_'.$faction.'.png',
 ));
 
 $this->hptt_page_settings = $this->pdh->get_page_settings('roster', 'hptt_roster');
@@ -290,4 +301,7 @@ if ($this->config->get('roster_classorrole') == 'role'){
 	$this->build_class_block($rosterClasses['data'], $rosterClasses['todisplay'], $arrRosterMembers);
 }
 
+$this->tpl->assign_vars(array(
+		'MEMBER_COUNT'		=> count($arrMembers),
+));
 ?>
