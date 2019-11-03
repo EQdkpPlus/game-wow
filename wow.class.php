@@ -379,15 +379,6 @@ if(!class_exists('wow')) {
 			}
 		}
 
-		public function decorate_classes($class_id, $profile=array(), $size=16, $pathonly=false) {
-			$big = '_b';
-			if(is_file($this->root_path.'games/'.$this->this_game.'/icons/classes/'.$class_id.$big.'.png')){
-				$icon_path = $this->server_path.'games/'.$this->this_game.'/icons/classes/'.$class_id.$big.'.png';
-				return ($pathonly) ? $icon_path : '<img src="'.$icon_path.'" height="'.$size.'" alt="class '.$class_id.'" class="'.$this->this_game.'_classicon classicon gameicon'.'" title="'.$this->game->get_name('classes', $class_id).'" />';
-			}
-			return false;
-		}
-
 		public function profilefields(){
 			// Category 'character' is a fixed one! All others are created dynamically!
 			$this->load_type('professions', array($this->lang));
