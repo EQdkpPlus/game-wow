@@ -79,9 +79,9 @@ if(!function_exists('wowautoinviteexport')){
 		unset($a_json);
 
 		registry::register('template')->add_js('
-			genOutput()
-			$("input[type=\'checkbox\'], #raidgroup").change(function (){
-				genOutput()
+			genOutput();
+			$("input[type=\'checkbox\'], #raidgroup").on("change", function (){
+				genOutput();
 			});
 		', "docready");
 
@@ -99,10 +99,10 @@ if(!function_exists('wowautoinviteexport')){
 			var attendee_data = '.$json.';
 			output = "";
 
-			cb_guests		= ($("#cb_guests").attr("checked")) ? true : false;
-			cb_confirmed	= ($("#cb_confirmed").attr("checked")) ? true : false;
-			cb_signedin		= ($("#cb_signedin").attr("checked")) ? true : false;
-			cb_backup		= ($("#cb_backup").attr("checked")) ? true : false;
+			cb_guests		= ($("#cb_guests").prop("checked")) ? true : false;
+			cb_confirmed	= ($("#cb_confirmed").prop("checked")) ? true : false;
+			cb_signedin		= ($("#cb_signedin").prop("checked")) ? true : false;
+			cb_backup		= ($("#cb_backup").prop("checked")) ? true : false;
 
 			$.each(attendee_data, function(i, item) {
 				if((cb_guests && item.guest == true) || (cb_confirmed && !item.guest && item.status == 0) || (cb_signedin && item.status == 1) || (cb_backup && item.status == 3)){
@@ -114,7 +114,7 @@ if(!function_exists('wowautoinviteexport')){
 			$("#attendeeout").html(output);
 		}
 			');
-			if(is_array($raid_groups)){
+			if(is_array($raid_groups) && count($raid_groups)){
 				$text  = "<dt><label>".registry::fetch('user')->lang('raidevent_export_raidgroup')."</label></dt>
 								<dd>
 									".(new hdropdown('raidgroup', array('options' => $raid_groups, 'value' => 0, 'id' => 'raidgroup')))->output()."
