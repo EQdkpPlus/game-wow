@@ -360,6 +360,9 @@ $english_array = array(
 	'bfa_tep_normal'	=> 'The Eternal Palace Normal',
 	'bfa_tep_heroic'	=> 'The Eternal Palace Heroic',
 	'bfa_tep_mythic'	=> 'The Eternal Palace Mythic (20)',
+	'bfa_twc_normal'	=> 'Ny\'alotha, the Waking City Normal',
+	'bfa_twc_heroic'	=> 'Ny\'alotha, the Waking City Heroic',
+	'bfa_twc_mythic'	=> 'Ny\'alotha, the Waking City Mythic (20)',
 
 	"char_news" => 'Char News',
 	"no_armory" => 'The data for this char could not be loaded. The battle.net API returned an error: "%s".',
