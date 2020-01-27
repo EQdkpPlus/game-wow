@@ -39,11 +39,11 @@ class update_83232 extends sql_update_task {
 		$this->langs = array(
 			'english' => array(
 				'update_83232'		=> 'WoW Game 8.3.2',
-				'update_function'	=> 'Add events for the eternal palace',
+				'update_function'	=> 'Add events for the awakened city',
 			),
 			'german' => array(
 				'update_83232'		=> 'WoW Game 8.3.2',
-				'update_function'	=> 'Füge Ereignisse für den ewigen Palast hinzu',
+				'update_function'	=> 'Füge Ereignisse für die erwachte Stadt hinzu',
 			),
 		);
 	}
