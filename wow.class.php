@@ -29,18 +29,18 @@ if(!class_exists('wow')) {
 		protected static $apiLevel	= 20;
 		public $version				= '8.3.23.2'; //Version for EQdkp Plus 2.3
 		protected $this_game		= 'wow';
-		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
-		protected $classes			= array();
-		protected $roles			= array();
-		protected $races			= array();															// for each type there must be the according var
-		protected $factions			= array();															// and the according function: load_$type
-		protected $filters			= array();
+		protected $types		= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
+		protected $classes		= array();
+		protected $roles		= array();
+		protected $races		= array();															// for each type there must be the according var
+		protected $factions		= array();															// and the according function: load_$type
+		protected $filters		= array();
 		protected $realmlist		= array();
 		protected $professions		= array();
-		public $objects				= array('bnet_armory');												// eventually there are some objects (php-classes) in this game
-		public $no_reg_obj			= array('bnet_armory');												// a list with all objects, which dont need registry
-		public $langs				= array('english', 'german');										// in which languages do we have information?
-		public $importers 			= array();
+		public $objects			= array('bnet_armory');												// eventually there are some objects (php-classes) in this game
+		public $no_reg_obj		= array('bnet_armory');												// a list with all objects, which dont need registry
+		public $langs			= array('english', 'german');										// in which languages do we have information?
+		public $importers 		= array();
 
 		public $character_unique_ids = array('servername');
 
@@ -88,10 +88,10 @@ if(!class_exists('wow')) {
 				'primary'	=> true,
 				'colorize'	=> true,
 				'roster'	=> true,
-				'recruitment' => true,
+				'recruitment' 	=> true,
 				'parent'	=> array(
 					'race' => array(
-						0	=> 'all',							// Unknown
+						0	=> 'all',				// Unknown
 						1	=> array(1,3,4,6,7,9,10,11),		// Gnome
 						2	=> array(1,3,4,5,6,7,9,10,11),		// Human
 						3	=> array(1,3,4,5,6,7,8,9,10,11),	// Dwarf
@@ -100,19 +100,21 @@ if(!class_exists('wow')) {
 						6	=> array(1,3,4,6,7,9,10,11),		// Undead
 						7	=> array(1,3,4,7,8,9,10,11),		// Orc
 						8	=> array(1,2,3,5,6,8,10,11),		// Tauren
-						9	=> array(1,3,4,5,6,8,10,11),		// Draenai
+						9	=> array(1,3,4,5,6,8,10,11),		// Draenei
 						10	=> array(1,3,4,5,6,7,9,10,11,12),	// Blood Elf
-						11	=> array(1,2,3,4,6,7,9,10),			// Worgen
-						12	=> array(1,3,4,6,7,8,9,10),			// Goblin
-						13	=> array(3,4,6,7,8,10,11),			// Pandaren
-						14	=> array(3,4,11,6,7,9,10),			// Nightborne
-						15	=> array(2,3,11,8,10),				// Highmountain Tauren
-						16	=> array(3,4,11,6,7,9,10), 			// Void Elf
-						17	=> array(3,4,5,6,10), 				// Lightforged Draenei
-						18	=> array(3,5,6,7,8,9,10,11),		// Dark iron Dwarf
-						19	=> array(3,4,11,6,7,8,10), 			// Mag'har Orc
+						11	=> array(1,2,3,4,6,7,9,10),		// Worgen
+						12	=> array(1,3,4,6,7,8,9,10),		// Goblin
+						13	=> array(3,4,6,7,8,10,11),		// Pandaren
+						14	=> array(3,4,11,6,7,9,10),		// Nightborne
+						15	=> array(2,3,11,8,10),			// Highmountain Tauren
+						16	=> array(3,4,11,6,7,9,10), 		// Void Elf
+						17	=> array(3,4,5,6,10), 			// Lightforged Draenei
+						18	=> array(3,5,6,7,8,9,10,11),		// Dark Iron Dwarf
+						19	=> array(3,4,11,6,7,8,10), 		// Mag'har Orc
 						20	=> array(2,3,4,11,5,6,7,8,10),		// Zandalari Troll
 						21	=> array(2,3,4,11,6,7,8,10), 		// Kul Tiran
+						22	=> array(3,4,6,7,8,9,10,11),		// Vulpera
+						23	=> array(3,4,6,7,9,10,11),		// Mechagnome
 					),
 				),
 			),
@@ -121,10 +123,10 @@ if(!class_exists('wow')) {
 				'type'		=> 'talents',
 				'admin'		=> false,
 				'decorate'	=> false,
-				'recruitment' => true,
+				'recruitment' 	=> true,
 				'parent'	=> array(
 					'class' => array(
-						0	=> 'all',			// Unknown
+						0	=> 'all',		// Unknown
 						1	=> array(0,1,2),	// Death Knight
 						2	=> array(3,4,5,6),	// Druid
 						3	=> array(7,8,9),	// Hunter
@@ -136,7 +138,7 @@ if(!class_exists('wow')) {
 						9	=> array(25,26,27),	// Warlock
 						10	=> array(28,29,30),	// Warrior
 						11	=> array(31,32,33),	// Monk
-						12	=> array(34,35),	// demon hunter
+						12	=> array(34,35),	// Demon Hunter
 					),
 				),
 			),
@@ -147,7 +149,7 @@ if(!class_exists('wow')) {
 				'decorate'	=> false,
 				'parent'	=> array(
 					'class' => array(
-						0	=> 'all',			// Unknown
+						0	=> 'all',		// Unknown
 						1	=> array(0,1,2),	// Death Knight
 						2	=> array(3,4,5,6),	// Druid
 						3	=> array(7,8,9),	// Hunter
@@ -159,16 +161,16 @@ if(!class_exists('wow')) {
 						9	=> array(25,26,27),	// Warlock
 						10	=> array(28,29,30),	// Warrior
 						11	=> array(31,32,33),	// Monk
-						12	=> array(34,35),	// demon hunter
+						12	=> array(34,35),	// Demon Hunter
 					),
 				),
 			),
 		);
 
 		public $default_roles = array(
-			1	=> array(2, 5, 6, 8, 11),				// healer
-			2	=> array(1, 2, 5, 10, 11, 12),			// tank
-			3	=> array(2, 3, 4, 6, 8, 9),				// dd distance
+			1	=> array(2, 5, 6, 8, 11),		// healer
+			2	=> array(1, 2, 5, 10, 11, 12),		// tank
+			3	=> array(2, 3, 4, 6, 8, 9),		// dd distance
 			4	=> array(1, 2, 3, 5, 7, 8, 10, 11, 12)	// dd near
 		);
 
@@ -184,7 +186,7 @@ if(!class_exists('wow')) {
 			9	=> 3,	// Warlock
 			10	=> 1,	// Warrior
 			11	=> 4,	// Monk
-			12	=> 2,	// demon hunter
+			12	=> 2,	// Demon Hunter
 		);
 
 		// source http://wow.gamepedia.com/Class_colors
@@ -200,7 +202,7 @@ if(!class_exists('wow')) {
 			9	=> '#9482C9',	// Warlock
 			10	=> '#C79C6E',	// Warrior
 			11	=> '#00FF96',	// Monk
-			12	=> '#A330C9',	// demon hunter
+			12	=> '#A330C9',	// Demon Hunter
 		);
 
 		protected $glang		= array();
