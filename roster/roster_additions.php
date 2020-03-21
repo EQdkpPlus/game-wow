@@ -22,45 +22,63 @@
 	// Add css code:
 	$this->tpl->add_css("
 		#guild_header_wrap {
-			width:100%;
+			display: flex;
+			-webkit-box-align: center;
+   			-ms-flex-align: center;
+    		align-items: center;
 		}
-		#guild_header_banner_alliance{
-			width:100%;
-			height:106px;
-			background: url('".$this->server_path."games/wow/profiles/factions/banner_alliance.jpg') repeat-x scroll 0px 0px transparent;
-			margin-top:30px;
+
+		#guild_data_wrapper {
+			padding: 0 20px;
+   			border-left: 1px solid rgba(0,0,0,.2);
+			align-self: stretch;
+    		overflow: hidden;
 		}
-		#guild_header_banner_horde{
-			width:100%;
-			height:106px;
-			background: url('".$this->server_path."games/wow/profiles/factions/banner_horde.jpg') repeat-x scroll 0px 0px transparent;
-			margin-top:30px;
+
+		#guild_emblem, #guild_emblem img { 
+			height: 100px;
+		}
+
+		#guild_name_wrapper {
+			padding: 0 20px;
 		}		
-		#guild_emblem { 
-			height:180px;
-			margin:-20px 0 0 5px;
-			float:left;
-		}
-		#guild_emblem img{
-			height:150px;
-		} 
-		
+
 		#guild_name {
-			font-size: 30px; 
-			color: #fff;
-			position:relative; 
-			top:20px; 
-			left:15px;
+			font-size: 2em; 
 			font-weight:bold;
 		}
+
 		#guild_realm {
-			font-size: 20px; 
+			padding-top: 5px;
+			font-size: 1.2em; 
 			color: #FFCC33 ;
-			position:relative; 
-			top:50px; 
-			left:15px;
+		}
+
+		#guild_data_wrapper {
+			color: #FFCC33;
+			-webkit-box-orient: vertical;
+		    -webkit-box-direction: normal;
+		    -ms-flex-direction: column;
+		    flex-direction: column;
+		    -webkit-box-pack: center;
+		    -ms-flex-pack: center;
+		    justify-content: center;
+		    display: flex;
+		}
+
+		.guild_data_container svg {
+			width: 16px;height: 16px;fill: currentColor;
 		}
 		
+		.guild_data_container {
+			margin-right: 20px;
+			display: flex;
+		}
+
+		#guild_data_wrapper > div {
+			display: flex;
+		}
+
 		#bar_15088, #bar_15077, #bar_15078, #bar_15079, #bar_15080, #bar_15089, #bar_15093{
 			width: 31%;
 			float: left;
@@ -172,6 +190,8 @@ if($this->config->get('servername') && $this->config->get('uc_server_loc')){
 
 $faction = ($this->config->get('faction')) ? $this->config->get('faction') : 'alliance';
 
+#$strTabard = $this->game->obj['armory']->guildTabard($guilddata['emblem'], $guilddata['side'], $guilddata['name'], 180);
+
 $this->tpl->assign_vars(array(
 		'FACTION'		=> $faction,
 		'REALM'			=> $this->config->get('servername'),
@@ -180,7 +200,7 @@ $this->tpl->assign_vars(array(
 		'ACHIEV_POINTS'	=> (isset($guilddata['achievementPoints'])) ? $guilddata['achievementPoints'] : 0,
 		'L_SKILLS'		=> $this->game->glang('skills'),
 		'L_ACHIEVEMENT_POINTS'	=> $this->game->glang('achievement_points'),
-		'TABARD'		=> ($guilddata) ? $this->game->obj['armory']->guildTabard($guilddata['emblem'], $guilddata['side'], $guilddata['name'], 180) : $this->server_path.'games/wow/guild/tabard_'.$faction.'.png',
+		'TABARD'		=> $this->server_path.'games/wow/guild/tabard_'.$faction.'.png',
 ));
 
 $this->hptt_page_settings = $this->pdh->get_page_settings('roster', 'hptt_roster');
@@ -270,7 +290,29 @@ if ($this->config->get('roster_classorrole') == 'role'){
 			'ENDLEVEL'		=> true,
 			'MEMBER_LIST'	=> $hptt->get_html_table($this->in->get('sort')),
 	));
+	
+} elseif($this->config->get('roster_classorrole') == 'guild') {
+	$arrMembers = $this->pdh->get('member', 'id_list', array($this->skip_inactive, $this->skip_hidden, true, $this->skip_twinks));
+	$arrGuilds = array();
+	foreach($arrMembers as $intMemberID){
+		$guild = $this->pdh->get('member', 'profile_field', array($intMemberID, 'guild'));
+		if(!strlen($guild)) $guild = $this->config->get('guildtag');
 		
+		if(!isset($arrGuilds[$guild])) $arrGuilds[$guild] = array();
+		$arrGuilds[$guild][] = $intMemberID;
+	}
+	
+	foreach($arrGuilds as $strGuildname=>$arrGroupMembers){
+		$hptt = $this->get_hptt($this->hptt_page_settings, $arrGroupMembers, $arrGroupMembers, array('%link_url%' => $this->routing->simpleBuild('character'), '%link_url_suffix%' => '', '%with_twink%' => $this->skip_twinks, '%use_controller%' => true), 'rank_'.$intRankID);
+		
+		$this->tpl->assign_block_vars('class_row', array(
+				'CLASS_NAME'	=> $strGuildname,
+				'CLASS_ICONS'	=> "",
+				'CLASS_LEVEL'	=> 2,
+				'ENDLEVEL'		=> true,
+				'MEMBER_LIST'	=> $hptt->get_html_table($this->in->get('sort')),
+		));
+	}
 		
 } else {
 	$arrMembers = $this->pdh->get('member', 'id_list', array($this->skip_inactive, $this->skip_hidden, true, $this->skip_twinks));
@@ -290,4 +332,7 @@ if ($this->config->get('roster_classorrole') == 'role'){
 	$this->build_class_block($rosterClasses['data'], $rosterClasses['todisplay'], $arrRosterMembers);
 }
 
+$this->tpl->assign_vars(array(
+		'MEMBER_COUNT'		=> count($arrMembers),
+));
 ?>

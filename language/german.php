@@ -401,6 +401,9 @@ $german_array = array(
 		'bfa_tep_normal'				=> 'Der Ewige Palast Normal',
 		'bfa_tep_heroic'				=> 'Der Ewige Palast Heroisch',
 		'bfa_tep_mythic'				=> 'Der Ewige Palast Mythisch (20)',
+		'bfa_twc_normal'				=> 'Ny\'alotha, die Erwachte Stadt Normal',
+		'bfa_twc_heroic'				=> 'Ny\'alotha, die Erwachte Stadt Heroisch',
+		'bfa_twc_mythic'				=> 'Ny\'alotha, die Erwachte Stadt Mythisch (20)',
 
 		'char_news'						=> 'Char News',
 		'no_armory'						=> 'Es konnten keine gültigen Daten für diesen Charakter geladen werden. Die battle.net API meldet folgenden Fehler: "%s".',

@@ -1,11 +1,17 @@
 <div id="guild_header_wrap">	
-	<div id="guild_header_banner_{FACTION}">
-		<div id="guild_emblem">
-			<img src="{TABARD}" alt="Guildtabard" class="gameicon" />
-		</div>	
-		<div id="guild_name">{GUILD}</div>
-		<div id="guild_realm">{REGION}-{REALM} &bull; {ACHIEV_POINTS} <i class="adminicon"></i></div>
-	</div>
+		<div id="guild_emblem" class="hiddenSmartphone">
+			<img src="{TABARD}" alt="Guildtabard" class="eqdkpicon" />
+		</div>
+		<div id="guild_name_wrapper">
+			<div id="guild_name">{GUILD}</div>
+			<div id="guild_realm">{REGION}-{REALM}</div>
+		</div>
+		<div id="guild_data_wrapper">
+			<div>
+				<span class="guild_data_container"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="injected-svg Icon-svg" data-src="/static/components/Icon/svg/shield.933e04dc2d00d7a10d060298d2299559.svg#shield" xmlns:xlink="http://www.w3.org/1999/xlink" data-queryselectoralways-ignore=""><path xmlns="http://www.w3.org/2000/svg" d="M31.725 61.416c-9.022 0-26.748-19.035-26.85-42.062a1.226 1.226 0 01.005-.276c0-.065.004-.128.012-.193.122-1.43.93-2.706 2.193-3.467.142-.106.301-.187.476-.24.067-.02 6.74-2.043 10.721-4.421 4.022-2.399 10.542-8.272 10.607-8.331.061-.056.128-.107.198-.152l.302-.18c.094-.057.192-.101.292-.135a4.3 4.3 0 01.803-.292c1.041-.259 1.544-.226 2.371-.033.043.01.115.032.177.052.25.066.499.159.752.278.091.033.18.073.267.123l.207.122-.004.006c.118.062.226.138.322.225.68.609 6.746 6.02 10.632 8.34 4.041 2.41 10.607 4.375 10.673 4.393.181.054.347.138.494.248 1.223.743 2.02 1.969 2.169 3.35.023.1.035.204.035.31.004.035 0 .132 0 .167l-.002.094c-.103 23.035-17.83 42.074-26.852 42.074z" id="shield-1"></path></svg></span> {ACHIEV_POINTS}</span>
+				<span class="guild_data_container"><i class="fa fa-lg fa-users"></i>&nbsp;{MEMBER_COUNT} {L_members}</span>
+			</div>
+		</div>
 </div>
 <br clear="left" />
 

@@ -27,7 +27,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 
 		protected static $apiLevel	= 20;
-		public $version			= '8.2.23.1'; //Version for EQdkp Plus 2.3
+		public $version				= '8.3.23.2'; //Version for EQdkp Plus 2.3
 		protected $this_game		= 'wow';
 		protected $types		= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes		= array();
@@ -57,7 +57,7 @@ if(!class_exists('wow')) {
 			'mop'		=> array(6125, 6297, 6067, 6622, 6738),
 			'wod'		=> array(6967, 6996, 7545),
 			'leg'		=> array(8026, 8440, 8025, 8524, 8638),
-			'bfa'		=> array(9389, 8670, 10057, 10425),
+			'bfa'		=> array(9389, 8670, 10057, 10425, 10522),
 		);
 
 		protected $class_dependencies = array(
@@ -263,6 +263,9 @@ if(!class_exists('wow')) {
 			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_tep_normal'), 0, "tep.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_tep_heroic'), 0, "tep.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_tep_mythic'), 0, "tep.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_twc_normal'), 0, "twc.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_twc_heroic'), 0, "twc.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('bfa_twc_mythic'), 0, "twc.png");
 
 			// Legion events
 			$arrEventIDs[] = $this->game->addEvent($this->glang('leg_en_normal'), 0, "en.png");
@@ -379,15 +382,6 @@ if(!class_exists('wow')) {
 					array('name' => $this->glang('tier_token', true, $lang).$names[1].', '.$names[2].', '.$names[4].', '.$names[7], 'value' => 'class:1,2,4,7'),
 				);
 			}
-		}
-
-		public function decorate_classes($class_id, $profile=array(), $size=16, $pathonly=false) {
-			$big = ($size > 40) ? '_b' : '';
-			if(is_file($this->root_path.'games/'.$this->this_game.'/icons/classes/'.$class_id.$big.'.png')){
-				$icon_path = $this->server_path.'games/'.$this->this_game.'/icons/classes/'.$class_id.$big.'.png';
-				return ($pathonly) ? $icon_path : '<img src="'.$icon_path.'" height="'.$size.'" alt="class '.$class_id.'" class="'.$this->this_game.'_classicon classicon'.'" title="'.$this->game->get_name('classes', $class_id).'" />';
-			}
-			return false;
 		}
 
 		public function profilefields(){

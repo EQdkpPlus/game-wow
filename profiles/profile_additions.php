@@ -229,6 +229,7 @@
 		.raideventicon.id8670 { background-position:  -2562px 0; }
 		.raideventicon.id10425 { background-position:  -2623px 0; }
 		.raideventicon.id10057 { background-position:  -2684px 0; }
+		.raideventicon.id10522 { background-position:  -2745px 0; }
 
 		#wow_icons_left .q img, #wow_icons_right .q img, #wow_icons_bottom_right .q img, #wow_icons_bottom_left .q img {
 			border: 1px solid #ffd100;
@@ -509,6 +510,7 @@ width:24px;
 				$arrSelectedTalents = $v_talents;
 			}
 
+			
 			$this->tpl->assign_block_vars('talents', array(
 				'ID'			=> $id_talents,
 				'SELECTED'		=> ($v_talents['selected'] == '1') ? true : false,
@@ -520,6 +522,11 @@ width:24px;
 
 			// talent specialization
 			for ($i_ts = 0; $i_ts < 7; $i_ts ++) {
+				$arrPathInfo = pathinfo($v_talents['talents'][$i_ts]['icon']);
+				if(!isset($arrPathInfo['extension'])){
+					$v_talents['talents'][$i_ts]['icon'] = $v_talents['talents'][$i_ts]['icon'].'.jpg';
+				}
+				
 				$this->tpl->assign_block_vars('talents.special', array(
 					'NAME'			=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['name']) ? $v_talents['talents'][$i_ts]['name'] : $this->game->glang('empty'),
 					'ICON'			=> (isset($v_talents['talents'][$i_ts]) && $v_talents['talents'][$i_ts]['icon']) ? '<img src="'.$v_talents['talents'][$i_ts]['icon'].'" class="gameicon" />' : '<div class="icon-frame frame-18 empty"></div>',
