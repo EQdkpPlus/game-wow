@@ -75,8 +75,8 @@ if(!class_exists('wow')) {
 				'decorate'	=> true,
 				'parent'	=> array(
 					'faction' => array(
-						'alliance'	=> array(0,1,2,3,4,9,11,13,16,17,18,21),
-						'horde'		=> array(0,5,6,7,8,10,12,13,14,15,19,20),
+						'alliance'	=> array(0,1,2,3,4,9,11,13,16,17,18,21,23,24),
+						'horde'		=> array(0,5,6,7,8,10,12,13,14,15,19,20,22,25),
 					),
 				),
 			),
@@ -91,7 +91,7 @@ if(!class_exists('wow')) {
 				'recruitment' 	=> true,
 				'parent'	=> array(
 					'race' => array(
-						0	=> 'all',				// Unknown
+						0	=> 'all',							// Unknown
 						1	=> array(1,3,4,6,7,9,10,11),		// Gnome
 						2	=> array(1,3,4,5,6,7,9,10,11),		// Human
 						3	=> array(1,3,4,5,6,7,8,9,10,11),	// Dwarf
@@ -102,19 +102,21 @@ if(!class_exists('wow')) {
 						8	=> array(1,2,3,5,6,8,10,11),		// Tauren
 						9	=> array(1,3,4,5,6,8,10,11),		// Draenei
 						10	=> array(1,3,4,5,6,7,9,10,11,12),	// Blood Elf
-						11	=> array(1,2,3,4,6,7,9,10),		// Worgen
-						12	=> array(1,3,4,6,7,8,9,10),		// Goblin
-						13	=> array(3,4,6,7,8,10,11),		// Pandaren
-						14	=> array(3,4,11,6,7,9,10),		// Nightborne
-						15	=> array(2,3,11,8,10),			// Highmountain Tauren
-						16	=> array(3,4,11,6,7,9,10), 		// Void Elf
-						17	=> array(3,4,5,6,10), 			// Lightforged Draenei
+						11	=> array(1,2,3,4,6,7,9,10),			// Worgen
+						12	=> array(1,3,4,6,7,8,9,10),			// Goblin
+						13	=> array(3,4,6,7,8,10,11),			// Pandaren
+						14	=> array(3,4,11,6,7,9,10),			// Nightborne
+						15	=> array(2,3,11,8,10),				// Highmountain Tauren
+						16	=> array(3,4,11,6,7,9,10), 			// Void Elf
+						17	=> array(3,4,5,6,10), 				// Lightforged Draenei
 						18	=> array(3,5,6,7,8,9,10,11),		// Dark Iron Dwarf
-						19	=> array(3,4,11,6,7,8,10), 		// Mag'har Orc
+						19	=> array(3,4,11,6,7,8,10), 			// Mag'har Orc
 						20	=> array(2,3,4,11,5,6,7,8,10),		// Zandalari Troll
 						21	=> array(2,3,4,11,6,7,8,10), 		// Kul Tiran
 						22	=> array(3,4,6,7,8,9,10,11),		// Vulpera
-						23	=> array(3,4,6,7,9,10,11),		// Mechagnome
+						23	=> array(3,4,6,7,9,10,11),			// Mechagnome
+						24	=> array(1,3,4,5,6,7,8,9,10,11), 	// Dark Iron dwarf
+						25	=> array(1,3,4,6,7,8,10,11), 		// Mag'har Orc
 					),
 				),
 			),
