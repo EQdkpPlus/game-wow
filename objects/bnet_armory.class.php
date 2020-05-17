@@ -423,7 +423,7 @@ class bnet_armory extends gen_class {
 
 		$this->check_access_tocken();
 		$realm		= $this->ConvertInput($this->cleanServername($realm));
-		$user		= $this->ConvertInput(strtolower($user));
+		$user		= $this->ConvertInput(utf8_strtolower($user));
 		echo $wowurl;
 		$wowurl		= $this->_config['apiUrl'].sprintf('profile/wow/character/%s/%s%s?namespace=%s&locale=%s&access_token=%s', $realm, $user, $parameter, $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
 
@@ -575,9 +575,10 @@ class bnet_armory extends gen_class {
 	public function guild($guild, $realm, $force=false){
 		$this->check_access_tocken();
 		$realm	= $this->ConvertInput($this->cleanServername($realm));
-		$guild	= $this->ConvertInput($guild);
+		$guild	= $this->ConvertInput(utf8_strtolower($guild), false, true);
 
 		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/roster?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
+		d($wowurl);
 		$this->_debug('Guild: '.$wowurl);
 		if((!$json	= $this->get_CachedData('guilddata_'.$guild.$realm, $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
