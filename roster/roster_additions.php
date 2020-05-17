@@ -93,11 +93,17 @@ $guilddata = false;
 if($this->config->get('servername') && $this->config->get('uc_server_loc')){
 	$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang')));
 	$guilddata = $this->game->obj['armory']->guild($this->config->get('guildtag'), $this->config->get('servername'));
+	
 	$this->tpl->assign_array('guilddata', $guilddata);
-	if ($guilddata && !isset($chardata['status'])){
+	
+	if ($guilddata && !isset($guilddata['code'])){
 		infotooltip_js();
 		
 		//Guildnews
+		//TODO rework for new API - but currently not available in API
+		#$arrActivity = $this->game->obj['armory']->guildActivity($this->config->get('guildtag'), $this->config->get('servername'));
+		
+		/*
 		$arrNews = register('pdc')->get('roster_wow.guildnews');
 		if (!$arrNews){
 			$arrNews = $this->game->callFunc('parseGuildnews', array($guilddata['news']));
@@ -111,8 +117,13 @@ if($this->config->get('servername') && $this->config->get('uc_server_loc')){
 				'DATE'	=> register('time')->nice_date($news['date'], 60*60*24*7),
 			));
 		}
+		*/
 		
 		//Achievements
+		//TODO rework for new API
+		#$arrAchievements = $this->game->obj['armory']->guildAchievements($this->config->get('guildtag'), $this->config->get('servername'));
+		#d($arrAchievements);
+		/*
 		$arrAchievs = register('pdc')->get('roster_wow.guildachievs');
 		if (!$arrAchievs){
 			$arrAchievs = $this->game->callFunc('parseGuildAchievementOverview', array($guilddata['achievements']));
@@ -127,14 +138,17 @@ if($this->config->get('servername') && $this->config->get('uc_server_loc')){
 				'LINK'	=> ($id != 'total') ? $this->game->obj['armory']->bnlink('', register('config')->get('servername'), 'guild-achievements', register('config')->get('guildtag')).'#achievement#'.$id : '',
 			));
 		}
-		
+		*/
 		//Latest Achievements
-		$arrLatestAchievs = register('pdc')->get('roster_wow.guildlatestachievs');
+		#$arrLatestAchievs = register('pdc')->get('roster_wow.guildlatestachievs');
+		/*
 		if (!$arrLatestAchievs){
-			$arrLatestAchievs = $this->game->callFunc('parseLatestGuildAchievements', array($guilddata['achievements']));	
-			register('pdc')->put('roster_wow.guildlatestachievs', $arrLatestAchievs, 3600);
+			$arrLatestAchievs = $this->game->callFunc('parseLatestGuildAchievements', array($arrAchievements['recent_events']));	
+			d($arrLatestAchievs);
+			#register('pdc')->put('roster_wow.guildlatestachievs', $arrLatestAchievs, 3600);
 		}
-		
+		*/
+		/*
 		foreach ($arrLatestAchievs as $val){
 			$this->tpl->assign_block_vars('latestachievs', array(
 					'NAME'	=> $val['name'],
@@ -179,6 +193,7 @@ if($this->config->get('servername') && $this->config->get('uc_server_loc')){
 				}
 			}
 		}
+		*/
 		
 		// the tab things
 		$this->jquery->Tab_header('wow_roster');
@@ -197,7 +212,7 @@ $this->tpl->assign_vars(array(
 		'REALM'			=> $this->config->get('servername'),
 		'REGION'		=> strtoupper($this->config->get('uc_server_loc')),
 		'GUILD'			=> $this->config->get('guildtag'),
-		'ACHIEV_POINTS'	=> (isset($guilddata['achievementPoints'])) ? $guilddata['achievementPoints'] : 0,
+		'ACHIEV_POINTS'	=> (isset($guilddata['achievement_points'])) ? $guilddata['achievement_points'] : 0,
 		'L_SKILLS'		=> $this->game->glang('skills'),
 		'L_ACHIEVEMENT_POINTS'	=> $this->game->glang('achievement_points'),
 		'TABARD'		=> $this->server_path.'games/wow/guild/tabard_'.$faction.'.png',

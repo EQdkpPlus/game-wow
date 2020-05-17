@@ -565,50 +565,126 @@ class bnet_armory extends gen_class {
 	}
 
 	/**
-	* Fetch guild information
+	* Fetch roster information
 	*
 	* @param $user		Character Name
 	* @param $realm		Realm Name
 	* @param $force		Force the cache to update?
 	* @return bol
 	*/
-	public function guild($guild, $realm, $force=false){
+	public function guildRoster($guild, $realm, $force=false){
 		$this->check_access_tocken();
 		$realm	= $this->ConvertInput($this->cleanServername($realm));
 		$guild	= $this->ConvertInput(utf8_strtolower($guild), false, true);
 
 		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/roster?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
-		d($wowurl);
 		$this->_debug('Guild: '.$wowurl);
-		if((!$json	= $this->get_CachedData('guilddata_'.$guild.$realm, $force)) && $this->_config['access_token']){
+		if((!$json	= $this->get_CachedData('guilddata_roster_'.$guild.$realm, $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
 
-			// this is the fallback for a battle.net issue, where if the news are empty the whole
-			// json is invalid
-			if(!$this->has_json_data($json)){
-				$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/roster?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
-				$json	= $this->read_url($wowurl);
-			}
-			// End of fix
-
-			/*foreach($json['members'] as $charid=>$chardata){
-				$singlechar_data = $this->character_singlefeed($chardata['character']['name'], $realm, 'profile', $force);
-				$json['members'][$charid]['character']['class']		= $singlechar_data['character_class'];
-				$json['members'][$charid]['character']['race']		= $singlechar_data['race'];
-				$json['members'][$charid]['character']['gender']	= $singlechar_data['gender'];
-			}*/
-
-			$this->set_CachedData($json, 'guilddata_'.$guild.$realm);
+			$this->set_CachedData($json, 'guilddata_roster_'.$guild.$realm);
 		}
 		//get old data
 		if(!$json) {
-			$json = $this->get_CachedData('guilddata_'.$guild.$realm, false, false, true);
+			$json = $this->get_CachedData('guilddata_roster_'.$guild.$realm, false, false, true);
 		}
 		$chardata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($chardata);
 		
 		return (!$errorchk) ? $chardata: $errorchk;
 	}
+	
+	/**
+	 * Fetch guild activity information
+	 *
+	 * @param $user		Character Name
+	 * @param $realm		Realm Name
+	 * @param $force		Force the cache to update?
+	 * @return bol
+	 */
+	public function guildActivity($guild, $realm, $force=false){
+		$this->check_access_tocken();
+		$realm	= $this->ConvertInput($this->cleanServername($realm));
+		$guild	= $this->ConvertInput(utf8_strtolower($guild), false, true);
+		
+		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/activity?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
+		$this->_debug('Guild: '.$wowurl);
+		if((!$json	= $this->get_CachedData('guilddata_activity_'.$guild.$realm, $force)) && $this->_config['access_token']){
+			$json	= $this->read_url($wowurl);
+			
+			$this->set_CachedData($json, 'guilddata_activity_'.$guild.$realm);
+		}
+		//get old data
+		if(!$json) {
+			$json = $this->get_CachedData('guilddata_activity_'.$guild.$realm, false, false, true);
+		}
+		$chardata	= json_decode($json, true);
+		$errorchk	= $this->CheckIfError($chardata);
+		
+		return (!$errorchk) ? $chardata: $errorchk;
+	}
+	
+	/**
+	 * Fetch basic guild information
+	 *
+	 * @param $user		Character Name
+	 * @param $realm		Realm Name
+	 * @param $force		Force the cache to update?
+	 * @return bol
+	 */
+	public function guild($guild, $realm, $force=false){
+		$this->check_access_tocken();
+		$realm	= $this->ConvertInput($this->cleanServername($realm));
+		$guild	= $this->ConvertInput(utf8_strtolower($guild), false, true);
+		
+		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
+		$this->_debug('Guild: '.$wowurl);
+		if((!$json	= $this->get_CachedData('guilddata_basic_'.$guild.$realm, $force)) && $this->_config['access_token']){
+			$json	= $this->read_url($wowurl);
+			
+			$this->set_CachedData($json, 'guilddata_basic_'.$guild.$realm);
+		}
+		//get old data
+		if(!$json) {
+			$json = $this->get_CachedData('guilddata_basic_'.$guild.$realm, false, false, true);
+		}
+		$chardata	= json_decode($json, true);
+		$errorchk	= $this->CheckIfError($chardata);
+		
+		return (!$errorchk) ? $chardata: $errorchk;
+	}
+	
+	/**
+	 * Fetch guild activity information
+	 *
+	 * @param $user		Character Name
+	 * @param $realm		Realm Name
+	 * @param $force		Force the cache to update?
+	 * @return bol
+	 */
+	public function guildAchievements($guild, $realm, $force=false){
+		$this->check_access_tocken();
+		$realm	= $this->ConvertInput($this->cleanServername($realm));
+		$guild	= $this->ConvertInput(utf8_strtolower($guild), false, true);
+		
+		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/achievements?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
+		$this->_debug('Guild: '.$wowurl);
+		if((!$json	= $this->get_CachedData('guilddata_achievements_'.$guild.$realm, $force)) && $this->_config['access_token']){
+			$json	= $this->read_url($wowurl);
+			
+			$this->set_CachedData($json, 'guilddata_achievements_'.$guild.$realm);
+		}
+		//get old data
+		if(!$json) {
+			$json = $this->get_CachedData('guilddata_achievements_'.$guild.$realm, false, false, true);
+		}
+		$chardata	= json_decode($json, true);
+		$errorchk	= $this->CheckIfError($chardata);
+		
+		return (!$errorchk) ? $chardata: $errorchk;
+	}
+	
+	
 
 	/**
 	* Generate guild tabard & save in cache
