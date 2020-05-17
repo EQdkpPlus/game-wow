@@ -459,14 +459,14 @@ class bnet_armory extends gen_class {
 	* @return bol
 	*/
 	public function character($user, $realm, $force=false){
-		//$profile		= $this->character_singlefeed($user, $realm, 'profile', $force);
+		$profile		= $this->character_singlefeed($user, $realm, 'profile', $force);
 		$achievements	= $this->character_singlefeed($user, $realm, 'achievements', $force);
 		$appearance		= $this->character_singlefeed($user, $realm, 'appearance', $force);
 		$equipment		= $this->character_singlefeed($user, $realm, 'equipment', $force);
 		//$professions	= $this->character_singlefeed($user, $realm, 'professions', $force);
 		$raids			= $this->character_singlefeed($user, $realm, 'raids', $force);
 		$talents		= $this->character_singlefeed($user, $realm, 'talents', $force);
-		return array_merge_recursive($achievements, $appearance, $equipment, $raids, $talents);
+		return array_merge_recursive($profile, $achievements, $appearance, $equipment, $raids, $talents);
 	}
 
 	/**
