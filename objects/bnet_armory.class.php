@@ -25,7 +25,7 @@ if ( !defined('EQDKP_INC') ){
 
 class bnet_armory extends gen_class {
 
-	private $version			= '20190520-1';
+	private $version			= '20200517-1';
 	private $chariconUpdates	= 0;
 	private $chardataUpdates	= 0;
 	private $ratepersecond		= 100;
@@ -96,10 +96,12 @@ class bnet_armory extends gen_class {
 			'28'	=> 15,		// Highmountain Tauren (horde)
 			'29'	=> 16,		// Void Elf (alliance)
 			'30'	=> 17,		// Lightforged Draenei (alliance)
-			'34'	=> 18, 		// Dark Iron Dwarf
-			'36'	=> 19, 		// Mag'har Orc
 			'31'	=> 20,		// ZandalariTroll
 			'32'	=> 21,		// Kul Tiran
+			'34'	=> 18, 		// Dark Iron Dwarf
+			'35'	=> 22,		// Vulpera
+			'36'	=> 19, 		// Mag'har Orc
+			'37'	=> 23,		// Mechagnome
 		),
 		'gender' => array(
 			'0'		=> 'male',
@@ -401,24 +403,39 @@ class bnet_armory extends gen_class {
 	* @param $params	array, optional fields such as reputation, appearance, mounts, pets, hunterPets,petSlots, quests, pvp
 	* @return bol
 	*/
-	public function character($user, $realm, $force=false, $params=array()){
+	public function character_singlefeed($user, $realm, $feed, $force=false){
+		// the feeds
+		switch($feed){
+			case 'profile':			$parameter = ''; 					break;
+			case 'achievements':	$parameter = '/achievements'; 		break;
+			case 'appearance':		$parameter = '/appearance'; 		break;
+			case 'hunterpets':		$parameter = '/hunter-pets'; 		break;
+			case 'equipment':		$parameter = '/equipment'; 			break;
+			case 'mounts':			$parameter = '/collections/mounts'; break;
+			case 'pets':			$parameter = '/collections/pets'; 	break;
+			//case 'professions':		$parameter = '/professions'; 		break;
+			case 'raids':			$parameter = '/encounters/raids'; 	break;
+			case 'reputatiom':		$parameter = '/reputations'; 		break;
+			case 'talents':			$parameter = '/specializations'; 	break;
+			case 'titles':			$parameter = '/titles'; 			break;
+			default : 				$parameter = '';
+		}
+
 		$this->check_access_tocken();
 		$realm		= $this->ConvertInput($this->cleanServername($realm));
-		$user		= $this->ConvertInput($user);
-		$basicparam	= array('guild', 'stats', 'feed', 'talents', 'items', 'titles', 'professions', 'achievements', 'progression');
-		$usedparams = array_merge($basicparam, $params);
-		$force		= (count($params) > 1 && $force == false) ? true : $force;
-		$wowurl		= $this->_config['apiUrl'].sprintf('wow/character/%s/%s?locale=%s&access_token=%s&fields='.implode(',', $usedparams), $realm, $user, $this->_config['locale'], $this->_config['access_token']);
+		$user		= $this->ConvertInput(strtolower($user));
+		echo $wowurl;
+		$wowurl		= $this->_config['apiUrl'].sprintf('profile/wow/character/%s/%s%s?namespace=%s&locale=%s&access_token=%s', $realm, $user, $parameter, $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
 
 		$this->_debug('Character: '.$wowurl);
-		$json		= $this->get_CachedData('chardata_'.$user.$realm, $force);
+		$json		= $this->get_CachedData('chardata_'.$feed.'_'.$user.$realm, $force);
 		if(!$json && ($force || $this->chardataUpdates < $this->_config['maxChardataUpdates']) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'chardata_'.$user.$realm);
+			$this->set_CachedData($json, 'chardata_'.$feed.'_'.$user.$realm);
 			$this->chardataUpdates++;
 		}
 		//Try to get old data
-		if(!$json) $json = $this->get_CachedData('chardata_'.$user.$realm, false, false, true);
+		if(!$json) $json = $this->get_CachedData('chardata_'.$feed.'_'.$user.$realm, false, false, true);
 
 		$chardata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($chardata);
@@ -433,25 +450,64 @@ class bnet_armory extends gen_class {
 	}
 
 	/**
+	* Fetch character information
+	*
+	* @param $user		Character Name
+	* @param $realm		Realm Name
+	* @param $force		Force the cache to update
+	* @param $params	array, optional fields such as reputation, appearance, mounts, pets, hunterPets,petSlots, quests, pvp
+	* @return bol
+	*/
+	public function character($user, $realm, $force=false){
+		//$profile		= $this->character_singlefeed($user, $realm, 'profile', $force);
+		$achievements	= $this->character_singlefeed($user, $realm, 'achievements', $force);
+		$appearance		= $this->character_singlefeed($user, $realm, 'appearance', $force);
+		$equipment		= $this->character_singlefeed($user, $realm, 'equipment', $force);
+		//$professions	= $this->character_singlefeed($user, $realm, 'professions', $force);
+		$raids			= $this->character_singlefeed($user, $realm, 'raids', $force);
+		$talents		= $this->character_singlefeed($user, $realm, 'talents', $force);
+		return array_merge_recursive($achievements, $appearance, $equipment, $raids, $talents);
+	}
+
+	/**
 	* Create full character Icon Link
 	*
 	* @param $thumb		Thumbinformation returned by battlenet JSON feed
 	* @return string
 	*/
-	public function characterIcon($chardata, $forceUpdateAll = false){
+	public function characterIcon($user, $realm, $type='icon', $force=false){
+		$realm		= $this->ConvertInput($this->cleanServername($realm));
+		$user		= $this->ConvertInput(strtolower($user));
+		$wowurl		= $this->_config['apiUrl'].sprintf('profile/wow/character/%s/%s/character-media?namespace=%s&locale=%s&access_token=%s', $realm, $user, $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
+
+		$json		= $this->get_CachedData('chardata_'.$type.'_'.$user.$realm, $force);
+		if(!$json && ($force || $this->chardataUpdates < $this->_config['maxChardataUpdates']) && $this->_config['access_token']){
+			$json	= $this->read_url($wowurl);
+			$this->set_CachedData($json, 'chardata_'.$type.'_'.$user.$realm);
+			$this->chardataUpdates++;
+		}
+		//Try to get old data
+		if(!$json) $json = $this->get_CachedData('chardata_'.$type.'_'.$user.$realm, false, false, true);
+		$chardata	= json_decode($json, true);
+
 		//Default icon for unknown chars
 		if(!$chardata){
 			return $this->cacheIcon('https://eu.battle.net/wow/static/images/2d/avatar/0-0.jpg', false);
 		}
 
-		$cached_img		= str_replace(array('/', '-'), '_', 'image_characterIcon_'.$this->_config['serverloc'].'_'.$chardata['thumbnail']);
-		$img_charicon	= $this->get_CachedData($cached_img, false, true);
-		$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
+		// get the cached image
+		$img_charicon	= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true);
+		$img_charicon_sp= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true, false, true);
 
 		if(!$img_charicon && ($forceUpdateAll || ($this->chariconUpdates < $this->_config['maxChariconUpdates']))){
-			$this->set_CachedData($this->read_url($this->_config['charImageURL'].$chardata['thumbnail']), $cached_img, true);
-			$img_charicon	= $this->get_CachedData($cached_img, false, true);
-			$img_charicon_sp= $this->get_CachedData($cached_img, false, true, false, true);
+			switch($type){
+				case 'icon':	$image_url = $chardata['avatar_url']; 	break;
+				case 'render':	$image_url = $chardata['render_url']; 	break;
+				case 'inset':	$image_url = $chardata['bust_url']; 	break;
+			}
+			$this->set_CachedData($this->read_url($image_url), 'img_'.$type.'_'.$user.$realm, true);
+			$img_charicon	= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true);
+			$img_charicon_sp= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true, false, true);
 			$this->chariconUpdates++;
 		}
 
@@ -470,30 +526,6 @@ class bnet_armory extends gen_class {
 
 	public function characterIconSimple($race, $gender='0'){
 		return $this->cacheIcon($this->_config['staticimageURL'].sprintf('2d/profilemain/race/%s-%s.jpg', $race, $gender), false);
-	}
-
-	/**
-	* Create full character Image Link
-	*
-	* @param $thumb		Thumbinformation returned by battlenet JSON feed
-	* @param $type		Image tyoe, big or inset
-	* @return string
-	*/
-	public function characterImage($chardata, $type='big', $forceUpdateAll = false){
-		switch($type){
-			case 'big':		$dtype_ending = 'main'; break;
-			case 'inset':	$dtype_ending = 'inset'; break;
-			default: $dtype_ending = 'profilemain';
-		}
-		$imgfile = str_replace('avatar.jpg', $dtype_ending.'.jpg', $chardata['thumbnail']);
-		$cached_img	= str_replace(array('/', '-'), '_', 'image_characterImage_'.$this->_config['serverloc'].'_'.$imgfile);
-		$img_charicon	= $this->get_CachedData($cached_img, false, true, false, true);
-		if(!$img_charicon || $forceUpdateAll){
-			$this->set_CachedData(   $this->read_url($this->_config['charImageURL'].$imgfile), $cached_img, true);
-			$img_charicon	= $this->get_CachedData($cached_img, false, true, false,true);
-		}
-
-		return $img_charicon;
 	}
 
 	public function talentIcon($name){
@@ -544,7 +576,8 @@ class bnet_armory extends gen_class {
 		$this->check_access_tocken();
 		$realm	= $this->ConvertInput($this->cleanServername($realm));
 		$guild	= $this->ConvertInput($guild);
-		$wowurl	= $this->_config['apiUrl'].sprintf('wow/guild/%s/%s?locale=%s&fields=members,achievements,news,challenge&access_token=%s', $realm, $guild, $this->_config['locale'], $this->_config['access_token']);
+
+		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/roster?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
 		$this->_debug('Guild: '.$wowurl);
 		if((!$json	= $this->get_CachedData('guilddata_'.$guild.$realm, $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
@@ -552,10 +585,17 @@ class bnet_armory extends gen_class {
 			// this is the fallback for a battle.net issue, where if the news are empty the whole
 			// json is invalid
 			if(!$this->has_json_data($json)){
-				$wowurl	= $this->_config['apiUrl'].sprintf('wow/guild/%s/%s?locale=%s&fields=members,achievements,challenge&access_token=%s', $realm, $guild, $this->_config['locale'], $this->_config['access_token']);
+				$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/roster?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
 				$json	= $this->read_url($wowurl);
 			}
 			// End of fix
+
+			/*foreach($json['members'] as $charid=>$chardata){
+				$singlechar_data = $this->character_singlefeed($chardata['character']['name'], $realm, 'profile', $force);
+				$json['members'][$charid]['character']['class']		= $singlechar_data['character_class'];
+				$json['members'][$charid]['character']['race']		= $singlechar_data['race'];
+				$json['members'][$charid]['character']['gender']	= $singlechar_data['gender'];
+			}*/
 
 			$this->set_CachedData($json, 'guilddata_'.$guild.$realm);
 		}
@@ -703,7 +743,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function realm($realms, $force=false){
 		$this->check_access_tocken();
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/realm/status?locale=%s&realms=%s&access_token=%s', $this->_config['locale'], $realms = ((is_array($realms)) ? implode(",",$realms) : ''), $this->_config['access_token']);
+		$wowurl = $this->_config['apiUrl'].sprintf('/data/wow/realm?locale=%s&realms=%s&access_token=%s', $this->_config['locale'], $realms = ((is_array($realms)) ? implode(",",$realms) : ''), $this->_config['access_token']);
 		$this->_debug('Realm: '.$wowurl);
 		if((!$json	= $this->get_CachedData('realmdata_'.str_replace(",", "", $realms), $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
@@ -712,33 +752,6 @@ class bnet_armory extends gen_class {
 		$realmdata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($realmdata);
 		return (!$errorchk) ? $realmdata: $errorchk;
-	}
-
-	/**
-	* Fetch pvpteam information
-	*
-	* @param $teamsize	TeamSize = "2v2" | "3v3" | "5v5" | "rbg"
-	* @param $force		Force the cache to update?
-	* @return bol
-	*/
-	public function pvpteam($teamsize, $force=false){
-		$this->check_access_tocken();
-		switch($teamname){
-			case '2v2':	$teamsize = '2v2'; break;
-			case '3v3':	$teamsize = '3v3'; break;
-			case '5v5':	$teamsize = '5v5'; break;
-			case 'rbg':	$teamsize = 'rbg'; break;
-			default: $teamsize = '2v2';
-		}
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/leaderboard/%s?locale=%s&access_token=%s', $this->ConvertInput($realm), $teamsize, $this->ConvertInput($teamname), $this->_config['locale'], $this->_config['access_token']);
-		$this->_debug('PVPTeam: '.$wowurl);
-		if((!$json	= $this->get_CachedData('pvpdata_'.$guild.$teamname.$teamsize, $force)) && $this->_config['access_token']){
-			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'pvpdata_'.$guild.$teamname.$teamsize);
-		}
-		$pvpdata	= json_decode($json, true);
-		$errorchk	= $this->CheckIfError($pvpdata);
-		return (!$errorchk) ? $pvpdata: $errorchk;
 	}
 
 	/**
@@ -751,7 +764,8 @@ class bnet_armory extends gen_class {
 	public function item($itemid, $force=false){
 		$this->check_access_tocken();
 		$tmp_itemid		= explode(':', $itemid);
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/item/%s?locale=%s&access_token=%s', $tmp_itemid[0], $this->_config['locale'], $this->_config['access_token']);
+		
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/item/%s?namespace=%s&locale=%s&access_token=%s', $tmp_itemid[0], $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
 
 		$this->_debug('Item: '.$wowurl);
 		if((!$json		= $this->get_CachedData('itemdata_'.$itemid, $force)) && $this->_config['access_token']){
@@ -867,7 +881,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function achievement($achievementid, $force=false){
 		$this->check_access_tocken();
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/achievement/%s?locale=%s&access_token=%s', $achievementid, $this->_config['locale'], $this->_config['access_token']);
+		$wowurl = $this->_config['apiUrl'].sprintf('data/wow/achievement/%s?namespace=%s&locale=%s&access_token=%s', $achievementid, $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
 		$this->_debug('Achievement: '.$wowurl);
 		if((!$json	= $this->get_CachedData('achievementdata_'.$achievementid, $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
@@ -876,27 +890,6 @@ class bnet_armory extends gen_class {
 		$achievementdata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($achievementdata);
 		return (!$errorchk) ? $achievementdata : $errorchk;
-	}
-
-
-	/**
-	* Fetch quest information
-	*
-	* @param $questid	battlenet quest ID
-	* @param $force		Force the cache to update?
-	* @return bol
-	*/
-	public function quest($questid, $force=false){
-		$this->check_access_tocken();
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/quest/%s?locale=%s&access_token==%s', $questid, $this->_config['locale'], $this->_config['access_token']);
-		$this->_debug('Quest: '.$wowurl);
-		if((!$json	= $this->get_CachedData('questdatadata_'.$questid, $force)) && $this->_config['access_token']){
-			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'questdatadata_'.$questid);
-		}
-		$questdata	= json_decode($json, true);
-		$errorchk	= $this->CheckIfError($questdata);
-		return (!$errorchk) ? $questdata : $errorchk;
 	}
 
 	/**
@@ -908,7 +901,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function recipe($recipeid, $force=false){
 		$this->check_access_tocken();
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/recipe/%s?locale=%s&access_token==%s', $recipeid, $this->_config['locale'], $this->_config['access_token']);
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/recipe/%s?namespace=%s&locale=%s&access_token==%s', $recipeid, $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
 		$this->_debug('Recipe: '.$wowurl);
 		if((!$json	= $this->get_CachedData('recipedatadata_'.$recipeid, $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
@@ -948,7 +941,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function challenge($realm, $force=false){
 		$this->check_access_tocken();
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/challenge/%s?locale=%s&access_token=%s', $this->ConvertInput($realm), $this->_config['locale'], $this->_config['access_token']);
+		$wowurl = $this->_config['apiUrl'].sprintf('wow/challenge/%s?namespace=%s&locale=%s&access_token=%s', $this->ConvertInput($realm), $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
 		$this->_debug('Challenge: '.$wowurl);
 		if((!$json	= $this->get_CachedData('challengedatadata_'.$realm, $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
@@ -957,26 +950,6 @@ class bnet_armory extends gen_class {
 		$challengedata	= json_decode($json, true);
 		$errorchk		= $this->CheckIfError($challengedata);
 		return (!$errorchk) ? $challengedata : $errorchk;
-	}
-
-	/**
-	* Fetch challenge mode information
-	*
-	* @param $abilityid	Ability ID
-	* @param $force		Force the cache to update?
-	* @return bol
-	*/
-	public function battlepet($abilityid, $force=false){
-		$this->check_access_tocken();
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/battlePet/ability/%s?locale=%s&access_token=%s', $abilityid, $this->_config['locale'], $this->_config['access_token']);
-		$this->_debug('Battlepet: '.$wowurl);
-		if((!$json	= $this->get_CachedData('battlepetdatadata_'.$abilityid, $force)) && $this->_config['access_token']){
-			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'battlepetdatadata_'.$abilityid);
-		}
-		$battlepet	= json_decode($json, true);
-		$errorchk	= $this->CheckIfError($battlepet);
-		return (!$errorchk) ? $battlepet : $errorchk;
 	}
 
 	/**
@@ -989,9 +962,9 @@ class bnet_armory extends gen_class {
 	public function boss($bossid=0, $force=false){
 		$this->check_access_tocken();
 		if($bossid > 0){
-			$wowurl = $this->_config['apiUrl'].sprintf('wow/boss/%s?locale=%s&access_token=%s', $this->ConvertInput($bossid), $this->_config['locale'], $this->_config['access_token']);
+			$wowurl = $this->_config['apiUrl'].sprintf('wow/boss/%s?namespace=%s&locale=%s&access_token=%s', $this->ConvertInput($bossid), $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
 		}else {
-			$wowurl = $this->_config['apiUrl'].sprintf('wow/boss/?locale=%s&access_token=%s', $this->_config['locale'], $this->_config['access_token']);
+			$wowurl = $this->_config['apiUrl'].sprintf('wow/boss/?namespace=%s&locale=%s&access_token=%s', $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
 			$bossid = 'all';
 		}
 
@@ -1005,49 +978,10 @@ class bnet_armory extends gen_class {
 		return (!$errorchk) ? $bossdata : $errorchk;
 	}
 
-	/**
-	* A list of all supported mounts.
-	*
-	* @param $force		Force the cache to update?
-	* @return bol
-	*/
-	public function mount($force=false){
-		$this->check_access_tocken();
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/mount/?locale=%s&access_token=%s', $this->_config['locale'], $this->_config['access_token']);
-		$this->_debug('Mount: '.$wowurl);
-		if((!$json	= $this->get_CachedData('mountdatadata', $force)) && $this->_config['access_token']){
-			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'mountdatadata');
-		}
-		$mountdata	= json_decode($json, true);
-		$errorchk	= $this->CheckIfError($mountdata);
-		return (!$errorchk) ? $mountdata : $errorchk;
-	}
-
-	/**
-	* This API resource provides a per-realm list of recently generated auction house data dumps.
-	*
-	* @param $realm	Realmname
-	* @param $force		Force the cache to update?
-	* @return bol
-	*/
-	public function auction($realm, $force=false){
-		$this->check_access_tocken();
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/auction/data/%s?locale=%s&access_token=%s', $this->ConvertInput($realm), $this->_config['locale'], $this->_config['access_token']);
-		$this->_debug('Auction: '.$wowurl);
-		if((!$json	= $this->get_CachedData('auctiondatadata_'.$realm, $force)) && $this->_config['access_token']){
-			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'auctiondatadata_'.$realm);
-		}
-		$auction	= json_decode($json, true);
-		$errorchk	= $this->CheckIfError($auction);
-		return (!$errorchk) ? $auction : $errorchk;
-	}
-
 	// DATA RESOURCES
 	public function getdata($type='character', $sub_type='achievements', $force=false){
 		$this->check_access_tocken();
-		$wowurl	= $this->_config['apiUrl'].sprintf('wow/data/'.$type.'/'.$sub_type.'?locale=%s&access_token=%s', $this->_config['locale'], $this->_config['access_token']);
+		$wowurl	= $this->_config['apiUrl'].sprintf('wow/data/'.$type.'/'.$sub_type.'?namespace=%s&locale=%s&access_token=%s', $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
 		$this->_debug('Data Resource: '.$wowurl);
 		if((!$json	= $this->get_CachedData('data_'.$type.'_'.$sub_type, $force)) && $this->_config['access_token']){
 			$this->downloadORwait();
@@ -1066,7 +1000,7 @@ class bnet_armory extends gen_class {
 		$rate 		= 1000000/$this->ratepersecond;
 		$time2wait	= $rate-((int)$dec);
 		if($time2wait > 0){
-			usleep($time2wait);
+			#usleep($time2wait);
 		}
 	}
 
@@ -1163,7 +1097,7 @@ class bnet_armory extends gen_class {
 	* @return string output
 	*/
 	public function cleanServername($server){
-		return html_entity_decode($server,ENT_QUOTES,"UTF-8");
+		return strtolower(html_entity_decode($server,ENT_QUOTES,"UTF-8"));
 	}
 
 	/**
@@ -1235,9 +1169,10 @@ class bnet_armory extends gen_class {
 	*/
 	protected function get_CachedData($filename, $force=false, $binary=false, $returniffalse=false, $returnServerPath=false){
 		if(!$this->_config['caching']){return false;}
+
 		$data_ctrl = false;
 		$rfilename	= (is_object($this->pfh)) ? $this->pfh->FolderPath('armory', 'cache').$this->binaryORdata($this->clean_name($filename), $binary) : 'data/'.$this->binaryORdata($this->clean_name($filename), $binary);
-		$rfilenameSP= (is_object($this->pfh)) ? $this->pfh->FolderPath('armory', 'cache', 'serverpath').$this->binaryORdata($filename, $binary) : 'data/'.$this->binaryORdata($filename, $binary);
+		$rfilenameSP= (is_object($this->pfh)) ? $this->pfh->FolderPath('armory', 'cache', 'serverpath').$this->binaryORdata($this->clean_name($filename), $binary) : 'data/'.$this->binaryORdata($this->clean_name($filename), $binary);
 		if(is_file($rfilename)){
 			$data_ctrl	= (!$force && (filemtime($rfilename)+(3600*$this->_config['caching_time'])) > time()) ? true : false;
 		}
