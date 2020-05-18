@@ -184,52 +184,7 @@
 		.profile_itemlevel_avgtxt, .profile_itemlevel_eq{
 			margin-left: 6px;
 		}
-		.raideventicon { background: url('".$this->server_path."games/wow/profiles/events/raid-icons.jpg') no-repeat; width: 59px; height: 59px; padding: 0 !important;}
-		.raideventicon.id2717 { background-position:        0 0; }
-		.raideventicon.id2677 { background-position:    -61px 0; }
-		.raideventicon.id3429 { background-position:   -122px 0; }
-		.raideventicon.id3428 { background-position:   -183px 0; }
-		.raideventicon.id3457 { background-position:   -244px 0; }
-		.raideventicon.id3923 { background-position:   -305px 0; }
-		.raideventicon.id3836 { background-position:   -366px 0; }
-		.raideventicon.id3607 { background-position:   -488px 0; }
-		.raideventicon.id3845 { background-position:   -549px 0; }
-		.raideventicon.id3606 { background-position:   -610px 0; }
-		.raideventicon.id3959 { background-position:   -671px 0; }
-		.raideventicon.id4075 { background-position:   -732px 0; }
-		.raideventicon.id3456 { background-position:   -793px 0; }
-		.raideventicon.id4493 { background-position:   -854px 0; }
-		.raideventicon.id4603 { background-position:   -915px 0; }
-		.raideventicon.id4500 { background-position:   -976px 0; }
-		.raideventicon.id4273 { background-position:  -1037px 0; }
-		.raideventicon.id4722 { background-position:  -1098px 0; }
-		.raideventicon.id2159 { background-position:  -1159px 0; }
-		.raideventicon.id4812 { background-position:  -1220px 0; }
-		.raideventicon.id4987 { background-position:  -1281px 0; }
-		.raideventicon.id5600 { background-position:  -1342px 0; }
-		.raideventicon.id5334 { background-position:  -1403px 0; }
-		.raideventicon.id5094 { background-position:  -1464px 0; }
-		.raideventicon.id5638 { background-position:  -1525px 0; }
-		.raideventicon.id5723 { background-position:  -1586px 0; }
-		.raideventicon.id5892 { background-position:  -1647px 0; }
-		.raideventicon.id6125 { background-position:  -1708px 0; }
-		.raideventicon.id6297 { background-position:  -1769px 0; }
-		.raideventicon.id6067 { background-position:  -1830px 0; }
-		.raideventicon.id6622 { background-position:  -1891px 0; }
-		.raideventicon.id6738 { background-position:  -1952px 0; }
-		.raideventicon.id6967 { background-position:  -2013px 0; }
-		.raideventicon.id6996 { background-position:  -2074px 0; }
-		.raideventicon.id7545 { background-position:  -2135px 0; }
-		.raideventicon.id8026 { background-position:  -2196px 0; }
-		.raideventicon.id8025 { background-position:  -2257px 0; }
-		.raideventicon.id8440 { background-position:  -2318px 0; }
-		.raideventicon.id8524 { background-position:  -2379px 0; }
-		.raideventicon.id8638 { background-position:  -2440px 0; }
-		.raideventicon.id9389 { background-position:  -2501px 0; }
-		.raideventicon.id8670 { background-position:  -2562px 0; }
-		.raideventicon.id10425 { background-position:  -2623px 0; }
-		.raideventicon.id10057 { background-position:  -2684px 0; }
-		.raideventicon.id10522 { background-position:  -2745px 0; }
+
 
 		#wow_icons_left .q img, #wow_icons_right .q img, #wow_icons_bottom_right .q img, #wow_icons_bottom_left .q img {
 			border: 1px solid #ffd100;
@@ -455,27 +410,27 @@ width:24px;
 			1	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/wowicon.png',
 					'name'	=> 'worldofwarcraft.com',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm_english']), 'char')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']['slug']), 'char')
 			),
 			2	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/askmrrobot.png',
 					'name'	=> 'AskMrRobot.com',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']), 'askmrrobot')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']['slug']), 'askmrrobot')
 			),
 			3	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/wowprogress.png',
 					'name'	=> 'wowprogress.com',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']), 'wowprogress')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']['slug']), 'wowprogress')
 			),
 			4	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/raiderio.png',
 					'name'	=> 'Raider.io',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']), 'raiderio')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']['slug']), 'raiderio')
 			),
 			5	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/warcraftlogs.png',
 					'name'	=> 'Warcraftlogs',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']), 'warcraftlogs')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']['slug']), 'warcraftlogs')
 			),
 		);
 
@@ -496,10 +451,10 @@ width:24px;
 			$('#char_infos').change();
 		", 'docready');
 
-		$items = $this->game->callFunc('getItemArray', array($chardata['items'], unsanitize($member['name'])));
+		$items = $this->game->callFunc('getItemArray', array($chardata['equipped_items'], unsanitize($member['name'])));
 
 		// talents
-		$a_talents = $this->game->callFunc('talents', array($chardata));
+		$a_talents = $this->game->callFunc('talents', array($chardata['specializations']));
 
 		$arrSelectedTalents = array();
 
@@ -636,35 +591,45 @@ width:24px;
 		$this->tpl->assign_array('itemlevel',		$items['itemlevel']);
 
 		// boss progress
-		$d_bossprogress		= $this->game->callFunc('ParseRaidProgression', array($chardata));
+		$d_bossprogress		= $this->game->callFunc('ParseRaidProgression', array($chardata['expansions']));
+		
+		
 		if(is_array($d_bossprogress)){
-			foreach($d_bossprogress as $v_progresscat=>$a_bossprogress){
+			foreach($d_bossprogress as $v_progresscat){
+				
+				
+				
+				
 				// skip the category if hidden
 				$config_bk_hidden	= (is_array($this->config->get('profile_boskills_hide'))) ? $this->config->get('profile_boskills_hide') : array();
 				if(in_array($v_progresscat, $config_bk_hidden)){ continue; }
 
 				$this->tpl->assign_block_vars('bossprogress_cat', array(
-					'NAME'	=> $this->game->glang('uc_achievement_tab_'.$v_progresscat),
-					'ID'	=> $v_progresscat
+					'NAME'	=> $v_progresscat['name'],
+					'ID'	=> $v_progresscat['id'],
 				));
 
-				$a_bossprogress =  array_reverse($a_bossprogress);
+				$a_bossprogress =  $v_progresscat['raids'];
+				
 				foreach($a_bossprogress as $v_bossprogress){
 
 					// build the tooltip
 					$tt_bossprogress = "<div class='table'>
 											<div class='tr'>
 												<div class='td'></div>
+												<div class='td'>LFR</div>
 												<div class='td'>".$this->game->glang('normalrun')."</div>
 												<div class='td'>".$this->game->glang('heroicrun')."</div>
 												<div class='td'>".$this->game->glang('mythicrun')."</div>
 											</div>";
+
 					foreach($v_bossprogress['bosses'] as $bosses){
 						$tt_bossprogress .= "<div class='tr'>
-												<div class='td nowrap'>".$bosses['name']."</div>
-												<div class='td nowrap'>".(isset($bosses['normalKills']) ? $bosses['normalKills'] : 0)."</div>
-												<div class='td nowrap'>".(isset($bosses['heroicKills']) ? $bosses['heroicKills'] : 0)."</div>
-												<div class='td nowrap'>".(isset($bosses['mythicKills']) ? $bosses['mythicKills'] : 0)."</div>
+												<div class='td nowrap'>".$bosses['_name']."</div>
+												<div class='td nowrap'>".(isset($bosses['lfr']) ? $bosses['lfr'] : 0)."</div>
+												<div class='td nowrap'>".(isset($bosses['normal']) ? $bosses['normal'] : 0)."</div>
+												<div class='td nowrap'>".(isset($bosses['heroic']) ? $bosses['heroic'] : 0)."</div>
+												<div class='td nowrap'>".(isset($bosses['mythic']) ? $bosses['mythic'] : 0)."</div>
 											</div>";
 					}
 					$tt_bossprogress .= '</div>';
@@ -678,11 +643,16 @@ width:24px;
 					// mythic
 					$bar_bc_mythic		= $this->jquery->progressbar('bcmythic_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_mythic'], 'total' => $v_bossprogress['bosses_max'], 'text' => '%progress% (%percentage%)'));
 
+					// LFR
+					$bar_bc_lfr			= $this->jquery->progressbar('bclfr_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_lfr'], 'total' => $v_bossprogress['bosses_max'], 'text' => '%progress% (%percentage%)'));
+					
+					
 					$this->tpl->assign_block_vars('bossprogress_cat.bossprogress_val', array(
 						'ID'		=> $v_bossprogress['id'],
 						'NAME'		=> $v_bossprogress['name'],
+						'ICON'		=> $v_bossprogress['icon'],
 						'BARS_TT'	=> $tt_bossprogress,
-						'BARS_BAR'	=> $bar_bc_normal.$bar_bc_heroic.$bar_bc_mythic,
+						'BARS_BAR'	=> $bar_bc_lfr.$bar_bc_normal.$bar_bc_heroic.$bar_bc_mythic,
 						'RUNS'		=> sprintf($this->game->glang('bossprogress_normalruns'), $v_bossprogress['runs_normal']).' | '.sprintf($this->game->glang('bossprogress_heroicruns'), $v_bossprogress['runs_heroic']).' | '.sprintf($this->game->glang('bossprogress_mythicruns'), $v_bossprogress['runs_mythic'])
 					));
 				}
@@ -717,32 +687,33 @@ width:24px;
 
 		$this->tpl->assign_vars(array(
 			'ARMORY'				=> 1,
-			'CHARDATA_ICON'			=> $this->game->obj['armory']->characterIcon($chardata),
-			'CHARACTER_IMG'			=> $this->game->obj['armory']->characterImage($chardata, 'big'),
+			'CHARDATA_ICON'			=> $this->game->obj['armory']->characterIcon(unsanitize($member['name']), $servername),
+			'CHARACTER_IMG'			=> $this->game->obj['armory']->characterIcon(unsanitize($member['name']), $servername, 'render'),
 			'CHARDATA_NAME'			=> $chardata['name'],
 			'CHARDATA_GUILDNAME'	=> $chardata['guild']['name'],
-			'CHARDATA_GUILDREALM'	=> ($member['servername'] && $member['servername'] != $chardata['guild']['realm']) ? $member['servername'] : $chardata['guild']['realm'],
-			'CHARDATA_POINTS'		=> $chardata['achievementPoints'],
-			'CHARDATA_TITLE'		=> $this->game->obj['armory']->selectedTitle($chardata['titles'], true),
-			'CHARDATA_PROFILEURL'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm_english']), 'char'),
-
+			'CHARDATA_GUILDREALM'	=> ($member['servername'] && $member['servername'] != $chardata['realm']['slug']) ? $member['servername'] : $chardata['realm']['slug'],
+			'CHARDATA_POINTS'		=> $chardata['achievement_points'],
+			'CHARDATA_TITLE'		=> $chardata['active_title']['name'],
+			'CHARDATA_PROFILEURL'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']['slug']), 'char'),
+			'ITEM_LEVEL_AVG'		=> $chardata['average_item_level'],
+			'ITEM_LEVEL_EQP'		=> $chardata['equipped_item_level'],
+				
 			// Bars
-			'HEALTH_VALUE'			=> $chardata['stats']['health'],
-			'POWER_VALUE'			=> $chardata['stats']['power'],
-			'POWER_TYPE'			=> $chardata['stats']['powerType'],
-			'POWER_NAME'			=> $this->game->glang('uc_bar_'.$chardata['stats']['powerType']),
+			'HEALTH_VALUE'			=> $chardata['health'],
+			'POWER_VALUE'			=> $chardata['power'],
+			'POWER_TYPE'			=> $chardata['power_type']['name'],
+			'POWER_NAME'			=> $chardata['power_type']['name'],
 
-			'INTELLECT_VALUE'		=> $chardata['stats']['int'],
-			'STAMINA_VALUE'			=> $chardata['stats']['sta'],
-			'SPELCRIT_VALUE'		=> round($chardata['stats']['spellCrit'], 0).'%',
-			'HASTE_VALUE'			=> round($chardata['stats']['hasteRatingPercent'], 0).'%',
-			'MASTERY_VALUE'			=> round($chardata['stats']['mastery'], 0). '%',
-			'VERSATILITY_VALUE'		=> round($chardata['stats']['versatilityDamageDoneBonus'], 0).'%',
+			'INTELLECT_VALUE'		=> $chardata['intellect']['effective'],
+			'STAMINA_VALUE'			=> $chardata['stamina']['effective'],
+			'SPELCRIT_VALUE'		=> round($chardata['spell_crit']['value'], 0). '%',
+			'HASTE_VALUE'			=> round($chardata['spell_haste']['value'], 0). '%',
+			'MASTERY_VALUE'			=> round($chardata['mastery']['value'], 0). '%',
+			'VERSATILITY_VALUE'		=> round($chardata['versatility_damage_done_bonus'], 0).'%',
 
-			'CRIT_RATING'			=> $chardata['stats']['critRating'],
-			'HASTE_RATING'			=> $chardata['stats']['hasteRating'],
-			'MASTERY_RATING'		=> $chardata['stats']['masteryRating'],
-			'VERSATILITY_RATING'	=> $chardata['stats']['versatility'],
+			'CRIT_RATING'			=> $chardata['spell_crit']['rating'],
+			'HASTE_RATING'			=> $chardata['spell_haste']['rating'],
+			'MASTERY_RATING'		=> $chardata['mastery']['rating'],
 		));
 
 	// the non armory charview

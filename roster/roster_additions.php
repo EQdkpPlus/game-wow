@@ -122,7 +122,8 @@ if($this->config->get('servername') && $this->config->get('uc_server_loc')){
 		//Achievements
 		//TODO rework for new API
 		#$arrAchievements = $this->game->obj['armory']->guildAchievements($this->config->get('guildtag'), $this->config->get('servername'));
-		#d($arrAchievements);
+		#d($arrAchievements['category_progress']);
+	
 		/*
 		$arrAchievs = register('pdc')->get('roster_wow.guildachievs');
 		if (!$arrAchievs){

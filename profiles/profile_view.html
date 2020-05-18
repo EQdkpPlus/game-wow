@@ -27,10 +27,10 @@
 						</span>
 					
 					
-					{itemlevel:averageItemLevel}</div>
+					{ITEM_LEVEL_AVG}</div>
 					<div class="profile_itemlevel_txt">
 						<div class="profile_itemlevel_avgtxt"> {GL_avg_itemlevel}</div>
-						<div class="profile_itemlevel_eq">({itemlevel:averageItemLevelEquipped} {GL_avg_itemlevel_equiped})</div>
+						<div class="profile_itemlevel_eq">({ITEM_LEVEL_EQP} {GL_avg_itemlevel_equiped})</div>
 					</div>
 				</div>
 			</div>
@@ -164,7 +164,7 @@
 					</span>
 					
 					</div>
-					<div class="floatLeft"><div class="wow-health-name">{VERSATILITY_VALUE} ({VERSATILITY_RATING})</div><span class="wow-health-value">{GL_versatility}</span> </div>
+					<div class="floatLeft"><div class="wow-health-name">{VERSATILITY_VALUE}</div><span class="wow-health-value">{GL_versatility}</span> </div>
 					<div class="clear"></div>
 				</div>
 			</div>
@@ -250,7 +250,7 @@
 									<table class="table fullwidth colorswitch">
 									<!-- BEGIN bossprogress_val -->
 										<tr>
-											<td class="raideventicon id{bossprogress_cat.bossprogress_val.ID}"></td>
+											<td class="raideventicon id{bossprogress_cat.bossprogress_val.ID}" width="80"><img src="{bossprogress_cat.bossprogress_val.ICON}" height="80"/></td>
 											<td align="center" class="nowrap" width="300">
 												<b>{bossprogress_cat.bossprogress_val.NAME}</b>
 												<hr />{bossprogress_cat.bossprogress_val.RUNS}

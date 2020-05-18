@@ -42,7 +42,7 @@ class bnet_armory extends gen_class {
 	const staticicons			= 'http://{region}.media.blizzard.com/wow/icons/';
 	const tabardrenderurl		= 'http://{region}.battle.net/wow/static/images/guild/tabards/';
 	const profileurlChar		= 'https://worldofwarcraft.com/{locale}/';
-	const profileurlGuild		= 'https://{region}.battle.net/';
+	const profileurlGuild		= 'https://worldofwarcraft.com/{locale}/guild/{region}/';
 
 	private $_config			= array(
 		'serverloc'					=> 'us',
@@ -321,7 +321,7 @@ class bnet_armory extends gen_class {
 			return str_replace('{locale}', $this->_config['locale'], self::profileurlChar);
 		}else{
 			$tmp_url	= str_replace('{region}', $this->_config['serverloc'], self::profileurlGuild);
-			return str_replace('{locale}', substr($this->_config['locale'],0,2), $tmp_url.'/wow/{locale}/');
+			return str_replace('{locale}', $this->_config['locale'], $tmp_url);
 		}
 	}
 
@@ -355,9 +355,9 @@ class bnet_armory extends gen_class {
 			case 'talent-calculator':
 				return $this->getProfileULR().sprintf('game/talent-calculator#%s/%s/talents=%s', $talents['class'], $talents['type'], $talents['calcTalent']);break;
 			case 'guild':
-				return $this->getProfileULR('guild').sprintf('guild/%s/%s/', $this->ConvertInput($server, true, true), $this->ConvertInput($guild));break;
+				return $this->getProfileULR('guild').sprintf('%s/%s/', $this->ConvertInput($server, true, true), $this->ConvertInput($guild, false, true));break;
 			case 'guild-achievements':
-				return $this->getProfileULR('guild').sprintf('guild/%s/%s/achievement', $this->ConvertInput($server, true, true), $this->ConvertInput($guild));break;
+				return $this->getProfileULR('guild').sprintf('%s/%s/achievements', $this->ConvertInput($server, true, true), $this->ConvertInput($guild, false, true));break;
 			case 'askmrrobot':
 				return sprintf('https://www.askmrrobot.com/optimizer#%s/%s/%s', $this->_config['serverloc'], $this->ConvertInput($server, true, true), $this->ConvertInput($user));break;
 			case 'raiderio':
@@ -418,6 +418,7 @@ class bnet_armory extends gen_class {
 			case 'reputatiom':		$parameter = '/reputations'; 		break;
 			case 'talents':			$parameter = '/specializations'; 	break;
 			case 'titles':			$parameter = '/titles'; 			break;
+			case 'media':			$parameter = '/character-media'; 	break;
 			case 'statistics':		$parameter = '/statistics'; 		break;
 			default : 				$parameter = '';
 		}
@@ -425,7 +426,6 @@ class bnet_armory extends gen_class {
 		$this->check_access_tocken();
 		$realm		= $this->ConvertInput($this->cleanServername($realm));
 		$user		= $this->ConvertInput(utf8_strtolower($user));
-		echo $wowurl;
 		$wowurl		= $this->_config['apiUrl'].sprintf('profile/wow/character/%s/%s%s?namespace=%s&locale=%s&access_token=%s', $realm, $user, $parameter, $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
 
 		$this->_debug('Character: '.$wowurl);
@@ -445,9 +445,10 @@ class bnet_armory extends gen_class {
 			if(!empty($thumbnaildata[0])) {
 				$chardata['realm_english']	= $thumbnaildata[0];
 			}
+			
 			return $chardata;
 		}
-		return $errorchk;
+		return array();
 	}
 
 	/**
@@ -465,9 +466,12 @@ class bnet_armory extends gen_class {
 		$achievements	= $this->character_singlefeed($user, $realm, 'achievements', $force);
 		$appearance		= $this->character_singlefeed($user, $realm, 'appearance', $force);
 		$equipment		= $this->character_singlefeed($user, $realm, 'equipment', $force);
-		//$professions	= $this->character_singlefeed($user, $realm, 'professions', $force);
 		$raids			= $this->character_singlefeed($user, $realm, 'raids', $force);
 		$talents		= $this->character_singlefeed($user, $realm, 'talents', $force);
+		#$titles		= $this->character_singlefeed($user, $realm, 'titles', $force);
+		#$media			= $this->character_singlefeed($user, $realm, 'media', $force);
+		#$professions	= $this->character_singlefeed($user, $realm, 'professions', $force);
+		
 		return array_merge_recursive($profile, $statistics, $achievements, $appearance, $equipment, $raids, $talents);
 	}
 
@@ -998,13 +1002,42 @@ class bnet_armory extends gen_class {
 	* @param $force		Force the cache to update?
 	* @return bol
 	*/
-	public function spell($spellid, $force=false){
+	public function spell($spellid, $media=false,$force=false){
 		$this->check_access_tocken();
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/spell/%s?locale=%s&access_token=%s', $spellid, $this->_config['locale'], $this->_config['access_token']);
+		if($media){
+			$wowurl = $this->_config['apiUrl'].sprintf('data/wow/media/spell/%s?namespace=static-%s&locale=%s&access_token=%s', $spellid, $this->_config['serverloc'], $this->_config['locale'], $this->_config['access_token']);
+		} else {
+			$wowurl = $this->_config['apiUrl'].sprintf('data/wow/spell/%s?namespace=static-%s&locale=%s&access_token=%s', $spellid, $this->_config['serverloc'], $this->_config['locale'], $this->_config['access_token']);
+		}
 		$this->_debug('Spell: '.$wowurl);
-		if((!$json	= $this->get_CachedData('spelldatadata_'.$spellid, $force)) && $this->_config['access_token']){
+		
+		if((!$json	= $this->get_CachedData('spelldatadata_'.$spellid.'_'.($media), $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'spelldatadata_'.$spellid);
+			$this->set_CachedData($json, 'spelldatadata_'.$spellid.'_'.($media));
+		}
+		$spell		= json_decode($json, true);
+		$errorchk	= $this->CheckIfError($spell);
+		return (!$errorchk) ? $spell : $errorchk;
+	}
+	
+	/**
+	 * Fetch expansion information
+	 *
+	 * @param $questid	battlenet quest ID
+	 * @param $force		Force the cache to update?
+	 * @return bol
+	 */
+	public function instance($spellid, $media=false,$force=false){
+		$this->check_access_tocken();
+		if($media){
+			$wowurl = $this->_config['apiUrl'].sprintf('data/wow/media/journal-instance/%s?namespace=static-%s&locale=%s&access_token=%s', $spellid, $this->_config['serverloc'], $this->_config['locale'], $this->_config['access_token']);
+		} else {
+			$wowurl = $this->_config['apiUrl'].sprintf('data/wow/journal-instance/%s?namespace=static-%s&locale=%s&access_token=%s', $spellid, $this->_config['serverloc'], $this->_config['locale'], $this->_config['access_token']);
+		}
+		$this->_debug('Expansion: '.$wowurl);
+		if((!$json	= $this->get_CachedData('instancedata_'.$spellid.'_'.($media), $force)) && $this->_config['access_token']){
+			$json	= $this->read_url($wowurl);
+			$this->set_CachedData($json, 'instancedata_'.$spellid.'_'.($media));
 		}
 		$spell		= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($spell);
@@ -1159,8 +1192,8 @@ class bnet_armory extends gen_class {
 	* @return error code
 	*/
 	protected function CheckIfError($data){
-		$status	= (isset($data['status'])) ? $data['status'] : false;
-		$reason	= (isset($data['reason'])) ? $data['reason'] : false;
+		$status	= (isset($data['code'])) ? $data['code'] : false;
+		$reason	= (isset($data['detail'])) ? $data['detail'] : false;
 		$error = '';
 		if($status){
 			return array('status'=>$status,'reason'=>$reason);
