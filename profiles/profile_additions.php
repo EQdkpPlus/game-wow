@@ -616,17 +616,20 @@ width:24px;
 					// build the tooltip
 					$tt_bossprogress = "<div class='table'>
 											<div class='tr'>
+												<div class='td'></div>
 												<div class='td'>LFR</div>
 												<div class='td'>".$this->game->glang('normalrun')."</div>
 												<div class='td'>".$this->game->glang('heroicrun')."</div>
 												<div class='td'>".$this->game->glang('mythicrun')."</div>
 											</div>";
+
 					foreach($v_bossprogress['bosses'] as $bosses){
 						$tt_bossprogress .= "<div class='tr'>
-												<div class='td nowrap'>".$bosses['name']."</div>
-												<div class='td nowrap'>".(isset($bosses['normalKills']) ? $bosses['normalKills'] : 0)."</div>
-												<div class='td nowrap'>".(isset($bosses['heroicKills']) ? $bosses['heroicKills'] : 0)."</div>
-												<div class='td nowrap'>".(isset($bosses['mythicKills']) ? $bosses['mythicKills'] : 0)."</div>
+												<div class='td nowrap'>".$bosses['_name']."</div>
+												<div class='td nowrap'>".(isset($bosses['lfr']) ? $bosses['lfr'] : 0)."</div>
+												<div class='td nowrap'>".(isset($bosses['normal']) ? $bosses['normal'] : 0)."</div>
+												<div class='td nowrap'>".(isset($bosses['heroic']) ? $bosses['heroic'] : 0)."</div>
+												<div class='td nowrap'>".(isset($bosses['mythic']) ? $bosses['mythic'] : 0)."</div>
 											</div>";
 					}
 					$tt_bossprogress .= '</div>';

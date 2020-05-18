@@ -1354,7 +1354,7 @@ if(!class_exists('wow')) {
 					$v_progresscat = $expansion['name'];
 					
 					// parse the bosses
-					$a_bosses = array('progress_normal' => 0, 'progress_heroic' => 0, 'progress_mythic' => 0, 'runs_normal'=>0, 'runs_heroic'=>0, 'runs_mythic'=>0);
+					$a_bosses = array('progress_normal' => 0, 'progress_lfr' => 0, 'progress_heroic' => 0, 'progress_mythic' => 0, 'runs_normal'=>0, 'runs_heroic'=>0, 'runs_mythic'=>0, 'runs_lfr');
 					
 					$intBosses = 0;
 					foreach($v_progression['modes'] as $arrMode){
@@ -1363,7 +1363,13 @@ if(!class_exists('wow')) {
 						
 						$a_bosses['progress_'.$difficulty] += $arrMode['progress']['completed_count'];
 						$a_bosses['runs_'.$difficulty] = $arrMode['progress']['total_count'];
-						$intBosses += count($arrMode['progress']['encounters']);	
+						$intBosses += count($arrMode['progress']['encounters']);
+						
+						foreach($arrMode['progress']['encounters'] as $encounter){
+							$a_bosses['bosses'][$encounter['encounter']['id']][$difficulty] = $encounter['completed_count'];
+							$a_bosses['bosses'][$encounter['encounter']['id']]['_name'] = $encounter['encounter']['name'];
+							
+						}
 					}
 					
 					$arrExpansion = $this->game->obj['armory']->instance($v_progression['instance']['id'], true);
@@ -1373,8 +1379,8 @@ if(!class_exists('wow')) {
 							'name'			=> $v_progression['instance']['name'],
 							'icon'			=> $arrExpansion['assets'][0]['value'],
 							
-							#'bosses'		=> $v_progression['bosses'],
-							'bosses_max'	=> max($a_bosses),
+							'bosses'		=> $a_bosses['bosses'],
+							'bosses_max'	=> $a_bosses['runs_normal'],
 							'bosses_normal'	=> $a_bosses['progress_normal'],
 							'bosses_heroic'	=> $a_bosses['progress_heroic'],
 							'bosses_mythic'	=> $a_bosses['progress_mythic'],
