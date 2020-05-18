@@ -1176,8 +1176,6 @@ if(!class_exists('wow')) {
 		public function talents($chardata){
 			$talents = array();
 			$arrValues = array(15, 30, 45, 60, 75, 90, 100);
-
-			if (is_array($chardata['talents'])){
 			
 			#d($chardata);
 			
