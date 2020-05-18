@@ -170,20 +170,23 @@ class charImporter extends page_generic {
 			$info		= $this->pdh->put('member', 'addorupdate_member', array($this->in->get('charid', 0), array(
 				'name'				=> $this->in->get('charname', ''),
 				'level'				=> $chardata['level'],
-				'gender'			=> $this->game->obj['armory']->ConvertID($chardata['gender'], 'int', 'gender'),
-				'race'				=> $this->game->obj['armory']->ConvertID($chardata['race'], 'int', 'races'),
-				'class'				=> $this->game->obj['armory']->ConvertID($chardata['class'], 'int', 'classes'),
+				'gender'			=> $this->game->obj['armory']->ConvertID($chardata['gender']['type'], 'int', 'gender'),
+				'race'				=> $this->game->obj['armory']->ConvertID($chardata['race']['id'], 'int', 'races'),
+				'class'				=> $this->game->obj['armory']->ConvertID($chardata['character_class']['id'], 'int', 'classes'),
 				'guild'				=> $chardata['guild']['name'],
-				'last_update'		=> ($chardata['lastModified']/1000),
-				'prof1_name'		=> $this->game->get_id('professions', $chardata['professions']['primary'][0]['name']),
-				'prof1_value'		=> $chardata['professions']['primary'][0]['rank'],
-				'prof2_name'		=> $this->game->get_id('professions', $chardata['professions']['primary'][1]['name']),
-				'prof2_value'		=> $chardata['professions']['primary'][1]['rank'],
-				'talent1'			=> $this->game->obj['armory']->ConvertTalent($chardata['talents'][0]['spec']['icon']),
-				'talent2'			=> $this->game->obj['armory']->ConvertTalent($chardata['talents'][1]['spec']['icon']),
-				'health_bar'		=> $chardata['stats']['health'],
-				'second_bar'		=> $chardata['stats']['power'],
-				'second_name'		=> $chardata['stats']['powerType'],
+				'last_update'		=> ($chardata['last_login_timestamp']/1000),
+				'health_bar'		=> $chardata['health'],
+				'second_bar'		=> $chardata['power'],
+				'second_name'		=> $chardata['power_type']['name'],
+
+				// to ne changed
+				#'prof1_name'		=> $this->game->get_id('professions', $chardata['professions']['primary'][0]['name']),
+				#'prof1_value'		=> $chardata['professions']['primary'][0]['rank'],
+				#'prof2_name'		=> $this->game->get_id('professions', $chardata['professions']['primary'][1]['name']),
+				#'prof2_value'		=> $chardata['professions']['primary'][1]['rank'],
+				#'talent1'			=> $this->game->obj['armory']->ConvertTalent($chardata['talents'][0]['spec']['icon']),
+				#'talent2'			=> $this->game->obj['armory']->ConvertTalent($chardata['talents'][1]['spec']['icon']),
+				
 			), $this->in->get('overtakeuser')));
 
 			$this->pdh->process_hook_queue();
