@@ -184,52 +184,7 @@
 		.profile_itemlevel_avgtxt, .profile_itemlevel_eq{
 			margin-left: 6px;
 		}
-		.raideventicon { background: url('".$this->server_path."games/wow/profiles/events/raid-icons.jpg') no-repeat; width: 59px; height: 59px; padding: 0 !important;}
-		.raideventicon.id2717 { background-position:        0 0; }
-		.raideventicon.id2677 { background-position:    -61px 0; }
-		.raideventicon.id3429 { background-position:   -122px 0; }
-		.raideventicon.id3428 { background-position:   -183px 0; }
-		.raideventicon.id3457 { background-position:   -244px 0; }
-		.raideventicon.id3923 { background-position:   -305px 0; }
-		.raideventicon.id3836 { background-position:   -366px 0; }
-		.raideventicon.id3607 { background-position:   -488px 0; }
-		.raideventicon.id3845 { background-position:   -549px 0; }
-		.raideventicon.id3606 { background-position:   -610px 0; }
-		.raideventicon.id3959 { background-position:   -671px 0; }
-		.raideventicon.id4075 { background-position:   -732px 0; }
-		.raideventicon.id3456 { background-position:   -793px 0; }
-		.raideventicon.id4493 { background-position:   -854px 0; }
-		.raideventicon.id4603 { background-position:   -915px 0; }
-		.raideventicon.id4500 { background-position:   -976px 0; }
-		.raideventicon.id4273 { background-position:  -1037px 0; }
-		.raideventicon.id4722 { background-position:  -1098px 0; }
-		.raideventicon.id2159 { background-position:  -1159px 0; }
-		.raideventicon.id4812 { background-position:  -1220px 0; }
-		.raideventicon.id4987 { background-position:  -1281px 0; }
-		.raideventicon.id5600 { background-position:  -1342px 0; }
-		.raideventicon.id5334 { background-position:  -1403px 0; }
-		.raideventicon.id5094 { background-position:  -1464px 0; }
-		.raideventicon.id5638 { background-position:  -1525px 0; }
-		.raideventicon.id5723 { background-position:  -1586px 0; }
-		.raideventicon.id5892 { background-position:  -1647px 0; }
-		.raideventicon.id6125 { background-position:  -1708px 0; }
-		.raideventicon.id6297 { background-position:  -1769px 0; }
-		.raideventicon.id6067 { background-position:  -1830px 0; }
-		.raideventicon.id6622 { background-position:  -1891px 0; }
-		.raideventicon.id6738 { background-position:  -1952px 0; }
-		.raideventicon.id6967 { background-position:  -2013px 0; }
-		.raideventicon.id6996 { background-position:  -2074px 0; }
-		.raideventicon.id7545 { background-position:  -2135px 0; }
-		.raideventicon.id8026 { background-position:  -2196px 0; }
-		.raideventicon.id8025 { background-position:  -2257px 0; }
-		.raideventicon.id8440 { background-position:  -2318px 0; }
-		.raideventicon.id8524 { background-position:  -2379px 0; }
-		.raideventicon.id8638 { background-position:  -2440px 0; }
-		.raideventicon.id9389 { background-position:  -2501px 0; }
-		.raideventicon.id8670 { background-position:  -2562px 0; }
-		.raideventicon.id10425 { background-position:  -2623px 0; }
-		.raideventicon.id10057 { background-position:  -2684px 0; }
-		.raideventicon.id10522 { background-position:  -2745px 0; }
+
 
 		#wow_icons_left .q img, #wow_icons_right .q img, #wow_icons_bottom_right .q img, #wow_icons_bottom_left .q img {
 			border: 1px solid #ffd100;
@@ -661,7 +616,7 @@ width:24px;
 					// build the tooltip
 					$tt_bossprogress = "<div class='table'>
 											<div class='tr'>
-												<div class='td'></div>
+												<div class='td'>LFR</div>
 												<div class='td'>".$this->game->glang('normalrun')."</div>
 												<div class='td'>".$this->game->glang('heroicrun')."</div>
 												<div class='td'>".$this->game->glang('mythicrun')."</div>
@@ -685,11 +640,16 @@ width:24px;
 					// mythic
 					$bar_bc_mythic		= $this->jquery->progressbar('bcmythic_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_mythic'], 'total' => $v_bossprogress['bosses_max'], 'text' => '%progress% (%percentage%)'));
 
+					// LFR
+					$bar_bc_lfr			= $this->jquery->progressbar('bclfr_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_lfr'], 'total' => $v_bossprogress['bosses_max'], 'text' => '%progress% (%percentage%)'));
+					
+					
 					$this->tpl->assign_block_vars('bossprogress_cat.bossprogress_val', array(
 						'ID'		=> $v_bossprogress['id'],
 						'NAME'		=> $v_bossprogress['name'],
+						'ICON'		=> $v_bossprogress['icon'],
 						'BARS_TT'	=> $tt_bossprogress,
-						'BARS_BAR'	=> $bar_bc_normal.$bar_bc_heroic.$bar_bc_mythic,
+						'BARS_BAR'	=> $bar_bc_lfr.$bar_bc_normal.$bar_bc_heroic.$bar_bc_mythic,
 						'RUNS'		=> sprintf($this->game->glang('bossprogress_normalruns'), $v_bossprogress['runs_normal']).' | '.sprintf($this->game->glang('bossprogress_heroicruns'), $v_bossprogress['runs_heroic']).' | '.sprintf($this->game->glang('bossprogress_mythicruns'), $v_bossprogress['runs_mythic'])
 					));
 				}

@@ -1342,6 +1342,8 @@ if(!class_exists('wow')) {
 			
 			$a_raidprogress = array();
 			
+			#d($chardata);
+			
 			foreach($chardata as $expansion){
 				$a_progress = array();
 				
@@ -1357,15 +1359,14 @@ if(!class_exists('wow')) {
 					$intBosses = 0;
 					foreach($v_progression['modes'] as $arrMode){
 						$difficulty = strtolower($arrMode['difficulty']['type']);
-						
-						$a_bosses['bosses'] = $arrMode['progress']['encounters'];
+						if(strpos($difficulty, 'legacy') === 0) $difficulty = 'normal';
 						
 						$a_bosses['progress_'.$difficulty] += $arrMode['progress']['completed_count'];
-						$a_bosses['runs_'.$difficulty] += $arrMode['progress']['total_count'];
+						$a_bosses['runs_'.$difficulty] = $arrMode['progress']['total_count'];
 						$intBosses += count($arrMode['progress']['encounters']);	
 					}
 					
-					#$arrExpansion = $this->game->obj['armory']->instance($v_progression['instance']['id'], true);
+					$arrExpansion = $this->game->obj['armory']->instance($v_progression['instance']['id'], true);
 
 					$a_progress[$v_progression['instance']['id']] = array(
 							'id'			=> $v_progression['instance']['id'],
@@ -1373,13 +1374,16 @@ if(!class_exists('wow')) {
 							'icon'			=> $arrExpansion['assets'][0]['value'],
 							
 							#'bosses'		=> $v_progression['bosses'],
-							'bosses_max'	=> $intBosses,
+							'bosses_max'	=> max($a_bosses),
 							'bosses_normal'	=> $a_bosses['progress_normal'],
 							'bosses_heroic'	=> $a_bosses['progress_heroic'],
 							'bosses_mythic'	=> $a_bosses['progress_mythic'],
+							'bosses_lfr'	=> $a_bosses['progress_lfr'],
+							
 							'runs_normal'	=> $a_bosses['runs_normal'],
 							'runs_heroic'	=> $a_bosses['runs_heroic'],
 							'runs_mythic'	=> $a_bosses['runs_mythic'],
+							'runs_lfr'		=> $a_bosses['runs_lfr'],
 							
 					);
 					
@@ -1392,7 +1396,7 @@ if(!class_exists('wow')) {
 				);
 				
 			}
-			return $a_raidprogress;
+			return array_reverse($a_raidprogress);
 		}
 	}#class
 }
