@@ -455,27 +455,27 @@ width:24px;
 			1	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/wowicon.png',
 					'name'	=> 'worldofwarcraft.com',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm_english']), 'char')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']['slug']), 'char')
 			),
 			2	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/askmrrobot.png',
 					'name'	=> 'AskMrRobot.com',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']), 'askmrrobot')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']['slug']), 'askmrrobot')
 			),
 			3	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/wowprogress.png',
 					'name'	=> 'wowprogress.com',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']), 'wowprogress')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']['slug']), 'wowprogress')
 			),
 			4	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/raiderio.png',
 					'name'	=> 'Raider.io',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']), 'raiderio')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']['slug']), 'raiderio')
 			),
 			5	=> array(
 					'icon'	=> $this->server_path.'games/wow/profiles/profilers/warcraftlogs.png',
 					'name'	=> 'Warcraftlogs',
-					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']), 'warcraftlogs')
+					'url'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']['slug']), 'warcraftlogs')
 			),
 		);
 
@@ -496,10 +496,10 @@ width:24px;
 			$('#char_infos').change();
 		", 'docready');
 
-		$items = $this->game->callFunc('getItemArray', array($chardata['items'], unsanitize($member['name'])));
+		$items = $this->game->callFunc('getItemArray', array($chardata['equipped_items'], unsanitize($member['name'])));
 
 		// talents
-		$a_talents = $this->game->callFunc('talents', array($chardata));
+		$a_talents = $this->game->callFunc('talents', array($chardata['specializations']));
 
 		$arrSelectedTalents = array();
 
@@ -717,32 +717,33 @@ width:24px;
 
 		$this->tpl->assign_vars(array(
 			'ARMORY'				=> 1,
-			'CHARDATA_ICON'			=> $this->game->obj['armory']->characterIcon($chardata),
-			'CHARACTER_IMG'			=> $this->game->obj['armory']->characterImage($chardata, 'big'),
+			'CHARDATA_ICON'			=> $this->game->obj['armory']->characterIcon(unsanitize($member['name']), $servername),
+			'CHARACTER_IMG'			=> $this->game->obj['armory']->characterIcon(unsanitize($member['name']), $servername, 'render'),
 			'CHARDATA_NAME'			=> $chardata['name'],
 			'CHARDATA_GUILDNAME'	=> $chardata['guild']['name'],
-			'CHARDATA_GUILDREALM'	=> ($member['servername'] && $member['servername'] != $chardata['guild']['realm']) ? $member['servername'] : $chardata['guild']['realm'],
-			'CHARDATA_POINTS'		=> $chardata['achievementPoints'],
-			'CHARDATA_TITLE'		=> $this->game->obj['armory']->selectedTitle($chardata['titles'], true),
-			'CHARDATA_PROFILEURL'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm_english']), 'char'),
-
+			'CHARDATA_GUILDREALM'	=> ($member['servername'] && $member['servername'] != $chardata['realm']['slug']) ? $member['servername'] : $chardata['realm']['slug'],
+			'CHARDATA_POINTS'		=> $chardata['achievement_points'],
+			'CHARDATA_TITLE'		=> $chardata['active_title']['name'],
+			'CHARDATA_PROFILEURL'	=> $this->game->obj['armory']->bnlink(unsanitize($member['name']), unsanitize($chardata['realm']['slug']), 'char'),
+			'ITEM_LEVEL_AVG'		=> $chardata['average_item_level'],
+			'ITEM_LEVEL_EQP'		=> $chardata['equipped_item_level'],
+				
 			// Bars
-			'HEALTH_VALUE'			=> $chardata['stats']['health'],
-			'POWER_VALUE'			=> $chardata['stats']['power'],
-			'POWER_TYPE'			=> $chardata['stats']['powerType'],
-			'POWER_NAME'			=> $this->game->glang('uc_bar_'.$chardata['stats']['powerType']),
+			'HEALTH_VALUE'			=> $chardata['health'],
+			'POWER_VALUE'			=> $chardata['power'],
+			'POWER_TYPE'			=> $chardata['power_type']['name'],
+			'POWER_NAME'			=> $chardata['power_type']['name'],
 
-			'INTELLECT_VALUE'		=> $chardata['stats']['int'],
-			'STAMINA_VALUE'			=> $chardata['stats']['sta'],
-			'SPELCRIT_VALUE'		=> round($chardata['stats']['spellCrit'], 0).'%',
-			'HASTE_VALUE'			=> round($chardata['stats']['hasteRatingPercent'], 0).'%',
-			'MASTERY_VALUE'			=> round($chardata['stats']['mastery'], 0). '%',
-			'VERSATILITY_VALUE'		=> round($chardata['stats']['versatilityDamageDoneBonus'], 0).'%',
+			'INTELLECT_VALUE'		=> $chardata['intellect']['effective'],
+			'STAMINA_VALUE'			=> $chardata['stamina']['effective'],
+			'SPELCRIT_VALUE'		=> round($chardata['spell_crit']['value'], 0). '%',
+			'HASTE_VALUE'			=> round($chardata['spell_haste']['value'], 0). '%',
+			'MASTERY_VALUE'			=> round($chardata['mastery']['value'], 0). '%',
+			'VERSATILITY_VALUE'		=> round($chardata['versatility_damage_done_bonus'], 0).'%',
 
-			'CRIT_RATING'			=> $chardata['stats']['critRating'],
-			'HASTE_RATING'			=> $chardata['stats']['hasteRating'],
-			'MASTERY_RATING'		=> $chardata['stats']['masteryRating'],
-			'VERSATILITY_RATING'	=> $chardata['stats']['versatility'],
+			'CRIT_RATING'			=> $chardata['spell_crit']['rating'],
+			'HASTE_RATING'			=> $chardata['spell_haste']['rating'],
+			'MASTERY_RATING'		=> $chardata['mastery']['rating'],
 		));
 
 	// the non armory charview

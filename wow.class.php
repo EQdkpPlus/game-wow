@@ -1287,37 +1287,54 @@ if(!class_exists('wow')) {
 				'waist'		=> array('position' => 'right',		'bnetid' => '5'),
 				'legs'		=> array('position' => 'right',		'bnetid' => '6'),
 				'feet'		=> array('position' => 'right',		'bnetid' => '7'),
-				'finger1'	=> array('position' => 'right',		'bnetid' => '10'),
-				'finger2'	=> array('position' => 'right',		'bnetid' => '11'),
-				'trinket1'	=> array('position' => 'right',		'bnetid' => '12'),
-				'trinket2'	=> array('position' => 'right',		'bnetid' => '13'),
+				'finger_1'	=> array('position' => 'right',		'bnetid' => '10'),
+				'finger_2'	=> array('position' => 'right',		'bnetid' => '11'),
+				'trinket_1'	=> array('position' => 'right',		'bnetid' => '12'),
+				'trinket_2'	=> array('position' => 'right',		'bnetid' => '13'),
 
-				'mainHand'	=> array('position' => 'bottom_left',	'bnetid' => '15'),
-				'offHand'	=> array('position' => 'bottom_right',	'bnetid' => '16')
+				'main_hand'	=> array('position' => 'bottom_left',	'bnetid' => '15'),
+				'off_hand'	=> array('position' => 'bottom_right',	'bnetid' => '16')
 			);
 
 			// reset the array
 			$a_items = array();
-
-			// set the itemlevel
-			$a_items['itemlevel'] = array(
-				'averageItemLevel'			=> $data['averageItemLevel'],
-				'averageItemLevelEquipped'	=> $data['averageItemLevelEquipped']
-			);
-
+			$arrItemsBySlot = array();
+			
+			foreach($data as $arrItem){
+				$slot = utf8_strtolower($arrItem['slot']['type']);
+				$arrItemsBySlot[$slot] = $arrItem;
+			}
+			
 			// fill the item slots with data
 			foreach ($d_itemoptions as $slot=>$options){
-				$item_id_full	= (isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? $this->game->obj['armory']->armory2itemid($data[$slot]['id'], $data[$slot]['context'], $data[$slot]['bonusLists'], $data[$slot]['itemLevel']) : 0 ;
-
-				$a_items[$options['position']][] =
-				array('itemid' => $item_id_full, 'icon' =>
-				(isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? infotooltip($data[$slot]['name'], $item_id_full, false, 0, $icons_size, false, array(false, $member_name, $slot), " ", '', true) : "<img src='".$this->server_path."games/wow/profiles/slots/".$options['bnetid'].".png' height='$icons_size' width='$icons_size' alt='' class='itt-icon' />"
-						,'level' => $data[$slot]['itemLevel'], 'name' => $data[$slot]['name'], 'quality' => $data[$slot]['quality'], 'name_tt' =>
-						(isset($data[$slot]['id']) && $data[$slot]['id'] > 0) ? infotooltip($data[$slot]['name'], $item_id_full, false, 0, false, true, array(false, $member_name, $slot), false, '', true) : ""
-
-				);
+				$arrItem = isset($arrItemsBySlot[$slot]) ? $arrItemsBySlot[$slot] : 0;
+				$item_id_full	= $this->game->obj['armory']->armory2itemid($arrItem['item']['id'], $arrItem['context'], $arrItem['bonus_list'], $arrItem['level']['value']);
+				$itemname = $arrItem['name'];
+				
+				if($arrItem === 0){
+					$a_items[$options['position']][] =
+					array(
+						'itemid' => $item_id_full, 
+						'icon' => "<img src='".$this->server_path."games/wow/profiles/slots/".$options['bnetid'].".png' height='$icons_size' width='$icons_size' alt='' class='itt-icon' />",
+						'level' => 0, 
+						'name' => "", 
+						'quality' => 0, 
+						'name_tt' => ""	
+					);
+				} else {
+					$a_items[$options['position']][] =
+					array(
+							'itemid' => $item_id_full,
+							'icon' => infotooltip($itemname, $item_id_full, false, 0, $icons_size, false, array(false, $member_name, $slot), " ", '', true),
+							'level' => $arrItem['level']['value'],
+							'name' => $itemname,
+							'quality' => $arrItem['quality']['type'],
+							'name_tt' => infotooltip($itemname, $item_id_full, false, 0, false, true, array(false, $member_name, $slot), false, '', true)
+					);
+				}
+				
 			}
-
+			
 			return $a_items;
 		}
 
