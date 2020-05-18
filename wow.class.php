@@ -1178,37 +1178,38 @@ if(!class_exists('wow')) {
 			$arrValues = array(15, 30, 45, 60, 75, 90, 100);
 
 			if (is_array($chardata['talents'])){
-				$talents = array();
-				foreach ($chardata['talents'] as $v_talents){
-
-					// fetch the specialization and put it in an array
-					$spezialisation = array();
-					if(isset($v_talents['talents']) && is_array($v_talents['talents'])){
-						foreach($v_talents['talents'] as $key => $v_spezialisation){
-
-							$spezialisation[$v_spezialisation['tier']] = array(
-								'name'			=> $v_spezialisation['spell']['name'],
-								'description'	=> $v_spezialisation['spell']['description'],
-								'icon'			=> sprintf($this->strStaticIconUrl, $v_spezialisation['spell']['icon']),
-								'value'			=> $arrValues[$v_spezialisation['tier']],
+			
+			#d($chardata);
+			
+			foreach($chardata as $key => $val){
+				if(is_numeric($key)){
+					$spezialisation = [];
+					
+					if(isset($val['talents'])){
+						foreach($val['talents'] as $key => $v_spezialisation){
+							
+							$arrSpell = $this->game->obj['armory']->spell($v_spezialisation['spell_tooltip']['spell']['id'], true);
+							
+							$spezialisation[$v_spezialisation['tier_index']] = array(
+									'name'			=> $v_spezialisation['talent']['name'],
+									'description'	=> $v_spezialisation['spell_tooltip']['description'],
+									'icon'			=> $arrSpell['assets'][0]['value'],
+									'value'			=> $arrValues[$v_spezialisation['tier_index']],
 							);
 						}
 					}
-
+					
 					$talents[] = array(
-						'selected'		=> (isset($v_talents['selected']) && $v_talents['selected'] == '1') ? '1' : '0',
-						'name'			=> (isset($v_talents['spec']['name']) && $v_talents['spec']['name']) ? $v_talents['spec']['name'] : $this->game->glang('not_assigned'),
-						'icon'			=> $this->game->obj['armory']->talentIcon(((isset($v_talents['spec']['icon']) && $v_talents['spec']['icon']) ? $v_talents['spec']['icon'] : 'inv_misc_questionmark')),
-						'background'	=> sprintf($this->strStaticIconUrl, $v_talents['spec']['backgroundImage']),
-						'role'			=> $v_talents['spec']['role'],
-						'desc'			=> $v_talents['spec']['description'],
-						'calcTalent'	=> $v_talents['calcTalent'],
-						'calcSpec'		=> $v_talents['calcSpec'],
-						'calcGlyph'		=> $v_talents['calcGlyph'],
-						'talents'		=> $spezialisation
+							'selected'		=> (count($spezialisation)) ? '1' : '0',
+							'name'			=> (isset($val['specialization']['name']) && $val['specialization']['name']) ? $val['specialization']['name'] : $this->game->glang('not_assigned'),
+							'icon'			=> $this->game->obj['armory']->talentIcon(((isset($v_talents['spec']['icon']) && $v_talents['spec']['icon']) ? $v_talents['spec']['icon'] : 'inv_misc_questionmark')),
+							'talents'		=> $spezialisation
 					);
+					
 				}
+				
 			}
+			
 			return $talents;
 		}
 
@@ -1339,47 +1340,59 @@ if(!class_exists('wow')) {
 		}
 
 		public function ParseRaidProgression($chardata){
+			#d($chardata);
+			
 			$a_raidprogress = array();
-			if(isset($chardata['progression']['raids']) && is_array($chardata['progression']['raids'])){
-				foreach($chardata['progression']['raids'] as $v_progression){
-
-					// parse the bosses
-					$a_bosses = array('progress_normal' => 0, 'progress_heroic' => 0, 'progress_mythic' => 0);
-					if(isset($v_progression['bosses']) && is_array($v_progression['bosses'])){
-						foreach($v_progression['bosses'] as $bosses){
-							$a_bosses['bosses'] = $bosses;
-
-							// progress count
-							if($bosses['normalKills'] > 0){
-								$a_bosses['progress_normal']++;
-							}
-							if($bosses['heroicKills'] > 0){
-								$a_bosses['progress_heroic']++;
-							}
-							if(isset($bosses['mythicKills']) && $bosses['mythicKills'] > 0){
-								$a_bosses['progress_mythic']++;
-							}
-						}
-					}
-
-					// put all together in an array
-					$a_category		= array_keys(search_in_array($v_progression['id'], $this->ArrInstanceCategories));
+			
+			foreach($chardata as $expansion){
+				$a_progress = array();
+				
+				foreach($expansion['instances'] as $v_progression){
+					$a_category		= array_keys(search_in_array($v_progression['instance']['id'], $this->ArrInstanceCategories));
 					$v_progresscat	= (isset($a_category[0])) ? $a_category[0] : 'default';
-					$a_raidprogress[$v_progresscat][$v_progression['id']] = array(
-						'id'			=> $v_progression['id'],
-						'name'			=> $v_progression['name'],
-						'icon'			=> $this->server_path.'games/wow/icons/events/'.$v_progression['id'].'.png',
-						'bosses'		=> $v_progression['bosses'],
-						'bosses_max'	=> count($v_progression['bosses']),
-						'bosses_normal'	=> $a_bosses['progress_normal'],
-						'bosses_heroic'	=> $a_bosses['progress_heroic'],
-						'bosses_mythic'	=> $a_bosses['progress_mythic'],
-						'runs_normal'	=> $v_progression['normal'],
-						'runs_heroic'	=> $v_progression['heroic'],
-						'runs_mythic'	=> $v_progression['mythic'],
+					
+					$v_progresscat = $expansion['name'];
+					
+					// parse the bosses
+					$a_bosses = array('progress_normal' => 0, 'progress_heroic' => 0, 'progress_mythic' => 0, 'runs_normal'=>0, 'runs_heroic'=>0, 'runs_mythic'=>0);
+					
+					$intBosses = 0;
+					foreach($v_progression['modes'] as $arrMode){
+						$difficulty = strtolower($arrMode['difficulty']['type']);
+						
+						$a_bosses['bosses'] = $arrMode['progress']['encounters'];
+						
+						$a_bosses['progress_'.$difficulty] += $arrMode['progress']['completed_count'];
+						$a_bosses['runs_'.$difficulty] += $arrMode['progress']['total_count'];
+						$intBosses += count($arrMode['progress']['encounters']);	
+					}
+					
+					#$arrExpansion = $this->game->obj['armory']->instance($v_progression['instance']['id'], true);
 
+					$a_progress[$v_progression['instance']['id']] = array(
+							'id'			=> $v_progression['instance']['id'],
+							'name'			=> $v_progression['instance']['name'],
+							'icon'			=> $arrExpansion['assets'][0]['value'],
+							
+							#'bosses'		=> $v_progression['bosses'],
+							'bosses_max'	=> $intBosses,
+							'bosses_normal'	=> $a_bosses['progress_normal'],
+							'bosses_heroic'	=> $a_bosses['progress_heroic'],
+							'bosses_mythic'	=> $a_bosses['progress_mythic'],
+							'runs_normal'	=> $a_bosses['runs_normal'],
+							'runs_heroic'	=> $a_bosses['runs_heroic'],
+							'runs_mythic'	=> $a_bosses['runs_mythic'],
+							
 					);
+					
 				}
+
+				$a_raidprogress[] = array(
+					'id' => $expansion['expansion']['id'],
+					'name' => $expansion['expansion']['name'],
+					'raids' => $a_progress
+				);
+				
 			}
 			return $a_raidprogress;
 		}

@@ -69,31 +69,19 @@ if (!class_exists('pdh_r_wow')) {
 		* @returns boolean
 		*/
 		public function init(){
-			$this->data = array();
-			$this->game->new_object('bnet_armory', 'armory', array(unsanitize($this->config->get('uc_server_loc')), $this->config->get('uc_data_lang')));
-			$this->guilddata = $this->game->obj['armory']->guild(unsanitize($this->config->get('guildtag')), unsanitize($this->config->get('servername')));
-			$guildMembers = array();
-
-			if (is_array($this->guilddata['members'])){
-				foreach($this->guilddata['members'] as $member){
-					 $this->data[sanitize($member['character']['name'])] = $member;
-				}
-			}
-			return true;
+			
 		}
 
 		public function get_achievementpoints($member_id){
 			$membername = $this->pdh->get('member', 'name', array($member_id));
-			if (isset($this->data[$membername])){
-				return $this->data[$membername]['character']['achievementPoints'];
-			}
 			
 			$char_server	= $this->pdh->get('member', 'profile_field', array($member_id, 'servername'));
 			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 			
 			$charinfo = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($servername));
-			if (isset($charinfo['achievementPoints'])){
-				return $charinfo['achievementPoints'];
+			
+			if (isset($charinfo['achievement_points'])){
+				return $charinfo['achievement_points'];
 			}
 			
 			return 0;
@@ -111,11 +99,7 @@ if (!class_exists('pdh_r_wow')) {
 			$char_server	= $this->pdh->get('member', 'profile_field', array($member_id, 'servername'));
 			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 			
-			$charinfo = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($servername));
-			if (isset($charinfo['thumbnail'])){
-				return $this->game->obj['armory']->characterIcon($charinfo);
-			}
-			return '';
+			return $this->game->obj['armory']->characterIcon(unsanitize($membername), unsanitize($servername));
 		}
 
 		public function get_html_charicon($member_id){
@@ -132,8 +116,9 @@ if (!class_exists('pdh_r_wow')) {
 			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 			
 			$charinfo = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($servername));
-			if (isset($charinfo['items']['averageItemLevelEquipped'])){
-				return $charinfo['items']['averageItemLevelEquipped'];
+
+			if (isset($charinfo['average_item_level'])){
+				return $charinfo['average_item_level'];
 			}
 			
 			return '';
@@ -183,6 +168,9 @@ if (!class_exists('pdh_r_wow')) {
 		}
 		
 		public function get_professions($member_id){
+			//@TODO: adjust for new API
+			return "";
+			
 			$membername = $this->pdh->get('member', 'name', array($member_id));
 			$char_server	= $this->pdh->get('member', 'profile_field', array($member_id, 'servername'));
 			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
@@ -206,29 +194,19 @@ if (!class_exists('pdh_r_wow')) {
 			$chardata = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($servername));
 
 			
-			$a_talents = $this->game->callFunc('talents', array($chardata));
+			$a_talents = $this->game->callFunc('talents', array($chardata['specializations']));
 			
 			foreach ($a_talents as $id_talents => $v_talents){
 				if(($v_talents['selected'] == '1')){
-					/*
-					$this->tpl->assign_block_vars('talents', array(
-							'ID'			=> $id_talents,
-							'SELECTED'		=> ($v_talents['selected'] == '1') ? true : false,
-							'ICON'			=> $v_talents['icon'],
-							'NAME'			=> $v_talents['name'],
-							'ROLE'			=> strtolower($v_talents['role']),
-							'DESCRIPTION'	=> $v_talents['desc'],
-					));
-					*/
 					
 					// talent specialization
-					$spec = "";
+					$spec = "<div>";
 					for ($i_ts = 0; $i_ts < 7; $i_ts ++) {
 						$spec .= '<img src="'.$v_talents['talents'][$i_ts]['icon'].'" class="gameicon" title="'.$v_talents['talents'][$i_ts]['name'].'"/> ';
 						
 					}
 					
-					return $v_talents['name'].': '.$spec;
+					return $v_talents['name'].': '.$spec.'</div>';
 				}
 			}
 			

@@ -636,19 +636,26 @@ width:24px;
 		$this->tpl->assign_array('itemlevel',		$items['itemlevel']);
 
 		// boss progress
-		$d_bossprogress		= $this->game->callFunc('ParseRaidProgression', array($chardata));
+		$d_bossprogress		= $this->game->callFunc('ParseRaidProgression', array($chardata['expansions']));
+		
+		
 		if(is_array($d_bossprogress)){
-			foreach($d_bossprogress as $v_progresscat=>$a_bossprogress){
+			foreach($d_bossprogress as $v_progresscat){
+				
+				
+				
+				
 				// skip the category if hidden
 				$config_bk_hidden	= (is_array($this->config->get('profile_boskills_hide'))) ? $this->config->get('profile_boskills_hide') : array();
 				if(in_array($v_progresscat, $config_bk_hidden)){ continue; }
 
 				$this->tpl->assign_block_vars('bossprogress_cat', array(
-					'NAME'	=> $this->game->glang('uc_achievement_tab_'.$v_progresscat),
-					'ID'	=> $v_progresscat
+					'NAME'	=> $v_progresscat['name'],
+					'ID'	=> $v_progresscat['id'],
 				));
 
-				$a_bossprogress =  array_reverse($a_bossprogress);
+				$a_bossprogress =  $v_progresscat['raids'];
+				
 				foreach($a_bossprogress as $v_bossprogress){
 
 					// build the tooltip

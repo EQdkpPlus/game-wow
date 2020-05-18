@@ -1002,13 +1002,42 @@ class bnet_armory extends gen_class {
 	* @param $force		Force the cache to update?
 	* @return bol
 	*/
-	public function spell($spellid, $force=false){
+	public function spell($spellid, $media=false,$force=false){
 		$this->check_access_tocken();
-		$wowurl = $this->_config['apiUrl'].sprintf('wow/spell/%s?locale=%s&access_token=%s', $spellid, $this->_config['locale'], $this->_config['access_token']);
+		if($media){
+			$wowurl = $this->_config['apiUrl'].sprintf('data/wow/media/spell/%s?namespace=static-%s&locale=%s&access_token=%s', $spellid, $this->_config['serverloc'], $this->_config['locale'], $this->_config['access_token']);
+		} else {
+			$wowurl = $this->_config['apiUrl'].sprintf('data/wow/spell/%s?namespace=static-%s&locale=%s&access_token=%s', $spellid, $this->_config['serverloc'], $this->_config['locale'], $this->_config['access_token']);
+		}
 		$this->_debug('Spell: '.$wowurl);
-		if((!$json	= $this->get_CachedData('spelldatadata_'.$spellid, $force)) && $this->_config['access_token']){
+		
+		if((!$json	= $this->get_CachedData('spelldatadata_'.$spellid.'_'.($media), $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'spelldatadata_'.$spellid);
+			$this->set_CachedData($json, 'spelldatadata_'.$spellid.'_'.($media));
+		}
+		$spell		= json_decode($json, true);
+		$errorchk	= $this->CheckIfError($spell);
+		return (!$errorchk) ? $spell : $errorchk;
+	}
+	
+	/**
+	 * Fetch expansion information
+	 *
+	 * @param $questid	battlenet quest ID
+	 * @param $force		Force the cache to update?
+	 * @return bol
+	 */
+	public function instance($spellid, $media=false,$force=false){
+		$this->check_access_tocken();
+		if($media){
+			$wowurl = $this->_config['apiUrl'].sprintf('data/wow/media/journal-instance/%s?namespace=static-%s&locale=%s&access_token=%s', $spellid, $this->_config['serverloc'], $this->_config['locale'], $this->_config['access_token']);
+		} else {
+			$wowurl = $this->_config['apiUrl'].sprintf('data/wow/journal-instance/%s?namespace=static-%s&locale=%s&access_token=%s', $spellid, $this->_config['serverloc'], $this->_config['locale'], $this->_config['access_token']);
+		}
+		$this->_debug('Expansion: '.$wowurl);
+		if((!$json	= $this->get_CachedData('instancedata_'.$spellid.'_'.($media), $force)) && $this->_config['access_token']){
+			$json	= $this->read_url($wowurl);
+			$this->set_CachedData($json, 'instancedata_'.$spellid.'_'.($media));
 		}
 		$spell		= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($spell);
