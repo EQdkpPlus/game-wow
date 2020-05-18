@@ -468,11 +468,12 @@ class bnet_armory extends gen_class {
 		$equipment		= $this->character_singlefeed($user, $realm, 'equipment', $force);
 		$raids			= $this->character_singlefeed($user, $realm, 'raids', $force);
 		$talents		= $this->character_singlefeed($user, $realm, 'talents', $force);
+		$media			= $this->character_singlefeed($user, $realm, 'media', $force);
 		#$titles		= $this->character_singlefeed($user, $realm, 'titles', $force);
-		#$media			= $this->character_singlefeed($user, $realm, 'media', $force);
 		#$professions	= $this->character_singlefeed($user, $realm, 'professions', $force);
 		
-		return array_merge_recursive($profile, $statistics, $achievements, $appearance, $equipment, $raids, $talents);
+		$combined_char	= array_replace_recursive($profile, $appearance, $media);
+		return array_merge_recursive($combined_char, $achievements, $equipment, $raids, $talents, $statistics);
 	}
 
 	/**
@@ -484,23 +485,13 @@ class bnet_armory extends gen_class {
 	public function characterIcon($user, $realm, $type='icon', $force=false){
 		$realm		= $this->ConvertInput($this->cleanServername($realm));
 		$user		= $this->ConvertInput(strtolower($user));
-		$wowurl		= $this->_config['apiUrl'].sprintf('profile/wow/character/%s/%s/character-media?namespace=%s&locale=%s&access_token=%s', $realm, $user, $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
-
-		$json		= $this->get_CachedData('chardata_'.$type.'_'.$user.$realm, $force);
-		if(!$json && ($force || $this->chardataUpdates < $this->_config['maxChardataUpdates']) && $this->_config['access_token']){
-			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'chardata_'.$type.'_'.$user.$realm);
-			$this->chardataUpdates++;
-		}
-		//Try to get old data
-		if(!$json) $json = $this->get_CachedData('chardata_'.$type.'_'.$user.$realm, false, false, true);
-		$chardata	= json_decode($json, true);
+		$chardata	= $this->character_singlefeed($user, $realm, 'media', $force);
 
 		//Default icon for unknown chars
 		if(!$chardata){
 			return $this->cacheIcon('https://eu.battle.net/wow/static/images/2d/avatar/0-0.jpg', false);
 		}
-
+//get_CachedData($filename, $force=false, $binary=false, $returniffalse=false, $returnServerPath=false)
 		// get the cached image
 		$img_charicon	= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true);
 		$img_charicon_sp= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true, false, true);
@@ -524,7 +515,7 @@ class bnet_armory extends gen_class {
 		}
 
 		if(filesize($img_charicon) < 400){
-			$img_charicon = $img_charicon_sp = "";
+			#$img_charicon = $img_charicon_sp = "";
 		}
 
 		return $img_charicon_sp;
