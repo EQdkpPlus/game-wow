@@ -332,8 +332,8 @@
 	color: #1c8aff;
 }
 
-.wowsvg.icon-intellect {
-color: #d26cd1;
+.wowsvg.icon-strength {
+color: #f33232;
 }
 
 .wowsvg.icon-stamina {
@@ -364,6 +364,26 @@ width:24px;
 	overflow: hidden;
 }
 
+.bossprogress-item {
+	width:300px; 
+	padding-right: 20px; 
+	padding-bottom:20px
+}
+
+.bossprogress-cover {
+	height: 80px; 
+	background-position: 50%;
+    background-size: 100%;
+}
+
+.bossprogress-bossname {
+	min-height: 25px;
+}
+
+.bossprogress-container {
+	display:flex;
+	flex-wrap:wrap;
+}
 
 		@media all and (max-width: 1100px) {
 			.responsive .profile_itemlevel {
@@ -534,6 +554,7 @@ width:24px;
 		}
 
 		// Character News Feed
+		/*
 		$d_charfeed = $this->game->callFunc('ParseCharNews', array($chardata));
 		$cnf_output = '';
 		if (is_array($d_charfeed)) {
@@ -576,13 +597,14 @@ width:24px;
 			}
 		}
 
+		*/
 		// item icons
 
 		foreach ($items as $items_pos=>$v_items){
 			foreach ($v_items as $slots){
 				$this->tpl->assign_block_vars('itemicons_'.$items_pos, array(
 						'ICON'	=> $slots['icon'],
-						'LEVEL' => $slots['level'],
+						'LEVEL' => (strlen($slots['name'])) ? $slots['level'] : '',
 						'NAME'	 => $slots['name_tt'],
 						'QUALITY' => (int)$slots['quality'],
 				));
@@ -635,16 +657,16 @@ width:24px;
 					$tt_bossprogress .= '</div>';
 
 					// normal
-					$bar_bc_normal		= $this->jquery->progressbar('bcnormal_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_normal'], 'total' => $v_bossprogress['bosses_max'], 'text' => '%progress% (%percentage%)'));
+					$bar_bc_normal		= $this->jquery->progressbar('bcnormal_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_normal'], 'total' => $v_bossprogress['bosses_max'], 'text' => $this->game->glang('normalrun').' - %progress% (%percentage%)'));
 
 					// heroic
-					$bar_bc_heroic		= $this->jquery->progressbar('bcheroic_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_heroic'], 'total' => $v_bossprogress['bosses_max'], 'text' => '%progress% (%percentage%)'));
+					$bar_bc_heroic		= $this->jquery->progressbar('bcheroic_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_heroic'], 'total' => $v_bossprogress['bosses_max'], 'text' => $this->game->glang('heroicrun').' - %progress% (%percentage%)'));
 
 					// mythic
-					$bar_bc_mythic		= $this->jquery->progressbar('bcmythic_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_mythic'], 'total' => $v_bossprogress['bosses_max'], 'text' => '%progress% (%percentage%)'));
+					$bar_bc_mythic		= $this->jquery->progressbar('bcmythic_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_mythic'], 'total' => $v_bossprogress['bosses_max'], 'text' => $this->game->glang('mythicrun').' - %progress% (%percentage%)'));
 
 					// LFR
-					$bar_bc_lfr			= $this->jquery->progressbar('bclfr_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_lfr'], 'total' => $v_bossprogress['bosses_max'], 'text' => '%progress% (%percentage%)'));
+					$bar_bc_lfr			= $this->jquery->progressbar('bclfr_'.$v_bossprogress['id'], 0, array('completed' => $v_bossprogress['bosses_lfr'], 'total' => $v_bossprogress['bosses_max'], 'text' => 'LFR - %progress% (%percentage%)'));
 					
 					
 					$this->tpl->assign_block_vars('bossprogress_cat.bossprogress_val', array(
@@ -660,6 +682,7 @@ width:24px;
 		}
 
 		// achievements
+		/*
 		$a_achievements = $this->game->callFunc('parseCharAchievementOverview', array($chardata));
 		foreach ($a_achievements as $id_achievements => $v_achievements){
 
@@ -684,6 +707,7 @@ width:24px;
 					'DATE'	=> $this->time->nice_date($v_latestAchievements['date'], 60*60*24*7),
 			));
 		}
+		*/
 
 		$this->tpl->assign_vars(array(
 			'ARMORY'				=> 1,
@@ -704,7 +728,7 @@ width:24px;
 			'POWER_TYPE'			=> $chardata['power_type']['name'],
 			'POWER_NAME'			=> $chardata['power_type']['name'],
 
-			'INTELLECT_VALUE'		=> $chardata['intellect']['effective'],
+			'STRENGTH_VALUE'		=> $chardata['strength']['effective'],
 			'STAMINA_VALUE'			=> $chardata['stamina']['effective'],
 			'SPELCRIT_VALUE'		=> round($chardata['spell_crit']['value'], 0). '%',
 			'HASTE_VALUE'			=> round($chardata['spell_haste']['value'], 0). '%',
