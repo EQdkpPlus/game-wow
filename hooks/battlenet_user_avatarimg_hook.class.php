@@ -51,8 +51,7 @@ if (!class_exists('battlenet_user_avatarimg_hook')){
 				$strMemberName	= $this->pdh->get('member', 'name', array($mainchar));
 			
 				$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
-				$chardata		= $this->game->obj['armory']->character($strMemberName, unsanitize($servername), true);
-				$charicon		= $this->game->obj['armory']->characterIcon($chardata);
+				$charicon		= $this->game->obj['armory']->characterIcon($strMemberName, unsanitize($servername), 'icon');
 
 				if($charicon != ''){
 					return array('wow' => $charicon);
