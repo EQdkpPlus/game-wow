@@ -615,6 +615,7 @@ width:24px;
 		// boss progress
 		$d_bossprogress		= $this->game->callFunc('ParseRaidProgression', array($chardata['expansions']));
 		
+		#d($d_bossprogress);
 		
 		if(is_array($d_bossprogress)){
 			foreach($d_bossprogress as $v_progresscat){

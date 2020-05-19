@@ -1380,7 +1380,7 @@ if(!class_exists('wow')) {
 							'icon'			=> $arrExpansion['assets'][0]['value'],
 							
 							'bosses'		=> $a_bosses['bosses'],
-							'bosses_max'	=> $a_bosses['runs_normal'],
+							'bosses_max'	=> max(array($a_bosses['runs_normal'], $a_bosses['runs_heroic'], $a_bosses['runs_mythic'], $a_bosses['runs_lfr'])),
 							'bosses_normal'	=> $a_bosses['progress_normal'],
 							'bosses_heroic'	=> $a_bosses['progress_heroic'],
 							'bosses_mythic'	=> $a_bosses['progress_mythic'],
