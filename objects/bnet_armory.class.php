@@ -953,13 +953,22 @@ class bnet_armory extends gen_class {
 	* @param $force				Force the cache to update?
 	* @return bol
 	*/
-	public function achievement($achievementid, $force=false){
+	public function achievement($achievementid, $media=false, $force=false){
 		$this->check_access_tocken();
-		$wowurl = $this->_config['apiUrl'].sprintf('data/wow/achievement/%s?namespace=%s&locale=%s&access_token=%s', $achievementid, $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
+		
+		if($media){
+			$cache = "_media";
+			$wowurl = $this->_config['apiUrl'].sprintf('data/wow/media/achievement/%s?namespace=%s&locale=%s&access_token=%s', $achievementid, $this->getWoWNamespace('static'), $this->_config['locale'], $this->_config['access_token']);
+		} else {
+			$cache = "";
+			$wowurl = $this->_config['apiUrl'].sprintf('data/wow/achievement/%s?namespace=%s&locale=%s&access_token=%s', $achievementid, $this->getWoWNamespace('static'), $this->_config['locale'], $this->_config['access_token']);			
+		}
+		
 		$this->_debug('Achievement: '.$wowurl);
-		if((!$json	= $this->get_CachedData('achievementdata_'.$achievementid, $force)) && $this->_config['access_token']){
+		
+		if((!$json	= $this->get_CachedData('achievementdata_'.$achievementid.$cache, $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'achievementdata_'.$achievementid);
+			$this->set_CachedData($json, 'achievementdata_'.$achievementid.$cache);
 		}
 		$achievementdata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($achievementdata);
@@ -996,15 +1005,17 @@ class bnet_armory extends gen_class {
 	public function spell($spellid, $media=false,$force=false){
 		$this->check_access_tocken();
 		if($media){
+			$cache = "_media";
 			$wowurl = $this->_config['apiUrl'].sprintf('data/wow/media/spell/%s?namespace=static-%s&locale=%s&access_token=%s', $spellid, $this->_config['serverloc'], $this->_config['locale'], $this->_config['access_token']);
 		} else {
+			$cache = "";
 			$wowurl = $this->_config['apiUrl'].sprintf('data/wow/spell/%s?namespace=static-%s&locale=%s&access_token=%s', $spellid, $this->_config['serverloc'], $this->_config['locale'], $this->_config['access_token']);
 		}
 		$this->_debug('Spell: '.$wowurl);
 		
-		if((!$json	= $this->get_CachedData('spelldatadata_'.$spellid.'_'.($media), $force)) && $this->_config['access_token']){
+		if((!$json	= $this->get_CachedData('spelldatadata_'.$spellid.$cache, $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'spelldatadata_'.$spellid.'_'.($media));
+			$this->set_CachedData($json, 'spelldatadata_'.$spellid.$cache);
 		}
 		$spell		= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($spell);
@@ -1062,15 +1073,10 @@ class bnet_armory extends gen_class {
 	* @param $force		Force the cache to update?
 	* @return bol
 	*/
-	public function boss($bossid=0, $force=false){
+	public function boss($bossid, $media=false, $force=false){
 		$this->check_access_tocken();
-		if($bossid > 0){
-			$wowurl = $this->_config['apiUrl'].sprintf('wow/boss/%s?namespace=%s&locale=%s&access_token=%s', $this->ConvertInput($bossid), $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
-		}else {
-			$wowurl = $this->_config['apiUrl'].sprintf('wow/boss/?namespace=%s&locale=%s&access_token=%s', $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
-			$bossid = 'all';
-		}
-
+		
+		$wowurl = $this->_config['apiUrl'].sprintf('data/wow/journal-encounter/%s?namespace=%s&locale=%s&access_token=%s', $this->ConvertInput($bossid), $this->getWoWNamespace('static'), $this->_config['locale'], $this->_config['access_token']);
 		$this->_debug('Boss: '.$wowurl);
 		if((!$json	= $this->get_CachedData('bossdatadata_'.$bossid, $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);

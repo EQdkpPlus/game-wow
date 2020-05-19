@@ -417,7 +417,8 @@ $german_array = array(
 		'news_itemPurchase'				=> '%1$s erwarb den Gegenstand: %2$s',
 		'news_guildLevel'				=> 'Die Gilde hat Level %s erreicht',
 		'news_guildAchievement'			=> 'Die Gilde hat den Erfolg %1$s für %2$s Punkte errungen.',
-		'news_playerAchievement'		=> '%1$s hat den Erfolg %2$s für %3$s Punkte errungen.',
+		'news_playerAchievement'		=> '%1$s hat den Erfolg "%2$s" für %3$s Punkte errungen.',
+		'news_encounterCompleted'		=> 'Die Gilde hat den Boss "%1$s" im Modus "%2$s" erfolgreich bezwungen.',
 
 		'not_assigned'					=> 'Nicht verteilt',
 		'empty'							=> 'Leer',

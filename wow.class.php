@@ -790,96 +790,49 @@ if(!class_exists('wow')) {
 
 			$arrOut = array();
 
-			$arrAchievementsData = $this->game->obj['armory']->getdata();
-			$arrGuildAchievementsData = $this->game->obj['armory']->getdata('guild');
-
 			if(is_array($arrNews)){
 				$i = 0;
 				foreach($arrNews as $val){
 					if ($i == $intCount) break;
+					
+					$type = strtolower($val['activity']['type']);
+					$time = $val['timestamp'];
+					
+					switch($type){
+						case 'encounter':
+							if (is_array($arrTypes) && !in_array('encounter_completed', $arrTypes)) continue 2;
+							
+							$data = $val['encounter_completed'];
+				
+							$arrOut[] = array(
+									'text' => sprintf($this->glang('news_encounterCompleted'), $data['encounter']['name'], $data['mode']['name']),
+									'icon' => '',
+									'desc' => '',
+									'date' => substr($time, 0, -3),
+							);
+							
+							break;
+						
+						case 'character_achievement':{
+							if (is_array($arrTypes) && !in_array('character_achievement', $arrTypes)) continue 2;
+							
+							$data = $val[$type];
 
-					switch($val['type']){
-						case 'guildCreated':
-						if (is_array($arrTypes) && !in_array('guildCreated', $arrTypes)) continue 2;
-
-						$arrOut[] = array(
-							'text' => $this->glang('news_guildCreated'),
-							'icon' => $this->server_path.'games/wow/roster/newsfeed_guild.png',
-							'date' => substr($val['timestamp'], 0, -3),
-						);
-						break;
-
-						case 'itemLoot':{
-							if (is_array($arrTypes) && !in_array('itemLoot', $arrTypes)) continue 2;
-						$itemData = $this->game->obj['armory']->item($val['itemId']);
-						$charID = register('pdh')->get('member', 'id', array(trim($val['character'])));
-						if ($charID) {
-							$charLink = register('pdh')->get('member', 'html_memberlink', array($charID, $this->routing->simpleBuild('character'), '', false, false, true, true));
-						} else {
-							$charLink = $val['character'];
-						}
-						$arrOut[] = array(
-							'text' => sprintf($this->glang('news_itemLoot'), $charLink, infotooltip($itemData['name'], $val['itemId'], false, false, false, true)),
-							'icon' => sprintf($this->strStaticIconUrl, $itemData['icon']),
-							'date' => substr($val['timestamp'], 0, -3),
-						);
-						}
-						break;
-
-						case 'itemPurchase':
-						if (is_array($arrTypes) && !in_array('itemPurchase', $arrTypes)) continue 2;
-						$itemData = $this->game->obj['armory']->item($val['itemId']);
-						$charID = register('pdh')->get('member', 'id', array(trim($val['character'])));
-						if ($charID) {
-							$charLink = register('pdh')->get('member', 'html_memberlink', array($charID,  $this->routing->simpleBuild('character'), '', false, false, true, true));
-						} else {
-							$charLink = $val['character'];
-						}
-						$arrOut[] = array(
-							'text' => sprintf($this->glang('news_itemPurchase'), $charLink, infotooltip($itemData['name'], $val['itemId'], false, false, false, true)),
-							'icon' => sprintf($this->strStaticIconUrl, $itemData['icon']),
-							'date' => substr($val['timestamp'], 0, -3),
-						);
-						break;
-
-						case 'guildLevel':
-						if (is_array($arrTypes) && !in_array('guildLevel', $arrTypes)) continue 2;
-						$arrOut[] = array(
-							'text' => sprintf($this->glang('news_guildLevel'), $val['levelUp']),
-							'icon' => $this->server_path.'games/wow/roster/newsfeed_guild.png',
-							'date' => substr($val['timestamp'], 0, -3),
-						);
-						break;
-
-						case 'guildAchievement':{
-							if (is_array($arrTypes) && !in_array('guildAchievement', $arrTypes)) continue 2;
-							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$val['achievement']['id'], $arrGuildAchievementsData);
-							$achievCatName =  $this->game->obj['armory']->achievementIDMapping($achievCat);
-							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'/'.$achievCatName;
-						$arrOut[] = array(
-							'text' => sprintf($this->glang('news_guildAchievement'), '<a href="'.$bnetLink.'">'.$val['achievement']['title'].'</a>', $val['achievement']['points']),
-							'icon' => sprintf($this->strStaticIconUrl, $val['achievement']['icon']),
-							'date' => substr($val['timestamp'], 0, -3),
-						);
-						}
-						break;
-						case 'playerAchievement':{
-							if (is_array($arrTypes) && !in_array('playerAchievement', $arrTypes)) continue 2;
-
-							$charID = register('pdh')->get('member', 'id', array(trim($val['character'])));
+							$charID = register('pdh')->get('member', 'id', array(trim($data['character']['name'])));
 							if ($charID) {
 								$charLink = register('pdh')->get('member', 'html_memberlink', array($charID, $this->routing->simpleBuild('character'),'', false, false, true, true));
 							} else {
-								$charLink = $val['character'];
+								$charLink = $data['character']['name'];
 							}
-							$achievCat = $this->game->obj['armory']->getCategoryForAchievement((int)$val['achievement']['id'], $arrAchievementsData);
-							$achievCatName =  $this->game->obj['armory']->achievementIDMapping($achievCat);
-
-							$bnetLink = $this->game->obj['armory']->bnlink($val['character'], $this->config->get('servername'), 'achievements').'/'.$achievCatName;
+							
+							$arrAchiev =  $this->game->obj['armory']->achievement($data['achievement']['id'], false);
+							$arrAchievMedia = $this->game->obj['armory']->achievement($data['achievement']['id'], true);
+							
 							$arrOut[] = array(
-								'text' => sprintf($this->glang('news_playerAchievement'), $charLink, '<a href="'.$bnetLink.'">'.$val['achievement']['title'].'</a>', $val['achievement']['points']),
-								'icon' => sprintf($this->strStaticIconUrl, $val['achievement']['icon']),
-								'date' => substr($val['timestamp'], 0, -3),
+								'text' => sprintf($this->glang('news_playerAchievement'), $charLink, $data['achievement']['name'], $arrAchiev['points']),
+								'icon' => $arrAchievMedia['assets'][0]['value'],
+								'desc' => $arrAchiev['description'],
+								'date' => substr($time, 0, -3),
 							);
 						}
 						break;
@@ -887,6 +840,7 @@ if(!class_exists('wow')) {
 					$i++;
 				}
 			}
+
 			return $arrOut;
 		}
 
