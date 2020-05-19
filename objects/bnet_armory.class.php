@@ -53,8 +53,6 @@ class bnet_armory extends gen_class {
 		'apiUrl'					=> '',
 		'apiRenderUrl'				=> '',
 		'apiTabardRenderUrl'		=> '',
-		'maxChariconUpdates'		=> 1,
-		'maxChardataUpdates'		=> 1,
 		'client_id'					=> '',
 		'client_secret'				=> '',
 		'access_token'				=> false,
@@ -430,7 +428,7 @@ class bnet_armory extends gen_class {
 
 		$this->_debug('Character: '.$wowurl);
 		$json		= $this->get_CachedData('chardata_'.$feed.'_'.$user.$realm, $force);
-		if(!$json && ($force || $this->chardataUpdates < $this->_config['maxChardataUpdates']) && $this->_config['access_token']){
+		if(!$json && $force && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'chardata_'.$feed.'_'.$user.$realm);
 			$this->chardataUpdates++;
@@ -491,12 +489,12 @@ class bnet_armory extends gen_class {
 		if(!$chardata){
 			return $this->cacheIcon('https://eu.battle.net/wow/static/images/2d/avatar/0-0.jpg', false);
 		}
-//get_CachedData($filename, $force=false, $binary=false, $returniffalse=false, $returnServerPath=false)
+
 		// get the cached image
 		$img_charicon	= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true);
 		$img_charicon_sp= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true, false, true);
 
-		if(!$img_charicon && ($forceUpdateAll || ($this->chariconUpdates < $this->_config['maxChariconUpdates']))){
+		if(!$img_charicon && $forceUpdateAll){
 			switch($type){
 				case 'icon':	$image_url = $chardata['avatar_url']; 	break;
 				case 'render':	$image_url = $chardata['render_url']; 	break;
