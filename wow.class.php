@@ -27,20 +27,20 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 
 		protected static $apiLevel	= 20;
-		public $version				= '8.3.23.2'; //Version for EQdkp Plus 2.3
+		public $version				= '8.3.23.3'; //Version for EQdkp Plus 2.3
 		protected $this_game		= 'wow';
-		protected $types		= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
-		protected $classes		= array();
-		protected $roles		= array();
-		protected $races		= array();															// for each type there must be the according var
-		protected $factions		= array();															// and the according function: load_$type
-		protected $filters		= array();
+		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
+		protected $classes			= array();
+		protected $roles			= array();
+		protected $races			= array();															// for each type there must be the according var
+		protected $factions			= array();															// and the according function: load_$type
+		protected $filters			= array();
 		protected $realmlist		= array();
 		protected $professions		= array();
-		public $objects			= array('bnet_armory');												// eventually there are some objects (php-classes) in this game
-		public $no_reg_obj		= array('bnet_armory');												// a list with all objects, which dont need registry
-		public $langs			= array('english', 'german');										// in which languages do we have information?
-		public $importers 		= array();
+		public $objects				= array('bnet_armory');												// eventually there are some objects (php-classes) in this game
+		public $no_reg_obj			= array('bnet_armory');												// a list with all objects, which dont need registry
+		public $langs				= array('english', 'german');										// in which languages do we have information?
+		public $importers 			= array();
 
 		public $character_unique_ids = array('servername');
 
@@ -126,7 +126,7 @@ if(!class_exists('wow')) {
 				'recruitment' 	=> true,
 				'parent'	=> array(
 					'class' => array(
-						0	=> 'all',		// Unknown
+						0	=> 'all',			// Unknown
 						1	=> array(0,1,2),	// Death Knight
 						2	=> array(3,4,5,6),	// Druid
 						3	=> array(7,8,9),	// Hunter
@@ -149,7 +149,7 @@ if(!class_exists('wow')) {
 				'decorate'	=> false,
 				'parent'	=> array(
 					'class' => array(
-						0	=> 'all',		// Unknown
+						0	=> 'all',			// Unknown
 						1	=> array(0,1,2),	// Death Knight
 						2	=> array(3,4,5,6),	// Druid
 						3	=> array(7,8,9),	// Hunter
@@ -168,10 +168,10 @@ if(!class_exists('wow')) {
 		);
 
 		public $default_roles = array(
-			1	=> array(2, 5, 6, 8, 11),		// healer
-			2	=> array(1, 2, 5, 10, 11, 12),		// tank
-			3	=> array(2, 3, 4, 6, 8, 9),		// dd distance
-			4	=> array(1, 2, 3, 5, 7, 8, 10, 11, 12)	// dd near
+			1	=> array(2, 5, 6, 8, 11),					// healer
+			2	=> array(1, 2, 5, 10, 11, 12),				// tank
+			3	=> array(2, 3, 4, 6, 8, 9),					// dd distance
+			4	=> array(1, 2, 3, 5, 7, 8, 10, 11, 12)		// dd near
 		);
 
 		public $default_classrole = array(
@@ -343,7 +343,6 @@ if(!class_exists('wow')) {
 			$this->game->addRank(7, "Dummy Rank #3");
 			$this->game->addRank(8, "Dummy Rank #4");
 			$this->game->addRank(9, "Dummy Rank #5");
-
 		}
 
 		public function uninstall(){
