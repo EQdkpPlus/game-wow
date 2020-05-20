@@ -56,6 +56,8 @@ class bnet_armory extends gen_class {
 		'client_id'					=> '',
 		'client_secret'				=> '',
 		'access_token'				=> false,
+		'maxChariconUpdates'		=> 5,
+		'maxChardataUpdates'		=> 2*8, //One Character update needs up to 8 single queries
 	);
 
 	protected $convert			= array(
@@ -428,7 +430,7 @@ class bnet_armory extends gen_class {
 
 		$this->_debug('Character: '.$wowurl);
 		$json		= $this->get_CachedData('chardata_'.$feed.'_'.$user.$realm, $force);
-		if(!$json && $force && $this->_config['access_token']){
+		if(!$json && ($force || $this->chardataUpdates < $this->_config['maxChardataUpdates']) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
 			$this->set_CachedData($json, 'chardata_'.$feed.'_'.$user.$realm);
 			$this->chardataUpdates++;
@@ -494,7 +496,7 @@ class bnet_armory extends gen_class {
 		$img_charicon	= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true);
 		$img_charicon_sp= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true, false, true);
 
-		if(!$img_charicon && $forceUpdateAll){
+		if(!$img_charicon && ($forceUpdateAll || ($this->chariconUpdates < $this->_config['maxChariconUpdates']))){
 			switch($type){
 				case 'icon':	$image_url = $chardata['avatar_url']; 	break;
 				case 'render':	$image_url = $chardata['render_url']; 	break;
