@@ -540,11 +540,13 @@ if(!class_exists('wow')) {
 					}
 				}
 			}
+		
 
 			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
 			//Guildimport
-			$guilddata	= $this->game->obj['armory']->guild($this->config->get('guildtag'), unsanitize($this->config->get('servername')), true);
+			$guilddata	= $this->game->obj['armory']->guildRoster($this->config->get('guildtag'), unsanitize($this->config->get('servername')), true);
+			
 			if($guilddata && !isset($guilddata['status'])){
 				//Suspend all Chars
 				if ($blnDeleteChars){
@@ -552,16 +554,16 @@ if(!class_exists('wow')) {
 				}
 
 				foreach($guilddata['members'] as $guildchars){
-					$jsondata = array(
-							'thumbnail'	=> $guildchars['character']['thumbnail'],
-							'name'		=> sanitize($guildchars['character']['name']),
-							'class'		=> $this->game->obj['armory']->ConvertID((int)$guildchars['character']['class'], 'int', 'classes'),
-							'race'		=> $this->game->obj['armory']->ConvertID((int)$guildchars['character']['race'], 'int', 'races'),
-							'level'		=> $guildchars['character']['level'],
-							'gender'	=> $this->game->obj['armory']->ConvertID((int)$guildchars['character']['gender'], 'int', 'gender'),
-							'rank'		=> $guildchars['rank'],
-							'servername'=> sanitize($guildchars['character']['realm']),
-							'guild'		=> sanitize($guildchars['character']['guild']),
+					$jsondata[] = array(
+							'thumbnail'		=> false,
+							'name'			=> $guildchars['character']['name'],
+							'class'			=> $this->game->obj['armory']->ConvertID( $guildchars['character']['playable_class']['id'], 'int', 'classes'),
+							'race'			=> $this->game->obj['armory']->ConvertID( $guildchars['character']['playable_race']['id'], 'int', 'races'),
+							'level'			=> $guildchars['character']['level'],
+							//'gender'		=> $guildchars['character']['gender'],
+							'rank'			=> $guildchars['rank'],
+							'servername'	=> $guildchars['character']['realm']['slug'],
+							'guild'			=> $this->config->get('guildtag'),
 					);
 
 					//Build Rank ID
@@ -629,15 +631,16 @@ if(!class_exists('wow')) {
 					$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 					$chardata		= $this->game->obj['armory']->character($strMemberName, unsanitize($servername), true);
 
+					
 					if($chardata && !isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 						$errormsg	= '';
 						$charname	= $chardata['name'];
 
 						// insert into database
-
+			
 						$info = $this->pdh->put('member', 'addorupdate_member', array($memberID, array(
 								'level'				=> $chardata['level'],
-								'gender'			=> $this->game->obj['armory']->ConvertID($chardata['gender'], 'int', 'gender'),
+								'gender'			=> strtolower($chardata['gender']['type']),
 								'race'				=> $this->game->obj['armory']->ConvertID($chardata['race'], 'int', 'races'),
 								'class'				=> $this->game->obj['armory']->ConvertID($chardata['class'], 'int', 'classes'),
 								'guild'				=> sanitize($chardata['guild']['name']),
