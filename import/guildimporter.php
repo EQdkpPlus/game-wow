@@ -232,6 +232,8 @@ class guildImporter extends page_generic {
 
 		}else{
 
+			$arrProfile = $this->game->obj['armory']->character_singlefeed($this->in->get('name',''), $strServername, 'profile');
+			
 			//Create new char
 			$dataarry = array(
 				'name'			=> $this->in->get('name',''),
@@ -239,10 +241,11 @@ class guildImporter extends page_generic {
 				'class'			=> $this->game->obj['armory']->ConvertID($this->in->get('class', 0), 'int', 'classes'),
 				'race'			=> $this->game->obj['armory']->ConvertID($this->in->get('race', 0), 'int', 'races'),
 				'guild'			=> $this->in->get('guild', ''),
-				'servername'	=> $strServername,
-				//'gender'		=> $this->game->obj['armory']->ConvertID($this->in->get('gender', 0), 'int', 'gender'),
+				'servername'	=> $arrProfile['realm']['name'],
+				'gender'		=> strtolower($arrProfile['gender']['type']),
 				'rankid'		=> $intRankID,
 			);
+			
 			$myStatus = $this->pdh->put('member', 'addorupdate_member', array(0, $dataarry));
 
 			$successmsg = ($myStatus) ? 'imported' : 'failed';
@@ -253,7 +256,8 @@ class guildImporter extends page_generic {
 
 		// show the charimage & the name
 		$chararray	= array('thumbnail'=>$this->in->get('thumbnail', ''), 'race'=>$this->in->get('race', 0), 'gender'=>$this->in->get('gender', 0));
-		$charicon = $this->game->obj['armory']->characterIcon($chararray);
+		$charicon = $this->game->obj['armory']->characterIcon($this->in->get('name',''), $strServername);
+
 		if ($charicon == "") $charicon = $this->server_path.'images/global/avatar-default.svg';
 
 		die(json_encode(array(
