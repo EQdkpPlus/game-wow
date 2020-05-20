@@ -93,7 +93,7 @@ class guildImporter extends page_generic {
 		}
 
 		// generate output
-		$guilddata	= $this->game->obj['armory']->guild(unsanitize($this->in->get('guildname', '')), unsanitize($this->in->get('servername', $this->config->get('servername'))), true);
+		$guilddata	= $this->game->obj['armory']->guildRoster(unsanitize($this->in->get('guildname', '')), unsanitize($this->in->get('servername', $this->config->get('servername'))), true);
 
 		if($guilddata && !isset($guilddata['status'])){
 			//Suspend all Chars
@@ -135,15 +135,15 @@ class guildImporter extends page_generic {
 
 				// Build the array
 				$jsondata[] = array(
-					'thumbnail'		=> false,
-					'name'			=> $guildchars['character']['name'],
-					'class'			=> $guildchars['character']['playable_class'],
-					'race'			=> $guildchars['character']['playable_race'],
-					'level'			=> $guildchars['character']['level'],
-					//'gender'		=> $guildchars['character']['gender'],
-					'rank'			=> $guildchars['rank'],
-					'servername'	=> $guildchars['character']['realm']['name'],
-					//'guild'			=> $guildchars['character']['guild'],
+						'thumbnail'		=> false,
+						'name'			=> $guildchars['character']['name'],
+						'class'			=> $guildchars['character']['playable_class']['id'],
+						'race'			=> $guildchars['character']['playable_race']['id'],
+						'level'			=> $guildchars['character']['level'],
+						//'gender'		=> $guildchars['character']['gender'],
+						'rank'			=> $guildchars['rank'],
+						'servername'	=> $guildchars['character']['realm']['slug'],
+						'guild'			=> $this->in->get('guildname', ''),
 				);
 			}
 
@@ -241,7 +241,7 @@ class guildImporter extends page_generic {
 				'guild'			=> $this->in->get('guild', ''),
 				'servername'	=> $strServername,
 				//'gender'		=> $this->game->obj['armory']->ConvertID($this->in->get('gender', 0), 'int', 'gender'),
-				//'rankid'		=> $intRankID,
+				'rankid'		=> $intRankID,
 			);
 			$myStatus = $this->pdh->put('member', 'addorupdate_member', array(0, $dataarry));
 
