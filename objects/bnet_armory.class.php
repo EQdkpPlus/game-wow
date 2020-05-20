@@ -462,6 +462,8 @@ class bnet_armory extends gen_class {
 	*/
 	public function character($user, $realm, $force=false){
 		$profile		= $this->character_singlefeed($user, $realm, 'profile', $force);
+		//If the profile is empty, there is a high change that the character does not exist. Therefore cancel all other calls.
+		if(empty($profile)) return array();
 		$statistics		= $this->character_singlefeed($user, $realm, 'statistics', $force);
 		$achievements	= $this->character_singlefeed($user, $realm, 'achievements', $force);
 		$appearance		= $this->character_singlefeed($user, $realm, 'appearance', $force);
@@ -489,7 +491,7 @@ class bnet_armory extends gen_class {
 
 		//Default icon for unknown chars
 		if(!$chardata){
-			return $this->cacheIcon('https://eu.battle.net/wow/static/images/2d/avatar/0-0.jpg', false);
+			return '';
 		}
 
 		// get the cached image
@@ -512,10 +514,6 @@ class bnet_armory extends gen_class {
 			//Try to get old data
 			$img_charicon	= $this->get_CachedData($cached_img, false, true, true);
 			$img_charicon_sp= $this->get_CachedData($cached_img, false, true, true, true);
-		}
-
-		if(filesize($img_charicon) < 400){
-			#$img_charicon = $img_charicon_sp = "";
 		}
 
 		return $img_charicon_sp;
