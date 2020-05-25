@@ -445,10 +445,9 @@ class bnet_armory extends gen_class {
 			if(!empty($thumbnaildata[0])) {
 				$chardata['realm_english']	= $thumbnaildata[0];
 			}
-			
 			return $chardata;
 		}
-		return array();
+		return $errorchk;
 	}
 
 	/**
@@ -463,19 +462,25 @@ class bnet_armory extends gen_class {
 	public function character($user, $realm, $force=false){
 		$profile		= $this->character_singlefeed($user, $realm, 'profile', $force);
 		//If the profile is empty, there is a high change that the character does not exist. Therefore cancel all other calls.
-		if(empty($profile)) return array();
-		$statistics		= $this->character_singlefeed($user, $realm, 'statistics', $force);
-		$achievements	= $this->character_singlefeed($user, $realm, 'achievements', $force);
-		$appearance		= $this->character_singlefeed($user, $realm, 'appearance', $force);
-		$equipment		= $this->character_singlefeed($user, $realm, 'equipment', $force);
-		$raids			= $this->character_singlefeed($user, $realm, 'raids', $force);
-		$talents		= $this->character_singlefeed($user, $realm, 'talents', $force);
-		$media			= $this->character_singlefeed($user, $realm, 'media', $force);
-		#$titles		= $this->character_singlefeed($user, $realm, 'titles', $force);
-		#$professions	= $this->character_singlefeed($user, $realm, 'professions', $force);
+		if(empty($profile)){
+			return array();
+		// if there is an error message in the first call, do not perform the rest of the calls. Output the error message
+		}elseif(isset($profile['status'])){
+			return $profile;
+		}else {
+			$statistics		= $this->character_singlefeed($user, $realm, 'statistics', $force);
+			$achievements	= $this->character_singlefeed($user, $realm, 'achievements', $force);
+			$appearance		= $this->character_singlefeed($user, $realm, 'appearance', $force);
+			$equipment		= $this->character_singlefeed($user, $realm, 'equipment', $force);
+			$raids			= $this->character_singlefeed($user, $realm, 'raids', $force);
+			$talents		= $this->character_singlefeed($user, $realm, 'talents', $force);
+			$media			= $this->character_singlefeed($user, $realm, 'media', $force);
+			#$titles		= $this->character_singlefeed($user, $realm, 'titles', $force);
+			#$professions	= $this->character_singlefeed($user, $realm, 'professions', $force);
 		
-		$combined_char	= array_replace_recursive($profile, $appearance, $media);
-		return array_merge_recursive($combined_char, $achievements, $equipment, $raids, $talents, $statistics);
+			$combined_char	= array_replace_recursive($profile, $appearance, $media);
+			return array_merge_recursive($combined_char, $achievements, $equipment, $raids, $talents, $statistics);
+		}
 	}
 
 	/**
@@ -1211,13 +1216,16 @@ class bnet_armory extends gen_class {
 	* @return error code
 	*/
 	protected function CheckIfError($data){
-		$status	= (isset($data['code'])) ? $data['code'] : false;
-		$reason	= (isset($data['detail'])) ? $data['detail'] : false;
-		$error = '';
-		if($status){
-			return array('status'=>$status,'reason'=>$reason);
+		if(isset($data['code'])){
+			return array(
+				'status'	=> $data['code'],
+				'reason'	=> ((isset($data['detail'])) ? $data['detail'] : false)
+			);
 		}elseif(is_array($data) && count($data) == 0){
-			return array('status'=>'nok','reason'=>'Battle.net API returned an empty array.');
+			return array(
+				'status'	=> 'nok',
+				'reason'	=> 'Battle.net API returned an empty array.'
+			);
 		}
 		return false;
 	}
