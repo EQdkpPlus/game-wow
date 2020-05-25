@@ -562,7 +562,7 @@ if(!class_exists('wow')) {
 							//'gender'		=> $guildchars['character']['gender'],
 							'rank'			=> $guildchars['rank'],
 							'servername'	=> unsanitize($this->config->get('servername')),
-							'guild'			=> $this->config->get('guildtag'),
+							'guild'			=> $guildchars['realm']['slug'],
 					);
 
 					//Build Rank ID
