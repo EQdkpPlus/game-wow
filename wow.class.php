@@ -561,7 +561,7 @@ if(!class_exists('wow')) {
 							'level'			=> $guildchars['character']['level'],
 							//'gender'		=> $guildchars['character']['gender'],
 							'rank'			=> $guildchars['rank'],
-							'servername'	=> $guildchars['character']['realm']['slug'],
+							'servername'	=> unsanitize($this->config->get('servername')),
 							'guild'			=> $this->config->get('guildtag'),
 					);
 

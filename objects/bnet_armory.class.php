@@ -809,23 +809,47 @@ class bnet_armory extends gen_class {
 	/**
 	* Fetch realm information
 	*
-	* @param $realm		Realm Name
+	* @param $realm		Realm Slug
 	* @param $force		Force the cache to update?
 	* @return bol
 	*/
-	public function realm($realms, $force=false){
+	public function realm($realm, $force=false){
+		$realm = $this->ConvertInput($realm);
+		
 		$this->check_access_tocken();
-		$wowurl = $this->_config['apiUrl'].sprintf('/data/wow/realm?locale=%s&realms=%s&access_token=%s', $this->_config['locale'], $realms = ((is_array($realms)) ? implode(",",$realms) : ''), $this->_config['access_token']);
+		$wowurl = $this->_config['apiUrl'].sprintf('/data/wow/realm/%s?namespace=%s&locale=%s&access_token=%s', $realm, $this->getWoWNamespace('dynamic'), $this->_config['locale'], $this->_config['access_token']);
 		$this->_debug('Realm: '.$wowurl);
-		if((!$json	= $this->get_CachedData('realmdata_'.str_replace(",", "", $realms), $force)) && $this->_config['access_token']){
+		if((!$json	= $this->get_CachedData('realmdata_'.str_replace(",", "", $realm), $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'realmdata_'.str_replace(",", "", $realms));
+			$this->set_CachedData($json, 'realmdata_'.str_replace(",", "", $realm));
 		}
 		$realmdata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($realmdata);
 		return (!$errorchk) ? $realmdata: $errorchk;
 	}
-
+	
+	/**
+	 * Fetch connected realm information
+	 *
+	 * @param $id		Connected Realms ID
+	 * @param $force		Force the cache to update?
+	 * @return bol
+	 */
+	public function connectedRealms($id, $force=false){
+		$realm = $this->ConvertInput($realm);
+		
+		$this->check_access_tocken();
+		$wowurl = $this->_config['apiUrl'].sprintf('/data/wow/connected-realm/%s?namespace=%s&locale=%s&access_token=%s', $id, $this->getWoWNamespace('dynamic'), $this->_config['locale'], $this->_config['access_token']);
+		$this->_debug('Realm: '.$wowurl);
+		if((!$json	= $this->get_CachedData('connectedrealmdata_'.str_replace(",", "", $realm), $force)) && $this->_config['access_token']){
+			$json	= $this->read_url($wowurl);
+			$this->set_CachedData($json, 'connectedrealmdata_'.str_replace(",", "", $realm));
+		}
+		$realmdata	= json_decode($json, true);
+		$errorchk	= $this->CheckIfError($realmdata);
+		return (!$errorchk) ? $realmdata: $errorchk;
+	}
+	
 	/**
 	* Fetch item information
 	*
