@@ -164,7 +164,7 @@ class charImporter extends page_generic {
 		if($chardata && !isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 			$errormsg	= '';
 			$charname	= $chardata['name'];
-			$charicon	= $this->game->obj['armory']->characterIcon($chardata);
+			$charicon	= $this->game->obj['armory']->characterIcon(unsanitize($this->in->get('charname', '')), $servername);
 
 			// insert into database
 			$info		= $this->pdh->put('member', 'addorupdate_member', array($this->in->get('charid', 0), array(
@@ -321,7 +321,7 @@ class charImporter extends page_generic {
 
 				<fieldset class="settings mediumsettings">
 					<dl>
-						<dt><label><img src="'.$this->game->obj['armory']->characterIcon($chardata).'" name="char_icon" alt="icon" width="44px" height="44px" align="middle" /></label></dt>
+						<dt><label><img src="'.$this->game->obj['armory']->characterIcon(unsanitize($isMemberName), unsanitize($isServerName)).'" name="char_icon" alt="icon" width="44px" height="44px" align="middle" /></label></dt>
 						<dd>
 							'.sprintf($this->game->glang('uc_charfound'), $isMemberName).'<br />
 							'.sprintf($this->game->glang('uc_charfound2'), $this->time->user_date(($chardata['lastModified']/1000))).'
