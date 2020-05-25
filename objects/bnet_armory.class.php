@@ -289,8 +289,9 @@ class bnet_armory extends gen_class {
 			$this->_config['access_token']		= isset($tokendata['access_token']) ? $tokendata['access_token'] : false;
 			$this->set_CachedData((isset($tokendata['access_token']) ? $tokendata['access_token'] : false), 'client_token_id_'.$this->_config['client_id']);
 			$this->set_CachedData((isset($tokendata['expires_in']) ? time() + $tokendata['expires_in'] : time()), 'client_token_ts_'.$this->_config['client_id']);
+			return $tokendata;
 		}
-		return $tokendata;
+		return false;
 	}
 
 	/**
