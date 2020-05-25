@@ -160,7 +160,7 @@ class charImporter extends page_generic {
 		$char_server	= $this->pdh->get('member', 'profile_field', array($this->in->get('charid', 0), 'servername'));
 		$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 		$chardata		= $this->game->obj['armory']->character(unsanitize($this->in->get('charname', '')), unsanitize($servername), true);
-				
+	
 		if($chardata && !isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 			$errormsg	= '';
 			$charname	= $chardata['name'];
@@ -218,7 +218,6 @@ class charImporter extends page_generic {
 	}
 
 	public function perform_step0(){
-
 		$tmpmemname = '';
 		if($this->in->get('member_id', 0) > 0){
 			$tmpmemname = $this->pdh->get('member', 'name', array($this->in->get('member_id', 0)));
@@ -265,7 +264,6 @@ class charImporter extends page_generic {
 			$char_server	= $this->pdh->get('member', 'profile_field', array($isindatabase, 'servername'));
 			$isServerName	= ($char_server != '') ? $char_server : $this->config->get('servername');
 			$isMemberName	= $this->pdh->get('member', 'name', array($isindatabase));
-			#$isServerName	= $this->config->get('servername');
 			$isServerLoc	= $this->config->get('uc_server_loc');
 			$is_mine		= ($this->pdh->get('member', 'userid', array($isindatabase)) == $this->user->data['user_id']) ? true : false;
 		}else{
