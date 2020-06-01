@@ -104,17 +104,17 @@ if(!class_exists('wow')) {
 						10	=> array(1,3,4,5,6,7,9,10,11,12),	// Blood Elf
 						11	=> array(1,2,3,4,6,7,9,10),			// Worgen
 						12	=> array(1,3,4,6,7,8,9,10),			// Goblin
-						13	=> array(3,4,6,7,8,10,11),			// Pandaren
-						14	=> array(3,4,11,6,7,9,10),			// Nightborne
-						15	=> array(2,3,11,8,10),				// Highmountain Tauren
-						16	=> array(3,4,11,6,7,9,10), 			// Void Elf
-						17	=> array(3,4,5,6,10), 				// Lightforged Draenei
-						18	=> array(3,5,6,7,8,9,10,11),		// Dark Iron Dwarf
-						19	=> array(3,4,11,6,7,8,10), 			// Mag'har Orc
-						20	=> array(2,3,4,11,5,6,7,8,10),		// Zandalari Troll
-						21	=> array(2,3,4,11,6,7,8,10), 		// Kul Tiran
-						22	=> array(3,4,6,7,8,9,10,11),		// Vulpera
-						23	=> array(3,4,6,7,9,10,11),			// Mechagnome
+						13	=> array(1,3,4,6,7,8,10,11),		// Pandaren
+						14	=> array(1,3,4,11,6,7,9,10),		// Nightborne
+						15	=> array(1,2,3,11,8,10),			// Highmountain Tauren
+						16	=> array(1,3,4,11,6,7,9,10), 		// Void Elf
+						17	=> array(1,3,4,5,6,10),				// Lightforged Draenei
+						18	=> array(1,3,4,5,6,7,8,9,10,11),	// Dark Iron Dwarf
+						19	=> array(1,3,4,11,6,7,8,10),		// Mag'har Orc
+						20	=> array(1,2,3,4,11,5,6,7,8,10),	// Zandalari Troll
+						21	=> array(1,2,3,4,11,6,7,8,10), 		// Kul Tiran
+						22	=> array(1,3,4,6,7,8,9,10,11),		// Vulpera
+						23	=> array(1,3,4,6,7,9,10,11),		// Mechagnome
 					),
 				),
 			),
@@ -539,13 +539,13 @@ if(!class_exists('wow')) {
 					}
 				}
 			}
-		
+
 
 			$this->game->new_object('bnet_armory', 'armory', array($this->config->get('uc_server_loc'), $this->config->get('uc_data_lang')));
 
 			//Guildimport
 			$guilddata	= $this->game->obj['armory']->guildRoster($this->config->get('guildtag'), unsanitize($this->config->get('servername')), true);
-			
+
 			if($guilddata && !isset($guilddata['status'])){
 				//Suspend all Chars
 				if ($blnDeleteChars){
@@ -630,13 +630,13 @@ if(!class_exists('wow')) {
 					$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 					$chardata		= $this->game->obj['armory']->character($strMemberName, unsanitize($servername), true);
 
-					
+
 					if($chardata && !isset($chardata['status']) && !empty($chardata['name']) && $chardata['name'] != 'none'){
 						$errormsg	= '';
 						$charname	= $chardata['name'];
 
 						// insert into database
-			
+
 						$info = $this->pdh->put('member', 'addorupdate_member', array($memberID, array(
 								'level'				=> $chardata['level'],
 								'gender'			=> strtolower($chardata['gender']['type']),
@@ -796,28 +796,28 @@ if(!class_exists('wow')) {
 				$i = 0;
 				foreach($arrNews as $val){
 					if ($i == $intCount) break;
-					
+
 					$type = strtolower($val['activity']['type']);
 					$time = $val['timestamp'];
-					
+
 					switch($type){
 						case 'encounter':
 							if (is_array($arrTypes) && !in_array('encounter_completed', $arrTypes)) continue 2;
-							
+
 							$data = $val['encounter_completed'];
-				
+
 							$arrOut[] = array(
 									'text' => sprintf($this->glang('news_encounterCompleted'), $data['encounter']['name'], $data['mode']['name']),
 									'icon' => '',
 									'desc' => '',
 									'date' => substr($time, 0, -3),
 							);
-							
+
 							break;
-						
+
 						case 'character_achievement':{
 							if (is_array($arrTypes) && !in_array('character_achievement', $arrTypes)) continue 2;
-							
+
 							$data = $val[$type];
 
 							$charID = register('pdh')->get('member', 'id', array(trim($data['character']['name'])));
@@ -826,10 +826,10 @@ if(!class_exists('wow')) {
 							} else {
 								$charLink = $data['character']['name'];
 							}
-							
+
 							$arrAchiev =  $this->game->obj['armory']->achievement($data['achievement']['id'], false);
 							$arrAchievMedia = $this->game->obj['armory']->achievement($data['achievement']['id'], true);
-							
+
 							$arrOut[] = array(
 								'text' => sprintf($this->glang('news_playerAchievement'), $charLink, $data['achievement']['name'], $arrAchiev['points']),
 								'icon' => $arrAchievMedia['assets'][0]['value'],
@@ -1132,18 +1132,18 @@ if(!class_exists('wow')) {
 		public function talents($chardata){
 			$talents = array();
 			$arrValues = array(15, 30, 45, 60, 75, 90, 100);
-			
+
 			#d($chardata);
-			
+
 			foreach($chardata as $key => $val){
 				if(is_numeric($key)){
 					$spezialisation = [];
-					
+
 					if(isset($val['talents'])){
 						foreach($val['talents'] as $key => $v_spezialisation){
-							
+
 							$arrSpell = $this->game->obj['armory']->spell($v_spezialisation['spell_tooltip']['spell']['id'], true);
-							
+
 							$spezialisation[$v_spezialisation['tier_index']] = array(
 									'name'			=> $v_spezialisation['talent']['name'],
 									'description'	=> $v_spezialisation['spell_tooltip']['description'],
@@ -1152,18 +1152,18 @@ if(!class_exists('wow')) {
 							);
 						}
 					}
-					
+
 					$talents[] = array(
 							'selected'		=> (count($spezialisation)) ? '1' : '0',
 							'name'			=> (isset($val['specialization']['name']) && $val['specialization']['name']) ? $val['specialization']['name'] : $this->game->glang('not_assigned'),
 							'icon'			=> $this->game->obj['armory']->talentIcon(((isset($v_talents['spec']['icon']) && $v_talents['spec']['icon']) ? $v_talents['spec']['icon'] : 'inv_misc_questionmark')),
 							'talents'		=> $spezialisation
 					);
-					
+
 				}
-				
+
 			}
-			
+
 			return $talents;
 		}
 
@@ -1254,27 +1254,27 @@ if(!class_exists('wow')) {
 			// reset the array
 			$a_items = array();
 			$arrItemsBySlot = array();
-			
+
 			foreach($data as $arrItem){
 				$slot = utf8_strtolower($arrItem['slot']['type']);
 				$arrItemsBySlot[$slot] = $arrItem;
 			}
-			
+
 			// fill the item slots with data
 			foreach ($d_itemoptions as $slot=>$options){
 				$arrItem = isset($arrItemsBySlot[$slot]) ? $arrItemsBySlot[$slot] : 0;
 				$item_id_full	= $this->game->obj['armory']->armory2itemid($arrItem['item']['id'], $arrItem['context'], $arrItem['bonus_list'], $arrItem['level']['value']);
 				$itemname = $arrItem['name'];
-				
+
 				if($arrItem === 0){
 					$a_items[$options['position']][] =
 					array(
-						'itemid' => $item_id_full, 
+						'itemid' => $item_id_full,
 						'icon' => "<img src='".$this->server_path."games/wow/profiles/slots/".$options['bnetid'].".png' height='$icons_size' width='$icons_size' alt='' class='itt-icon' />",
-						'level' => 0, 
-						'name' => "", 
-						'quality' => 0, 
-						'name_tt' => ""	
+						'level' => 0,
+						'name' => "",
+						'quality' => 0,
+						'name_tt' => ""
 					);
 				} else {
 					$a_items[$options['position']][] =
@@ -1287,68 +1287,68 @@ if(!class_exists('wow')) {
 							'name_tt' => infotooltip($itemname, $item_id_full, false, 0, false, true, array(false, $member_name, $slot), false, '', true)
 					);
 				}
-				
+
 			}
-			
+
 			return $a_items;
 		}
 
 		public function ParseRaidProgression($chardata){
 			#d($chardata);
-			
+
 			$a_raidprogress = array();
-			
+
 			#d($chardata);
-			
+
 			foreach($chardata as $expansion){
 				$a_progress = array();
-				
+
 				foreach($expansion['instances'] as $v_progression){
 					$a_category		= array_keys(search_in_array($v_progression['instance']['id'], $this->ArrInstanceCategories));
 					$v_progresscat	= (isset($a_category[0])) ? $a_category[0] : 'default';
-					
+
 					$v_progresscat = $expansion['name'];
-					
+
 					// parse the bosses
 					$a_bosses = array('progress_normal' => 0, 'progress_lfr' => 0, 'progress_heroic' => 0, 'progress_mythic' => 0, 'runs_normal'=>0, 'runs_heroic'=>0, 'runs_mythic'=>0, 'runs_lfr');
-					
+
 					$intBosses = 0;
 					foreach($v_progression['modes'] as $arrMode){
 						$difficulty = strtolower($arrMode['difficulty']['type']);
 						if(strpos($difficulty, 'legacy') === 0) $difficulty = 'normal';
-						
+
 						$a_bosses['progress_'.$difficulty] += $arrMode['progress']['completed_count'];
 						$a_bosses['runs_'.$difficulty] = $arrMode['progress']['total_count'];
 						$intBosses += count($arrMode['progress']['encounters']);
-						
+
 						foreach($arrMode['progress']['encounters'] as $encounter){
 							$a_bosses['bosses'][$encounter['encounter']['id']][$difficulty] = $encounter['completed_count'];
 							$a_bosses['bosses'][$encounter['encounter']['id']]['_name'] = $encounter['encounter']['name'];
-							
+
 						}
 					}
-					
+
 					$arrExpansion = $this->game->obj['armory']->instance($v_progression['instance']['id'], true);
 
 					$a_progress[$v_progression['instance']['id']] = array(
 							'id'			=> $v_progression['instance']['id'],
 							'name'			=> $v_progression['instance']['name'],
 							'icon'			=> $arrExpansion['assets'][0]['value'],
-							
+
 							'bosses'		=> $a_bosses['bosses'],
 							'bosses_max'	=> max(array($a_bosses['runs_normal'], $a_bosses['runs_heroic'], $a_bosses['runs_mythic'], $a_bosses['runs_lfr'])),
 							'bosses_normal'	=> $a_bosses['progress_normal'],
 							'bosses_heroic'	=> $a_bosses['progress_heroic'],
 							'bosses_mythic'	=> $a_bosses['progress_mythic'],
 							'bosses_lfr'	=> $a_bosses['progress_lfr'],
-							
+
 							'runs_normal'	=> $a_bosses['runs_normal'],
 							'runs_heroic'	=> $a_bosses['runs_heroic'],
 							'runs_mythic'	=> $a_bosses['runs_mythic'],
 							'runs_lfr'		=> $a_bosses['runs_lfr'],
-							
+
 					);
-					
+
 				}
 
 				$a_raidprogress[] = array(
@@ -1356,7 +1356,7 @@ if(!class_exists('wow')) {
 					'name' => $expansion['expansion']['name'],
 					'raids' => $a_progress
 				);
-				
+
 			}
 			return array_reverse($a_raidprogress);
 		}
