@@ -469,15 +469,25 @@ class bnet_armory extends gen_class {
 		}elseif(isset($profile['status'])){
 			return $profile;
 		}else {
+			//Do not set the status for the following calls, as they are optional
 			$statistics		= $this->character_singlefeed($user, $realm, 'statistics', $force);
+			if(isset($statistics['status'])) $statistics = array();
 			$achievements	= $this->character_singlefeed($user, $realm, 'achievements', $force);
+			if(isset($achievements['status'])) $achievements = array();
 			$appearance		= $this->character_singlefeed($user, $realm, 'appearance', $force);
+			if(isset($appearance['status'])) $appearance = array();
 			$equipment		= $this->character_singlefeed($user, $realm, 'equipment', $force);
+			if(isset($equipment['status'])) $equipment = array();
 			$raids			= $this->character_singlefeed($user, $realm, 'raids', $force);
+			if(isset($raids['status'])) $raids = array();
 			$talents		= $this->character_singlefeed($user, $realm, 'talents', $force);
+			if(isset($talents['status'])) $talents = array();
 			$media			= $this->character_singlefeed($user, $realm, 'media', $force);
+			if(isset($media['status'])) $media = array();
 			#$titles		= $this->character_singlefeed($user, $realm, 'titles', $force);
+			#if(isset($titles['status'])) $titles = array();
 			#$professions	= $this->character_singlefeed($user, $realm, 'professions', $force);
+			#if(isset($professions['status'])) $professions = array();
 		
 			$combined_char	= array_replace_recursive($profile, $appearance, $media);
 			return array_merge_recursive($combined_char, $achievements, $equipment, $raids, $talents, $statistics);
@@ -510,18 +520,26 @@ class bnet_armory extends gen_class {
 				case 'render':	$image_url = $chardata['render_url']; 	break;
 				case 'inset':	$image_url = $chardata['bust_url']; 	break;
 			}
-			$this->set_CachedData($this->read_url($image_url), 'img_'.$type.'_'.$user.$realm, true);
-			$img_charicon	= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true);
-			$img_charicon_sp= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true, false, true);
+			
+			$imageData = $this->read_url($image_url);
+			if($imageData && strlen($imageData)){
+				$this->set_CachedData($this->read_url($image_url), 'img_'.$type.'_'.$user.$realm, true);
+				$img_charicon	= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true);
+				$img_charicon_sp= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true, false, true);
+			}
 			$this->chariconUpdates++;
 		}
 
 		if (!$img_charicon){
 			//Try to get old data
-			$img_charicon	= $this->get_CachedData($cached_img, false, true, true);
-			$img_charicon_sp= $this->get_CachedData($cached_img, false, true, true, true);
+			$img_charicon	= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true, true);
+			$img_charicon_sp= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true, true, true);
 		}
-
+		
+		if(filesize($img_charicon) < 150){
+			return "";
+		}
+		
 		return $img_charicon_sp;
 	}
 
