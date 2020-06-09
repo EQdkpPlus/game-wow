@@ -284,6 +284,10 @@ class charImporter extends page_generic {
 			// Load the Armory Data
 			$this->game->obj['armory']->setSettings(array('loc'=>$isServerLoc));
 			$chardata	= $this->game->obj['armory']->character(unsanitize($isMemberName), unsanitize($isServerName), true);
+			
+			$realm = $this->game->obj['armory']->realm($chardata['realm']['slug']);
+			$servername = $realm['name'];
+			
 			//new hhidden('server_loc', array('value' => $this->config->get('uc_server_loc')))
 			// Basics
 			$hmtlout	.= (new hhidden('member_id', array('value' => $isindatabase)))->output();
@@ -293,7 +297,7 @@ class charImporter extends page_generic {
 			$hmtlout	.= (new hhidden('member_race_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['race'], 'int', 'races'))))->output();
 			$hmtlout	.= (new hhidden('member_class_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['class'], 'int', 'classes'))))->output();
 			$hmtlout	.= (new hhidden('guild', array('value' => $chardata['guild']['name'])))->output();
-			$hmtlout	.= (new hhidden('servername', array('value' => $chardata['realm']['slug'])))->output();
+			$hmtlout	.= (new hhidden('servername', array('value' => $servername)))->output();
 			$hmtlout	.= (new hhidden('last_update', array('value' => ($chardata['lastModified']/1000))))->output();
 
 			// primary professions

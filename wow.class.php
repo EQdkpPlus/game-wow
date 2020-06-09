@@ -571,7 +571,7 @@ if(!class_exists('wow')) {
 							//'gender'		=> $guildchars['character']['gender'],
 							'rank'			=> $guildchars['rank'],
 							'servername'	=> $servername,
-							'guild'			=> $guildchars['realm']['slug'],
+							'guild'			=> $guilddata['guild']['name'],
 					);
 
 					//Build Rank ID
