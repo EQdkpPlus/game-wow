@@ -425,7 +425,7 @@ class bnet_armory extends gen_class {
 		}
 
 		$this->check_access_tocken();
-		$realm		= $this->ConvertInput($this->cleanServername($realm));
+		$realm		= $this->createSlug($realm);
 		$user		= $this->ConvertInput(utf8_strtolower($user));
 		$wowurl		= $this->_config['apiUrl'].sprintf('profile/wow/character/%s/%s%s?namespace=%s&locale=%s&access_token=%s', $realm, $user, $parameter, $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
 
@@ -501,7 +501,7 @@ class bnet_armory extends gen_class {
 	* @return string
 	*/
 	public function characterIcon($user, $realm, $type='icon', $force=false){
-		$realm		= $this->ConvertInput($this->cleanServername($realm));
+		$realm		= $this->createSlug($realm);
 		$user		= $this->ConvertInput(strtolower($user));
 		$chardata	= $this->character_singlefeed($user, $realm, 'media', $force);
 
@@ -593,7 +593,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function guildRoster($guild, $realm, $force=false){
 		$this->check_access_tocken();
-		$realm	= $this->ConvertInput($this->cleanServername($realm));
+		$realm = $this->createSlug($realm);
 		$guild	= $this->ConvertInput(utf8_strtolower($guild), false, true);
 
 		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/roster?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
@@ -623,7 +623,7 @@ class bnet_armory extends gen_class {
 	 */
 	public function guildActivity($guild, $realm, $force=false){
 		$this->check_access_tocken();
-		$realm	= $this->ConvertInput($this->cleanServername($realm));
+		$realm = $this->createSlug($realm);
 		$guild	= $this->ConvertInput(utf8_strtolower($guild), false, true);
 		
 		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/activity?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
@@ -653,7 +653,7 @@ class bnet_armory extends gen_class {
 	 */
 	public function guild($guild, $realm, $force=false){
 		$this->check_access_tocken();
-		$realm	= $this->ConvertInput($this->cleanServername($realm));
+		$realm = $this->createSlug($realm);
 		$guild	= $this->ConvertInput(utf8_strtolower($guild), false, true);
 		
 		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
@@ -683,7 +683,7 @@ class bnet_armory extends gen_class {
 	 */
 	public function guildAchievements($guild, $realm, $force=false){
 		$this->check_access_tocken();
-		$realm	= $this->ConvertInput($this->cleanServername($realm));
+		$realm = $this->createSlug($realm);
 		$guild	= $this->ConvertInput(utf8_strtolower($guild), false, true);
 		
 		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/achievements?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
@@ -1300,6 +1300,22 @@ class bnet_armory extends gen_class {
 		return ($removeslash) ? stripslashes(str_replace("'", "", $input)) : stripslashes(rawurlencode($input));
 	}
 
+	
+	/**
+	 * Creates a slug for the given Servername
+	 * 
+	 * @param string $strServername 
+	 * @return string Slug
+	 */
+	public function createSlug($strServername){
+		$str = $this->cleanServername($strServername);
+		
+		$str = str_replace("'", "", $str);
+		$str = str_replace(" ", "-", $str);
+		
+		return utf8_strtolower($str);
+	}
+	
 	/**
 	* Write JSON to Cache
 	*
