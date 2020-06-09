@@ -551,8 +551,17 @@ if(!class_exists('wow')) {
 				if ($blnDeleteChars){
 					$this->pdh->put('member', 'suspend', array('all'));
 				}
-
+				$slugCache = array();
 				foreach($guilddata['members'] as $guildchars){
+					if(isset($slugCache[$guildchars['character']['realm']['slug']])){
+						$servername = $slugCache[$guildchars['character']['realm']['slug']];
+					} else {
+						$realm = $this->game->obj['armory']->realm($guildchars['character']['realm']['slug']);
+						$servername = $realm['name'];
+						$slugCache[$guildchars['character']['realm']['slug']] = $servername;
+					}
+					
+					
 					$jsondata[] = array(
 							'thumbnail'		=> false,
 							'name'			=> $guildchars['character']['name'],
@@ -561,7 +570,7 @@ if(!class_exists('wow')) {
 							'level'			=> $guildchars['character']['level'],
 							//'gender'		=> $guildchars['character']['gender'],
 							'rank'			=> $guildchars['rank'],
-							'servername'	=> unsanitize($this->config->get('servername')),
+							'servername'	=> $servername,
 							'guild'			=> $guildchars['realm']['slug'],
 					);
 

@@ -95,6 +95,8 @@ class guildImporter extends page_generic {
 		// generate output
 		$guilddata	= $this->game->obj['armory']->guildRoster(unsanitize($this->in->get('guildname', '')), unsanitize($this->in->get('servername', $this->config->get('servername'))), true);
 
+		#d($guilddata);
+		
 		if($guilddata && !isset($guilddata['status'])){
 			//Suspend all Chars
 			if ($this->in->get('delete_old_chars',0)){
@@ -116,6 +118,7 @@ class guildImporter extends page_generic {
 						</div>';
 
 			$jsondata = array();
+			$slugCache = array();
 			foreach($guilddata['members'] as $guildchars){
 
 				// filter: class
@@ -132,7 +135,15 @@ class guildImporter extends page_generic {
 				if($this->in->get('filter_rank', 0) > 0 && (($this->in->get('rank_sort', 0) == 2 && $guildchars['rank'] != $this->in->get('filter_rank', 0)) || ($this->in->get('rank_sort', 0) == 1 && $guildchars['rank'] >= $this->in->get('filter_rank', 0)))){
 					continue;
 				}
-
+				
+				if(isset($slugCache[$guildchars['character']['realm']['slug']])){
+					$servername = $slugCache[$guildchars['character']['realm']['slug']];
+				} else {
+					$realm = $this->game->obj['armory']->realm($guildchars['character']['realm']['slug']);
+					$servername = $realm['name'];
+					$slugCache[$guildchars['character']['realm']['slug']] = $servername;
+				}
+				
 				// Build the array
 				$jsondata[] = array(
 						'thumbnail'		=> false,
@@ -142,7 +153,7 @@ class guildImporter extends page_generic {
 						'level'			=> $guildchars['character']['level'],
 						//'gender'		=> $guildchars['character']['gender'],
 						'rank'			=> $guildchars['rank'],
-						'servername'	=> $guildchars['character']['realm']['slug'],
+						'servername'	=> $servername,
 						'guild'			=> $this->in->get('guildname', ''),
 				);
 			}
@@ -206,9 +217,9 @@ class guildImporter extends page_generic {
 
 		$strMembername = $this->in->get('name', '');
 		$strServername = $this->in->get('servername', '');
-
+		
 		$intMemberID = $this->pdh->get('member', 'id', array($strMembername, array('servername' => $strServername)));
-
+		
 		if($intMemberID){
 			$successmsg = 'available';
 
