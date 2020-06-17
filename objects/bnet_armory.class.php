@@ -860,14 +860,12 @@ class bnet_armory extends gen_class {
 	 * @return bol
 	 */
 	public function connectedRealms($id, $force=false){
-		$realm = $this->ConvertInput($realm);
-		
 		$this->check_access_tocken();
 		$wowurl = $this->_config['apiUrl'].sprintf('/data/wow/connected-realm/%s?namespace=%s&locale=%s&access_token=%s', $id, $this->getWoWNamespace('dynamic'), $this->_config['locale'], $this->_config['access_token']);
 		$this->_debug('Realm: '.$wowurl);
-		if((!$json	= $this->get_CachedData('connectedrealmdata_'.str_replace(",", "", $realm), $force)) && $this->_config['access_token']){
+		if((!$json	= $this->get_CachedData('connectedrealmdata_'.str_replace(",", "", $id), $force)) && $this->_config['access_token']){
 			$json	= $this->read_url($wowurl);
-			$this->set_CachedData($json, 'connectedrealmdata_'.str_replace(",", "", $realm));
+			$this->set_CachedData($json, 'connectedrealmdata_'.str_replace(",", "", $id));
 		}
 		$realmdata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($realmdata);
