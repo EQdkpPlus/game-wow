@@ -593,7 +593,7 @@ class bnet_armory extends gen_class {
 	*/
 	public function guildRoster($guild, $realm, $force=false){
 		$this->check_access_tocken();
-		$realm = $this->createSlug($realm);
+		$realm = $this->translateRealmToSlug($realm);
 		$guild	= $this->createSlug($guild);
 
 		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/roster?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
@@ -622,7 +622,7 @@ class bnet_armory extends gen_class {
 	 */
 	public function guildActivity($guild, $realm, $force=false){
 		$this->check_access_tocken();
-		$realm = $this->createSlug($realm);
+		$realm = $this->translateRealmToSlug($realm);
 		$guild	= $this->createSlug($guild);
 		
 		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/activity?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
@@ -652,7 +652,7 @@ class bnet_armory extends gen_class {
 	 */
 	public function guild($guild, $realm, $force=false){
 		$this->check_access_tocken();
-		$realm = $this->createSlug($realm);
+		$realm = $this->translateRealmToSlug($realm);
 		$guild	= $this->createSlug($guild);
 		
 		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
@@ -682,7 +682,7 @@ class bnet_armory extends gen_class {
 	 */
 	public function guildAchievements($guild, $realm, $force=false){
 		$this->check_access_tocken();
-		$realm = $this->createSlug($realm);
+		$realm = $this->translateRealmToSlug($realm);
 		$guild	= $this->createSlug($guild);
 		
 		$wowurl	= $this->_config['apiUrl'].sprintf('data/wow/guild/%s/%s/achievements?namespace=%s&locale=%s&access_token=%s', $realm, $guild, $this->getWoWNamespace(),$this->_config['locale'], $this->_config['access_token']);
@@ -837,7 +837,7 @@ class bnet_armory extends gen_class {
 	* @return bol
 	*/
 	public function realm($realm, $force=false){
-		$realm = $this->createSlug($realm);
+		$realm = $this->translateRealmToSlug($realm);
 		
 		$this->check_access_tocken();
 		$wowurl = $this->_config['apiUrl'].sprintf('/data/wow/realm/%s?namespace=%s&locale=%s&access_token=%s', $realm, $this->getWoWNamespace('dynamic'), $this->_config['locale'], $this->_config['access_token']);
@@ -870,6 +870,52 @@ class bnet_armory extends gen_class {
 		$errorchk	= $this->CheckIfError($realmdata);
 		return (!$errorchk) ? $realmdata: $errorchk;
 	}
+	
+	/**
+	 * Fetch the realmlist
+	 *
+	 * @param $force		Force the cache to update?
+	 * @return bol
+	 */
+	public function realmlist($force=false){
+		$this->check_access_tocken();
+		$wowurl = $this->_config['apiUrl'].sprintf('/data/wow/realm/index?namespace=%s&locale=%s&access_token=%s', $this->getWoWNamespace('dynamic'), $this->_config['locale'], $this->_config['access_token']);
+		$this->_debug('Realm: '.$wowurl);
+		if((!$json	= $this->get_CachedData('realmindex_'.$this->_config['locale'], $force)) && $this->_config['access_token']){
+			$json	= $this->read_url($wowurl);
+			$this->set_CachedData($json, 'realmindex_'.$this->_config['locale']);
+		}
+		$realmdata	= json_decode($json, true);
+		$errorchk	= $this->CheckIfError($realmdata);
+		return (!$errorchk) ? $realmdata: $errorchk;
+	}
+	
+	/**
+	 * Translate a 
+	 * 
+	 * @param string $strRealm The Realmname, like "Fordragon" or "Дракономор"
+	 * @return string
+	 */
+	public function translateRealmToSlug($strRealm){
+		$realmList = $this->realmlist();
+		
+		$slug = $this->createSlug($strRealm);
+		
+		if(is_array($realmList) && isset($realmList['realms'])){
+			foreach($realmList['realms'] as $arrRealm){
+				if($strRealm === $arrRealm['name']){
+					return $arrRealm['slug'];
+				}
+				
+				if($slug === $arrRealm['slug']){
+					return $slug;
+				}
+			}
+		}
+		
+		return $slug;
+	}
+	
 	
 	/**
 	* Fetch item information
