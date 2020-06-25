@@ -425,10 +425,10 @@ class bnet_armory extends gen_class {
 		}
 
 		$this->check_access_tocken();
-		$realm		= $this->createSlug($realm);
+		$realm		= $this->translateRealmToSlug($realm);
 		$user		= $this->ConvertInput(utf8_strtolower($user));
 		$wowurl		= $this->_config['apiUrl'].sprintf('profile/wow/character/%s/%s%s?namespace=%s&locale=%s&access_token=%s', $realm, $user, $parameter, $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
-
+		
 		$this->_debug('Character: '.$wowurl);
 		$json		= $this->get_CachedData('chardata_'.$feed.'_'.$user.$realm, $force);
 		if(!$json && ($force || $this->chardataUpdates < $this->_config['maxChardataUpdates']) && $this->_config['access_token']){
@@ -501,10 +501,9 @@ class bnet_armory extends gen_class {
 	* @return string
 	*/
 	public function characterIcon($user, $realm, $type='icon', $force=false){
-		$realm		= $this->createSlug($realm);
-		$user		= $this->ConvertInput(strtolower($user));
+		$realm		= $this->translateRealmToSlug($realm);
+		$user		= $this->ConvertInput(utf8_strtolower($user));
 		$chardata	= $this->character_singlefeed($user, $realm, 'media', $force);
-
 		//Default icon for unknown chars
 		if(!$chardata){
 			return '';
@@ -714,7 +713,7 @@ class bnet_armory extends gen_class {
 	* @return bol
 	*/
 	public function guildTabard($emblemdata, $faction, $guild, $imgwidth=215){
-		$cached_img	= sprintf('image_tabard_%s_w%s.png', strtolower(str_replace(' ', '', $this->clean_name($guild))), $imgwidth);
+		$cached_img	= sprintf('image_tabard_%s_w%s.png', utf8_strtolower(str_replace(' ', '', $this->clean_name($guild))), $imgwidth);
 		$imgfile_sp = $this->get_CachedData($cached_img, false, true, false, true);
 		if(!$imgfile = $this->get_CachedData($cached_img, false, true)){
 			if(!function_exists('imagecreatefrompng') || version_compare(PHP_VERSION, "5.3.0", '<')){
@@ -1340,7 +1339,15 @@ class bnet_armory extends gen_class {
 	public function ConvertInput($input, $removeslash=false, $removespace=false){
 		// new servername convention: mal'ganis = malganis
 		$input = ($removespace) ? str_replace(" ", "-", $input) : $input;
-		return ($removeslash) ? stripslashes(str_replace("'", "", $input)) : stripslashes(rawurlencode($input));
+		if($removeslash){
+			return stripslashes(str_replace("'", "", $input));
+		} else {
+			if(strpos($input, "%") === false){
+				$input = rawurlencode($input);
+			}
+			
+			return stripslashes($input);
+		}
 	}
 
 	
