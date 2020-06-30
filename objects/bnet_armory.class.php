@@ -428,7 +428,6 @@ class bnet_armory extends gen_class {
 		$realm		= $this->translateRealmToSlug($realm);
 		$user		= $this->ConvertInput(utf8_strtolower($user));
 		$wowurl		= $this->_config['apiUrl'].sprintf('profile/wow/character/%s/%s%s?namespace=%s&locale=%s&access_token=%s', $realm, $user, $parameter, $this->getWoWNamespace(), $this->_config['locale'], $this->_config['access_token']);
-		
 		$this->_debug('Character: '.$wowurl);
 		$json		= $this->get_CachedData('chardata_'.$feed.'_'.$user.$realm, $force);
 		if(!$json && ($force || $this->chardataUpdates < $this->_config['maxChardataUpdates']) && $this->_config['access_token']){
@@ -501,9 +500,15 @@ class bnet_armory extends gen_class {
 	* @return string
 	*/
 	public function characterIcon($user, $realm, $type='icon', $force=false){
+		$_user = $user;
+		$_realm = $realm;
+		
 		$realm		= $this->translateRealmToSlug($realm);
 		$user		= $this->ConvertInput(utf8_strtolower($user));
-		$chardata	= $this->character_singlefeed($user, $realm, 'media', $force);
+		
+		#use the plain values here, as character_singlefeed will convert them
+		$chardata	= $this->character_singlefeed($_user, $_realm, 'media', $force);
+		
 		//Default icon for unknown chars
 		if(!$chardata){
 			return '';
@@ -513,7 +518,7 @@ class bnet_armory extends gen_class {
 		$img_charicon	= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true);
 		$img_charicon_sp= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true, false, true);
 
-		if(!$img_charicon && ($forceUpdateAll || ($this->chariconUpdates < $this->_config['maxChariconUpdates']))){
+		if(!$img_charicon && ($force || ($this->chariconUpdates < $this->_config['maxChariconUpdates']))){
 			switch($type){
 				case 'icon':	$image_url = $chardata['avatar_url']; 	break;
 				case 'render':	$image_url = $chardata['render_url']; 	break;
@@ -898,7 +903,7 @@ class bnet_armory extends gen_class {
 	public function translateRealmToSlug($strRealm){
 		$realmList = $this->realmlist();
 		
-		$slug = $this->createSlug($strRealm);
+		$slug = $this->createSlug(unsanitize($strRealm));
 		
 		if(is_array($realmList) && isset($realmList['realms'])){
 			foreach($realmList['realms'] as $arrRealm){

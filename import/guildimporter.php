@@ -242,33 +242,37 @@ class guildImporter extends page_generic {
 
 		}else{
 
-			$arrProfile = $this->game->obj['armory']->character_singlefeed($this->in->get('name',''), $strServername, 'profile');
+			$arrProfile = $this->game->obj['armory']->character_singlefeed(unsanitize($this->in->get('name','')), unsanitize($strServername), 'profile');
+			if(isset($arrProfile['status'])){
+				$successmsg = 'failed';
+			} else {
+					
+				//Create new char
+				$dataarry = array(
+					'name'			=> $this->in->get('name',''),
+					'level'			=> $this->in->get('level', 0),
+					'class'			=> $this->game->obj['armory']->ConvertID($this->in->get('class', 0), 'int', 'classes'),
+					'race'			=> $this->game->obj['armory']->ConvertID($this->in->get('race', 0), 'int', 'races'),
+					'guild'			=> $this->in->get('guild', ''),
+					'servername'	=> $arrProfile['realm']['name'],
+					'server_slug'	=> $this->in->get('server_slug', ''),
+					'gender'		=> strtolower($arrProfile['gender']['type']),
+					'rankid'		=> $intRankID,
+				);
+				
+				$myStatus = $this->pdh->put('member', 'addorupdate_member', array(0, $dataarry));
+	
+				$successmsg = ($myStatus) ? 'imported' : 'failed';
+	
+				// reset the cache
+				$this->pdh->process_hook_queue();
 			
-			//Create new char
-			$dataarry = array(
-				'name'			=> $this->in->get('name',''),
-				'level'			=> $this->in->get('level', 0),
-				'class'			=> $this->game->obj['armory']->ConvertID($this->in->get('class', 0), 'int', 'classes'),
-				'race'			=> $this->game->obj['armory']->ConvertID($this->in->get('race', 0), 'int', 'races'),
-				'guild'			=> $this->in->get('guild', ''),
-				'servername'	=> $arrProfile['realm']['name'],
-				'server_slug'	=> $this->in->get('server_slug', ''),
-				'gender'		=> strtolower($arrProfile['gender']['type']),
-				'rankid'		=> $intRankID,
-			);
-			
-			$myStatus = $this->pdh->put('member', 'addorupdate_member', array(0, $dataarry));
-
-			$successmsg = ($myStatus) ? 'imported' : 'failed';
-
-			// reset the cache
-			$this->pdh->process_hook_queue();
+			}
 		}
 
 		// show the charimage & the name
-		$chararray	= array('thumbnail'=>$this->in->get('thumbnail', ''), 'race'=>$this->in->get('race', 0), 'gender'=>$this->in->get('gender', 0));
-		$charicon = $this->game->obj['armory']->characterIcon($this->in->get('name',''), $strServername);
-
+		$charicon = $this->game->obj['armory']->characterIcon(unsanitize($this->in->get('name','')), unsanitize($strServername), 'icon', true);
+		
 		if ($charicon == "") $charicon = $this->server_path.'images/global/avatar-default.svg';
 
 		die(json_encode(array(
