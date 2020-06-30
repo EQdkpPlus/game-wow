@@ -902,8 +902,9 @@ class bnet_armory extends gen_class {
 	 */
 	public function translateRealmToSlug($strRealm){
 		$realmList = $this->realmlist();
+		$strRealm = unsanitize($strRealm);
 		
-		$slug = $this->createSlug(unsanitize($strRealm));
+		$slug = $this->createSlug($strRealm);
 		
 		if(is_array($realmList) && isset($realmList['realms'])){
 			foreach($realmList['realms'] as $arrRealm){
