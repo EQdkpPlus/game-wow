@@ -95,8 +95,6 @@ class guildImporter extends page_generic {
 		// generate output
 		$guilddata	= $this->game->obj['armory']->guildRoster(unsanitize($this->in->get('guildname', '')), unsanitize($this->in->get('servername', $this->config->get('servername'))), true);
 
-		#d($guilddata);
-		
 		if($guilddata && !isset($guilddata['status'])){
 			//Suspend all Chars
 			if ($this->in->get('delete_old_chars',0)){

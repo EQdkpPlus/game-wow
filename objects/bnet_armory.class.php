@@ -903,16 +903,16 @@ class bnet_armory extends gen_class {
 		if(is_array($realmList) && isset($realmList['realms'])){
 			foreach($realmList['realms'] as $arrRealm){
 				if($strRealm === $arrRealm['name']){
-					return $arrRealm['slug'];
+					return $this->ConvertInput($arrRealm['slug']);
 				}
 				
 				if($slug === $arrRealm['slug']){
-					return $slug;
+					return $this->ConvertInput($slug);
 				}
 			}
 		}
 		
-		return $slug;
+		return $this->ConvertInput($slug);
 	}
 	
 	
