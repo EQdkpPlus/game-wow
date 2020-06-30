@@ -152,6 +152,7 @@ class guildImporter extends page_generic {
 						//'gender'		=> $guildchars['character']['gender'],
 						'rank'			=> $guildchars['rank'],
 						'servername'	=> $servername,
+						'server_slug'	=> $guildchars['character']['realm']['slug'],
 						'guild'			=> $this->in->get('guildname', ''),
 				);
 			}
@@ -251,6 +252,7 @@ class guildImporter extends page_generic {
 				'race'			=> $this->game->obj['armory']->ConvertID($this->in->get('race', 0), 'int', 'races'),
 				'guild'			=> $this->in->get('guild', ''),
 				'servername'	=> $arrProfile['realm']['name'],
+				'server_slug'	=> $this->in->get('server_slug', ''),
 				'gender'		=> strtolower($arrProfile['gender']['type']),
 				'rankid'		=> $intRankID,
 			);

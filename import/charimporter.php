@@ -298,6 +298,7 @@ class charImporter extends page_generic {
 			$hmtlout	.= (new hhidden('member_class_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['class'], 'int', 'classes'))))->output();
 			$hmtlout	.= (new hhidden('guild', array('value' => $chardata['guild']['name'])))->output();
 			$hmtlout	.= (new hhidden('servername', array('value' => $servername)))->output();
+			$hmtlout	.= (new hhidden('server_slug', array('value' => $chardata['realm']['slug'])))->output();
 			$hmtlout	.= (new hhidden('last_update', array('value' => ($chardata['lastModified']/1000))))->output();
 
 			// primary professions
