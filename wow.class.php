@@ -27,7 +27,7 @@ if(!class_exists('wow')) {
 	class wow extends game_generic {
 
 		protected static $apiLevel	= 20;
-		public $version				= '8.3.23.7'; //Version for EQdkp Plus 2.3
+		public $version				= '8.3.23.8'; //Version for EQdkp Plus 2.3
 		protected $this_game		= 'wow';
 		protected $types			= array('factions', 'races', 'classes', 'talents', 'filters', 'realmlist', 'roles', 'classrole', 'professions', 'chartooltip');	// which information are stored?
 		protected $classes			= array();
@@ -1019,7 +1019,7 @@ if(!class_exists('wow')) {
 
 					$arrAchievsOut[] = array(
 						'name'	=> '<a href="'.$this->game->obj['armory']->bnlink('', $this->config->get('servername'), 'guild-achievements', $this->config->get('guildtag')).'/'.$strCategory.'">'.$achievData['title'].'</a>',
-						'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" />',
+						'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" loading="lazy"/>',
 						'desc'	=> $achievData['description'],
 						'points'=> $achievData['points'],
 						'date'	=> substr($arrAchieveTimes[$key], 0, -3),
@@ -1058,7 +1058,7 @@ if(!class_exists('wow')) {
 
 						$arrAchievsOut[] = array(
 							'name'	=> '<a href="'.$this->game->obj['armory']->bnlink($charname, $this->config->get('servername'), 'achievements').'/'.$strCategory.'" class="'.$class.'">'.$achievData['title'].'</a>',
-							'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" />',
+							'icon'	=> '<img class="gameicon" src="'.sprintf($this->strStaticIconUrl, $achievData['icon']).'" alt="" loading="lazy"/>',
 							'desc'	=> $achievData['description'],
 							'points'=> $achievData['points'],
 							'date'	=> substr($arrAchieveTimes[$key], 0, -3),
