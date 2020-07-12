@@ -441,10 +441,6 @@ class bnet_armory extends gen_class {
 		$chardata	= json_decode($json, true);
 		$errorchk	= $this->CheckIfError($chardata);
 		if(!$errorchk){
-			$thumbnaildata = explode("/", $chardata['thumbnail']);
-			if(!empty($thumbnaildata[0])) {
-				$chardata['realm_english']	= $thumbnaildata[0];
-			}
 			return $chardata;
 		}
 		return $errorchk;
@@ -470,23 +466,23 @@ class bnet_armory extends gen_class {
 		}else {
 			//Do not set the status for the following calls, as they are optional
 			$statistics		= $this->character_singlefeed($user, $realm, 'statistics', $force);
-			if(isset($statistics['status'])) $statistics = array();
+			if(isset($statistics['status']) || !is_array($statistics)) $statistics = array();
 			$achievements	= $this->character_singlefeed($user, $realm, 'achievements', $force);
-			if(isset($achievements['status'])) $achievements = array();
+			if(isset($achievements['status'])  || !is_array($achievements)) $achievements = array();
 			$appearance		= $this->character_singlefeed($user, $realm, 'appearance', $force);
-			if(isset($appearance['status'])) $appearance = array();
+			if(isset($appearance['status']) || !is_array($appearance)) $appearance = array();
 			$equipment		= $this->character_singlefeed($user, $realm, 'equipment', $force);
-			if(isset($equipment['status'])) $equipment = array();
+			if(isset($equipment['status'])  || !is_array($equipment)) $equipment = array();
 			$raids			= $this->character_singlefeed($user, $realm, 'raids', $force);
-			if(isset($raids['status'])) $raids = array();
+			if(isset($raids['status'])  || !is_array($raids)) $raids = array();
 			$talents		= $this->character_singlefeed($user, $realm, 'talents', $force);
-			if(isset($talents['status'])) $talents = array();
+			if(isset($talents['status'])  || !is_array($talents)) $talents = array();
 			$media			= $this->character_singlefeed($user, $realm, 'media', $force);
-			if(isset($media['status'])) $media = array();
+			if(isset($media['status'])  || !is_array($media)) $media = array();
 			#$titles		= $this->character_singlefeed($user, $realm, 'titles', $force);
-			#if(isset($titles['status'])) $titles = array();
+			#if(isset($titles['status'])  || !is_array($titles)) $titles = array();
 			#$professions	= $this->character_singlefeed($user, $realm, 'professions', $force);
-			#if(isset($professions['status'])) $professions = array();
+			#if(isset($professions['status'])  || !is_array($professions)) $professions = array();
 		
 			$combined_char	= array_replace_recursive($profile, $appearance, $media);
 			return array_merge_recursive($combined_char, $achievements, $equipment, $raids, $talents, $statistics);
@@ -958,6 +954,8 @@ class bnet_armory extends gen_class {
 			case 'trade-skill':		$item_difficulty = '99'; break;
 			default:				$item_difficulty = '1'; break;
 		}
+		
+		if(!is_array($bonuslist)) $bonuslist = array();
 
 		//itemID:enchantID:gemID1:gemID2:gemID3:gemID4:suffixID:uniqueID:linkLevel:specializationID:upgradeTypeID:instanceDifficultyID:numBonusIDs[:bonusID1:bonusID2:...]
 		return $itemid.':0:0:0:0:0:0:0:'.$itemlevel.':0:0:'.$item_difficulty.':'.count($bonuslist).':'.implode(':',$bonuslist);

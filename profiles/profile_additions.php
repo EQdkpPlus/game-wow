@@ -477,22 +477,21 @@ width:24px;
 		$a_talents = $this->game->callFunc('talents', array($chardata['specializations']));
 
 		$arrSelectedTalents = array();
-
+		
 		foreach ($a_talents as $id_talents => $v_talents){
 			if(count($v_talents['talents']) === 0) continue;
 
 			if(($v_talents['selected'] == '1')){
 				$arrSelectedTalents = $v_talents;
 			}
-
 			
 			$this->tpl->assign_block_vars('talents', array(
 				'ID'			=> $id_talents,
 				'SELECTED'		=> ($v_talents['selected'] == '1') ? true : false,
 				'ICON'			=> $v_talents['icon'],
 				'NAME'			=> $v_talents['name'],
-				'ROLE'			=> strtolower($v_talents['role']),
-				'DESCRIPTION'	=> $v_talents['desc'],
+				#'ROLE'			=> strtolower($v_talents['role']),
+				#'DESCRIPTION'	=> $v_talents['description'],
 			));
 
 			// talent specialization
@@ -614,9 +613,7 @@ width:24px;
 
 		// boss progress
 		$d_bossprogress		= $this->game->callFunc('ParseRaidProgression', array($chardata['expansions']));
-		
-		#d($d_bossprogress);
-		
+
 		if(is_array($d_bossprogress)){
 			foreach($d_bossprogress as $v_progresscat){
 				
@@ -625,7 +622,7 @@ width:24px;
 				
 				// skip the category if hidden
 				$config_bk_hidden	= (is_array($this->config->get('profile_boskills_hide'))) ? $this->config->get('profile_boskills_hide') : array();
-				if(in_array($v_progresscat, $config_bk_hidden)){ continue; }
+				if(in_array($v_progresscat['id'], $config_bk_hidden)){ continue; }
 
 				$this->tpl->assign_block_vars('bossprogress_cat', array(
 					'NAME'	=> $v_progresscat['name'],

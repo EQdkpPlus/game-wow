@@ -107,7 +107,7 @@ if (!class_exists('pdh_r_wow')) {
 			if ($charicon == '') {
 				$charicon = $this->server_path.'images/global/avatar-default.svg';
 			}
-			return '<img src="'.$charicon.'" alt="Char-Icon" height="48" class="gameicon"/>';
+			return '<img src="'.$charicon.'" alt="Char-Icon" height="48" class="gameicon" loading="lazy"/>';
 		}
 
 		public function get_averageItemLevelEquipped($member_id){

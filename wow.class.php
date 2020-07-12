@@ -715,13 +715,14 @@ if(!class_exists('wow')) {
 					'lang'		=> 'uc_profile_boskills_hide',
 					'type' 		=> 'multiselect',
 					'options'	=> array(
-						'classic'	=> $this->game->glang('uc_achievement_tab_classic'),
-						'bc'			=> $this->game->glang('uc_achievement_tab_bc'),
-						'wotlk'		=> $this->game->glang('uc_achievement_tab_wotlk'),
-						'cataclysm'	=> $this->game->glang('uc_achievement_tab_cataclysm'),
-						'mop'			=> $this->game->glang('uc_achievement_tab_mop'),
-						'wod'			=> $this->game->glang('uc_achievement_tab_wod'),
-						'leg'			=> $this->game->glang('uc_achievement_tab_leg'),
+						68	=> $this->game->glang('uc_achievement_tab_classic'),
+						70		=> $this->game->glang('uc_achievement_tab_bc'),
+						72		=> $this->game->glang('uc_achievement_tab_wotlk'),
+						73	=> $this->game->glang('uc_achievement_tab_cataclysm'),
+						74		=> $this->game->glang('uc_achievement_tab_mop'),
+						124		=> $this->game->glang('uc_achievement_tab_wod'),
+						395	=> $this->game->glang('uc_achievement_tab_leg'),
+						396 => $this->game->glang('uc_achievement_tab_bfa'),
 					),
 				)
 			);
