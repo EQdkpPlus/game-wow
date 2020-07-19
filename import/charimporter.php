@@ -171,8 +171,8 @@ class charImporter extends page_generic {
 				'name'				=> $this->in->get('charname', ''),
 				'level'				=> $chardata['level'],
 				'gender'			=> $this->game->obj['armory']->ConvertID($chardata['gender']['type'], 'int', 'gender'),
-				'race'				=> $this->game->obj['armory']->ConvertID($chardata['race']['id'], 'int', 'races'),
-				'class'				=> $this->game->obj['armory']->ConvertID($chardata['character_class']['id'], 'int', 'classes'),
+				'race'				=> $this->game->obj['armory']->ConvertID($chardata['playable_race']['id'], 'int', 'races'),
+				'class'				=> $this->game->obj['armory']->ConvertID($chardata['playable_class']['id'], 'int', 'classes'),
 				'guild'				=> $chardata['guild']['name'],
 				'last_update'		=> ($chardata['last_login_timestamp']/1000),
 				'health_bar'		=> $chardata['health'],
@@ -293,13 +293,13 @@ class charImporter extends page_generic {
 			$hmtlout	.= (new hhidden('member_id', array('value' => $isindatabase)))->output();
 			$hmtlout	.= (new hhidden('member_name', array('value' => $isMemberName)))->output();
 			$hmtlout	.= (new hhidden('member_level', array('value' => $chardata['level'])))->output();
-			$hmtlout	.= (new hhidden('gender', array('value' => $this->game->obj['armory']->ConvertID($chardata['gender'], 'int', 'gender'))))->output();
-			$hmtlout	.= (new hhidden('member_race_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['race'], 'int', 'races'))))->output();
-			$hmtlout	.= (new hhidden('member_class_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['class'], 'int', 'classes'))))->output();
+			$hmtlout	.= (new hhidden('gender', array('value' => $this->game->obj['armory']->ConvertID($chardata['gender']['type'], 'int', 'gender'))))->output();
+			$hmtlout	.= (new hhidden('member_race_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['playable_race']['id'], 'int', 'races'))))->output();
+			$hmtlout	.= (new hhidden('member_class_id', array('value' => $this->game->obj['armory']->ConvertID($chardata['playable_class']['id'], 'int', 'classes'))))->output();
 			$hmtlout	.= (new hhidden('guild', array('value' => $chardata['guild']['name'])))->output();
 			$hmtlout	.= (new hhidden('servername', array('value' => $servername)))->output();
 			$hmtlout	.= (new hhidden('server_slug', array('value' => $chardata['realm']['slug'])))->output();
-			$hmtlout	.= (new hhidden('last_update', array('value' => ($chardata['lastModified']/1000))))->output();
+			$hmtlout	.= (new hhidden('last_update', array('value' => ($chardata['last_login_timestamp']/1000))))->output();
 
 			// primary professions
 			$hmtlout	.= (new hhidden('prof1_name', array('value' => $chardata['professions']['primary'][0]['name'])))->output();
