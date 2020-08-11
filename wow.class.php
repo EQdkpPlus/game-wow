@@ -562,7 +562,7 @@ if(!class_exists('wow')) {
 					}
 					
 					
-					$jsondata[] = array(
+					$jsondata = array(
 							'thumbnail'		=> false,
 							'name'			=> $guildchars['character']['name'],
 							'class'			=> $this->game->obj['armory']->ConvertID( $guildchars['character']['playable_class']['id'], 'int', 'classes'),
