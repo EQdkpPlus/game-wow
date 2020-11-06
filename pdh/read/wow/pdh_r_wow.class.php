@@ -34,6 +34,8 @@ if (!class_exists('pdh_r_wow')) {
 		*/
 		private $data;
 		private $guilddata;
+		
+		private $blnArmoryInitiated = false;
 
 		/**
 		* Hook array
@@ -71,6 +73,15 @@ if (!class_exists('pdh_r_wow')) {
 		public function init(){
 			
 		}
+		
+		public function initArmory(){
+		    if($this->blnArmoryInitiated) return;
+		    
+		    $serverLoc = $this->config->get('uc_server_loc') ? $this->config->get('uc_server_loc') : 'eu';
+		    $this->game->new_object('bnet_armory', 'armory', array($serverLoc, $this->config->get('uc_data_lang')));
+		    
+		    $this->blnArmoryInitiated = true;
+		}
 
 		public function get_achievementpoints($member_id){
 			$membername = $this->pdh->get('member', 'name', array($member_id));
@@ -78,6 +89,7 @@ if (!class_exists('pdh_r_wow')) {
 			$char_server	= $this->pdh->get('member', 'profile_field', array($member_id, 'servername'));
 			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 			
+			$this->initArmory();
 			$charinfo = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($servername));
 			
 			if (isset($charinfo['achievement_points'])){
@@ -99,6 +111,7 @@ if (!class_exists('pdh_r_wow')) {
 			$char_server	= $this->pdh->get('member', 'profile_field', array($member_id, 'servername'));
 			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 			
+			$this->initArmory();
 			return $this->game->obj['armory']->characterIcon(unsanitize($membername), unsanitize($servername));
 		}
 
@@ -115,6 +128,7 @@ if (!class_exists('pdh_r_wow')) {
 			$char_server	= $this->pdh->get('member', 'profile_field', array($member_id, 'servername'));
 			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 			
+			$this->initArmory();
 			$charinfo = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($servername));
 
 			if (isset($charinfo['average_item_level'])){
@@ -128,6 +142,8 @@ if (!class_exists('pdh_r_wow')) {
 			$membername		= $this->pdh->get('member', 'name', array($member_id));
 			$char_server	= $this->pdh->get('member', 'profile_field', array($member_id, 'servername'));
 			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
+			
+			$this->initArmory();
 			
 			$output			= '';
 			$a_profilers	= array(
@@ -175,6 +191,7 @@ if (!class_exists('pdh_r_wow')) {
 			$char_server	= $this->pdh->get('member', 'profile_field', array($member_id, 'servername'));
 			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 			
+			$this->initArmory();
 			$charinfo = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($servername));
 			
 			$a_professions = $this->game->callFunc('professions', array($charinfo));
@@ -191,6 +208,7 @@ if (!class_exists('pdh_r_wow')) {
 			$char_server	= $this->pdh->get('member', 'profile_field', array($member_id, 'servername'));
 			$servername		= ($char_server != '') ? $char_server : $this->config->get('servername');
 			
+			$this->initArmory();
 			$chardata = $this->game->obj['armory']->character(unsanitize($membername), unsanitize($servername));
 
 			
