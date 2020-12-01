@@ -515,10 +515,15 @@ class bnet_armory extends gen_class {
 		$img_charicon_sp= $this->get_CachedData('img_'.$type.'_'.$user.$realm, false, true, false, true);
 
 		if(!$img_charicon && ($force || ($this->chariconUpdates < $this->_config['maxChariconUpdates']))){
+		    $arrAssets = array();
+		    foreach($chardata['assets'] as $key => $val){
+		        $arrAssets[$val['key']] = $val['value'];
+		    }
+		    
 			switch($type){
-				case 'icon':	$image_url = $chardata['avatar_url']; 	break;
-				case 'render':	$image_url = $chardata['render_url']; 	break;
-				case 'inset':	$image_url = $chardata['bust_url']; 	break;
+			    case 'icon':	$image_url = $arrAssets['avatar']; 	break;
+			    case 'render':	$image_url = $arrAssets['main']; 	break;
+			    case 'inset':	$image_url = $arrAssets['inset']; 	break;
 			}
 			
 			$imageData = $this->read_url($image_url);
