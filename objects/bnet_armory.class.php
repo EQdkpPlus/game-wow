@@ -521,10 +521,13 @@ class bnet_armory extends gen_class {
 		    }
 		    
 			switch($type){
-			    case 'icon':	$image_url = $arrAssets['avatar']; 	break;
-			    case 'render':	$image_url = $arrAssets['main']; 	break;
-			    case 'inset':	$image_url = $arrAssets['inset']; 	break;
-			}
+                case 'icon':	$image_url = (isset($chardata['avatar_url'])) ? $chardata['avatar_url'] : $arrAssets['avatar']; 	
+                    break;
+                case 'render':	$image_url = (isset($chardata['render_url'])) ? $chardata['render_url'] : $arrAssets['main']; 	
+                    break;
+                case 'inset':	$image_url = (isset($chardata['bust_url'])) ? $chardata['bust_url'] : $arrAssets['inset']; 	
+                    break;
+            }
 			
 			$imageData = $this->read_url($image_url);
 			if($imageData && strlen($imageData)){
