@@ -253,14 +253,19 @@ class bnet_armory extends gen_class {
 		$json		= $this->get_CachedData('client_token_'.$this->_config['client_id'], $force);
 		if((!$json || ($force)) && !$this->blnOauthChecked){
 			// the OAUTH URL to receive the token, read the data
-			$tokenurl 	= $this->_config['oauthurl'].'token?grant_type=client_credentials&client_id='.$this->_config['client_id'].'&client_secret='.$this->_config['client_secret'];
-			$json		= $this->read_url($tokenurl, 5);
+			$tokenurl 	= $this->_config['oauthurl'].'token';
+			$tokenheader = base64_encode($this->_config['client_id'].':'.$this->_config['client_secret']);
+			$tokendata = 'grant_type=client_credentials';
+			
+			$json		= $this->post_url($tokenurl, $tokendata, "application/x-www-form-urlencoded", array("Authorization: Basic ".$tokenheader));
+
 			$this->set_CachedData($json, 'client_token_'.$this->_config['client_id']);
 			$this->blnOauthChecked = true;
 		}
 
 		// decode & check for errors
 		$tokendata	= json_decode($json, true);
+
 		$errorchk	= $this->CheckIfError($tokendata);
 		return (!$errorchk) ? $tokendata: $errorchk;
 	}
@@ -1465,7 +1470,7 @@ class bnet_armory extends gen_class {
 	}
 
 	/**
-	* Fetch the Data from URL
+	* Fetch the Data from URL (GET)
 	*
 	* @param $url URL to Download
 	* @return json
@@ -1489,6 +1494,35 @@ class bnet_armory extends gen_class {
 		}
 		
 		return $mixResponse;
+	}
+	
+	/**
+	 * Post Data to URL
+	 *
+	 * @param $url URL to Download
+	 * @return json
+	 */
+	protected function post_url($url, $data, $content_type = "text/html; charset=utf-8", $header='', $intTimeout=false) {
+	    if(!is_object($this->puf)) {
+	        global $eqdkp_root_path;
+	        include_once($eqdkp_root_path.'core/urlfetcher.class.php');
+	        $this->puf = new urlfetcher();
+	    }
+	    
+	    $mixResponse = $this->puf->post($url, $data, $content_type, $header, $intTimeout);
+
+	    $arrResponseData = $this->puf->fetch_last_response();
+
+	    if($mixResponse === false && method_exists($this->puf, 'fetch_last_response')){
+	        $arrResponseData = $this->puf->fetch_last_response();
+	        if($arrResponseData['responseBody']){
+	            return $arrResponseData['responseBody'];
+	        } elseif($arrResponseData['responseCode'] > 400){
+	            return '{"status":"nok", "reason": "Error #'.$arrResponseData['responseCode'].'"}';
+	        }
+	    }
+	    
+	    return $mixResponse;
 	}
 
 	/**
